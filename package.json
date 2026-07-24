@@ -41,5 +41,8 @@
     "postcss": "^8.5.21",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "sharp"]
   }
 }
