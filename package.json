@@ -3,15 +3,19 @@
   "version": "0.0.6",
   "private": true,
   "scripts": {
-    "build": "next build",
+    "clean:next": "node scripts/clean-next.mjs",
+    "build": "node scripts/clean-next.mjs && next build",
     "dev": "next dev",
     "start": "next start",
+    "serve:static": "npx --yes serve out -p 3000",
     "types:check": "fumadocs-mdx && next typegen && tsc --noEmit",
     "postinstall": "fumadocs-mdx"
   },
   "dependencies": {
     "@ai-sdk/react": "^4.0.37",
     "@llmgateway/ai-sdk-provider": "^3.8.1",
+    "@orama/orama": "^3.1.18",
+    "@orama/tokenizers": "^3.1.18",
     "ai": "^7.0.34",
     "class-variance-authority": "^0.7.1",
     "cnfast": "^0.0.8",
@@ -41,5 +45,8 @@
     "postcss": "^8.5.21",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "sharp"]
   }
 }
