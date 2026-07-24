@@ -1,11 +1,7 @@
 import { source } from '@/lib/source';
 import { DocsLayout } from 'fumadocs-ui/layouts/notebook';
 import { baseOptions } from '@/lib/layout.shared';
-import { AISearch, AISearchPanel, AISearchTrigger } from '@/components/ai/search';
 import { AppHeader } from '@/components/layout/app-header';
-import { MessageCircleIcon } from 'lucide-react';
-import { cn } from '@/lib/cn';
-import { buttonVariants } from 'fumadocs-ui/components/ui/button';
 
 export default function Layout({ children }: LayoutProps<'/docs'>) {
   const options = baseOptions();
@@ -22,22 +18,6 @@ export default function Layout({ children }: LayoutProps<'/docs'>) {
         component: <AppHeader sectionNav />,
       }}
     >
-      <AISearch>
-        <AISearchPanel />
-        <AISearchTrigger
-          position="float"
-          className={cn(
-            buttonVariants({
-              variant: 'secondary',
-              className: 'text-fd-muted-foreground rounded-2xl',
-            }),
-          )}
-        >
-          <MessageCircleIcon className="size-4.5" />
-          问 AI
-        </AISearchTrigger>
-      </AISearch>
-
       {children}
     </DocsLayout>
   );
