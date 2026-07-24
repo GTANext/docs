@@ -1,8 +1,7 @@
-import { HomeLayout } from 'fumadocs-ui/layouts/home';
 import type { Metadata } from 'next';
 import { baseOptions } from '@/lib/layout.shared';
 import { siteTitle } from '@/lib/shared';
-import { AppHeader } from '@/components/layout/app-header';
+import { SiteHomeLayout } from '@/components/layout/site-layouts';
 
 export const metadata: Metadata = {
   title: {
@@ -12,18 +11,5 @@ export const metadata: Metadata = {
 };
 
 export default function Layout({ children }: LayoutProps<'/'>) {
-  const options = baseOptions();
-
-  return (
-    <HomeLayout
-      {...options}
-      // slots.header 需要 FC，不能从 Server 传函数；用 nav.component 挂 Client 节点
-      nav={{
-        ...options.nav,
-        component: <AppHeader />,
-      }}
-    >
-      {children}
-    </HomeLayout>
-  );
+  return <SiteHomeLayout {...baseOptions()}>{children}</SiteHomeLayout>;
 }

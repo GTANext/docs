@@ -219,7 +219,7 @@ function DocsAppHeader(props: ComponentProps<'header'>) {
             </>
           ) : null}
 
-          {/* 桌面：语言 → 主题 → GitHub → 侧栏折叠 */}
+          {/* 与首页同一顺序：语言 → 主题 → GitHub；末尾侧栏仅文档 */}
           <div className="flex items-center gap-1.5 max-md:hidden">
             {slots.languageSelect ? (
               <slots.languageSelect.root>
@@ -231,7 +231,7 @@ function DocsAppHeader(props: ComponentProps<'header'>) {
               <LinkItem
                 key={i}
                 item={item}
-                className={cn(iconLinkClassName, 'max-lg:hidden')}
+                className={iconLinkClassName}
                 aria-label={item.label}
               >
                 {item.icon}
@@ -249,11 +249,14 @@ function DocsAppHeader(props: ComponentProps<'header'>) {
             ) : null}
           </div>
 
-          {/* 移动：侧栏打开（搜索 sm 已在上方） */}
           {slots.sidebar ? (
             <slots.sidebar.trigger
               className={cn(
-                buttonVariants({ color: 'ghost', size: 'icon-sm', className: 'p-2 -me-1.5' }),
+                buttonVariants({
+                  color: 'ghost',
+                  size: 'icon-sm',
+                  className: 'p-2 -me-1.5',
+                }),
                 'md:hidden',
               )}
             >
