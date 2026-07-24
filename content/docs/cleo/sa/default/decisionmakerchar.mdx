@@ -1,0 +1,106 @@
+---
+title: 角色决策 DecisionMakerChar
+description: 角色决策器
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 5 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 加载
+
+<Opcode id="060A" name="LOAD_CHAR_DECISION_MAKER" member="DecisionMakerChar.Load">
+加载角色决策器（进任务清理表；否则 `065C` 释放）。
+
+```text
+060A LOAD_CHAR_DECISION_MAKER
+in: type
+out: handle
+```
+
+```lua
+local handle = loadCharDecisionMaker(type)
+```
+
+```js
+const handle = DecisionMakerChar.load(type)
+```
+</Opcode>
+
+## 清事件响应
+
+<Opcode id="0708" name="CLEAR_CHAR_DECISION_MAKER_EVENT_RESPONSE" member="DecisionMakerChar.ClearEventResponse">
+清掉决策器对某事件的响应。
+
+```text
+0708 CLEAR_CHAR_DECISION_MAKER_EVENT_RESPONSE
+in: self, event
+```
+
+```lua
+clearCharDecisionMakerEventResponse(self, event)
+```
+
+```js
+DecisionMakerChar.clearEventResponse(self, event)
+```
+</Opcode>
+
+## 加事件响应
+
+<Opcode id="0709" name="ADD_CHAR_DECISION_MAKER_EVENT_RESPONSE" member="DecisionMakerChar.AddEventResponse">
+按事件配置角色反应（任务、好感档、车内 / 步行等）。
+
+```text
+0709 ADD_CHAR_DECISION_MAKER_EVENT_RESPONSE
+in: self, event, taskId, respect, hate, like, dislike, inCar, onFoot
+```
+
+```lua
+addCharDecisionMakerEventResponse(self, event, taskId, respect, hate, like, dislike, inCar, onFoot)
+```
+
+```js
+DecisionMakerChar.addEventResponse(self, event, taskId, respect, hate, like, dislike, inCar, onFoot)
+```
+</Opcode>
+
+## 复制
+
+<Opcode id="07E5" name="COPY_CHAR_DECISION_MAKER" member="DecisionMakerChar.Copy">
+复制角色决策器数据。
+
+```text
+07E5 COPY_CHAR_DECISION_MAKER
+in: handleOrTemplate
+out: handle
+```
+
+```lua
+local handle = copyCharDecisionMaker(handleOrTemplate)
+```
+
+```js
+const handle = DecisionMakerChar.copy(handleOrTemplate)
+```
+</Opcode>
+
+## 共享模板
+
+<Opcode id="0978" name="COPY_SHARED_CHAR_DECISION_MAKER" member="DecisionMakerChar.CopyShared">
+按共享模板建实例（进任务清理表；否则 `065C` 释放）。
+
+```text
+0978 COPY_SHARED_CHAR_DECISION_MAKER
+in: template
+out: handle
+```
+
+```lua
+local handle = copySharedCharDecisionMaker(template)
+```
+
+```js
+const handle = DecisionMakerChar.copyShared(template)
+```
+</Opcode>

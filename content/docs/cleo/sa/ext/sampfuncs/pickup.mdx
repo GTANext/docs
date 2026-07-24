@@ -1,0 +1,28 @@
+---
+title: 拾取物 Pickup
+description: 拾取物句柄 → SA-MP 拾取物 ID
+---
+
+`sa` · 扩展 `SAMPFUNCS` · 仅 SA-MP；需 SAMPFUNCS
+
+共 1 条。调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 拾取物 ID
+
+<Opcode id="0B53" name="SAMP_GET_PICKUP_ID" member="Pickup.GetSampId">
+按拾取物句柄返回 SA-MP 拾取物 ID。
+
+```text
+0B53 SAMP_GET_PICKUP_ID
+in: self
+out: id
+```
+
+```lua
+local id = sampGetPickupId(self)
+```
+
+```js
+const id = Pickup.getSampId(self)
+```
+</Opcode>

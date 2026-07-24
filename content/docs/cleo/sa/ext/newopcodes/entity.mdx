@@ -1,0 +1,474 @@
+---
+title: 实体 Entity / Component
+description: 部件、透明度、碰撞实体、骨骼
+---
+
+`sa` · 扩展 `NewOpcodes` · 需 CLEO + NewOpcodes
+
+部件 / 透明度 / 碰撞列表 / 骨骼。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+> 部分号（如 `0D0B` 骨骼矩阵）与 CLEO+ 重叠，以实际加载的插件为准。
+
+## 骨骼 / 部件矩阵
+
+<Opcode id="0D0B" name="GET_CHAR_BONE_MATRIX">
+取角色骨骼世界矩阵。用在 `if` 里。
+
+```text
+0D0B GET_CHAR_BONE_MATRIX
+in: char, bone
+out: matrix
+```
+
+```lua
+local mat = getCharBoneMatrix(ped, bone)
+if mat then
+end
+```
+
+```js
+if (native(0x0D0B, char, bone)) {
+}
+```
+</Opcode>
+
+<Opcode id="0D0C" name="GET_CAR_COMPONENT_MATRIX" member="Car.GetComponentMatrix">
+按部件名取载具 LTM。用在 `if` 里。
+
+```text
+0D0C GET_CAR_COMPONENT_MATRIX
+in: self, componentName
+out: handle
+```
+
+```lua
+local m = getCarComponentMatrix(car, "bump_front_dummy")
+```
+
+```js
+const handle = Car.getComponentMatrix(self, componentName)
+```
+</Opcode>
+
+<Opcode id="0D0D" name="GET_CAR_COMPONENT" member="Car.GetComponent">
+按名取部件 frame 指针。用在 `if` 里。
+
+```text
+0D0D GET_CAR_COMPONENT
+in: self, name
+out: handle
+```
+
+```lua
+local c = getCarComponent(car, "door_lf_dummy")
+```
+
+```js
+const handle = Car.getComponent(self, name)
+```
+</Opcode>
+
+## 部件状态 / 透明度
+
+<Opcode id="0D0E" name="SET_CAR_COMPONENT_STATE">
+设部件可见/损坏状态。用在 `if` 里。
+
+```text
+0D0E SET_CAR_COMPONENT_STATE
+in: car, component, state
+```
+
+```lua
+setCarComponentState(car, "bonnet_dummy", state)
+```
+
+```js
+if (native(0x0D0E, car, component, state)) {
+}
+```
+</Opcode>
+
+<Opcode id="0D0F" name="SET_CAR_MODEL_ALPHA">
+载具模型透明度 0–255。用在 `if` 里。
+
+```text
+0D0F SET_CAR_MODEL_ALPHA
+in: car, alpha
+```
+
+```lua
+setCarModelAlpha(car, 128)
+```
+
+```js
+if (native(0x0D0F, car, alpha)) {
+}
+```
+</Opcode>
+
+<Opcode id="0D10" name="SET_CHAR_MODEL_ALPHA">
+角色模型透明度。用在 `if` 里。
+
+```text
+0D10 SET_CHAR_MODEL_ALPHA
+in: char, alpha
+```
+
+```lua
+setCharModelAlpha(ped, 200)
+```
+
+```js
+if (native(0x0D10, char, alpha)) {
+}
+```
+</Opcode>
+
+<Opcode id="0D11" name="SET_OBJECT_MODEL_ALPHA">
+物体模型透明度。用在 `if` 里。
+
+```text
+0D11 SET_OBJECT_MODEL_ALPHA
+in: object, alpha
+```
+
+```lua
+setObjectModelAlpha(obj, 255)
+```
+
+```js
+if (native(0x0D11, object, alpha)) {
+}
+```
+</Opcode>
+
+<Opcode id="0D12" name="SET_CAR_COMPONENT_MODEL_ALPHA" member="Car.SetComponentModelAlpha">
+单一部件模型透明度。用在 `if` 里。
+
+```text
+0D12 SET_CAR_COMPONENT_MODEL_ALPHA
+in: self, componentName, alpha
+```
+
+```lua
+setCarComponentModelAlpha(car, "boot_dummy", 100)
+```
+
+```js
+Car.setComponentModelAlpha(self, componentName, alpha)
+```
+</Opcode>
+
+## 实体类型 / Component 树
+
+<Opcode id="0D1B" name="GET_ENTITY_TYPE_AND_CLASS">
+取实体 type + class（vtable 一类标识）。
+
+```text
+0D1B GET_ENTITY_TYPE_AND_CLASS
+in: entity
+out: type, class
+```
+
+```lua
+local t, c = getEntityTypeAndClass(ptr)
+```
+
+```js
+const { type, class: entityClass } = native(0x0D1B, entity)
+```
+</Opcode>
+
+<Opcode id="0D1F" name="GET_COMPONENT_CHILD_COMPONENT" member="Component.GetChildComponent">
+部件第一个子 frame。
+
+```text
+0D1F GET_COMPONENT_CHILD_COMPONENT
+in: self
+out: child
+```
+
+```lua
+local child = getComponentChildComponent(comp)
+```
+
+```js
+const child = Component.getChildComponent(self)
+```
+</Opcode>
+
+<Opcode id="0D20" name="GET_COMPONENT_NEXT_COMPONENT" member="Component.GetNextComponent">
+下一个兄弟 frame。
+
+```text
+0D20 GET_COMPONENT_NEXT_COMPONENT
+in: self
+out: nextComponent
+```
+
+```lua
+local n = getComponentNextComponent(comp)
+```
+
+```js
+const nextComponent = Component.getNextComponent(self)
+```
+</Opcode>
+
+<Opcode id="0D21" name="GET_COMPONENT_NAME" member="Component.GetName">
+部件名。
+
+```text
+0D21 GET_COMPONENT_NAME
+in: self
+out: name
+```
+
+```lua
+local name = getComponentName(comp)
+```
+
+```js
+const name = Component.getName(self)
+```
+</Opcode>
+
+<Opcode id="0D22" name="GET_COMPONENT_WORLD_MATRIX" member="Component.GetWorldMatrix">
+部件世界矩阵 LTM。
+
+```text
+0D22 GET_COMPONENT_WORLD_MATRIX
+in: self
+out: worldMatrix
+```
+
+```lua
+local m = getComponentWorldMatrix(comp)
+```
+
+```js
+const worldMatrix = Component.getWorldMatrix(self)
+```
+</Opcode>
+
+<Opcode id="0D23" name="GET_COMPONENT_MODELLING_MATRIX" member="Component.GetModellingMatrix">
+部件相对父节点的 modelling 矩阵。
+
+```text
+0D23 GET_COMPONENT_MODELLING_MATRIX
+in: self
+out: modellingMatrix
+```
+
+```lua
+local m = getComponentModellingMatrix(comp)
+```
+
+```js
+const modellingMatrix = Component.getModellingMatrix(self)
+```
+</Opcode>
+
+## 碰撞实体
+
+<Opcode id="0D2A" name="GET_CAR_NUM_COLLIDED_ENTITIES">
+载具当前碰撞实体数量。
+
+```text
+0D2A GET_CAR_NUM_COLLIDED_ENTITIES
+in: car
+out: numCollidedEntities
+```
+
+```lua
+local n = getCarNumCollidedEntities(car)
+```
+
+```js
+const numCollidedEntities = native(0x0D2A, car)
+```
+</Opcode>
+
+<Opcode id="0D2B" name="GET_CHAR_NUM_COLLIDED_ENTITIES">
+角色碰撞实体数量。
+
+```text
+0D2B GET_CHAR_NUM_COLLIDED_ENTITIES
+in: char
+out: numCollidedEntities
+```
+
+```lua
+local n = getCharNumCollidedEntities(ped)
+```
+
+```js
+const numCollidedEntities = native(0x0D2B, char)
+```
+</Opcode>
+
+<Opcode id="0D2C" name="GET_OBJECT_NUM_COLLIDED_ENTITIES">
+物体碰撞实体数量。
+
+```text
+0D2C GET_OBJECT_NUM_COLLIDED_ENTITIES
+in: object
+out: numCollidedEntities
+```
+
+```lua
+local n = getObjectNumCollidedEntities(obj)
+```
+
+```js
+const numCollidedEntities = native(0x0D2C, object)
+```
+</Opcode>
+
+## 骨骼
+
+<Opcode id="0D30" name="GET_CHAR_BONE">
+取骨骼 frame。用在 `if` 里。
+
+```text
+0D30 GET_CHAR_BONE
+in: char, bone
+out: bone
+```
+
+```lua
+local b = getCharBone(ped, boneId)
+```
+
+```js
+if (native(0x0D30, char, bone)) {
+}
+```
+</Opcode>
+
+<Opcode id="0D31" name="GET_BONE_OFFSET">
+骨骼相对偏移向量。
+
+```text
+0D31 GET_BONE_OFFSET
+in: bone
+out: offsetVector
+```
+
+```lua
+local v = getBoneOffset(bone)
+```
+
+```js
+const offsetVector = native(0x0D31, bone)
+```
+</Opcode>
+
+<Opcode id="0D32" name="GET_BONE_QUAT">
+骨骼旋转四元数指针。
+
+```text
+0D32 GET_BONE_QUAT
+in: bone
+out: quat
+```
+
+```lua
+local q = getBoneQuat(bone)
+```
+
+```js
+const quat = native(0x0D32, bone)
+```
+</Opcode>
+
+## 车窗 / 碰撞列表 / 生命
+
+<Opcode id="0D33" name="SET_CAR_DOOR_WINDOW_STATE">
+车门车窗开/关（1/0）。
+
+```text
+0D33 SET_CAR_DOOR_WINDOW_STATE
+in: car, door, windowState
+```
+
+```lua
+setCarDoorWindowState(car, door, 1)
+```
+
+```js
+native(0x0D33, car, door, windowState)
+```
+</Opcode>
+
+<Opcode id="0D34" name="GET_CAR_COLLIDED_ENTITIES">
+最多 6 个碰撞实体写到输出。
+
+```text
+0D34 GET_CAR_COLLIDED_ENTITIES
+in: car
+out: entity0..entity5
+```
+
+```lua
+local e0, e1, e2, e3, e4, e5 = getCarCollidedEntities(car)
+```
+
+```js
+const { entity0, entity1, entity2, entity3, entity4, entity5 } = native(0x0D34, car)
+```
+</Opcode>
+
+<Opcode id="0D35" name="GET_CHAR_COLLIDED_ENTITIES">
+角色碰撞实体列表（最多 6）。
+
+```text
+0D35 GET_CHAR_COLLIDED_ENTITIES
+in: char
+out: entity0..entity5
+```
+
+```lua
+local e0, e1, e2, e3, e4, e5 = getCharCollidedEntities(ped)
+```
+
+```js
+const { entity0, entity1, entity2, entity3, entity4, entity5 } = native(0x0D35, char)
+```
+</Opcode>
+
+<Opcode id="0D36" name="GET_OBJECT_COLLIDED_ENTITIES">
+物体碰撞实体列表（最多 6）。
+
+```text
+0D36 GET_OBJECT_COLLIDED_ENTITIES
+in: object
+out: entity0..entity5
+```
+
+```lua
+local e0, e1, e2, e3, e4, e5 = getObjectCollidedEntities(obj)
+```
+
+```js
+const { entity0, entity1, entity2, entity3, entity4, entity5 } = native(0x0D36, object)
+```
+</Opcode>
+
+<Opcode id="0D39" name="GET_CHAR_MAX_HEALTH">
+角色最大生命。
+
+```text
+0D39 GET_CHAR_MAX_HEALTH
+in: char
+out: maxHealth
+```
+
+```lua
+local maxHp = getCharMaxHealth(ped)
+```
+
+```js
+const maxHealth = native(0x0D39, char)
+```
+</Opcode>

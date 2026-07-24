@@ -1,0 +1,89 @@
+---
+title: 文件 CFileMgr
+description: 游戏目录相对路径读写
+---
+
+`CFileMgr.h`
+
+游戏目录相对路径读写。`FILESTREAM` 是 `int` 句柄，不是 `FILE*`。
+
+## 工作目录
+
+<Api name="SetDir / ChangeDir / SetDirMyDocuments">
+
+```cpp
+static int SetDir(const char* path);
+static int ChangeDir(const char* path);
+static int SetDirMyDocuments();
+static char* ms_dirName;
+static char* ms_rootDirName;
+```
+
+```cpp
+CFileMgr::SetDir("");
+// 再 OpenFile 相对游戏根
+```
+</Api>
+
+## 打开关闭
+
+<Api name="OpenFile / CloseFile">
+
+```cpp
+static FILESTREAM OpenFile(const char* path, const char* mode);
+static FILESTREAM OpenFileForWriting(const char* path);
+static FILESTREAM OpenFileForAppending(const char* path);
+static int CloseFile(FILESTREAM file);
+```
+
+```cpp
+FILESTREAM f = CFileMgr::OpenFile("data\\my.ini", "r");
+if (f) {
+    // ...
+    CFileMgr::CloseFile(f);
+}
+```
+</Api>
+
+## 读写定位
+
+<Api name="Read / Write / Seek / ReadLine">
+
+```cpp
+static int Read(FILESTREAM file, char* buf, int size);
+static int Write(FILESTREAM file, char* buf, int size);
+static char Seek(FILESTREAM file, int offset, int origin);
+static int Tell(FILESTREAM file);
+static char ReadLine(FILESTREAM file, char* str, int num);
+static int GetFileLength(FILESTREAM file);
+static bool GetErrorReadWrite(FILESTREAM file);
+```
+
+```cpp
+char line[256];
+while (CFileMgr::ReadLine(f, line, sizeof(line))) {
+}
+```
+</Api>
+
+## 一次载入
+
+<Api name="LoadFile">
+
+```cpp
+static int LoadFile(const char* path, unsigned char* buf, int size, const char* mode);
+```
+
+```cpp
+unsigned char buf[4096];
+int n = CFileMgr::LoadFile("data\\x.dat", buf, sizeof(buf), "rb");
+```
+</Api>
+
+## 注意
+
+| 点 | 说明 |
+|---|---|
+| 路径 | 相对游戏目录；自定义文件也可用 [路径](/docs/plugins/extensions/paths) |
+| 句柄 | `FILESTREAM` ≠ CRT `FILE*` |
+| ASI 配置 | 简单 ini 优先 `plugin::config` / 扩展 Config |

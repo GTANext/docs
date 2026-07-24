@@ -1,0 +1,165 @@
+---
+title: 内存 Memory
+description: 内存拷贝、偏移读写与脚本结构
+---
+
+`sa` · 扩展 `memory` · 需对应 CLEO 扩展
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 拷贝内存
+
+<Opcode id="2400" name="COPY_MEMORY" member="Memory.Copy">
+从 `src` 拷 `size` 字节到 `dest`（可重叠，memmove）。
+
+```text
+2400 COPY_MEMORY
+in: src, dest, size
+```
+
+```lua
+copyMemory(src, dest, 64)
+```
+
+```js
+Memory.copy(src, dest, size)
+```
+</Opcode>
+
+## 偏移读
+
+<Opcode id="2401" name="READ_MEMORY_WITH_OFFSET" member="Memory.ReadWithOffset">
+基址 + 字节偏移读 `size` 宽。
+
+```text
+2401 READ_MEMORY_WITH_OFFSET
+in: address, offset, size
+out: result
+```
+
+```lua
+local v = readMemoryWithOffset(base, 0x10, 4)
+```
+
+```js
+const result = Memory.readWithOffset(address, offset, size)
+```
+</Opcode>
+
+## 偏移写
+
+<Opcode id="2402" name="WRITE_MEMORY_WITH_OFFSET" member="Memory.WriteWithOffset">
+基址 + 偏移写。
+
+```text
+2402 WRITE_MEMORY_WITH_OFFSET
+in: address, offset, size, value
+```
+
+```lua
+writeMemoryWithOffset(base, 0x10, 4, value)
+```
+
+```js
+Memory.writeWithOffset(address, offset, size, value)
+```
+</Opcode>
+
+## 跨档保留分配
+
+<Opcode id="2403" name="FORGET_MEMORY" member="Memory.Forget">
+让 `0AC8` 分配的块跨读档 / 新游戏仍存活；进程退出仍释放。
+
+```text
+2403 FORGET_MEMORY
+in: address
+```
+
+```lua
+forgetMemory(buf)
+```
+
+```js
+Memory.forget(address)
+```
+</Opcode>
+
+## 刚创建的脚本结构
+
+<Opcode id="2404" name="GET_SCRIPT_STRUCT_JUST_CREATED" member="Memory.GetScriptStructJustCreated">
+最近全局创建的脚本结构地址（`004F` / `00D7` / `0A92` / `0A94` 等）。
+
+```text
+2404 GET_SCRIPT_STRUCT_JUST_CREATED
+out: address
+```
+
+```lua
+local s = getScriptStructJustCreated()
+```
+
+```js
+const address = Memory.getScriptStructJustCreated()
+```
+</Opcode>
+
+## 脚本是否在跑
+
+<Opcode id="2405" name="IS_SCRIPT_RUNNING" member="Memory.IsScriptRunning">
+地址是否指向仍在跑的脚本。用在 `if` 里。
+
+```text
+2405 IS_SCRIPT_RUNNING
+in: address
+```
+
+```lua
+if isScriptRunning(scriptPtr) then
+end
+```
+
+```js
+if (Memory.isScriptRunning(address)) {
+}
+```
+</Opcode>
+
+## 内存是否相等
+
+<Opcode id="2407" name="IS_MEMORY_EQUAL" member="Memory.IsEqual">
+两块内存 `size` 字节是否相同。用在 `if` 里。
+
+```text
+2407 IS_MEMORY_EQUAL
+in: addressA, addressB, size
+```
+
+```lua
+if isMemoryEqual(a, b, 16) then
+end
+```
+
+```js
+if (Memory.isEqual(addressA, addressB, size)) {
+}
+```
+</Opcode>
+
+## 终止脚本
+
+<Opcode id="2408" name="TERMINATE_SCRIPT">
+终止地址指向的脚本。
+
+```text
+2408 TERMINATE_SCRIPT
+in: address
+```
+
+```lua
+terminateScript(scriptPtr)
+```
+
+```js
+native("TERMINATE_SCRIPT", address)
+```
+</Opcode>

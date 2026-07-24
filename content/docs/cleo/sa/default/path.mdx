@@ -1,0 +1,390 @@
+---
+title: 路径 Path
+description: 路径节点 / 路线
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 20 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 开车路
+
+<Opcode id="01E7" name="SWITCH_ROADS_ON" member="Path.SwitchRoadsOn">
+开启盒内车道路径。
+
+```text
+01E7 SWITCH_ROADS_ON
+in: leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ
+```
+
+```lua
+switchRoadsOn(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+
+```js
+Path.switchRoadsOn(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+</Opcode>
+
+## 关车路
+
+<Opcode id="01E8" name="SWITCH_ROADS_OFF" member="Path.SwitchRoadsOff">
+关闭盒内车道路径。
+
+```text
+01E8 SWITCH_ROADS_OFF
+in: leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ
+```
+
+```lua
+switchRoadsOff(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+
+```js
+Path.switchRoadsOff(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+</Opcode>
+
+## 开人路
+
+<Opcode id="022A" name="SWITCH_PED_ROADS_ON" member="Path.SwitchPedRoadsOn">
+开启盒内行人路径。
+
+```text
+022A SWITCH_PED_ROADS_ON
+in: leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ
+```
+
+```lua
+switchPedRoadsOn(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+
+```js
+Path.switchPedRoadsOn(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+</Opcode>
+
+## 关人路
+
+<Opcode id="022B" name="SWITCH_PED_ROADS_OFF" member="Path.SwitchPedRoadsOff">
+关闭盒内行人路径。
+
+```text
+022B SWITCH_PED_ROADS_OFF
+in: leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ
+```
+
+```lua
+switchPedRoadsOff(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+
+```js
+Path.switchPedRoadsOff(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+</Opcode>
+
+## 最近人节点
+
+<Opcode id="02C0" name="GET_CLOSEST_CHAR_NODE" member="Path.GetClosestCharNode">
+最近可行人节点坐标。
+
+```text
+02C0 GET_CLOSEST_CHAR_NODE
+in: x, y, z
+out: nodeX, nodeY, nodeZ
+```
+
+```lua
+local nodeX, nodeY, nodeZ = getClosestCharNode(x, y, z)
+```
+
+```js
+const { nodeX, nodeY, nodeZ } = Path.getClosestCharNode(x, y, z)
+```
+</Opcode>
+
+## 最近车节点
+
+<Opcode id="02C1" name="GET_CLOSEST_CAR_NODE" member="Path.GetClosestCarNode">
+最近可驶车节点坐标。
+
+```text
+02C1 GET_CLOSEST_CAR_NODE
+in: x, y, z
+out: nodeX, nodeY, nodeZ
+```
+
+```lua
+local nodeX, nodeY, nodeZ = getClosestCarNode(x, y, z)
+```
+
+```js
+const { nodeX, nodeY, nodeZ } = Path.getClosestCarNode(x, y, z)
+```
+</Opcode>
+
+## 车节点 + 朝向
+
+<Opcode id="03D3" name="GET_CLOSEST_CAR_NODE_WITH_HEADING" member="Path.GetClosestCarNodeWithHeading">
+最近车节点 + 朝向。
+
+```text
+03D3 GET_CLOSEST_CAR_NODE_WITH_HEADING
+in: x, y, z
+out: nodeX, nodeY, nodeZ, angle
+```
+
+```lua
+local nodeX, nodeY, nodeZ, angle = getClosestCarNodeWithHeading(x, y, z)
+```
+
+```js
+const { nodeX, nodeY, nodeZ, angle } = Path.getClosestCarNodeWithHeading(x, y, z)
+```
+</Opcode>
+
+## 最近直线路
+
+<Opcode id="04B9" name="GET_CLOSEST_STRAIGHT_ROAD" member="Path.GetClosestStraightRoad">
+距离范围内最近直线路段两端点与朝向。
+
+```text
+04B9 GET_CLOSEST_STRAIGHT_ROAD
+in: x, y, z, minDist, maxDist
+out: node1X, node1Y, node1Z, node2X, node2Y, node2Z, angle
+```
+
+```lua
+local node1X, node1Y, node1Z, node2X, node2Y, node2Z, angle = getClosestStraightRoad(x, y, z, minDist, maxDist)
+```
+
+```js
+const { node1X, node1Y, node1Z, node2X, node2Y, node2Z, angle } = Path.getClosestStraightRoad(x, y, z, minDist, maxDist)
+```
+</Opcode>
+
+## 第 n 车节点
+
+<Opcode id="04D3" name="GET_NTH_CLOSEST_CAR_NODE" member="Path.GetNthClosestCarNode">
+第 n 近的车节点。
+
+```text
+04D3 GET_NTH_CLOSEST_CAR_NODE
+in: fromX, fromY, fromZ, n
+out: x, y, z
+```
+
+```lua
+local x, y, z = getNthClosestCarNode(fromX, fromY, fromZ, n)
+```
+
+```js
+const { x, y, z } = Path.getNthClosestCarNode(fromX, fromY, fromZ, n)
+```
+</Opcode>
+
+## 清空任务路线
+
+<Opcode id="05D6" name="FLUSH_ROUTE" member="Path.FlushRoute">
+清空任务路线点。
+
+```text
+05D6 FLUSH_ROUTE
+```
+
+```lua
+flushRoute()
+```
+
+```js
+Path.flushRoute()
+```
+</Opcode>
+
+## 加任务路线点
+
+<Opcode id="05D7" name="EXTEND_ROUTE" member="Path.ExtendRoute">
+给任务路线加点。
+
+```text
+05D7 EXTEND_ROUTE
+in: x, y, z
+```
+
+```lua
+extendRoute(x, y, z)
+```
+
+```js
+Path.extendRoute(x, y, z)
+```
+</Opcode>
+
+## 加载区节点
+
+<Opcode id="0606" name="LOAD_PATH_NODES_IN_AREA" member="Path.LoadPathNodesInArea">
+加载区路径节点（脚本车可避此区一类用途）。
+
+```text
+0606 LOAD_PATH_NODES_IN_AREA
+in: leftBottomX, leftBottomY, rightTopX, rightTopY
+```
+
+```lua
+loadPathNodesInArea(leftBottomX, leftBottomY, rightTopX, rightTopY)
+```
+
+```js
+Path.loadPathNodesInArea(leftBottomX, leftBottomY, rightTopX, rightTopY)
+```
+</Opcode>
+
+## 释放节点
+
+<Opcode id="0607" name="RELEASE_PATH_NODES" member="Path.ReleaseNodes">
+释放 `0606` 相关限制 / 节点。
+
+```text
+0607 RELEASE_PATH_NODES
+```
+
+```lua
+releasePathNodes()
+```
+
+```js
+Path.releaseNodes()
+```
+</Opcode>
+
+## 第 n 车节点 + 朝向
+
+<Opcode id="06F8" name="GET_NTH_CLOSEST_CAR_NODE_WITH_HEADING" member="Path.GetNthClosestCarNodeWithHeading">
+第 n 近车节点 + 朝向。
+
+```text
+06F8 GET_NTH_CLOSEST_CAR_NODE_WITH_HEADING
+in: xCoord, yCoord, zCoord, nth
+out: x, y, z, heading
+```
+
+```lua
+local x, y, z, heading = getNthClosestCarNodeWithHeading(xCoord, yCoord, zCoord, nth)
+```
+
+```js
+const { x, y, z, heading } = Path.getNthClosestCarNodeWithHeading(xCoord, yCoord, zCoord, nth)
+```
+</Opcode>
+
+## 清空巡逻
+
+<Opcode id="0754" name="FLUSH_PATROL_ROUTE" member="Path.FlushPatrolRoute">
+清空巡逻路线，准备 `0755` 重建。
+
+```text
+0754 FLUSH_PATROL_ROUTE
+```
+
+```lua
+flushPatrolRoute()
+```
+
+```js
+Path.flushPatrolRoute()
+```
+</Opcode>
+
+## 加巡逻点
+
+<Opcode id="0755" name="EXTEND_PATROL_ROUTE" member="Path.ExtendPatrolRoute">
+巡逻路线加点（可带动画）。
+
+```text
+0755 EXTEND_PATROL_ROUTE
+in: x, y, z, animationName, animationFile
+```
+
+```lua
+extendPatrolRoute(x, y, z, animationName, animationFile)
+```
+
+```js
+Path.extendPatrolRoute(x, y, z, animationName, animationFile)
+```
+</Opcode>
+
+## 车路恢复
+
+<Opcode id="091D" name="SWITCH_ROADS_BACK_TO_ORIGINAL" member="Path.SwitchRoadsBackToOriginal">
+盒内车路恢复 `01E7` / `01E8` 改动前。
+
+```text
+091D SWITCH_ROADS_BACK_TO_ORIGINAL
+in: leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ
+```
+
+```lua
+switchRoadsBackToOriginal(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+
+```js
+Path.switchRoadsBackToOriginal(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+</Opcode>
+
+## 人路恢复
+
+<Opcode id="091E" name="SWITCH_PED_ROADS_BACK_TO_ORIGINAL" member="Path.SwitchPedRoadsBackToOriginal">
+盒内人路恢复 `022A` / `022B` 改动前。
+
+```text
+091E SWITCH_PED_ROADS_BACK_TO_ORIGINAL
+in: leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ
+```
+
+```lua
+switchPedRoadsBackToOriginal(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+
+```js
+Path.switchPedRoadsBackToOriginal(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+</Opcode>
+
+## 禁止闲逛节点
+
+<Opcode id="0994" name="MARK_ROAD_NODE_AS_DONT_WANDER" member="Path.MarkRoadNodeAsDontWander">
+标记节点禁止闲逛路过。
+
+```text
+0994 MARK_ROAD_NODE_AS_DONT_WANDER
+in: x, y, z
+```
+
+```lua
+markRoadNodeAsDontWander(x, y, z)
+```
+
+```js
+Path.markRoadNodeAsDontWander(x, y, z)
+```
+</Opcode>
+
+## 清禁止闲逛
+
+<Opcode id="0995" name="UNMARK_ALL_ROAD_NODES_AS_DONT_WANDER" member="Path.UnmarkAllRoadNodesAsDontWander">
+清除全部「禁止闲逛」节点标记。
+
+```text
+0995 UNMARK_ALL_ROAD_NODES_AS_DONT_WANDER
+```
+
+```lua
+unmarkAllRoadNodesAsDontWander()
+```
+
+```js
+Path.unmarkAllRoadNodesAsDontWander()
+```
+</Opcode>

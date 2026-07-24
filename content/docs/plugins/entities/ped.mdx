@@ -1,0 +1,168 @@
+---
+title: 行人 CPed
+description: 血量、武器、状态与骨骼
+---
+
+`CPed.h` · 字段 / 方法以头文件为准
+
+逻辑帧改状态；drawing 只读。
+
+## 改血量与护甲
+
+<Api name="m_fHealth / m_fMaxHealth / m_fArmour">
+逻辑帧改。
+
+```cpp
+float m_fHealth;
+float m_fMaxHealth;
+float m_fArmour;
+```
+
+```cpp
+CPed* ped = FindPlayerPed();
+if (!ped) {
+    return;
+}
+ped->m_fHealth = ped->m_fMaxHealth;
+ped->m_fArmour = 100.0f;
+```
+</Api>
+
+## 给武器与切换
+
+<Api name="GiveWeapon / SetCurrentWeapon / ClearWeapons">
+逻辑帧。
+
+```cpp
+void GiveWeapon(eWeaponType weaponType, unsigned int ammo, bool likeUnused);
+void SetCurrentWeapon(int slot);
+void SetCurrentWeapon(eWeaponType weaponType);
+void ClearWeapons();
+void ClearWeapon(eWeaponType weaponType);
+CWeapon* GetWeapon(); // 当前槽
+```
+
+```cpp
+#include "eWeaponType.h"
+
+ped->GiveWeapon(WEAPONTYPE_M4, 999, true);
+ped->SetCurrentWeapon(WEAPONTYPE_M4);
+// ped->ClearWeapons();
+```
+</Api>
+
+## 改弹药
+
+<Api name="GrantAmmo / SetAmmo / DoWeHaveWeaponAvailable">
+
+```cpp
+void GrantAmmo(eWeaponType weaponType, unsigned int ammo);
+void SetAmmo(eWeaponType weaponType, unsigned int ammo);
+bool DoWeHaveWeaponAvailable(eWeaponType weaponType);
+```
+
+```cpp
+if (ped->DoWeHaveWeaponAvailable(WEAPONTYPE_M4)) {
+    ped->GrantAmmo(WEAPONTYPE_M4, 100);
+}
+```
+</Api>
+
+## 判断玩家与所在车
+
+<Api name="IsPlayer / IsAlive / m_pVehicle">
+
+```cpp
+bool IsPlayer();
+bool IsAlive();
+CVehicle* m_pVehicle;
+// ped flags: bInVehicle
+```
+
+```cpp
+if (ped->IsPlayer() && ped->IsAlive() && ped->bInVehicle && ped->m_pVehicle) {
+    CVehicle* v = ped->m_pVehicle;
+}
+```
+</Api>
+
+## 查武器槽与熟练度
+
+<Api name="GetWeaponSlot / GetWeaponSkill / SetWeaponSkill">
+
+```cpp
+int GetWeaponSlot(eWeaponType weaponType);
+char GetWeaponSkill(eWeaponType weaponType);
+char GetWeaponSkill();
+void SetWeaponSkill(eWeaponType weaponType, char skill);
+```
+
+```cpp
+int slot = ped->GetWeaponSlot(WEAPONTYPE_M4);
+ped->SetWeaponSkill(WEAPONTYPE_M4, 2);
+```
+</Api>
+
+## 换 ped 模型
+
+<Api name="SetModelIndex">
+模型须已加载。
+
+```cpp
+void SetModelIndex(unsigned int modelIndex);
+```
+
+```cpp
+CStreaming::RequestModel(modelId, 0x16);
+CStreaming::LoadAllRequestedModels(false);
+ped->SetModelIndex(modelId);
+```
+</Api>
+
+## 取坐标
+
+<Api name="GetPosition">
+改位置在逻辑帧，别在 drawing。
+
+```cpp
+CVector GetPosition();
+```
+
+```cpp
+CVector pos = ped->GetPosition();
+pos.z += 2.0f;
+```
+</Api>
+
+## 取骨骼位置
+
+<Api name="GetBonePosition / GetTransformedBonePosition">
+渲染帧可用；注意 clump 有效。
+
+```cpp
+void GetBonePosition(RwV3d& outPosition, unsigned int boneId, bool updateSkinBones);
+void GetTransformedBonePosition(RwV3d& inOffsetOutPosn, unsigned int boneId, bool updateSkinBones);
+```
+
+```cpp
+RwV3d bone{};
+ped->GetBonePosition(bone, 5, false); // bone id 见引擎/逆向表
+```
+</Api>
+
+## 设置 ped 状态与移动
+
+<Api name="SetPedState / SetMoveState">
+谨慎改状态，易与任务系统打架。
+
+```cpp
+void SetPedState(ePedState pedState);
+void SetMoveState(eMoveState moveState);
+ePedState m_ePedState;
+// m_nMoveState, m_nPedType
+```
+
+```cpp
+// ped->SetPedState(...);
+```
+</Api>

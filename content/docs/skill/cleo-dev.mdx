@@ -1,0 +1,37 @@
+---
+title: CLEO 开发 skill
+description: opcode · Lua · Redux 硬约束与文档路由
+---
+
+对应 skill 文件：`gtamodx/cleo-dev.md`。
+
+写 **CLEO 脚本 / opcode / Lua / Redux / CLEO+ / 扩展** 时先读本页再写代码。
+
+## 文档落点
+
+| 主题 | 文档 |
+|---|---|
+| OP / Lua 约定 | [语法](/docs/cleo/syntax) |
+| Redux | [Redux 语法](/docs/cleo/syntax-redux) |
+| SA 核心与扩展 | [SA](/docs/cleo/sa) |
+| Vice City | [VC](/docs/cleo/vc) |
+| GTA III | [III](/docs/cleo/gta3) |
+
+页内连续示例为 **OP | Lua | Redux** Tabs，同源 SBL，不是三套 API。
+
+## 硬规则
+
+- 三种形态同源；缺哪一种就写缺，不瞎补
+- 不把 opcode 表当成 `plugin::Call` 的替代
+- 不臆造 opcode / 参数顺序；以本站 Opcode 页与 SBL 为准
+- C++ ASI 见 [插件](/docs/plugins)，不要混进脚本示例
+
+## 示例形态
+
+页内 Tabs：
+
+- **OP** — 文本 opcode
+- **Lua** — CLEO Lua
+- **Redux** — CLEO Redux
+
+入口：[CLEO · 综述](/docs/cleo)。

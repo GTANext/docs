@@ -1,0 +1,108 @@
+---
+title: 附加数据 Extender
+description: Ped / Vehicle / Object 附加数据
+---
+
+`shared/extender/PedExtender.h`  
+另有 `VehicleExtender.h`、`ObjectExtender.h`
+
+`T` 必须能构造：`T(CPed*)` / `T(CVehicle*)` / `T(CObject*)`。  
+`*ExtendedData` 放在全局或静态存储。实体析构后不要再 `Get`。
+
+## 行人附加数据
+
+<Api name="PedExtendedData" header="extender/PedExtender.h">
+每个 ped 一块 `T`，随实体生命周期管理。
+
+```cpp
+template <typename T>
+class PedExtendedData {
+    PedExtendedData();
+    T& Get(CPed* ped);
+};
+```
+
+```cpp
+#include "plugin.h"
+#include "common.h"
+#include "extender/PedExtender.h"
+
+struct Data {
+    int combo;
+    explicit Data(CPed*) : combo(0) {}
+};
+
+plugin::PedExtendedData<Data> g_ped_data;
+
+class Plugin {
+public:
+    Plugin() {
+        plugin::Events::processScriptsEvent += [] {
+            CPed* ped = FindPlayerPed();
+            if (!ped) {
+                return;
+            }
+            g_ped_data.Get(ped).combo++;
+        };
+    }
+} g;
+```
+</Api>
+
+## 载具附加数据
+
+<Api name="VehicleExtendedData">
+
+```cpp
+template <typename T>
+class VehicleExtendedData {
+    T& Get(CVehicle* vehicle);
+};
+```
+
+```cpp
+struct VehData {
+    int nitro;
+    explicit VehData(CVehicle*) : nitro(0) {}
+};
+
+plugin::VehicleExtendedData<VehData> g_veh_data;
+
+CVehicle* v = FindPlayerVehicle();
+if (v) {
+    g_veh_data.Get(v).nitro = 100;
+}
+```
+</Api>
+
+## 物体附加数据
+
+<Api name="ObjectExtendedData">
+
+```cpp
+template <typename T>
+class ObjectExtendedData {
+    T& Get(CObject* object);
+};
+```
+
+```cpp
+struct ObjData {
+    bool from_menu;
+    explicit ObjData(CObject*) : from_menu(false) {}
+};
+
+plugin::ObjectExtendedData<ObjData> g_obj_data;
+// g_obj_data.Get(obj).from_menu = true;
+```
+</Api>
+
+## 注册自定义扩展器
+
+`PedExtendedData` 构造时会自行 `Add`。需要自定义 `ExtenderInterface` 时：
+
+```cpp
+static void Add(ExtenderInterface<CPed>* extender);
+```
+
+Vehicle / Object 有对应的 Handler。

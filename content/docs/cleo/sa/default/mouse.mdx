@@ -1,0 +1,47 @@
+---
+title: 鼠标 Mouse
+description: 鼠标位移与反转
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 2 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 本帧位移
+
+<Opcode id="0A4A" name="GET_PC_MOUSE_MOVEMENT" member="Mouse.GetMovement">
+鼠标或右摇杆本帧位移。
+
+```text
+0A4A GET_PC_MOUSE_MOVEMENT
+out: deltaX, deltaY
+```
+
+```lua
+local deltaX, deltaY = getPcMouseMovement()
+```
+
+```js
+const { deltaX, deltaY } = Mouse.getMovement()
+```
+</Opcode>
+
+## 上下反转
+
+<Opcode id="0A4C" name="IS_MOUSE_USING_VERTICAL_INVERSION" member="Mouse.IsUsingVerticalInversion">
+设置里是否开了鼠标上下反转。用在 `if` 里。
+
+```text
+0A4C IS_MOUSE_USING_VERTICAL_INVERSION
+```
+
+```lua
+if isMouseUsingVerticalInversion() then
+end
+```
+
+```js
+if (Mouse.isUsingVerticalInversion()) {
+}
+```
+</Opcode>

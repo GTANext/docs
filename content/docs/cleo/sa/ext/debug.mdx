@@ -1,0 +1,120 @@
+---
+title: 调试 Debug
+description: 调试输出、断点与日志
+---
+
+`sa` · 扩展 `debug` · 需对应 CLEO 扩展
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 写调试串
+
+<Opcode id="0662" name="WRITE_DEBUG">
+写调试字符串到游戏 debug 输出。
+
+```text
+0662 WRITE_DEBUG
+in: text
+```
+
+```lua
+writeDebug("hello")
+```
+
+```js
+native("WRITE_DEBUG", text)
+```
+</Opcode>
+
+## 调试串 + 整数
+
+<Opcode id="0663" name="WRITE_DEBUG_WITH_INT">
+
+```text
+0663 WRITE_DEBUG_WITH_INT
+in: text, number
+```
+
+```lua
+writeDebugWithInt("n", 42)
+```
+
+```js
+native("WRITE_DEBUG_WITH_INT", text, number)
+```
+</Opcode>
+
+## 调试串 + 浮点
+
+<Opcode id="0664" name="WRITE_DEBUG_WITH_FLOAT">
+
+```text
+0664 WRITE_DEBUG_WITH_FLOAT
+in: text, number
+```
+
+```lua
+writeDebugWithFloat("f", 1.5)
+```
+
+```js
+native("WRITE_DEBUG_WITH_FLOAT", text, number)
+```
+</Opcode>
+
+## 断点
+
+<Opcode id="2100" name="BREAKPOINT" member="Debugger.Breakpoint">
+断点暂停脚本；`blocking` 控制是否卡死。可用 F5–F12 一类继续（看插件）。
+
+```text
+2100 BREAKPOINT
+in: blocking, text, args...
+```
+
+```lua
+breakpoint(true, "hit %d", 1)
+```
+
+```js
+Debugger.breakpoint(blocking, text, ...args)
+```
+</Opcode>
+
+## TRACE
+
+<Opcode id="2101" name="TRACE" member="Debugger.Trace">
+屏上打调试字并写入 `.cleo.log`。
+
+```text
+2101 TRACE
+in: text, args...
+```
+
+```lua
+trace("pos %f %f", x, y)
+```
+
+```js
+Debugger.trace(text, ...args)
+```
+</Opcode>
+
+## 写日志文件
+
+<Opcode id="2102" name="LOG_TO_FILE" member="Debugger.LogLine">
+往文件追加一行。`timestamp` 为真则带日期时间前缀。不受 debug 开关影响。
+
+```text
+2102 LOG_TO_FILE
+in: filename, timestamp, text, args...
+```
+
+```lua
+logToFile("cleo/log.txt", true, "ok %d", 1)
+```
+
+```js
+Debugger.logLine(filename, timestamp, text, ...args)
+```
+</Opcode>

@@ -1,0 +1,3763 @@
+---
+title: 载具 Car
+description: 车辆创建 / 驾驶 / 状态 / 改装
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 196 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 创建车辆
+
+<Opcode id="00A5" name="CREATE_CAR" member="Car.Create">
+在坐标用指定模型创建车辆。
+
+```text
+00A5 CREATE_CAR
+in: modelId, x, y, z
+out: handle
+```
+
+```lua
+local handle = createCar(modelId, x, y, z)
+```
+
+```js
+Car.create(modelId, x, y, z)
+```
+</Opcode>
+
+## 删除车辆
+
+<Opcode id="00A6" name="DELETE_CAR" member="Car.Delete">
+从游戏中移除车辆。
+
+```text
+00A6 DELETE_CAR
+in: self
+```
+
+```lua
+deleteCar(self)
+```
+
+```js
+Car.delete(self)
+```
+</Opcode>
+
+## 驶向坐标
+
+<Opcode id="00A7" name="CAR_GOTO_COORDINATES" member="Car.GotoCoordinates">
+AI 任意方式驶向坐标。
+
+```text
+00A7 CAR_GOTO_COORDINATES
+in: self, x, y, z
+```
+
+```lua
+carGotoCoordinates(self, x, y, z)
+```
+
+```js
+Car.gotoCoordinates(self, x, y, z)
+```
+</Opcode>
+
+## 漫无驾驶
+
+<Opcode id="00A8" name="CAR_WANDER_RANDOMLY" member="Car.WanderRandomly">
+清任务并漫游驾驶。
+
+```text
+00A8 CAR_WANDER_RANDOMLY
+in: self
+```
+
+```lua
+carWanderRandomly(self)
+```
+
+```js
+Car.wanderRandomly(self)
+```
+</Opcode>
+
+## 设空闲
+
+<Opcode id="00A9" name="CAR_SET_IDLE" member="Car.SetIdle">
+设为空闲任务，停止驾驶。
+
+```text
+00A9 CAR_SET_IDLE
+in: self
+```
+
+```lua
+carSetIdle(self)
+```
+
+```js
+Car.setIdle(self)
+```
+</Opcode>
+
+## 取坐标
+
+<Opcode id="00AA" name="GET_CAR_COORDINATES" member="Car.GetCoordinates">
+取车辆坐标。
+
+```text
+00AA GET_CAR_COORDINATES
+in: self
+out: x, y, z
+```
+
+```lua
+local x, y, z = getCarCoordinates(self)
+```
+
+```js
+Car.getCoordinates(self)
+```
+</Opcode>
+
+## 设坐标
+
+<Opcode id="00AB" name="SET_CAR_COORDINATES" member="Car.SetCoordinates">
+放到指定坐标。
+
+```text
+00AB SET_CAR_COORDINATES
+in: self, x, y, z
+```
+
+```lua
+setCarCoordinates(self, x, y, z)
+```
+
+```js
+Car.setCoordinates(self, x, y, z)
+```
+</Opcode>
+
+## 巡航速度
+
+<Opcode id="00AD" name="SET_CAR_CRUISE_SPEED" member="Car.SetCruiseSpeed">
+设最高速度。
+
+```text
+00AD SET_CAR_CRUISE_SPEED
+in: self, maxSpeed
+```
+
+```lua
+setCarCruiseSpeed(self, maxSpeed)
+```
+
+```js
+Car.setCruiseSpeed(self, maxSpeed)
+```
+</Opcode>
+
+## 驾驶风格
+
+<Opcode id="00AE" name="SET_CAR_DRIVING_STYLE" member="Car.SetDrivingStyle">
+设 AI 驾驶行为。
+
+```text
+00AE SET_CAR_DRIVING_STYLE
+in: self, drivingStyle
+```
+
+```lua
+setCarDrivingStyle(self, drivingStyle)
+```
+
+```js
+Car.setDrivingStyle(self, drivingStyle)
+```
+</Opcode>
+
+## 驾驶任务类型
+
+<Opcode id="00AF" name="SET_CAR_MISSION" member="Car.SetMission">
+设 AI 驾驶任务类型。
+
+```text
+00AF SET_CAR_MISSION
+in: self, carMission
+```
+
+```lua
+setCarMission(self, carMission)
+```
+
+```js
+Car.setMission(self, carMission)
+```
+</Opcode>
+
+## 是否在 2D 区
+
+<Opcode id="00B0" name="IS_CAR_IN_AREA_2D" member="Car.IsInArea2D">
+用在 if：是否在 2D 区内。
+
+```text
+00B0 IS_CAR_IN_AREA_2D
+in: self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere
+```
+
+```lua
+isCarInArea2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere)
+```
+
+```js
+Car.isInArea2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere)
+```
+</Opcode>
+
+## 是否在 3D 区
+
+<Opcode id="00B1" name="IS_CAR_IN_AREA_3D" member="Car.IsInArea3D">
+用在 if：是否在 3D 区内。
+
+```text
+00B1 IS_CAR_IN_AREA_3D
+in: self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere
+```
+
+```lua
+isCarInArea3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere)
+```
+
+```js
+Car.isInArea3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere)
+```
+</Opcode>
+
+## 是否已毁
+
+<Opcode id="0119" name="IS_CAR_DEAD" member="Car.IsDead">
+用在 if：句柄无效或车已毁。
+
+```text
+0119 IS_CAR_DEAD
+in: handle
+```
+
+```lua
+isCarDead(handle)
+```
+
+```js
+Car.isDead(handle)
+```
+</Opcode>
+
+## 是否指定模型
+
+<Opcode id="0137" name="IS_CAR_MODEL" member="Car.IsModel">
+用在 if：是否为指定模型。
+
+```text
+0137 IS_CAR_MODEL
+in: self, modelId
+```
+
+```lua
+isCarModel(self, modelId)
+```
+
+```js
+Car.isModel(self, modelId)
+```
+</Opcode>
+
+## 取朝向
+
+<Opcode id="0174" name="GET_CAR_HEADING" member="Car.GetHeading">
+取朝向（Z 角）。
+
+```text
+0174 GET_CAR_HEADING
+in: self
+out: heading
+```
+
+```lua
+local heading = getCarHeading(self)
+```
+
+```js
+Car.getHeading(self)
+```
+</Opcode>
+
+## 设朝向
+
+<Opcode id="0175" name="SET_CAR_HEADING" member="Car.SetHeading">
+设朝向（Z 角）。
+
+```text
+0175 SET_CAR_HEADING
+in: self, heading
+```
+
+```lua
+setCarHeading(self, heading)
+```
+
+```js
+Car.setHeading(self, heading)
+```
+</Opcode>
+
+## 生命是否更高
+
+<Opcode id="0185" name="IS_CAR_HEALTH_GREATER" member="Car.IsHealthGreater">
+用在 if：生命是否高于指定值。
+
+```text
+0185 IS_CAR_HEALTH_GREATER
+in: self, health
+```
+
+```lua
+isCarHealthGreater(self, health)
+```
+
+```js
+Car.isHealthGreater(self, health)
+```
+</Opcode>
+
+## 是否卡在车顶
+
+<Opcode id="018F" name="IS_CAR_STUCK_ON_ROOF" member="Car.IsStuckOnRoof">
+用在 if：翻车超过约 2 秒（需 0190）。
+
+```text
+018F IS_CAR_STUCK_ON_ROOF
+in: self
+```
+
+```lua
+isCarStuckOnRoof(self)
+```
+
+```js
+Car.isStuckOnRoof(self)
+```
+</Opcode>
+
+## 启用翻车检测
+
+<Opcode id="0190" name="ADD_UPSIDEDOWN_CAR_CHECK" member="Car.AddUpsidedownCheck">
+启用翻车检测。
+
+```text
+0190 ADD_UPSIDEDOWN_CAR_CHECK
+in: self
+```
+
+```lua
+addUpsidedownCarCheck(self)
+```
+
+```js
+Car.addUpsidedownCheck(self)
+```
+</Opcode>
+
+## 关闭翻车检测
+
+<Opcode id="0191" name="REMOVE_UPSIDEDOWN_CAR_CHECK" member="Car.RemoveUpsidedownCheck">
+关闭翻车检测（0190）。
+
+```text
+0191 REMOVE_UPSIDEDOWN_CAR_CHECK
+in: self
+```
+
+```lua
+removeUpsidedownCarCheck(self)
+```
+
+```js
+Car.removeUpsidedownCheck(self)
+```
+</Opcode>
+
+## 2D 区停下
+
+<Opcode id="01AB" name="IS_CAR_STOPPED_IN_AREA_2D" member="Car.IsStoppedInArea2D">
+用在 if：是否在 2D 区内停下。
+
+```text
+01AB IS_CAR_STOPPED_IN_AREA_2D
+in: self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere
+```
+
+```lua
+isCarStoppedInArea2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere)
+```
+
+```js
+Car.isStoppedInArea2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere)
+```
+</Opcode>
+
+## 3D 区停下
+
+<Opcode id="01AC" name="IS_CAR_STOPPED_IN_AREA_3D" member="Car.IsStoppedInArea3D">
+用在 if：是否在 3D 区内停下。
+
+```text
+01AC IS_CAR_STOPPED_IN_AREA_3D
+in: self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere
+```
+
+```lua
+isCarStoppedInArea3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere)
+```
+
+```js
+Car.isStoppedInArea3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere)
+```
+</Opcode>
+
+## 靠近 2D
+
+<Opcode id="01AD" name="LOCATE_CAR_2D" member="Car.Locate2D">
+用在 if：是否在点的 2D 半径内。
+
+```text
+01AD LOCATE_CAR_2D
+in: self, x, y, xRadius, yRadius, drawSphere
+```
+
+```lua
+locateCar2D(self, x, y, xRadius, yRadius, drawSphere)
+```
+
+```js
+Car.locate2D(self, x, y, xRadius, yRadius, drawSphere)
+```
+</Opcode>
+
+## 停下靠近 2D
+
+<Opcode id="01AE" name="LOCATE_STOPPED_CAR_2D" member="Car.LocateStopped2D">
+用在 if：是否在点的 2D 半径内停下。
+
+```text
+01AE LOCATE_STOPPED_CAR_2D
+in: self, x, y, xRadius, yRadius, drawSphere
+```
+
+```lua
+locateStoppedCar2D(self, x, y, xRadius, yRadius, drawSphere)
+```
+
+```js
+Car.locateStopped2D(self, x, y, xRadius, yRadius, drawSphere)
+```
+</Opcode>
+
+## 靠近 3D
+
+<Opcode id="01AF" name="LOCATE_CAR_3D" member="Car.Locate3D">
+用在 if：是否在点的 3D 半径内。
+
+```text
+01AF LOCATE_CAR_3D
+in: self, x, y, z, xRadius, yRadius, zRadius, drawSphere
+```
+
+```lua
+locateCar3D(self, x, y, z, xRadius, yRadius, zRadius, drawSphere)
+```
+
+```js
+Car.locate3D(self, x, y, z, xRadius, yRadius, zRadius, drawSphere)
+```
+</Opcode>
+
+## 停下靠近 3D
+
+<Opcode id="01B0" name="LOCATE_STOPPED_CAR_3D" member="Car.LocateStopped3D">
+用在 if：是否在点半径内停下。
+
+```text
+01B0 LOCATE_STOPPED_CAR_3D
+in: self, x, y, z, xRadius, yRadius, zRadius, drawSphere
+```
+
+```lua
+locateStoppedCar3D(self, x, y, z, xRadius, yRadius, zRadius, drawSphere)
+```
+
+```js
+Car.locateStopped3D(self, x, y, z, xRadius, yRadius, zRadius, drawSphere)
+```
+</Opcode>
+
+## 是否静止
+
+<Opcode id="01C1" name="IS_CAR_STOPPED" member="Car.IsStopped">
+用在 if：是否静止。
+
+```text
+01C1 IS_CAR_STOPPED
+in: self
+```
+
+```lua
+isCarStopped(self)
+```
+
+```js
+Car.isStopped(self)
+```
+</Opcode>
+
+## 可卸载
+
+<Opcode id="01C3" name="MARK_CAR_AS_NO_LONGER_NEEDED" member="Car.MarkAsNoLongerNeeded">
+允许按需删除，并从任务清理列表移除。
+
+```text
+01C3 MARK_CAR_AS_NO_LONGER_NEEDED
+in: self
+```
+
+```lua
+markCarAsNoLongerNeeded(self)
+```
+
+```js
+Car.markAsNoLongerNeeded(self)
+```
+</Opcode>
+
+## 乘客人数
+
+<Opcode id="01E9" name="GET_NUMBER_OF_PASSENGERS" member="Car.GetNumberOfPassengers">
+当前乘客人数。
+
+```text
+01E9 GET_NUMBER_OF_PASSENGERS
+in: self
+out: count
+```
+
+```lua
+local count = getNumberOfPassengers(self)
+```
+
+```js
+Car.getNumberOfPassengers(self)
+```
+</Opcode>
+
+## 最大载客
+
+<Opcode id="01EA" name="GET_MAXIMUM_NUMBER_OF_PASSENGERS" member="Car.GetMaximumNumberOfPassengers">
+最大载客数。
+
+```text
+01EA GET_MAXIMUM_NUMBER_OF_PASSENGERS
+in: self
+out: count
+```
+
+```lua
+local count = getMaximumNumberOfPassengers(self)
+```
+
+```js
+Car.getMaximumNumberOfPassengers(self)
+```
+</Opcode>
+
+## 设加重
+
+<Opcode id="01EC" name="SET_CAR_HEAVY" member="Car.SetHeavy">
+是否加重。
+
+```text
+01EC SET_CAR_HEAVY
+in: self, state
+```
+
+```lua
+setCarHeavy(self, state)
+```
+
+```js
+Car.setHeavy(self, state)
+```
+</Opcode>
+
+## 是否腾空
+
+<Opcode id="01F3" name="IS_CAR_IN_AIR_PROPER" member="Car.IsInAirProper">
+用在 if：是否腾空。
+
+```text
+01F3 IS_CAR_IN_AIR_PROPER
+in: self
+```
+
+```lua
+isCarInAirProper(self)
+```
+
+```js
+Car.isInAirProper(self)
+```
+</Opcode>
+
+## 是否翻车
+
+<Opcode id="01F4" name="IS_CAR_UPSIDEDOWN" member="Car.IsUpsidedown">
+用在 if：是否翻车。
+
+```text
+01F4 IS_CAR_UPSIDEDOWN
+in: self
+```
+
+```lua
+isCarUpsidedown(self)
+```
+
+```js
+Car.isUpsidedown(self)
+```
+</Opcode>
+
+## 车门锁
+
+<Opcode id="020A" name="LOCK_CAR_DOORS" member="Car.LockDoors">
+车门锁状态。
+
+```text
+020A LOCK_CAR_DOORS
+in: self, lockStatus
+```
+
+```lua
+lockCarDoors(self, lockStatus)
+```
+
+```js
+Car.lockDoors(self, lockStatus)
+```
+</Opcode>
+
+## 引爆
+
+<Opcode id="020B" name="EXPLODE_CAR" member="Car.Explode">
+引爆车辆。
+
+```text
+020B EXPLODE_CAR
+in: self
+```
+
+```lua
+explodeCar(self)
+```
+
+```js
+Car.explode(self)
+```
+</Opcode>
+
+## 是否正立
+
+<Opcode id="020D" name="IS_CAR_UPRIGHT" member="Car.IsUpright">
+用在 if：是否正立。
+
+```text
+020D IS_CAR_UPRIGHT
+in: self
+```
+
+```lua
+isCarUpright(self)
+```
+
+```js
+Car.isUpright(self)
+```
+</Opcode>
+
+## 出租顶灯
+
+<Opcode id="0216" name="SET_TAXI_LIGHTS" member="Car.SetTaxiLights">
+出租车顶灯。
+
+```text
+0216 SET_TAXI_LIGHTS
+in: self, state
+```
+
+```lua
+setTaxiLights(self, state)
+```
+
+```js
+Car.setTaxiLights(self, state)
+```
+</Opcode>
+
+## 设生命
+
+<Opcode id="0224" name="SET_CAR_HEALTH" member="Car.SetHealth">
+设生命。
+
+```text
+0224 SET_CAR_HEALTH
+in: self, health
+```
+
+```lua
+setCarHealth(self, health)
+```
+
+```js
+Car.setHealth(self, health)
+```
+</Opcode>
+
+## 取生命
+
+<Opcode id="0227" name="GET_CAR_HEALTH" member="Car.GetHealth">
+取生命。
+
+```text
+0227 GET_CAR_HEALTH
+in: self
+out: health
+```
+
+```lua
+local health = getCarHealth(self)
+```
+
+```js
+Car.getHealth(self)
+```
+</Opcode>
+
+## 改颜色
+
+<Opcode id="0229" name="CHANGE_CAR_COLOUR" member="Car.ChangeColor">
+设主副色。
+
+```text
+0229 CHANGE_CAR_COLOUR
+in: self, color1, color2
+```
+
+```lua
+changeCarColour(self, color1, color2)
+```
+
+```js
+Car.changeColor(self, color1, color2)
+```
+</Opcode>
+
+## 喷漆是否改色
+
+<Opcode id="0294" name="SET_CAN_RESPRAY_CAR" member="Car.SetCanRespray">
+喷漆店不改色。
+
+```text
+0294 SET_CAN_RESPRAY_CAR
+in: self, changeColors
+```
+
+```lua
+setCanResprayCar(self, changeColors)
+```
+
+```js
+Car.setCanRespray(self, changeColors)
+```
+</Opcode>
+
+## 仅玩家可伤
+
+<Opcode id="02AA" name="SET_CAR_ONLY_DAMAGED_BY_PLAYER" member="Car.SetOnlyDamagedByPlayer">
+除玩家外几乎全免疫。
+
+```text
+02AA SET_CAR_ONLY_DAMAGED_BY_PLAYER
+in: self, state
+```
+
+```lua
+setCarOnlyDamagedByPlayer(self, state)
+```
+
+```js
+Car.setOnlyDamagedByPlayer(self, state)
+```
+</Opcode>
+
+## 伤害免疫
+
+<Opcode id="02AC" name="SET_CAR_PROOFS" member="Car.SetProofs">
+设各类免疫。
+
+```text
+02AC SET_CAR_PROOFS
+in: self, bulletProof, fireProof, explosionProof, collisionProof, meleeProof
+```
+
+```lua
+setCarProofs(self, bulletProof, fireProof, explosionProof, collisionProof, meleeProof)
+```
+
+```js
+Car.setProofs(self, bulletProof, fireProof, explosionProof, collisionProof, meleeProof)
+```
+</Opcode>
+
+## 是否在水中
+
+<Opcode id="02BF" name="IS_CAR_IN_WATER" member="Car.IsInWater">
+用在 if：是否没入水中。
+
+```text
+02BF IS_CAR_IN_WATER
+in: self
+```
+
+```lua
+isCarInWater(self)
+```
+
+```js
+Car.isInWater(self)
+```
+</Opcode>
+
+## 精确驶向坐标
+
+<Opcode id="02C2" name="CAR_GOTO_COORDINATES_ACCURATE" member="Car.GotoCoordinatesAccurate">
+AI 遵守交规驶向坐标。
+
+```text
+02C2 CAR_GOTO_COORDINATES_ACCURATE
+in: self, x, y, z
+```
+
+```lua
+carGotoCoordinatesAccurate(self, x, y, z)
+```
+
+```js
+Car.gotoCoordinatesAccurate(self, x, y, z)
+```
+</Opcode>
+
+## 是否在屏上
+
+<Opcode id="02CA" name="IS_CAR_ON_SCREEN" member="Car.IsOnScreen">
+用在 if：是否可见。
+
+```text
+02CA IS_CAR_ON_SCREEN
+in: self
+```
+
+```lua
+isCarOnScreen(self)
+```
+
+```js
+Car.isOnScreen(self)
+```
+</Opcode>
+
+## 取速度
+
+<Opcode id="02E3" name="GET_CAR_SPEED" member="Car.GetSpeed">
+取速度。
+
+```text
+02E3 GET_CAR_SPEED
+in: self
+out: speed
+```
+
+```lua
+local speed = getCarSpeed(self)
+```
+
+```js
+Car.getSpeed(self)
+```
+</Opcode>
+
+## 朝向 X
+
+<Opcode id="02F8" name="GET_CAR_FORWARD_X" member="Car.GetForwardX">
+朝向的 X 分量。
+
+```text
+02F8 GET_CAR_FORWARD_X
+in: self
+out: x
+```
+
+```lua
+local x = getCarForwardX(self)
+```
+
+```js
+Car.getForwardX(self)
+```
+</Opcode>
+
+## 朝向 Y
+
+<Opcode id="02F9" name="GET_CAR_FORWARD_Y" member="Car.GetForwardY">
+朝向的 Y 分量。
+
+```text
+02F9 GET_CAR_FORWARD_Y
+in: self
+out: y
+```
+
+```lua
+local y = getCarForwardY(self)
+```
+
+```js
+Car.getForwardY(self)
+```
+</Opcode>
+
+## 是否被武器打中
+
+<Opcode id="031E" name="HAS_CAR_BEEN_DAMAGED_BY_WEAPON" member="Car.HasBeenDamagedByWeapon">
+用在 if：是否被指定武器打中。
+
+```text
+031E HAS_CAR_BEEN_DAMAGED_BY_WEAPON
+in: self, weaponType
+```
+
+```lua
+hasCarBeenDamagedByWeapon(self, weaponType)
+```
+
+```js
+Car.hasBeenDamagedByWeapon(self, weaponType)
+```
+</Opcode>
+
+## 显隐
+
+<Opcode id="0338" name="SET_CAR_VISIBLE" member="Car.SetVisible">
+显隐车辆。
+
+```text
+0338 SET_CAR_VISIBLE
+in: self, state
+```
+
+```lua
+setCarVisible(self, state)
+```
+
+```js
+Car.setVisible(self, state)
+```
+</Opcode>
+
+## 警报器
+
+<Opcode id="0397" name="SWITCH_CAR_SIREN" member="Car.SwitchSiren">
+是否可触发警报。
+
+```text
+0397 SWITCH_CAR_SIREN
+in: self, state
+```
+
+```lua
+switchCarSiren(self, state)
+```
+
+```js
+Car.switchSiren(self, state)
+```
+</Opcode>
+
+## 水密
+
+<Opcode id="039C" name="SET_CAR_WATERTIGHT" member="Car.SetWatertight">
+水密：沉水时车内人不伤。
+
+```text
+039C SET_CAR_WATERTIGHT
+in: self, state
+```
+
+```lua
+setCarWatertight(self, state)
+```
+
+```js
+Car.setWatertight(self, state)
+```
+</Opcode>
+
+## 转向面对坐标
+
+<Opcode id="039F" name="TURN_CAR_TO_FACE_COORD" member="Car.TurnToFaceCoord">
+朝向正对 2D 坐标。
+
+```text
+039F TURN_CAR_TO_FACE_COORD
+in: self, x, y
+```
+
+```lua
+turnCarToFaceCoord(self, x, y)
+```
+
+```js
+Car.turnToFaceCoord(self, x, y)
+```
+</Opcode>
+
+## 设状态
+
+<Opcode id="03A2" name="SET_CAR_STATUS" member="Car.SetStatus">
+设车辆状态。
+
+```text
+03A2 SET_CAR_STATUS
+in: self, status
+```
+
+```lua
+setCarStatus(self, status)
+```
+
+```js
+Car.setStatus(self, status)
+```
+</Opcode>
+
+## 更耐碰撞
+
+<Opcode id="03AB" name="SET_CAR_STRONG" member="Car.SetStrong">
+是否更耐碰撞。
+
+```text
+03AB SET_CAR_STRONG
+in: self, state
+```
+
+```lua
+setCarStrong(self, state)
+```
+
+```js
+Car.setStrong(self, state)
+```
+</Opcode>
+
+## 是否明显损坏
+
+<Opcode id="03C9" name="IS_CAR_VISIBLY_DAMAGED" member="Car.IsVisiblyDamaged">
+用在 if：部件是否明显损坏/脱落。
+
+```text
+03C9 IS_CAR_VISIBLY_DAMAGED
+in: self
+```
+
+```lua
+isCarVisiblyDamaged(self)
+```
+
+```js
+Car.isVisiblyDamaged(self)
+```
+</Opcode>
+
+## 翻车不炸
+
+<Opcode id="03ED" name="SET_UPSIDEDOWN_CAR_NOT_DAMAGED" member="Car.SetUpsidedownNotDamaged">
+玩家不在车内时翻车不炸。
+
+```text
+03ED SET_UPSIDEDOWN_CAR_NOT_DAMAGED
+in: self, state
+```
+
+```lua
+setUpsidedownCarNotDamaged(self, state)
+```
+
+```js
+Car.setUpsidedownNotDamaged(self, state)
+```
+</Opcode>
+
+## 取颜色
+
+<Opcode id="03F3" name="GET_CAR_COLOURS" member="Car.GetColors">
+取主副色。
+
+```text
+03F3 GET_CAR_COLOURS
+in: self
+out: color1, color2
+```
+
+```lua
+local color1, color2 = getCarColours(self)
+```
+
+```js
+Car.getColors(self)
+```
+</Opcode>
+
+## 是否可受伤
+
+<Opcode id="03F5" name="SET_CAR_CAN_BE_DAMAGED" member="Car.SetCanBeDamaged">
+是否可受伤。
+
+```text
+03F5 SET_CAR_CAN_BE_DAMAGED
+in: self, state
+```
+
+```lua
+setCarCanBeDamaged(self, state)
+```
+
+```js
+Car.setCanBeDamaged(self, state)
+```
+</Opcode>
+
+## 偏移世界坐标
+
+<Opcode id="0407" name="GET_OFFSET_FROM_CAR_IN_WORLD_COORDS" member="Car.GetOffsetInWorldCoords">
+按车身旋转取偏移世界坐标。
+
+```text
+0407 GET_OFFSET_FROM_CAR_IN_WORLD_COORDS
+in: self, xOffset, yOffset, zOffset
+out: x, y, z
+```
+
+```lua
+local x, y, z = getOffsetFromCarInWorldCoords(self, xOffset, yOffset, zOffset)
+```
+
+```js
+Car.getOffsetInWorldCoords(self, xOffset, yOffset, zOffset)
+```
+</Opcode>
+
+## 抓地力
+
+<Opcode id="0423" name="SET_CAR_TRACTION" member="Car.SetTraction">
+覆盖 AI 车默认抓地 1.0。
+
+```text
+0423 SET_CAR_TRACTION
+in: self, traction
+```
+
+```lua
+setCarTraction(self, traction)
+```
+
+```js
+Car.setTraction(self, traction)
+```
+</Opcode>
+
+## 避开跨层
+
+<Opcode id="0428" name="SET_CAR_AVOID_LEVEL_TRANSITIONS" member="Car.SetAvoidLevelTransitions">
+是否避开跨层路径（0426）。
+
+```text
+0428 SET_CAR_AVOID_LEVEL_TRANSITIONS
+in: self, state
+```
+
+```lua
+setCarAvoidLevelTransitions(self, state)
+```
+
+```js
+Car.setAvoidLevelTransitions(self, state)
+```
+</Opcode>
+
+## 座位是否空
+
+<Opcode id="0431" name="IS_CAR_PASSENGER_SEAT_FREE" member="Car.IsPassengerSeatFree">
+用在 if：指定座位是否空。
+
+```text
+0431 IS_CAR_PASSENGER_SEAT_FREE
+in: self, seat
+```
+
+```lua
+isCarPassengerSeatFree(self, seat)
+```
+
+```js
+Car.isPassengerSeatFree(self, seat)
+```
+</Opcode>
+
+## 座位上的人
+
+<Opcode id="0432" name="GET_CHAR_IN_CAR_PASSENGER_SEAT" member="Car.GetCharInPassengerSeat">
+取座位上的角色句柄。
+
+```text
+0432 GET_CHAR_IN_CAR_PASSENGER_SEAT
+in: self, seat
+out: handle
+```
+
+```lua
+local handle = getCharInCarPassengerSeat(self, seat)
+```
+
+```js
+Car.getCharInPassengerSeat(self, seat)
+```
+</Opcode>
+
+## 取车型
+
+<Opcode id="0441" name="GET_CAR_MODEL" member="Car.GetModel">
+取车型 ID。
+
+```text
+0441 GET_CAR_MODEL
+in: self
+out: modelId
+```
+
+```lua
+local modelId = getCarModel(self)
+```
+
+```js
+Car.getModel(self)
+```
+</Opcode>
+
+## 快车道
+
+<Opcode id="0466" name="SET_CAR_STAY_IN_FAST_LANE" member="Car.SetStayInFastLane">
+是否尽量待在快车道。
+
+```text
+0466 SET_CAR_STAY_IN_FAST_LANE
+in: self, state
+```
+
+```lua
+setCarStayInFastLane(self, state)
+```
+
+```js
+Car.setStayInFastLane(self, state)
+```
+</Opcode>
+
+## 清武器伤害记录
+
+<Opcode id="0468" name="CLEAR_CAR_LAST_WEAPON_DAMAGE" member="Car.ClearLastWeaponDamage">
+清上次武器伤害记录（031E）。
+
+```text
+0468 CLEAR_CAR_LAST_WEAPON_DAMAGE
+in: self
+```
+
+```lua
+clearCarLastWeaponDamage(self)
+```
+
+```js
+Car.clearLastWeaponDamage(self)
+```
+</Opcode>
+
+## 取驾驶员
+
+<Opcode id="046C" name="GET_DRIVER_OF_CAR" member="Car.GetDriver">
+取驾驶员句柄。
+
+```text
+046C GET_DRIVER_OF_CAR
+in: self
+out: handle
+```
+
+```lua
+local handle = getDriverOfCar(self)
+```
+
+```js
+Car.getDriver(self)
+```
+</Opcode>
+
+## 临时动作
+
+<Opcode id="0477" name="SET_CAR_TEMP_ACTION" member="Car.SetTempAction">
+AI 驾驶在车内做动作一段时间。
+
+```text
+0477 SET_CAR_TEMP_ACTION
+in: self, actionId, time
+```
+
+```lua
+setCarTempAction(self, actionId, time)
+```
+
+```js
+Car.setTempAction(self, actionId, time)
+```
+</Opcode>
+
+## 随机路线种子
+
+<Opcode id="048B" name="SET_CAR_RANDOM_ROUTE_SEED" member="Car.SetRandomRouteSeed">
+把车放到指定路线。
+
+```text
+048B SET_CAR_RANDOM_ROUTE_SEED
+in: self, routeSeed
+```
+
+```lua
+setCarRandomRouteSeed(self, routeSeed)
+```
+
+```js
+Car.setRandomRouteSeed(self, routeSeed)
+```
+</Opcode>
+
+## 是否着火
+
+<Opcode id="0495" name="IS_CAR_ON_FIRE" member="Car.IsOnFire">
+用在 if：是否着火。
+
+```text
+0495 IS_CAR_ON_FIRE
+in: self
+```
+
+```lua
+isCarOnFire(self)
+```
+
+```js
+Car.isOnFire(self)
+```
+</Opcode>
+
+## 轮胎是否瘪
+
+<Opcode id="0496" name="IS_CAR_TYRE_BURST" member="Car.IsTireBurst">
+用在 if：指定轮胎是否瘪。
+
+```text
+0496 IS_CAR_TYRE_BURST
+in: self, tireId
+```
+
+```lua
+isCarTyreBurst(self, tireId)
+```
+
+```js
+Car.isTireBurst(self, tireId)
+```
+</Opcode>
+
+## 设前进速度
+
+<Opcode id="04BA" name="SET_CAR_FORWARD_SPEED" member="Car.SetForwardSpeed">
+设车速。
+
+```text
+04BA SET_CAR_FORWARD_SPEED
+in: self, forwardSpeed
+```
+
+```lua
+setCarForwardSpeed(self, forwardSpeed)
+```
+
+```js
+Car.setForwardSpeed(self, forwardSpeed)
+```
+</Opcode>
+
+## 标记车队
+
+<Opcode id="04BD" name="MARK_CAR_AS_CONVOY_CAR" member="Car.MarkAsConvoyCar">
+标记为车队成员（跟 0994 路径）。
+
+```text
+04BD MARK_CAR_AS_CONVOY_CAR
+in: self, state
+```
+
+```lua
+markCarAsConvoyCar(self, state)
+```
+
+```js
+Car.markAsConvoyCar(self, state)
+```
+</Opcode>
+
+## 直线冲刺距离
+
+<Opcode id="04E0" name="SET_CAR_STRAIGHT_LINE_DISTANCE" member="Car.SetStraightLineDistance">
+AI 近目标时忽略路径直线冲。
+
+```text
+04E0 SET_CAR_STRAIGHT_LINE_DISTANCE
+in: self, distance
+```
+
+```lua
+setCarStraightLineDistance(self, distance)
+```
+
+```js
+Car.setStraightLineDistance(self, distance)
+```
+</Opcode>
+
+## 打开后备箱
+
+<Opcode id="04E1" name="POP_CAR_BOOT" member="Car.PopBoot">
+打开并保持后备箱开。
+
+```text
+04E1 POP_CAR_BOOT
+in: self
+```
+
+```lua
+popCarBoot(self)
+```
+
+```js
+Car.popBoot(self)
+```
+</Opcode>
+
+## 等世界碰撞
+
+<Opcode id="04F1" name="IS_CAR_WAITING_FOR_WORLD_COLLISION" member="Car.IsWaitingForWorldCollision">
+用在 if：是否在等世界碰撞加载。
+
+```text
+04F1 IS_CAR_WAITING_FOR_WORLD_COLLISION
+in: self
+```
+
+```lua
+isCarWaitingForWorldCollision(self)
+```
+
+```js
+Car.isWaitingForWorldCollision(self)
+```
+</Opcode>
+
+## 扎胎
+
+<Opcode id="04FE" name="BURST_CAR_TYRE" member="Car.BurstTire">
+扎瘪轮胎。
+
+```text
+04FE BURST_CAR_TYRE
+in: self, tireId
+```
+
+```lua
+burstCarTyre(self, tireId)
+```
+
+```js
+Car.burstTire(self, tireId)
+```
+</Opcode>
+
+## 模型变体
+
+<Opcode id="0506" name="SET_CAR_MODEL_COMPONENTS" member="Car.SetModelComponents">
+下一辆创建车的变体。
+
+```text
+0506 SET_CAR_MODEL_COMPONENTS
+in: _unused, component1, component2
+```
+
+```lua
+setCarModelComponents(_unused, component1, component2)
+```
+
+```js
+Car.setModelComponents(_unused, component1, component2)
+```
+</Opcode>
+
+## 关全部门
+
+<Opcode id="0508" name="CLOSE_ALL_CAR_DOORS" member="Car.CloseAllDoors">
+关全部车门/机盖/后备箱。
+
+```text
+0508 CLOSE_ALL_CAR_DOORS
+in: self
+```
+
+```lua
+closeAllCarDoors(self)
+```
+
+```js
+Car.closeAllDoors(self)
+```
+</Opcode>
+
+## 锁定位置
+
+<Opcode id="0519" name="FREEZE_CAR_POSITION" member="Car.FreezePosition">
+锁定车辆位置。
+
+```text
+0519 FREEZE_CAR_POSITION
+in: self, state
+```
+
+```lua
+freezeCarPosition(self, state)
+```
+
+```js
+Car.freezePosition(self, state)
+```
+</Opcode>
+
+## 被角色损坏
+
+<Opcode id="051C" name="HAS_CAR_BEEN_DAMAGED_BY_CHAR" member="Car.HasBeenDamagedByChar">
+用在 if：是否被指定角色损坏。
+
+```text
+051C HAS_CAR_BEEN_DAMAGED_BY_CHAR
+in: self, handle
+```
+
+```lua
+hasCarBeenDamagedByChar(self, handle)
+```
+
+```js
+Car.hasBeenDamagedByChar(self, handle)
+```
+</Opcode>
+
+## 被车损坏
+
+<Opcode id="051D" name="HAS_CAR_BEEN_DAMAGED_BY_CAR" member="Car.HasBeenDamagedByCar">
+用在 if：是否被指定车损坏。
+
+```text
+051D HAS_CAR_BEEN_DAMAGED_BY_CAR
+in: self, other
+```
+
+```lua
+hasCarBeenDamagedByCar(self, other)
+```
+
+```js
+Car.hasBeenDamagedByCar(self, other)
+```
+</Opcode>
+
+## 轮胎可扎
+
+<Opcode id="053F" name="SET_CAN_BURST_CAR_TYRES" member="Car.SetCanBurstTires">
+轮胎是否可被扎。
+
+```text
+053F SET_CAN_BURST_CAR_TYRES
+in: self, state
+```
+
+```lua
+setCanBurstCarTyres(self, state)
+```
+
+```js
+Car.setCanBurstTires(self, state)
+```
+</Opcode>
+
+## 清伤害来源
+
+<Opcode id="054F" name="CLEAR_CAR_LAST_DAMAGE_ENTITY" member="Car.ClearLastDamageEntity">
+清上次伤害来源实体。
+
+```text
+054F CLEAR_CAR_LAST_DAMAGE_ENTITY
+in: self
+```
+
+```lua
+clearCarLastDamageEntity(self)
+```
+
+```js
+Car.clearLastDamageEntity(self)
+```
+</Opcode>
+
+## 车辆是否存在
+
+<Opcode id="056E" name="DOES_VEHICLE_EXIST" member="Car.DoesExist">
+用在 if：句柄是否有效车辆。
+
+```text
+056E DOES_VEHICLE_EXIST
+in: handle
+```
+
+```lua
+doesVehicleExist(handle)
+```
+
+```js
+Car.doesExist(handle)
+```
+</Opcode>
+
+## 冻结且不加载碰撞
+
+<Opcode id="0574" name="FREEZE_CAR_POSITION_AND_DONT_LOAD_COLLISION" member="Car.FreezePositionAndDontLoadCollision">
+保持当前位置。
+
+```text
+0574 FREEZE_CAR_POSITION_AND_DONT_LOAD_COLLISION
+in: self, state
+```
+
+```lua
+freezeCarPositionAndDontLoadCollision(self, state)
+```
+
+```js
+Car.freezePositionAndDontLoadCollision(self, state)
+```
+</Opcode>
+
+## 碰撞加载标志
+
+<Opcode id="0587" name="SET_LOAD_COLLISION_FOR_CAR_FLAG" member="Car.SetLoadCollisionFlag">
+是否为该车加载碰撞。
+
+```text
+0587 SET_LOAD_COLLISION_FOR_CAR_FLAG
+in: self, state
+```
+
+```lua
+setLoadCollisionForCarFlag(self, state)
+```
+
+```js
+Car.setLoadCollisionFlag(self, state)
+```
+</Opcode>
+
+## 淡入透明度
+
+<Opcode id="0594" name="SET_VEHICLE_TO_FADE_IN" member="Car.SetToFadeIn">
+远处车辆半透明 alpha。
+
+```text
+0594 SET_VEHICLE_TO_FADE_IN
+in: self, alpha
+```
+
+```lua
+setVehicleToFadeIn(self, alpha)
+```
+
+```js
+Car.setToFadeIn(self, alpha)
+```
+</Opcode>
+
+## 开始录像回放
+
+<Opcode id="05EB" name="START_PLAYBACK_RECORDED_CAR" member="Car.StartPlayback">
+分配到路径。
+
+```text
+05EB START_PLAYBACK_RECORDED_CAR
+in: self, path
+```
+
+```lua
+startPlaybackRecordedCar(self, path)
+```
+
+```js
+Car.startPlayback(self, path)
+```
+</Opcode>
+
+## 停止回放
+
+<Opcode id="05EC" name="STOP_PLAYBACK_RECORDED_CAR" member="Car.StopPlayback">
+停止沿路径行驶。
+
+```text
+05EC STOP_PLAYBACK_RECORDED_CAR
+in: self
+```
+
+```lua
+stopPlaybackRecordedCar(self)
+```
+
+```js
+Car.stopPlayback(self)
+```
+</Opcode>
+
+## 暂停回放
+
+<Opcode id="05ED" name="PAUSE_PLAYBACK_RECORDED_CAR" member="Car.PausePlayback">
+冻结在路径上。
+
+```text
+05ED PAUSE_PLAYBACK_RECORDED_CAR
+in: self
+```
+
+```lua
+pausePlaybackRecordedCar(self)
+```
+
+```js
+Car.pausePlayback(self)
+```
+</Opcode>
+
+## 继续回放
+
+<Opcode id="05EE" name="UNPAUSE_PLAYBACK_RECORDED_CAR" member="Car.UnpausePlayback">
+解冻路径上的车。
+
+```text
+05EE UNPAUSE_PLAYBACK_RECORDED_CAR
+in: self
+```
+
+```lua
+unpausePlaybackRecordedCar(self)
+```
+
+```js
+Car.unpausePlayback(self)
+```
+</Opcode>
+
+## 贴左侧护送
+
+<Opcode id="05F1" name="SET_CAR_ESCORT_CAR_LEFT" member="Car.SetEscortCarLeft">
+平行贴在另一车左侧。
+
+```text
+05F1 SET_CAR_ESCORT_CAR_LEFT
+in: self, handle
+```
+
+```lua
+setCarEscortCarLeft(self, handle)
+```
+
+```js
+Car.setEscortCarLeft(self, handle)
+```
+</Opcode>
+
+## 贴右侧护送
+
+<Opcode id="05F2" name="SET_CAR_ESCORT_CAR_RIGHT" member="Car.SetEscortCarRight">
+平行贴在另一车右侧。
+
+```text
+05F2 SET_CAR_ESCORT_CAR_RIGHT
+in: self, handle
+```
+
+```lua
+setCarEscortCarRight(self, handle)
+```
+
+```js
+Car.setEscortCarRight(self, handle)
+```
+</Opcode>
+
+## 跟车后护送
+
+<Opcode id="05F3" name="SET_CAR_ESCORT_CAR_REAR" member="Car.SetEscortCarRear">
+平行跟在另一车后。
+
+```text
+05F3 SET_CAR_ESCORT_CAR_REAR
+in: self, handle
+```
+
+```lua
+setCarEscortCarRear(self, handle)
+```
+
+```js
+Car.setEscortCarRear(self, handle)
+```
+</Opcode>
+
+## 堵车前护送
+
+<Opcode id="05F4" name="SET_CAR_ESCORT_CAR_FRONT" member="Car.SetEscortCarFront">
+平行堵在另一车前。
+
+```text
+05F4 SET_CAR_ESCORT_CAR_FRONT
+in: self, handle
+```
+
+```lua
+setCarEscortCarFront(self, handle)
+```
+
+```js
+Car.setEscortCarFront(self, handle)
+```
+</Opcode>
+
+## 是否在回放
+
+<Opcode id="060E" name="IS_PLAYBACK_GOING_ON_FOR_CAR" member="Car.IsPlaybackGoingOn">
+用在 if：是否已分配路径。
+
+```text
+060E IS_PLAYBACK_GOING_ON_FOR_CAR
+in: self
+```
+
+```lua
+isPlaybackGoingOnForCar(self)
+```
+
+```js
+Car.isPlaybackGoingOn(self)
+```
+</Opcode>
+
+## 开车门
+
+<Opcode id="0657" name="OPEN_CAR_DOOR" member="Car.OpenDoor">
+打开指定车门。
+
+```text
+0657 OPEN_CAR_DOOR
+in: self, door
+```
+
+```lua
+openCarDoor(self, door)
+```
+
+```js
+Car.openDoor(self, door)
+```
+</Opcode>
+
+## 下一辆车牌
+
+<Opcode id="0674" name="CUSTOM_PLATE_FOR_NEXT_CAR" member="Car.CustomPlateForNextCar">
+下一辆该模型车的车牌。
+
+```text
+0674 CUSTOM_PLATE_FOR_NEXT_CAR
+in: modelId, text
+```
+
+```lua
+customPlateForNextCar(modelId, text)
+```
+
+```js
+Car.customPlateForNextCar(modelId, text)
+```
+</Opcode>
+
+## 强制车灯
+
+<Opcode id="067F" name="FORCE_CAR_LIGHTS" member="Car.ForceLights">
+覆盖车灯状态。
+
+```text
+067F FORCE_CAR_LIGHTS
+in: self, lightMode
+```
+
+```lua
+forceCarLights(self, lightMode)
+```
+
+```js
+Car.forceLights(self, lightMode)
+```
+</Opcode>
+
+## 附着到车
+
+<Opcode id="0683" name="ATTACH_CAR_TO_CAR" member="Car.AttachToCar">
+附着到另一车上。
+
+```text
+0683 ATTACH_CAR_TO_CAR
+in: self, handle, xOffset, yOffset, zOffset, xRotation, yRotation, zRotation
+```
+
+```lua
+attachCarToCar(self, handle, xOffset, yOffset, zOffset, xRotation, yRotation, zRotation)
+```
+
+```js
+Car.attachToCar(self, handle, xOffset, yOffset, zOffset, xRotation, yRotation, zRotation)
+```
+</Opcode>
+
+## 分离车辆
+
+<Opcode id="0684" name="DETACH_CAR" member="Car.Detach">
+分离车辆（可选旋转与力）。
+
+```text
+0684 DETACH_CAR
+in: self, pitch, heading, strength, applyTurnForce
+```
+
+```lua
+detachCar(self, pitch, heading, strength, applyTurnForce)
+```
+
+```js
+Car.detach(self, pitch, heading, strength, applyTurnForce)
+```
+</Opcode>
+
+## 是否附着中
+
+<Opcode id="0686" name="IS_VEHICLE_ATTACHED" member="Car.IsAttached">
+用在 if：是否附着中。
+
+```text
+0686 IS_VEHICLE_ATTACHED
+in: self
+```
+
+```lua
+isVehicleAttached(self)
+```
+
+```js
+Car.isAttached(self)
+```
+</Opcode>
+
+## 拆车门
+
+<Opcode id="0689" name="POP_CAR_DOOR" member="Car.PopDoor">
+拆掉指定车门部件。
+
+```text
+0689 POP_CAR_DOOR
+in: self, door, visibility
+```
+
+```lua
+popCarDoor(self, door, visibility)
+```
+
+```js
+Car.popDoor(self, door, visibility)
+```
+</Opcode>
+
+## 修车门
+
+<Opcode id="068A" name="FIX_CAR_DOOR" member="Car.FixDoor">
+修复车门。
+
+```text
+068A FIX_CAR_DOOR
+in: self, door
+```
+
+```lua
+fixCarDoor(self, door)
+```
+
+```js
+Car.fixDoor(self, door)
+```
+</Opcode>
+
+## 全员下车
+
+<Opcode id="068B" name="TASK_EVERYONE_LEAVE_CAR" member="Car.TaskEveryoneLeave">
+全体乘客下车。
+
+```text
+068B TASK_EVERYONE_LEAVE_CAR
+in: self
+```
+
+```lua
+taskEveryoneLeaveCar(self)
+```
+
+```js
+Car.taskEveryoneLeave(self)
+```
+</Opcode>
+
+## 拆面板
+
+<Opcode id="0697" name="POP_CAR_PANEL" member="Car.PopPanel">
+拆掉或删除车身部件。
+
+```text
+0697 POP_CAR_PANEL
+in: self, panelId, drop
+```
+
+```lua
+popCarPanel(self, panelId, drop)
+```
+
+```js
+Car.popPanel(self, panelId, drop)
+```
+</Opcode>
+
+## 修面板
+
+<Opcode id="0698" name="FIX_CAR_PANEL" member="Car.FixPanel">
+修复或重装车身部件。
+
+```text
+0698 FIX_CAR_PANEL
+in: self, panelId
+```
+
+```lua
+fixCarPanel(self, panelId)
+```
+
+```js
+Car.fixPanel(self, panelId)
+```
+</Opcode>
+
+## 修轮胎
+
+<Opcode id="0699" name="FIX_CAR_TYRE" member="Car.FixTire">
+修好轮胎。
+
+```text
+0699 FIX_CAR_TYRE
+in: self, tireId
+```
+
+```lua
+fixCarTyre(self, tireId)
+```
+
+```js
+Car.fixTire(self, tireId)
+```
+</Opcode>
+
+## 取速度向量
+
+<Opcode id="06A2" name="GET_CAR_SPEED_VECTOR" member="Car.GetSpeedVector">
+取速度向量。
+
+```text
+06A2 GET_CAR_SPEED_VECTOR
+in: self
+out: x, y, z
+```
+
+```lua
+local x, y, z = getCarSpeedVector(self)
+```
+
+```js
+Car.getSpeedVector(self)
+```
+</Opcode>
+
+## 取质量
+
+<Opcode id="06A3" name="GET_CAR_MASS" member="Car.GetMass">
+取质量。
+
+```text
+06A3 GET_CAR_MASS
+in: self
+out: mass
+```
+
+```lua
+local mass = getCarMass(self)
+```
+
+```js
+Car.getMass(self)
+```
+</Opcode>
+
+## 取俯仰角
+
+<Opcode id="06BE" name="GET_CAR_ROLL" member="Car.GetRoll">
+取俯仰角 Y。
+
+```text
+06BE GET_CAR_ROLL
+in: self
+out: angle
+```
+
+```lua
+local angle = getCarRoll(self)
+```
+
+```js
+Car.getRoll(self)
+```
+</Opcode>
+
+## 跳到录像末尾
+
+<Opcode id="06C5" name="SKIP_TO_END_AND_STOP_PLAYBACK_RECORDED_CAR" member="Car.SkipToEndAndStopPlayback">
+跳到录像末尾并停。
+
+```text
+06C5 SKIP_TO_END_AND_STOP_PLAYBACK_RECORDED_CAR
+in: self
+```
+
+```lua
+skipToEndAndStopPlaybackRecordedCar(self)
+```
+
+```js
+Car.skipToEndAndStopPlayback(self)
+```
+</Opcode>
+
+## 改装槽可用模型
+
+<Opcode id="06E5" name="GET_AVAILABLE_VEHICLE_MOD" member="Car.GetAvailableMod">
+改装槽可用模型，无则 -1。
+
+```text
+06E5 GET_AVAILABLE_VEHICLE_MOD
+in: self, slotId
+out: modelId
+```
+
+```lua
+local modelId = getAvailableVehicleMod(self, slotId)
+```
+
+```js
+Car.getAvailableMod(self, slotId)
+```
+</Opcode>
+
+## 安装改装
+
+<Opcode id="06E7" name="ADD_VEHICLE_MOD" member="Car.AddMod">
+安装改装件。
+
+```text
+06E7 ADD_VEHICLE_MOD
+in: self, modelId
+out: handle
+```
+
+```lua
+local handle = addVehicleMod(self, modelId)
+```
+
+```js
+Car.addMod(self, modelId)
+```
+</Opcode>
+
+## 卸下改装
+
+<Opcode id="06E8" name="REMOVE_VEHICLE_MOD" member="Car.RemoveMod">
+卸下指定模型改装。
+
+```text
+06E8 REMOVE_VEHICLE_MOD
+in: self, modelId
+```
+
+```lua
+removeVehicleMod(self, modelId)
+```
+
+```js
+Car.removeMod(self, modelId)
+```
+</Opcode>
+
+## 喷漆方案数量
+
+<Opcode id="06EC" name="GET_NUM_AVAILABLE_PAINTJOBS" member="Car.GetNumAvailablePaintjobs">
+可选喷漆方案数量。
+
+```text
+06EC GET_NUM_AVAILABLE_PAINTJOBS
+in: self
+out: numPaintjobs
+```
+
+```lua
+local numPaintjobs = getNumAvailablePaintjobs(self)
+```
+
+```js
+Car.getNumAvailablePaintjobs(self)
+```
+</Opcode>
+
+## 设喷漆方案
+
+<Opcode id="06ED" name="GIVE_VEHICLE_PAINTJOB" member="Car.GivePaintjob">
+设喷漆方案。
+
+```text
+06ED GIVE_VEHICLE_PAINTJOB
+in: self, paintjobId
+```
+
+```lua
+giveVehiclePaintjob(self, paintjobId)
+```
+
+```js
+Car.givePaintjob(self, paintjobId)
+```
+</Opcode>
+
+## 是否有卡住检测
+
+<Opcode id="06FC" name="DOES_CAR_HAVE_STUCK_CAR_CHECK" member="Car.DoesHaveStuckCarCheck">
+用在 if：是否启用卡住检测。
+
+```text
+06FC DOES_CAR_HAVE_STUCK_CAR_CHECK
+in: self
+```
+
+```lua
+doesCarHaveStuckCarCheck(self)
+```
+
+```js
+Car.doesHaveStuckCarCheck(self)
+```
+</Opcode>
+
+## 回放速度
+
+<Opcode id="06FD" name="SET_PLAYBACK_SPEED" member="Car.SetPlaybackSpeed">
+录像回放速度。
+
+```text
+06FD SET_PLAYBACK_SPEED
+in: self, speed
+```
+
+```lua
+setPlaybackSpeed(self, speed)
+```
+
+```js
+Car.setPlaybackSpeed(self, speed)
+```
+</Opcode>
+
+## 狂奔驶向坐标
+
+<Opcode id="0704" name="CAR_GOTO_COORDINATES_RACING" member="Car.GotoCoordinatesRacing">
+AI 尽量超车狂奔到目的地。
+
+```text
+0704 CAR_GOTO_COORDINATES_RACING
+in: self, x, y, z
+```
+
+```lua
+carGotoCoordinatesRacing(self, x, y, z)
+```
+
+```js
+Car.gotoCoordinatesRacing(self, x, y, z)
+```
+</Opcode>
+
+## AI 录像回放
+
+<Opcode id="0705" name="START_PLAYBACK_RECORDED_CAR_USING_AI" member="Car.StartPlaybackUsingAi">
+开始录像回放并启用司机 AI。
+
+```text
+0705 START_PLAYBACK_RECORDED_CAR_USING_AI
+in: self, pathId
+```
+
+```lua
+startPlaybackRecordedCarUsingAi(self, pathId)
+```
+
+```js
+Car.startPlaybackUsingAi(self, pathId)
+```
+</Opcode>
+
+## 录像快进
+
+<Opcode id="0706" name="SKIP_IN_PLAYBACK_RECORDED_CAR" member="Car.SkipInPlayback">
+录像进度快进。
+
+```text
+0706 SKIP_IN_PLAYBACK_RECORDED_CAR
+in: self, amount
+```
+
+```lua
+skipInPlaybackRecordedCar(self, amount)
+```
+
+```js
+Car.skipInPlayback(self, amount)
+```
+</Opcode>
+
+## 过场爆炸
+
+<Opcode id="070C" name="EXPLODE_CAR_IN_CUTSCENE" member="Car.ExplodeInCutscene">
+爆炸但不波及周围。
+
+```text
+070C EXPLODE_CAR_IN_CUTSCENE
+in: self
+```
+
+```lua
+explodeCarInCutscene(self)
+```
+
+```js
+Car.explodeInCutscene(self)
+```
+</Opcode>
+
+## 慢车道
+
+<Opcode id="0714" name="SET_CAR_STAY_IN_SLOW_LANE" member="Car.SetStayInSlowLane">
+尽量待在慢车道。
+
+```text
+0714 SET_CAR_STAY_IN_SLOW_LANE
+in: self, state
+```
+
+```lua
+setCarStayInSlowLane(self, state)
+```
+
+```js
+Car.setStayInSlowLane(self, state)
+```
+</Opcode>
+
+## 损坏面板
+
+<Opcode id="0730" name="DAMAGE_CAR_PANEL" member="Car.DamagePanel">
+损坏车身面板。
+
+```text
+0730 DAMAGE_CAR_PANEL
+in: self, panelId
+```
+
+```lua
+damageCarPanel(self, panelId)
+```
+
+```js
+Car.damagePanel(self, panelId)
+```
+</Opcode>
+
+## 设俯仰角
+
+<Opcode id="0731" name="SET_CAR_ROLL" member="Car.SetRoll">
+设俯仰角 Y。
+
+```text
+0731 SET_CAR_ROLL
+in: self, yAngle
+```
+
+```lua
+setCarRoll(self, yAngle)
+```
+
+```js
+Car.setRoll(self, yAngle)
+```
+</Opcode>
+
+## 允许逆行
+
+<Opcode id="073B" name="SET_CAR_CAN_GO_AGAINST_TRAFFIC" member="Car.SetCanGoAgainstTraffic">
+是否允许逆行。
+
+```text
+073B SET_CAR_CAN_GO_AGAINST_TRAFFIC
+in: self, state
+```
+
+```lua
+setCarCanGoAgainstTraffic(self, state)
+```
+
+```js
+Car.setCanGoAgainstTraffic(self, state)
+```
+</Opcode>
+
+## 损坏车门
+
+<Opcode id="073C" name="DAMAGE_CAR_DOOR" member="Car.DamageDoor">
+损坏部件。
+
+```text
+073C DAMAGE_CAR_DOOR
+in: self, door
+```
+
+```lua
+damageCarDoor(self, door)
+```
+
+```js
+Car.damageDoor(self, door)
+```
+</Opcode>
+
+## 标记任务车
+
+<Opcode id="0763" name="SET_CAR_AS_MISSION_CAR" member="Car.SetAsMissionCar">
+标记脚本拥有并进任务清理列表。
+
+```text
+0763 SET_CAR_AS_MISSION_CAR
+in: self
+```
+
+```lua
+setCarAsMissionCar(self)
+```
+
+```js
+Car.setAsMissionCar(self)
+```
+</Opcode>
+
+## 取横滚角
+
+<Opcode id="077D" name="GET_CAR_PITCH" member="Car.GetPitch">
+取横滚角 X。
+
+```text
+077D GET_CAR_PITCH
+in: self
+out: angle
+```
+
+```lua
+local angle = getCarPitch(self)
+```
+
+```js
+Car.getPitch(self)
+```
+</Opcode>
+
+## 取四元数
+
+<Opcode id="07C5" name="GET_VEHICLE_QUATERNION" member="Car.GetQuaternion">
+取四元数。
+
+```text
+07C5 GET_VEHICLE_QUATERNION
+in: self
+out: x, y, z, w
+```
+
+```lua
+local x, y, z, w = getVehicleQuaternion(self)
+```
+
+```js
+Car.getQuaternion(self)
+```
+</Opcode>
+
+## 设四元数
+
+<Opcode id="07C6" name="SET_VEHICLE_QUATERNION" member="Car.SetQuaternion">
+用四元数设旋转。
+
+```text
+07C6 SET_VEHICLE_QUATERNION
+in: self, x, y, z, w
+```
+
+```lua
+setVehicleQuaternion(self, x, y, z, w)
+```
+
+```js
+Car.setQuaternion(self, x, y, z, w)
+```
+</Opcode>
+
+## 施加力
+
+<Opcode id="07D5" name="APPLY_FORCE_TO_CAR" member="Car.ApplyForce">
+相对质心施加力。
+
+```text
+07D5 APPLY_FORCE_TO_CAR
+in: self, xDir, yDir, zDir, xOffset, yOffset, zOffset
+```
+
+```lua
+applyForceToCar(self, xDir, yDir, zDir, xOffset, yOffset, zOffset)
+```
+
+```js
+Car.applyForce(self, xDir, yDir, zDir, xOffset, yOffset, zOffset)
+```
+</Opcode>
+
+## 叠加角速度
+
+<Opcode id="07DA" name="ADD_TO_CAR_ROTATION_VELOCITY" member="Car.AddToRotationVelocity">
+叠加角速度。
+
+```text
+07DA ADD_TO_CAR_ROTATION_VELOCITY
+in: self, x, y, z
+```
+
+```lua
+addToCarRotationVelocity(self, x, y, z)
+```
+
+```js
+Car.addToRotationVelocity(self, x, y, z)
+```
+</Opcode>
+
+## 设角速度
+
+<Opcode id="07DB" name="SET_CAR_ROTATION_VELOCITY" member="Car.SetRotationVelocity">
+设角速度。
+
+```text
+07DB SET_CAR_ROTATION_VELOCITY
+in: self, x, y, z
+```
+
+```lua
+setCarRotationVelocity(self, x, y, z)
+```
+
+```js
+Car.setRotationVelocity(self, x, y, z)
+```
+</Opcode>
+
+## 总是拖胎印
+
+<Opcode id="07EE" name="SET_CAR_ALWAYS_CREATE_SKIDS" member="Car.SetAlwaysCreateSkids">
+是否总是拖胎印。
+
+```text
+07EE SET_CAR_ALWAYS_CREATE_SKIDS
+in: self, state
+```
+
+```lua
+setCarAlwaysCreateSkids(self, state)
+```
+
+```js
+Car.setAlwaysCreateSkids(self, state)
+```
+</Opcode>
+
+## 控制液压
+
+<Opcode id="07F5" name="CONTROL_CAR_HYDRAULICS" member="Car.ControlHydraulics">
+改悬挂高度。
+
+```text
+07F5 CONTROL_CAR_HYDRAULICS
+in: self, frontLeftWheelSuspension, rearLeftWheelSuspension, frontRightWheelSuspension, rearRightWheelSuspension
+```
+
+```lua
+controlCarHydraulics(self, frontLeftWheelSuspension, rearLeftWheelSuspension, frontRightWheelSuspension, rearRightWheelSuspension)
+```
+
+```js
+Car.controlHydraulics(self, frontLeftWheelSuspension, rearLeftWheelSuspension, frontRightWheelSuspension, rearRightWheelSuspension)
+```
+</Opcode>
+
+## 跟随车辆
+
+<Opcode id="07F8" name="SET_CAR_FOLLOW_CAR" member="Car.SetFollowCar">
+跟随另一辆车。
+
+```text
+07F8 SET_CAR_FOLLOW_CAR
+in: self, handle, radius
+```
+
+```lua
+setCarFollowCar(self, handle, radius)
+```
+
+```js
+Car.setFollowCar(self, handle, radius)
+```
+</Opcode>
+
+## 启用液压
+
+<Opcode id="07FF" name="SET_CAR_HYDRAULICS" member="Car.SetHydraulics">
+启用液压悬挂。
+
+```text
+07FF SET_CAR_HYDRAULICS
+in: self, state
+```
+
+```lua
+setCarHydraulics(self, state)
+```
+
+```js
+Car.setHydraulics(self, state)
+```
+</Opcode>
+
+## 是否有液压
+
+<Opcode id="0803" name="DOES_CAR_HAVE_HYDRAULICS" member="Car.DoesHaveHydraulics">
+用在 if：是否装了液压。
+
+```text
+0803 DOES_CAR_HAVE_HYDRAULICS
+in: self
+```
+
+```lua
+doesCarHaveHydraulics(self)
+```
+
+```js
+Car.doesHaveHydraulics(self)
+```
+</Opcode>
+
+## 引擎损坏
+
+<Opcode id="081D" name="SET_CAR_ENGINE_BROKEN" member="Car.SetEngineBroken">
+引擎是否损坏。
+
+```text
+081D SET_CAR_ENGINE_BROKEN
+in: self, state
+```
+
+```lua
+setCarEngineBroken(self, state)
+```
+
+```js
+Car.setEngineBroken(self, state)
+```
+</Opcode>
+
+## 竖直倾角
+
+<Opcode id="083F" name="GET_CAR_UPRIGHT_VALUE" member="Car.GetUprightValue">
+取竖直倾角。
+
+```text
+083F GET_CAR_UPRIGHT_VALUE
+in: self
+out: value
+```
+
+```lua
+local value = getCarUprightValue(self)
+```
+
+```js
+Car.getUprightValue(self)
+```
+</Opcode>
+
+## 可见 interior
+
+<Opcode id="0840" name="SET_VEHICLE_AREA_VISIBLE" member="Car.SetAreaVisible">
+可见 interior 区域。
+
+```text
+0840 SET_VEHICLE_AREA_VISIBLE
+in: self, interiorId
+```
+
+```lua
+setVehicleAreaVisible(self, interiorId)
+```
+
+```js
+Car.setAreaVisible(self, interiorId)
+```
+</Opcode>
+
+## 选副武器
+
+<Opcode id="0841" name="SELECT_WEAPONS_FOR_VEHICLE" member="Car.SelectWeapons">
+使用副武器。
+
+```text
+0841 SELECT_WEAPONS_FOR_VEHICLE
+in: self, weapon
+```
+
+```lua
+selectWeaponsForVehicle(self, weapon)
+```
+
+```js
+Car.selectWeapons(self, weapon)
+```
+</Opcode>
+
+## 可被瞄准
+
+<Opcode id="084E" name="SET_VEHICLE_CAN_BE_TARGETTED" member="Car.SetCanBeTargeted">
+是否可被瞄准。
+
+```text
+084E SET_VEHICLE_CAN_BE_TARGETTED
+in: self, state
+```
+
+```lua
+setVehicleCanBeTargetted(self, state)
+```
+
+```js
+Car.setCanBeTargeted(self, state)
+```
+</Opcode>
+
+## 显示可见损伤
+
+<Opcode id="0852" name="SET_CAR_CAN_BE_VISIBLY_DAMAGED" member="Car.SetCanBeVisiblyDamaged">
+是否显示可见损伤。
+
+```text
+0852 SET_CAR_CAN_BE_VISIBLY_DAMAGED
+in: self, state
+```
+
+```lua
+setCarCanBeVisiblyDamaged(self, state)
+```
+
+```js
+Car.setCanBeVisiblyDamaged(self, state)
+```
+</Opcode>
+
+## 循环录像回放
+
+<Opcode id="085E" name="START_PLAYBACK_RECORDED_CAR_LOOPED" member="Car.StartPlaybackLooped">
+循环播放录像路径。
+
+```text
+085E START_PLAYBACK_RECORDED_CAR_LOOPED
+in: self, pathId
+```
+
+```lua
+startPlaybackRecordedCarLooped(self, pathId)
+```
+
+```js
+Car.startPlaybackLooped(self, pathId)
+```
+</Opcode>
+
+## 脏污程度
+
+<Opcode id="0878" name="SET_VEHICLE_DIRT_LEVEL" member="Car.SetDirtLevel">
+设置车辆脏污程度。
+
+```text
+0878 SET_VEHICLE_DIRT_LEVEL
+in: self, level
+```
+
+```lua
+setVehicleDirtLevel(self, level)
+```
+
+```js
+Car.setDirtLevel(self, level)
+```
+</Opcode>
+
+## 空气阻力
+
+<Opcode id="088B" name="SET_VEHICLE_AIR_RESISTANCE_MULTIPLIER" member="Car.SetAirResistanceMultiplier">
+设置车辆空气阻力。
+
+```text
+088B SET_VEHICLE_AIR_RESISTANCE_MULTIPLIER
+in: self, multiplier
+```
+
+```lua
+setVehicleAirResistanceMultiplier(self, multiplier)
+```
+
+```js
+Car.setAirResistanceMultiplier(self, multiplier)
+```
+</Opcode>
+
+## 无偏移设坐标
+
+<Opcode id="088C" name="SET_CAR_COORDINATES_NO_OFFSET" member="Car.SetCoordinatesNoOffset">
+直接设置车辆坐标，不按车高做偏移。
+
+```text
+088C SET_CAR_COORDINATES_NO_OFFSET
+in: self, x, y, z
+```
+
+```lua
+setCarCoordinatesNoOffset(self, x, y, z)
+```
+
+```js
+Car.setCoordinatesNoOffset(self, x, y, z)
+```
+</Opcode>
+
+## 碰到物体
+
+<Opcode id="0897" name="IS_VEHICLE_TOUCHING_OBJECT" member="Car.IsTouchingObject">
+用在 if：车辆是否碰到该物体。
+
+```text
+0897 IS_VEHICLE_TOUCHING_OBJECT
+in: self, handle
+```
+
+```lua
+isVehicleTouchingObject(self, handle)
+```
+
+```js
+Car.isTouchingObject(self, handle)
+```
+</Opcode>
+
+## 控制活动部件
+
+<Opcode id="08A4" name="CONTROL_MOVABLE_VEHICLE_PART" member="Car.ControlMovablePart">
+设置车辆 extra 部件角度。
+
+```text
+08A4 CONTROL_MOVABLE_VEHICLE_PART
+in: self, range
+```
+
+```lua
+controlMovableVehiclePart(self, range)
+```
+
+```js
+Car.controlMovablePart(self, range)
+```
+</Opcode>
+
+## 可被吊起
+
+<Opcode id="08A5" name="WINCH_CAN_PICK_VEHICLE_UP" member="Car.WinchCanPickUp">
+设置车辆能否被磁力吊车吊起。
+
+```text
+08A5 WINCH_CAN_PICK_VEHICLE_UP
+in: self, state
+```
+
+```lua
+winchCanPickVehicleUp(self, state)
+```
+
+```js
+Car.winchCanPickUp(self, state)
+```
+</Opcode>
+
+## 车门开合角度
+
+<Opcode id="08A6" name="OPEN_CAR_DOOR_A_BIT" member="Car.OpenDoorABit">
+设置车门开合角度。
+
+```text
+08A6 OPEN_CAR_DOOR_A_BIT
+in: self, door, value
+```
+
+```lua
+openCarDoorABit(self, door, value)
+```
+
+```js
+Car.openDoorABit(self, door, value)
+```
+</Opcode>
+
+## 车门是否全开
+
+<Opcode id="08A7" name="IS_CAR_DOOR_FULLY_OPEN" member="Car.IsDoorFullyOpen">
+用在 if：指定车门是否全开。
+
+```text
+08A7 IS_CAR_DOOR_FULLY_OPEN
+in: self, door
+```
+
+```lua
+isCarDoorFullyOpen(self, door)
+```
+
+```js
+Car.isDoorFullyOpen(self, door)
+```
+</Opcode>
+
+## 过场爆炸特效
+
+<Opcode id="08CB" name="EXPLODE_CAR_IN_CUTSCENE_SHAKE_AND_BITS" member="Car.ExplodeInCutsceneShakeAndBits">
+让车辆爆炸，不伤及周围实体。
+
+```text
+08CB EXPLODE_CAR_IN_CUTSCENE_SHAKE_AND_BITS
+in: self, shake, effect, sound
+```
+
+```lua
+explodeCarInCutsceneShakeAndBits(self, shake, effect, sound)
+```
+
+```js
+Car.explodeInCutsceneShakeAndBits(self, shake, effect, sound)
+```
+</Opcode>
+
+## 车辆类别
+
+<Opcode id="08EC" name="GET_VEHICLE_CLASS" member="Car.GetClass">
+返回 vehicles.ide 中定义的车辆类别。
+
+```text
+08EC GET_VEHICLE_CLASS
+in: self
+out: class
+```
+
+```lua
+local class = getVehicleClass(self)
+```
+
+```js
+Car.getClass(self)
+```
+</Opcode>
+
+## 热导锁定
+
+<Opcode id="08F2" name="VEHICLE_CAN_BE_TARGETTED_BY_HS_MISSILE" member="Car.CanBeTargetedByHsMissile">
+设置玩家能否用热导火箭锁定此车。
+
+```text
+08F2 VEHICLE_CAN_BE_TARGETTED_BY_HS_MISSILE
+in: self, state
+```
+
+```lua
+vehicleCanBeTargettedByHsMissile(self, state)
+```
+
+```js
+Car.canBeTargetedByHsMissile(self, state)
+```
+</Opcode>
+
+## 车内赠品
+
+<Opcode id="08F3" name="SET_FREEBIES_IN_VEHICLE" member="Car.SetFreebies">
+设置玩家能否从此车获得物品（如警车散弹弹药、出租车现金）。
+
+```text
+08F3 SET_FREEBIES_IN_VEHICLE
+in: self, state
+```
+
+```lua
+setFreebiesInVehicle(self, state)
+```
+
+```js
+Car.setFreebies(self, state)
+```
+</Opcode>
+
+## 引擎开关
+
+<Opcode id="0918" name="SET_CAR_ENGINE_ON" member="Car.SetEngineOn">
+设置车辆引擎开关。
+
+```text
+0918 SET_CAR_ENGINE_ON
+in: self, state
+```
+
+```lua
+setCarEngineOn(self, state)
+```
+
+```js
+Car.setEngineOn(self, state)
+```
+</Opcode>
+
+## 灯光开关
+
+<Opcode id="0919" name="SET_CAR_LIGHTS_ON" member="Car.SetLightsOn">
+设置车辆灯光开关。
+
+```text
+0919 SET_CAR_LIGHTS_ON
+in: self, state
+```
+
+```lua
+setCarLightsOn(self, state)
+```
+
+```js
+Car.setLightsOn(self, state)
+```
+</Opcode>
+
+## 附着到物体
+
+<Opcode id="0939" name="ATTACH_CAR_TO_OBJECT" member="Car.AttachToObject">
+按偏移与旋转把车附着到物体上。
+
+```text
+0939 ATTACH_CAR_TO_OBJECT
+in: self, handle, xOffset, yOffset, zOffset, xRotation, yRotation, zRotation
+```
+
+```lua
+attachCarToObject(self, handle, xOffset, yOffset, zOffset, xRotation, yRotation, zRotation)
+```
+
+```js
+Car.attachToObject(self, handle, xOffset, yOffset, zOffset, xRotation, yRotation, zRotation)
+```
+</Opcode>
+
+## 可当掩体
+
+<Opcode id="0957" name="VEHICLE_DOES_PROVIDE_COVER" member="Car.DoesProvideCover">
+设置战斗中角色是否会把此车当掩体。
+
+```text
+0957 VEHICLE_DOES_PROVIDE_COVER
+in: self, state
+```
+
+```lua
+vehicleDoesProvideCover(self, state)
+```
+
+```js
+Car.doesProvideCover(self, state)
+```
+</Opcode>
+
+## 控制车门
+
+<Opcode id="095E" name="CONTROL_CAR_DOOR" member="Car.ControlDoor">
+设置车门角度与闩锁状态。
+
+```text
+095E CONTROL_CAR_DOOR
+in: self, door, state, angle
+```
+
+```lua
+controlCarDoor(self, door, state, angle)
+```
+
+```js
+Car.controlDoor(self, door, state, angle)
+```
+</Opcode>
+
+## 车门角度比
+
+<Opcode id="095F" name="GET_DOOR_ANGLE_RATIO" member="Car.GetDoorAngleRatio">
+获取指定车门相对铰链的角度。
+
+```text
+095F GET_DOOR_ANGLE_RATIO
+in: self, door
+out: ratio
+```
+
+```lua
+local ratio = getDoorAngleRatio(self, door)
+```
+
+```js
+Car.getDoorAngleRatio(self, door)
+```
+</Opcode>
+
+## 是否大车
+
+<Opcode id="0969" name="IS_BIG_VEHICLE" member="Car.IsBig">
+用在 if：车辆在 vehicles 中是否标了 is big。
+
+```text
+0969 IS_BIG_VEHICLE
+in: self
+```
+
+```lua
+isBigVehicle(self)
+```
+
+```js
+Car.isBig(self)
+```
+</Opcode>
+
+## 存改装状态
+
+<Opcode id="096B" name="STORE_CAR_MOD_STATE" member="Car.StoreModState">
+保存改装状态。
+
+```text
+096B STORE_CAR_MOD_STATE
+```
+
+```lua
+storeCarModState()
+```
+
+```js
+Car.storeModState()
+```
+</Opcode>
+
+## 恢复改装状态
+
+<Opcode id="096C" name="RESTORE_CAR_MOD_STATE" member="Car.RestoreModState">
+恢复改装状态。
+
+```text
+096C RESTORE_CAR_MOD_STATE
+```
+
+```lua
+restoreCarModState()
+```
+
+```js
+Car.restoreModState()
+```
+</Opcode>
+
+## 当前改装
+
+<Opcode id="096D" name="GET_CURRENT_CAR_MOD" member="Car.GetCurrentMod">
+返回车辆指定槽位已装组件模型，否则 -1。
+
+```text
+096D GET_CURRENT_CAR_MOD
+in: self, slot
+out: modelId
+```
+
+```lua
+local modelId = getCurrentCarMod(self, slot)
+```
+
+```js
+Car.getCurrentMod(self, slot)
+```
+</Opcode>
+
+## 是否低底盘
+
+<Opcode id="096E" name="IS_CAR_LOW_RIDER" member="Car.IsLowRider">
+用在 if：是否低底盘车。
+
+```text
+096E IS_CAR_LOW_RIDER
+in: self
+```
+
+```lua
+isCarLowRider(self)
+```
+
+```js
+Car.isLowRider(self)
+```
+</Opcode>
+
+## 是否街头赛车
+
+<Opcode id="096F" name="IS_CAR_STREET_RACER" member="Car.IsStreetRacer">
+用在 if：是否街头赛车。
+
+```text
+096F IS_CAR_STREET_RACER
+in: self
+```
+
+```lua
+isCarStreetRacer(self)
+```
+
+```js
+Car.isStreetRacer(self)
+```
+</Opcode>
+
+## 是否应急车
+
+<Opcode id="0975" name="IS_EMERGENCY_SERVICES_VEHICLE" member="Car.IsEmergencyServices">
+用在 if：是否应急车辆。
+
+```text
+0975 IS_EMERGENCY_SERVICES_VEHICLE
+in: self
+```
+
+```lua
+isEmergencyServicesVehicle(self)
+```
+
+```js
+Car.isEmergencyServices(self)
+```
+</Opcode>
+
+## 配色种数
+
+<Opcode id="097D" name="GET_NUM_CAR_COLOURS" member="Car.GetNumColors">
+返回 carcols.dat 中该车模型定义的配色种数。
+
+```text
+097D GET_NUM_CAR_COLOURS
+in: self
+out: count
+```
+
+```lua
+local count = getNumCarColours(self)
+```
+
+```js
+Car.getNumColors(self)
+```
+</Opcode>
+
+## 挡路车辆
+
+<Opcode id="0987" name="GET_CAR_BLOCKING_CAR" member="Car.GetBlockingCar">
+返回挡住此车去路的车辆句柄。
+
+```text
+0987 GET_CAR_BLOCKING_CAR
+in: self
+out: handle
+```
+
+```lua
+local handle = getCarBlockingCar(self)
+```
+
+```js
+Car.getBlockingCar(self)
+```
+</Opcode>
+
+## 当前喷漆
+
+<Opcode id="0988" name="GET_CURRENT_VEHICLE_PAINTJOB" member="Car.GetCurrentPaintjob">
+获取车辆喷漆方案。
+
+```text
+0988 GET_CURRENT_VEHICLE_PAINTJOB
+in: self
+out: paintjobNumber
+```
+
+```lua
+local paintjobNumber = getCurrentVehiclePaintjob(self)
+```
+
+```js
+Car.getCurrentPaintjob(self)
+```
+</Opcode>
+
+## 活动部件偏移
+
+<Opcode id="098D" name="GET_CAR_MOVING_COMPONENT_OFFSET" member="Car.GetMovingComponentOffset">
+取车辆 extra 部件偏移。
+
+```text
+098D GET_CAR_MOVING_COMPONENT_OFFSET
+in: self
+out: offset
+```
+
+```lua
+local offset = getCarMovingComponentOffset(self)
+```
+
+```js
+Car.getMovingComponentOffset(self)
+```
+</Opcode>
+
+## 碰撞开关
+
+<Opcode id="099A" name="SET_CAR_COLLISION" member="Car.SetCollision">
+设置车辆碰撞开关。
+
+```text
+099A SET_CAR_COLLISION
+in: self, state
+```
+
+```lua
+setCarCollision(self, state)
+```
+
+```js
+Car.setCollision(self, state)
+```
+</Opcode>
+
+## 回放切 AI
+
+<Opcode id="099B" name="CHANGE_PLAYBACK_TO_USE_AI" member="Car.ChangePlaybackToUseAi">
+把车辆控制从录像回放切到 AI 驾驶。
+
+```text
+099B CHANGE_PLAYBACK_TO_USE_AI
+in: self
+```
+
+```lua
+changePlaybackToUseAi(self)
+```
+
+```js
+Car.changePlaybackToUseAi(self)
+```
+</Opcode>
+
+## 乘客随机说话
+
+<Opcode id="09AB" name="RANDOM_PASSENGER_SAY" member="Car.RandomPassengerSay">
+让车内乘客按环境语音 ID 说话（若角色有对应语音）。
+
+```text
+09AB RANDOM_PASSENGER_SAY
+in: self, phrase
+```
+
+```lua
+randomPassengerSay(self, phrase)
+```
+
+```js
+Car.randomPassengerSay(self, phrase)
+```
+</Opcode>
+
+## 玩家是否考虑上车
+
+<Opcode id="09B0" name="SET_VEHICLE_IS_CONSIDERED_BY_PLAYER" member="Car.SetIsConsideredByPlayer">
+玩家按上车键时忽略此车。
+
+```text
+09B0 SET_VEHICLE_IS_CONSIDERED_BY_PLAYER
+in: self, state
+```
+
+```lua
+setVehicleIsConsideredByPlayer(self, state)
+```
+
+```js
+Car.setIsConsideredByPlayer(self, state)
+```
+</Opcode>
+
+## 门锁状态
+
+<Opcode id="09B3" name="GET_CAR_DOOR_LOCK_STATUS" member="Car.GetDoorLockStatus">
+返回车辆门锁模式。
+
+```text
+09B3 GET_CAR_DOOR_LOCK_STATUS
+in: self
+out: lockStatus
+```
+
+```lua
+local lockStatus = getCarDoorLockStatus(self)
+```
+
+```js
+Car.getDoorLockStatus(self)
+```
+</Opcode>
+
+## 车门是否损坏
+
+<Opcode id="09BB" name="IS_CAR_DOOR_DAMAGED" member="Car.IsDoorDamaged">
+用在 if：指定车身部位是否可见损坏。
+
+```text
+09BB IS_CAR_DOOR_DAMAGED
+in: self, door
+```
+
+```lua
+isCarDoorDamaged(self, door)
+```
+
+```js
+Car.isDoorDamaged(self, door)
+```
+</Opcode>
+
+## 油箱弱点
+
+<Opcode id="09C4" name="SET_PETROL_TANK_WEAKPOINT" member="Car.SetPetrolTankWeakpoint">
+设置能否通过射击油箱引爆车辆。
+
+```text
+09C4 SET_PETROL_TANK_WEAKPOINT
+in: self, state
+```
+
+```lua
+setPetrolTankWeakpoint(self, state)
+```
+
+```js
+Car.setPetrolTankWeakpoint(self, state)
+```
+</Opcode>
+
+## 碰到另一车
+
+<Opcode id="09CB" name="IS_CAR_TOUCHING_CAR" member="Car.IsTouchingCar">
+用在 if：此车是否碰到另一辆车。
+
+```text
+09CB IS_CAR_TOUCHING_CAR
+in: self, handle
+```
+
+```lua
+isCarTouchingCar(self, handle)
+```
+
+```js
+Car.isTouchingCar(self, handle)
+```
+</Opcode>
+
+## 全轮着地
+
+<Opcode id="09D0" name="IS_VEHICLE_ON_ALL_WHEELS" member="Car.IsOnAllWheels">
+用在 if：全部车轮是否都着地。
+
+```text
+09D0 IS_VEHICLE_ON_ALL_WHEELS
+in: self
+```
+
+```lua
+isVehicleOnAllWheels(self)
+```
+
+```js
+Car.isOnAllWheels(self)
+```
+</Opcode>
+
+## 车型价值
+
+<Opcode id="09E1" name="GET_CAR_MODEL_VALUE" member="Car.GetModelValue">
+返回指定车型的价值。
+
+```text
+09E1 GET_CAR_MODEL_VALUE
+in: model
+out: value
+```
+
+```lua
+local value = getCarModelValue(model)
+```
+
+```js
+Car.getModelValue(model)
+```
+</Opcode>
+
+## 给氮气
+
+<Opcode id="09E9" name="GIVE_NON_PLAYER_CAR_NITRO" member="Car.GiveNonPlayerNitro">
+给车装一瓶氮气。
+
+```text
+09E9 GIVE_NON_PLAYER_CAR_NITRO
+in: self
+```
+
+```lua
+giveNonPlayerCarNitro(self)
+```
+
+```js
+Car.giveNonPlayerNitro(self)
+```
+</Opcode>
+
+## 重置液压
+
+<Opcode id="09FE" name="RESET_VEHICLE_HYDRAULICS" member="Car.ResetHydraulics">
+重置车辆全部液压，使车身落回。
+
+```text
+09FE RESET_VEHICLE_HYDRAULICS
+in: self
+```
+
+```lua
+resetVehicleHydraulics(self)
+```
+
+```js
+Car.resetHydraulics(self)
+```
+</Opcode>
+
+## 设附加色
+
+<Opcode id="0A11" name="SET_EXTRA_CAR_COLOURS" member="Car.SetExtraColors">
+设置车辆第三、第四配色。另见 0229。
+
+```text
+0A11 SET_EXTRA_CAR_COLOURS
+in: self, color3, color4
+```
+
+```lua
+setExtraCarColours(self, color3, color4)
+```
+
+```js
+Car.setExtraColors(self, color3, color4)
+```
+</Opcode>
+
+## 取附加色
+
+<Opcode id="0A12" name="GET_EXTRA_CAR_COLOURS" member="Car.GetExtraColors">
+返回车辆第三、第四配色。另见 03F3。
+
+```text
+0A12 GET_EXTRA_CAR_COLOURS
+in: self
+out: color3, color4
+```
+
+```lua
+local color3, color4 = getExtraCarColours(self)
+```
+
+```js
+Car.getExtraColors(self)
+```
+</Opcode>
+
+## 是否刚喷漆
+
+<Opcode id="0A15" name="HAS_CAR_BEEN_RESPRAYED" member="Car.HasBeenResprayed">
+用在 if：上一帧是否刚喷漆过，并会把喷漆状态清回 false。
+
+```text
+0A15 HAS_CAR_BEEN_RESPRAYED
+in: self
+```
+
+```lua
+hasCarBeenResprayed(self)
+```
+
+```js
+Car.hasBeenResprayed(self)
+```
+</Opcode>
+
+## 完美操控作弊
+
+<Opcode id="0A21" name="IMPROVE_CAR_BY_CHEATING" member="Car.ImproveByCheating">
+设置 NPC 驾驶时是否受完美操控作弊影响。
+
+```text
+0A21 IMPROVE_CAR_BY_CHEATING
+in: self, state
+```
+
+```lua
+improveCarByCheating(self, state)
+```
+
+```js
+Car.improveByCheating(self, state)
+```
+</Opcode>
+
+## 修好车辆
+
+<Opcode id="0A30" name="FIX_CAR" member="Car.Fix">
+把车辆修好并恢复满血。
+
+```text
+0A30 FIX_CAR
+in: self
+```
+
+```lua
+fixCar(self)
+```
+
+```js
+Car.fix(self)
+```
+</Opcode>

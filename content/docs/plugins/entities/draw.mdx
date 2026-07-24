@@ -1,0 +1,71 @@
+---
+title: 绘制 CDraw
+description: 全局 FOV、裁剪面与淡色
+---
+
+`CDraw.h`
+
+全局 FOV、裁剪面、淡色。和 [CCamera](/docs/plugins/entities/camera) 一起看。
+
+## 视场角
+
+<Api name="ms_fFOV / SetFOV">
+默认约 45。
+
+```cpp
+static float& ms_fFOV;
+static void SetFOV(float fovValue);
+```
+
+```cpp
+float old = CDraw::ms_fFOV;
+CDraw::SetFOV(70.0f);
+// 退出还原 old
+```
+</Api>
+
+## 裁剪与 LOD
+
+<Api name="ms_fNearClipZ / ms_fFarClipZ / ms_fLODDistance">
+
+```cpp
+static float& ms_fNearClipZ;
+static float& ms_fFarClipZ;
+static float& ms_fLODDistance;
+```
+
+```cpp
+float farZ = CDraw::ms_fFarClipZ;
+```
+</Api>
+
+## 宽高比
+
+<Api name="ms_fAspectRatio / CalculateAspectRatio">
+
+```cpp
+static float& ms_fAspectRatio;
+static float CalculateAspectRatio();
+```
+
+```cpp
+float ar = CDraw::CalculateAspectRatio();
+```
+</Api>
+
+## 淡色通道
+
+<Api name="FadeRed / FadeGreen / FadeBlue / FadeValue">
+与镜头 Fade 联动。
+
+```cpp
+static unsigned char& FadeRed;
+static unsigned char& FadeGreen;
+static unsigned char& FadeBlue;
+static unsigned char& FadeValue;
+```
+
+```cpp
+unsigned char a = CDraw::FadeValue;
+```
+</Api>

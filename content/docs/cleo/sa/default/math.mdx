@@ -1,0 +1,743 @@
+---
+title: 数学 Math
+description: 数学 / 随机 / 位运算
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 38 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 全局整型绝对值
+
+<Opcode id="0094" name="ABS_VAR_INT" member="Math.Abs">
+全局整型取绝对值（就地）。
+
+```text
+0094 ABS_VAR_INT
+out: number
+```
+
+```lua
+local number = absVarInt()
+```
+
+```js
+Math.abs()
+```
+</Opcode>
+
+## 局部整型绝对值
+
+<Opcode id="0095" name="ABS_LVAR_INT" member="Math.Abs">
+局部整型取绝对值（就地）。
+
+```text
+0095 ABS_LVAR_INT
+out: number
+```
+
+```lua
+local number = absLvarInt()
+```
+
+```js
+Math.abs()
+```
+</Opcode>
+
+## 全局浮点绝对值
+
+<Opcode id="0096" name="ABS_VAR_FLOAT" member="Math.Abs">
+全局浮点取绝对值（就地）。
+
+```text
+0096 ABS_VAR_FLOAT
+out: number
+```
+
+```lua
+local number = absVarFloat()
+```
+
+```js
+Math.abs()
+```
+</Opcode>
+
+## 局部浮点绝对值
+
+<Opcode id="0097" name="ABS_LVAR_FLOAT" member="Math.Abs">
+局部浮点取绝对值（就地）。
+
+```text
+0097 ABS_LVAR_FLOAT
+out: number
+```
+
+```lua
+local number = absLvarFloat()
+```
+
+```js
+Math.abs()
+```
+</Opcode>
+
+## 随机浮点
+
+<Opcode id="0098" name="GENERATE_RANDOM_FLOAT" member="Math.Random">
+随机浮点 `[0.0, 1.0)`。
+
+```text
+0098 GENERATE_RANDOM_FLOAT
+out: float
+```
+
+```lua
+local float = generateRandomFloat()
+```
+
+```js
+Math.random()
+```
+</Opcode>
+
+## 随机整型
+
+<Opcode id="0099" name="GENERATE_RANDOM_INT" member="Math.Random">
+随机整型 `0..32767`。
+
+```text
+0099 GENERATE_RANDOM_INT
+out: int
+```
+
+```lua
+local int = generateRandomInt()
+```
+
+```js
+Math.random()
+```
+</Opcode>
+
+## 平方根
+
+<Opcode id="01FB" name="SQRT" member="Math.Sqrt">
+平方根。
+
+```text
+01FB SQRT
+in: num
+out: result
+```
+
+```lua
+local result = sqrt(num)
+```
+
+```js
+Math.sqrt(num)
+```
+</Opcode>
+
+## 区间随机浮点
+
+<Opcode id="0208" name="GENERATE_RANDOM_FLOAT_IN_RANGE" member="Math.RandomFloatInRange">
+区间内随机浮点，含 min/max。
+
+```text
+0208 GENERATE_RANDOM_FLOAT_IN_RANGE
+in: min, max
+out: result
+```
+
+```lua
+local result = generateRandomFloatInRange(min, max)
+```
+
+```js
+Math.randomFloatInRange(min, max)
+```
+</Opcode>
+
+## 区间随机整型
+
+<Opcode id="0209" name="GENERATE_RANDOM_INT_IN_RANGE" member="Math.RandomIntInRange">
+区间内随机整型，含 min、不含 max。
+
+```text
+0209 GENERATE_RANDOM_INT_IN_RANGE
+in: min, max
+out: result
+```
+
+```lua
+local result = generateRandomIntInRange(min, max)
+```
+
+```js
+Math.randomIntInRange(min, max)
+```
+</Opcode>
+
+## 正弦
+
+<Opcode id="02F6" name="SIN" member="Math.Sin">
+正弦（角）。
+
+```text
+02F6 SIN
+in: angle
+out: result
+```
+
+```lua
+local result = sin(angle)
+```
+
+```js
+Math.sin(angle)
+```
+</Opcode>
+
+## 余弦
+
+<Opcode id="02F7" name="COS" member="Math.Cos">
+余弦（角）。
+
+```text
+02F7 COS
+in: angle
+out: result
+```
+
+```lua
+local result = cos(angle)
+```
+
+```js
+Math.cos(angle)
+```
+</Opcode>
+
+## 米转英尺
+
+<Opcode id="0425" name="CONVERT_METRES_TO_FEET" member="Math.ConvertMetersToFeet">
+米 → 英尺（浮点）。
+
+```text
+0425 CONVERT_METRES_TO_FEET
+in: meters
+out: feet
+```
+
+```lua
+local feet = convertMetresToFeet(meters)
+```
+
+```js
+Math.convertMetersToFeet(meters)
+```
+</Opcode>
+
+## 米转英尺整型
+
+<Opcode id="042D" name="CONVERT_METRES_TO_FEET_INT" member="Math.ConvertMetersToFeet">
+米 → 英尺（整型）。
+
+```text
+042D CONVERT_METRES_TO_FEET_INT
+in: meters
+out: feet
+```
+
+```lua
+local feet = convertMetresToFeetInt(meters)
+```
+
+```js
+Math.convertMetersToFeet(meters)
+```
+</Opcode>
+
+## 2D 距离
+
+<Opcode id="0509" name="GET_DISTANCE_BETWEEN_COORDS_2D" member="Math.GetDistanceBetweenCoords2D">
+两点 2D 距离。
+
+```text
+0509 GET_DISTANCE_BETWEEN_COORDS_2D
+in: fromX, fromY, toX, toZ
+out: distance
+```
+
+```lua
+local distance = getDistanceBetweenCoords2D(fromX, fromY, toX, toZ)
+```
+
+```js
+Math.getDistanceBetweenCoords2D(fromX, fromY, toX, toZ)
+```
+</Opcode>
+
+## 3D 距离
+
+<Opcode id="050A" name="GET_DISTANCE_BETWEEN_COORDS_3D" member="Math.GetDistanceBetweenCoords3D">
+两点 3D 距离。
+
+```text
+050A GET_DISTANCE_BETWEEN_COORDS_3D
+in: fromX, fromY, fromZ, toX, toY, toZ
+out: distance
+```
+
+```lua
+local distance = getDistanceBetweenCoords3D(fromX, fromY, fromZ, toX, toY, toZ)
+```
+
+```js
+Math.getDistanceBetweenCoords3D(fromX, fromY, fromZ, toX, toY, toZ)
+```
+</Opcode>
+
+## 2D 向量夹角
+
+<Opcode id="05A4" name="GET_ANGLE_BETWEEN_2D_VECTORS" member="Math.GetAngleBetween2DVectors">
+两 2D 向量夹角。
+
+```text
+05A4 GET_ANGLE_BETWEEN_2D_VECTORS
+in: x1, y1, x2, y2
+out: angle
+```
+
+```lua
+local angle = getAngleBetween2DVectors(x1, y1, x2, y2)
+```
+
+```js
+Math.getAngleBetween2DVectors(x1, y1, x2, y2)
+```
+</Opcode>
+
+## 2D 矩形相交
+
+<Opcode id="05A5" name="DO_2D_RECTANGLES_COLLIDE" member="Math.Do2DRectanglesCollide">
+用在 if：两 2D 矩形是否相交/包含。
+
+```text
+05A5 DO_2D_RECTANGLES_COLLIDE
+in: rectangle1PositionX, rectangle1PositionY, rectangle1SizeX, rectangle1SizeY, rectangle2PositionX, rectangle2PositionY, rectangle2SizeX, rectangle2SizeY
+```
+
+```lua
+do2DRectanglesCollide(rectangle1PositionX, rectangle1PositionY, rectangle1SizeX, rectangle1SizeY, rectangle2PositionX, rectangle2PositionY, rectangle2SizeX, rectangle2SizeY)
+```
+
+```js
+Math.do2DRectanglesCollide(rectangle1PositionX, rectangle1PositionY, rectangle1SizeX, rectangle1SizeY, rectangle2PositionX, rectangle2PositionY, rectangle2SizeX, rectangle2SizeY)
+```
+</Opcode>
+
+## 2D 线段交点
+
+<Opcode id="05B0" name="GET_2D_LINES_INTERSECT_POINT" member="Math.Get2DLinesIntersectPoint">
+两线段交点；不相交时返回 -1000000.0 且条件假。
+
+```text
+05B0 GET_2D_LINES_INTERSECT_POINT
+in: line1StartX, line1StartY, line1EndX, line1EndY, line2StartX, line2StartY, line2EndX, line2EndY
+out: intersectPointX, intersectPointY
+```
+
+```lua
+local intersectPointX, intersectPointY = get2DLinesIntersectPoint(line1StartX, line1StartY, line1EndX, line1EndY, line2StartX, line2StartY, line2EndX, line2EndY)
+```
+
+```js
+Math.get2DLinesIntersectPoint(line1StartX, line1StartY, line1EndX, line1EndY, line2StartX, line2StartY, line2EndX, line2EndY)
+```
+</Opcode>
+
+## 向量朝向角
+
+<Opcode id="0604" name="GET_HEADING_FROM_VECTOR_2D" member="Math.GetHeadingFromVector2D">
+XY 偏移换朝向角。
+
+```text
+0604 GET_HEADING_FROM_VECTOR_2D
+in: x, y
+out: heading
+```
+
+```lua
+local heading = getHeadingFromVector2D(x, y)
+```
+
+```js
+Math.getHeadingFromVector2D(x, y)
+```
+</Opcode>
+
+## 角度归一
+
+<Opcode id="0656" name="LIMIT_ANGLE" member="Math.LimitAngle">
+角度归一到有效范围。
+
+```text
+0656 LIMIT_ANGLE
+in: value
+out: result
+```
+
+```lua
+local result = limitAngle(value)
+```
+
+```js
+Math.limitAngle(value)
+```
+</Opcode>
+
+## 位是否置位 全局·常量
+
+<Opcode id="08B4" name="IS_GLOBAL_VAR_BIT_SET_CONST" member="Math.IsBitSet">
+用在 if：数的第 n 位是否置位（全局·常量位）。
+
+```text
+08B4 IS_GLOBAL_VAR_BIT_SET_CONST
+in: number, bitIndex
+```
+
+```lua
+isGlobalVarBitSetConst(number, bitIndex)
+```
+
+```js
+Math.isBitSet(number, bitIndex)
+```
+</Opcode>
+
+## 位是否置位 全局·变量
+
+<Opcode id="08B5" name="IS_GLOBAL_VAR_BIT_SET_VAR" member="Math.IsBitSet">
+用在 if：数的第 n 位是否置位（全局·变量位）。
+
+```text
+08B5 IS_GLOBAL_VAR_BIT_SET_VAR
+in: number, bitIndex
+```
+
+```lua
+isGlobalVarBitSetVar(number, bitIndex)
+```
+
+```js
+Math.isBitSet(number, bitIndex)
+```
+</Opcode>
+
+## 位是否置位 全局·局部
+
+<Opcode id="08B6" name="IS_GLOBAL_VAR_BIT_SET_LVAR" member="Math.IsBitSet">
+用在 if：数的第 n 位是否置位（全局·局部位）。
+
+```text
+08B6 IS_GLOBAL_VAR_BIT_SET_LVAR
+in: number, bitIndex
+```
+
+```lua
+isGlobalVarBitSetLvar(number, bitIndex)
+```
+
+```js
+Math.isBitSet(number, bitIndex)
+```
+</Opcode>
+
+## 位是否置位 局部·常量
+
+<Opcode id="08B7" name="IS_LOCAL_VAR_BIT_SET_CONST" member="Math.IsBitSet">
+用在 if：数的第 n 位是否置位（局部·常量位）。
+
+```text
+08B7 IS_LOCAL_VAR_BIT_SET_CONST
+in: number, bitIndex
+```
+
+```lua
+isLocalVarBitSetConst(number, bitIndex)
+```
+
+```js
+Math.isBitSet(number, bitIndex)
+```
+</Opcode>
+
+## 位是否置位 局部·变量
+
+<Opcode id="08B8" name="IS_LOCAL_VAR_BIT_SET_VAR" member="Math.IsBitSet">
+用在 if：数的第 n 位是否置位（局部·变量位）。
+
+```text
+08B8 IS_LOCAL_VAR_BIT_SET_VAR
+in: number, bitIndex
+```
+
+```lua
+isLocalVarBitSetVar(number, bitIndex)
+```
+
+```js
+Math.isBitSet(number, bitIndex)
+```
+</Opcode>
+
+## 位是否置位 局部·局部
+
+<Opcode id="08B9" name="IS_LOCAL_VAR_BIT_SET_LVAR" member="Math.IsBitSet">
+用在 if：数的第 n 位是否置位（局部·局部位）。
+
+```text
+08B9 IS_LOCAL_VAR_BIT_SET_LVAR
+in: number, bitIndex
+```
+
+```lua
+isLocalVarBitSetLvar(number, bitIndex)
+```
+
+```js
+Math.isBitSet(number, bitIndex)
+```
+</Opcode>
+
+## 置位 全局·常量
+
+<Opcode id="08BA" name="SET_GLOBAL_VAR_BIT_CONST" member="Math.SetBit">
+置第 n 位（全局·常量位）。
+
+```text
+08BA SET_GLOBAL_VAR_BIT_CONST
+in: number, bitIndex
+```
+
+```lua
+setGlobalVarBitConst(number, bitIndex)
+```
+
+```js
+Math.setBit(number, bitIndex)
+```
+</Opcode>
+
+## 置位 全局·变量
+
+<Opcode id="08BB" name="SET_GLOBAL_VAR_BIT_VAR" member="Math.SetBit">
+置第 n 位（全局·变量位）。
+
+```text
+08BB SET_GLOBAL_VAR_BIT_VAR
+in: number, bitIndex
+```
+
+```lua
+setGlobalVarBitVar(number, bitIndex)
+```
+
+```js
+Math.setBit(number, bitIndex)
+```
+</Opcode>
+
+## 置位 全局·局部
+
+<Opcode id="08BC" name="SET_GLOBAL_VAR_BIT_LVAR" member="Math.SetBit">
+置第 n 位（全局·局部位）。
+
+```text
+08BC SET_GLOBAL_VAR_BIT_LVAR
+in: number, bitIndex
+```
+
+```lua
+setGlobalVarBitLvar(number, bitIndex)
+```
+
+```js
+Math.setBit(number, bitIndex)
+```
+</Opcode>
+
+## 置位 局部·常量
+
+<Opcode id="08BD" name="SET_LOCAL_VAR_BIT_CONST" member="Math.SetBit">
+置第 n 位（局部·常量位）。
+
+```text
+08BD SET_LOCAL_VAR_BIT_CONST
+in: number, bitIndex
+```
+
+```lua
+setLocalVarBitConst(number, bitIndex)
+```
+
+```js
+Math.setBit(number, bitIndex)
+```
+</Opcode>
+
+## 置位 局部·变量
+
+<Opcode id="08BE" name="SET_LOCAL_VAR_BIT_VAR" member="Math.SetBit">
+置第 n 位（局部·变量位）。
+
+```text
+08BE SET_LOCAL_VAR_BIT_VAR
+in: number, bitIndex
+```
+
+```lua
+setLocalVarBitVar(number, bitIndex)
+```
+
+```js
+Math.setBit(number, bitIndex)
+```
+</Opcode>
+
+## 置位 局部·局部
+
+<Opcode id="08BF" name="SET_LOCAL_VAR_BIT_LVAR" member="Math.SetBit">
+置第 n 位（局部·局部位）。
+
+```text
+08BF SET_LOCAL_VAR_BIT_LVAR
+in: number, bitIndex
+```
+
+```lua
+setLocalVarBitLvar(number, bitIndex)
+```
+
+```js
+Math.setBit(number, bitIndex)
+```
+</Opcode>
+
+## 清位 全局·常量
+
+<Opcode id="08C0" name="CLEAR_GLOBAL_VAR_BIT_CONST" member="Math.ClearBit">
+清第 n 位（全局·常量位）。
+
+```text
+08C0 CLEAR_GLOBAL_VAR_BIT_CONST
+in: number, bitIndex
+```
+
+```lua
+clearGlobalVarBitConst(number, bitIndex)
+```
+
+```js
+Math.clearBit(number, bitIndex)
+```
+</Opcode>
+
+## 清位 全局·变量
+
+<Opcode id="08C1" name="CLEAR_GLOBAL_VAR_BIT_VAR" member="Math.ClearBit">
+清第 n 位（全局·变量位）。
+
+```text
+08C1 CLEAR_GLOBAL_VAR_BIT_VAR
+in: number, bitIndex
+```
+
+```lua
+clearGlobalVarBitVar(number, bitIndex)
+```
+
+```js
+Math.clearBit(number, bitIndex)
+```
+</Opcode>
+
+## 清位 全局·局部
+
+<Opcode id="08C2" name="CLEAR_GLOBAL_VAR_BIT_LVAR" member="Math.ClearBit">
+清第 n 位（全局·局部位）。
+
+```text
+08C2 CLEAR_GLOBAL_VAR_BIT_LVAR
+in: number, bitIndex
+```
+
+```lua
+clearGlobalVarBitLvar(number, bitIndex)
+```
+
+```js
+Math.clearBit(number, bitIndex)
+```
+</Opcode>
+
+## 清位 局部·常量
+
+<Opcode id="08C3" name="CLEAR_LOCAL_VAR_BIT_CONST" member="Math.ClearBit">
+清第 n 位（局部·常量位）。
+
+```text
+08C3 CLEAR_LOCAL_VAR_BIT_CONST
+in: number, bitIndex
+```
+
+```lua
+clearLocalVarBitConst(number, bitIndex)
+```
+
+```js
+Math.clearBit(number, bitIndex)
+```
+</Opcode>
+
+## 清位 局部·变量
+
+<Opcode id="08C4" name="CLEAR_LOCAL_VAR_BIT_VAR" member="Math.ClearBit">
+清第 n 位（局部·变量位）。
+
+```text
+08C4 CLEAR_LOCAL_VAR_BIT_VAR
+in: number, bitIndex
+```
+
+```lua
+clearLocalVarBitVar(number, bitIndex)
+```
+
+```js
+Math.clearBit(number, bitIndex)
+```
+</Opcode>
+
+## 清位 局部·局部
+
+<Opcode id="08C5" name="CLEAR_LOCAL_VAR_BIT_LVAR" member="Math.ClearBit">
+清第 n 位（局部·局部位）。
+
+```text
+08C5 CLEAR_LOCAL_VAR_BIT_LVAR
+in: number, bitIndex
+```
+
+```lua
+clearLocalVarBitLvar(number, bitIndex)
+```
+
+```js
+Math.clearBit(number, bitIndex)
+```
+</Opcode>

@@ -1,0 +1,21 @@
+{
+  "title": "插件",
+  "root": true,
+  "icon": "Box",
+  "pages": [
+    "index",
+    "---核心---",
+    "plugin-base",
+    "events",
+    "patch",
+    "pattern",
+    "commands",
+    "---扩展与工具---",
+    "extensions",
+    "utils",
+    "extender",
+    "entities",
+    "---组合---",
+    "recipes"
+  ]
+}

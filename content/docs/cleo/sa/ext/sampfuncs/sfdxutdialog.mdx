@@ -1,0 +1,695 @@
+---
+title: 对话框 SfDxutDialog
+description: DXUT 对话框控件与事件
+---
+
+`sa` · 扩展 `SAMPFUNCS` · 仅 SA-MP；需 SAMPFUNCS
+
+共 38 条。DXUT 对话框 / 控件 / 列表框。调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 创建 / 事件 / 布局
+
+<Opcode id="0B80" name="SF_DXUT_CREATE_DIALOG" member="SfDxutDialog.Create">
+创建带标题的 DXUTDialog 对象。
+
+```text
+0B80 SF_DXUT_CREATE_DIALOG
+in: title
+out: handle
+```
+
+```lua
+local handle = sfDxutCreateDialog(title)
+```
+
+```js
+const handle = SfDxutDialog.Create(title)
+```
+</Opcode>
+
+<Opcode id="0B81" name="SF_DXUT_DIALOG_POP" member="SfDxutDialog.Pop">
+返回指定对话框上最近一次事件与组件 ID。
+
+```text
+0B81 SF_DXUT_DIALOG_POP
+in: self
+out: eventId, controlId
+```
+
+```lua
+local eventId, controlId = sfDxutDialogPop(self)
+```
+
+```js
+const { eventId, controlId } = SfDxutDialog.pop(self)
+```
+</Opcode>
+
+<Opcode id="0B84" name="SF_DXUT_DIALOG_SET_COORDS_AND_DIMS" member="SfDxutDialog.SetCoordsAndDims">
+设置 DXUTDialog 的坐标与尺寸。
+
+```text
+0B84 SF_DXUT_DIALOG_SET_COORDS_AND_DIMS
+in: self, coordX, coordY, width, height
+```
+
+```lua
+sfDxutDialogSetCoordsAndDims(self, coordX, coordY, width, height)
+```
+
+```js
+SfDxutDialog.setCoordsAndDims(self, coordX, coordY, width, height)
+```
+</Opcode>
+
+<Opcode id="0B85" name="SF_DXUT_DIALOG_GET_COORDS_AND_DIMS" member="SfDxutDialog.GetCoordsAndDims">
+返回 DXUTDialog 的坐标与尺寸。
+
+```text
+0B85 SF_DXUT_DIALOG_GET_COORDS_AND_DIMS
+in: self
+out: coordX, coordY, width, height
+```
+
+```lua
+local coordX, coordY, width, height = sfDxutDialogGetCoordsAndDims(self)
+```
+
+```js
+const { coordX, coordY, width, height } = SfDxutDialog.getCoordsAndDims(self)
+```
+</Opcode>
+
+<Opcode id="0B86" name="SF_DXUT_DIALOG_SET_VISIBILITY" member="SfDxutDialog.Visibility">
+设置 DXUTDialog 是否可见。
+
+```text
+0B86 SF_DXUT_DIALOG_SET_VISIBILITY
+in: self, isVisible
+```
+
+```lua
+sfDxutDialogSetVisibility(self, isVisible)
+```
+
+```js
+SfDxutDialog.visibility(self, isVisible)
+```
+</Opcode>
+
+<Opcode id="0B87" name="SF_DXUT_DIALOG_IS_VISIBLE" member="SfDxutDialog.IsVisible">
+检查 DXUTDialog 是否可见。
+
+```text
+0B87 SF_DXUT_DIALOG_IS_VISIBLE
+in: self
+```
+
+```lua
+if sfDxutDialogIsVisible(self) then
+end
+```
+
+```js
+if (SfDxutDialog.isVisible(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0B93" name="SF_DXUT_DIALOG_SET_BACKGROUND_COLOR" member="SfDxutDialog.SetBgColor">
+设置 DXUTDialog 背景色。
+
+```text
+0B93 SF_DXUT_DIALOG_SET_BACKGROUND_COLOR
+in: self, color
+```
+
+```lua
+sfDxutDialogSetBackgroundColor(self, color)
+```
+
+```js
+SfDxutDialog.setBgColor(self, color)
+```
+</Opcode>
+
+## 添加控件
+
+<Opcode id="0B82" name="SF_DXUT_DIALOG_ADD_BUTTON" member="SfDxutDialog.AddButton">
+在 DXUTDialog 上添加按钮。
+
+```text
+0B82 SF_DXUT_DIALOG_ADD_BUTTON
+in: self, id, text, relCoordX, relCoordY, width, height
+```
+
+```lua
+sfDxutDialogAddButton(self, id, text, relCoordX, relCoordY, width, height)
+```
+
+```js
+SfDxutDialog.addButton(self, id, text, relCoordX, relCoordY, width, height)
+```
+</Opcode>
+
+<Opcode id="0B83" name="SF_DXUT_DIALOG_ADD_CHECKBOX" member="SfDxutDialog.AddCheckbox">
+在 DXUTDialog 上创建复选框。
+
+```text
+0B83 SF_DXUT_DIALOG_ADD_CHECKBOX
+in: self, id, text, relCoordX, relCoordY, width, height
+```
+
+```lua
+sfDxutDialogAddCheckbox(self, id, text, relCoordX, relCoordY, width, height)
+```
+
+```js
+SfDxutDialog.addCheckbox(self, id, text, relCoordX, relCoordY, width, height)
+```
+</Opcode>
+
+<Opcode id="0B88" name="SF_DXUT_DIALOG_ADD_EDITBOX" member="SfDxutDialog.AddEditbox">
+在 DXUTDialog 上创建文本输入框。
+
+```text
+0B88 SF_DXUT_DIALOG_ADD_EDITBOX
+in: self, id, initialText, coordX, coordY, width, height
+```
+
+```lua
+sfDxutDialogAddEditbox(self, id, initialText, coordX, coordY, width, height)
+```
+
+```js
+SfDxutDialog.addEditbox(self, id, initialText, coordX, coordY, width, height)
+```
+</Opcode>
+
+<Opcode id="0B91" name="SF_DXUT_DIALOG_ADD_STATIC_TEXT" member="SfDxutDialog.AddStaticText">
+在 DXUTDialog 上添加静态文本控件。
+
+```text
+0B91 SF_DXUT_DIALOG_ADD_STATIC_TEXT
+in: self, id, text, relCoordX, relCoordY, width, height
+```
+
+```lua
+sfDxutDialogAddStaticText(self, id, text, relCoordX, relCoordY, width, height)
+```
+
+```js
+SfDxutDialog.addStaticText(self, id, text, relCoordX, relCoordY, width, height)
+```
+</Opcode>
+
+<Opcode id="0B96" name="SF_DXUT_DIALOG_ADD_SLIDER" member="SfDxutDialog.AddSlider">
+在 DXUTDialog 上创建水平滑块。
+
+```text
+0B96 SF_DXUT_DIALOG_ADD_SLIDER
+in: self, id, relCoordX, relCoordY, width, height, maxValue
+```
+
+```lua
+sfDxutDialogAddSlider(self, id, relCoordX, relCoordY, width, height, maxValue)
+```
+
+```js
+SfDxutDialog.addSlider(self, id, relCoordX, relCoordY, width, height, maxValue)
+```
+</Opcode>
+
+<Opcode id="0B99" name="SF_DXUT_DIALOG_ADD_LISTBOX" member="SfDxutDialog.AddListbox">
+在对话框上创建列表框。
+
+```text
+0B99 SF_DXUT_DIALOG_ADD_LISTBOX
+in: self, id, relCoordX, relCoordY, width, height
+```
+
+```lua
+sfDxutDialogAddListbox(self, id, relCoordX, relCoordY, width, height)
+```
+
+```js
+SfDxutDialog.addListbox(self, id, relCoordX, relCoordY, width, height)
+```
+</Opcode>
+
+## 控件文本 / 可见
+
+<Opcode id="0B89" name="SF_DXUT_DIALOG_GET_TEXT_OF_CONTROL" member="SfDxutDialog.GetControlText">
+按控件 ID 返回其文本。
+
+```text
+0B89 SF_DXUT_DIALOG_GET_TEXT_OF_CONTROL
+in: self, id
+out: text
+```
+
+```lua
+local text = sfDxutDialogGetTextOfControl(self, id)
+```
+
+```js
+const text = SfDxutDialog.getControlText(self, id)
+```
+</Opcode>
+
+<Opcode id="0B90" name="SF_DXUT_DIALOG_SET_VISIBILITY_OF_CONTROL" member="SfDxutDialog.SetVisibilityOfControl">
+设置 DXUTDialog 中指定 ID 控件是否可见。
+
+```text
+0B90 SF_DXUT_DIALOG_SET_VISIBILITY_OF_CONTROL
+in: self, controlId, isVisible
+```
+
+```lua
+sfDxutDialogSetVisibilityOfControl(self, controlId, isVisible)
+```
+
+```js
+SfDxutDialog.setVisibilityOfControl(self, controlId, isVisible)
+```
+</Opcode>
+
+<Opcode id="0B94" name="SF_DXUT_DIALOG_SET_TEXT_OF_CONTROL" member="SfDxutDialog.SetControlText">
+按控件 ID 设置其文本。用在 `if` 里。
+
+```text
+0B94 SF_DXUT_DIALOG_SET_TEXT_OF_CONTROL
+in: self, id, text
+```
+
+```lua
+if sfDxutDialogSetTextOfControl(self, id, text) then
+end
+```
+
+```js
+if (SfDxutDialog.setControlText(self, id, text)) {
+}
+```
+</Opcode>
+
+<Opcode id="0B95" name="SF_DXUT_DIALOG_IS_CONTROL_VISIBLE" member="SfDxutDialog.IsControlVisible">
+若 DXUTDialog 中指定 ID 控件可见则为真。
+
+```text
+0B95 SF_DXUT_DIALOG_IS_CONTROL_VISIBLE
+in: self, id
+```
+
+```lua
+if sfDxutDialogIsControlVisible(self, id) then
+end
+```
+
+```js
+if (SfDxutDialog.isControlVisible(self, id)) {
+}
+```
+</Opcode>
+
+## 复选框 / 滑块
+
+<Opcode id="0B92" name="SF_DXUT_DIALOG_IS_CHECKBOX_CHECKED" member="SfDxutDialog.IsCheckBoxChecked">
+若 DXUTDialog 复选框控件已勾选则为真。
+
+```text
+0B92 SF_DXUT_DIALOG_IS_CHECKBOX_CHECKED
+in: self, checkboxId
+```
+
+```lua
+if sfDxutDialogIsCheckboxChecked(self, checkboxId) then
+end
+```
+
+```js
+if (SfDxutDialog.isCheckBoxChecked(self, checkboxId)) {
+}
+```
+</Opcode>
+
+<Opcode id="0B9E" name="SF_DXUT_DIALOG_SET_STATUS_OF_CHECKBOX" member="SfDxutDialog.SetCheckboxStatus">
+设置复选框状态。
+
+```text
+0B9E SF_DXUT_DIALOG_SET_STATUS_OF_CHECKBOX
+in: self, id, isChecked
+```
+
+```lua
+sfDxutDialogSetStatusOfCheckbox(self, id, isChecked)
+```
+
+```js
+SfDxutDialog.setCheckboxStatus(self, id, isChecked)
+```
+</Opcode>
+
+<Opcode id="0BAA" name="SF_DXUT_DIALOG_SET_COLOR_OF_CHECKBOX" member="SfDxutDialog.SetCheckboxColor">
+设置 DXUTDialog 中指定 ID 复选框的颜色。
+
+```text
+0BAA SF_DXUT_DIALOG_SET_COLOR_OF_CHECKBOX
+in: self, id, color
+```
+
+```lua
+sfDxutDialogSetColorOfCheckbox(self, id, color)
+```
+
+```js
+SfDxutDialog.setCheckboxColor(self, id, color)
+```
+</Opcode>
+
+<Opcode id="0B97" name="SF_DXUT_DIALOG_GET_SLIDER_VALUE" member="SfDxutDialog.GetSliderValue">
+返回 DXUTDialog 中指定 ID 滑块的拇指位置值。
+
+```text
+0B97 SF_DXUT_DIALOG_GET_SLIDER_VALUE
+in: self, id
+out: value
+```
+
+```lua
+local value = sfDxutDialogGetSliderValue(self, id)
+```
+
+```js
+const value = SfDxutDialog.getSliderValue(self, id)
+```
+</Opcode>
+
+<Opcode id="0B98" name="SF_DXUT_DIALOG_SET_SLIDER_VALUE" member="SfDxutDialog.SetSliderValue">
+设置 DXUTDialog 中指定 ID 滑块的拇指位置值。
+
+```text
+0B98 SF_DXUT_DIALOG_SET_SLIDER_VALUE
+in: self, id, value
+```
+
+```lua
+sfDxutDialogSetSliderValue(self, id, value)
+```
+
+```js
+SfDxutDialog.setSliderValue(self, id, value)
+```
+</Opcode>
+
+## 列表框
+
+<Opcode id="0B9A" name="SF_DXUT_DIALOG_INSERT_LISTBOX_ELEMENT" member="SfDxutDialog.InsertListboxElement">
+向 DXUTDialog 中指定 ID 列表框插入新项。用在 `if` 里。
+
+```text
+0B9A SF_DXUT_DIALOG_INSERT_LISTBOX_ELEMENT
+in: self, id, text, data, index
+```
+
+```lua
+if sfDxutDialogInsertListboxElement(self, id, text, data, index) then
+end
+```
+
+```js
+if (SfDxutDialog.insertListboxElement(self, id, text, data, index)) {
+}
+```
+</Opcode>
+
+<Opcode id="0B9B" name="SF_DXUT_DIALOG_GET_SELECTED_LISTBOX_ELEMENT" member="SfDxutDialog.GetSelectedListboxElement">
+返回 DXUTDialog 中指定 ID 列表框的选中索引与元素数量。
+
+```text
+0B9B SF_DXUT_DIALOG_GET_SELECTED_LISTBOX_ELEMENT
+in: self, id
+out: index, count
+```
+
+```lua
+local index, count = sfDxutDialogGetSelectedListboxElement(self, id)
+```
+
+```js
+const { index, count } = SfDxutDialog.getSelectedListboxElement(self, id)
+```
+</Opcode>
+
+<Opcode id="0B9C" name="SF_DXUT_DIALOG_DELETE_LISTBOX_ELEMENT" member="SfDxutDialog.DeleteListboxElement">
+从 DXUTDialog 中指定 ID 列表框移除指定索引项。用在 `if` 里。
+
+```text
+0B9C SF_DXUT_DIALOG_DELETE_LISTBOX_ELEMENT
+in: self, id, index
+```
+
+```lua
+if sfDxutDialogDeleteListboxElement(self, id, index) then
+end
+```
+
+```js
+if (SfDxutDialog.deleteListboxElement(self, id, index)) {
+}
+```
+</Opcode>
+
+<Opcode id="0B9D" name="SF_DXUT_DIALOG_GET_LISTBOX_ELEMENT" member="SfDxutDialog.GetListboxElement">
+按索引返回 DXUTDialog 列表框项的文本与关联数据。
+
+```text
+0B9D SF_DXUT_DIALOG_GET_LISTBOX_ELEMENT
+in: self, id, index
+out: text, data
+```
+
+```lua
+local text, data = sfDxutDialogGetListboxElement(self, id, index)
+```
+
+```js
+const { text, data } = SfDxutDialog.getListboxElement(self, id, index)
+```
+</Opcode>
+
+## 标题 / 最小化 / 焦点
+
+<Opcode id="0B9F" name="SF_DXUT_DIALOG_SET_TITLE_VISIBILITY" member="SfDxutDialog.SetTitleVisibility">
+设置 DXUTDialog 标题是否可见。
+
+```text
+0B9F SF_DXUT_DIALOG_SET_TITLE_VISIBILITY
+in: self, isVisible
+```
+
+```lua
+sfDxutDialogSetTitleVisibility(self, isVisible)
+```
+
+```js
+SfDxutDialog.setTitleVisibility(self, isVisible)
+```
+</Opcode>
+
+<Opcode id="0BA0" name="SF_DXUT_DIALOG_IS_TITLE_VISIBLE" member="SfDxutDialog.IsTitleVisible">
+若 DXUTDialog 标题可见则为真。
+
+```text
+0BA0 SF_DXUT_DIALOG_IS_TITLE_VISIBLE
+in: self
+```
+
+```lua
+if sfDxutDialogIsTitleVisible(self) then
+end
+```
+
+```js
+if (SfDxutDialog.isTitleVisible(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0BA1" name="SF_DXUT_DIALOG_SET_MINIMIZED" member="SfDxutDialog.SetMinimized">
+设置 DXUTDialog 是否最小化。
+
+```text
+0BA1 SF_DXUT_DIALOG_SET_MINIMIZED
+in: self, isMinimized
+```
+
+```lua
+sfDxutDialogSetMinimized(self, isMinimized)
+```
+
+```js
+SfDxutDialog.setMinimized(self, isMinimized)
+```
+</Opcode>
+
+<Opcode id="0BA2" name="SF_DXUT_DIALOG_IS_MINIMIZED" member="SfDxutDialog.IsMinimized">
+若 DXUTDialog 已最小化则为真。
+
+```text
+0BA2 SF_DXUT_DIALOG_IS_MINIMIZED
+in: self
+```
+
+```lua
+if sfDxutDialogIsMinimized(self) then
+end
+```
+
+```js
+if (SfDxutDialog.isMinimized(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0BA5" name="SF_DXUT_DIALOG_SET_FOCUSED_CONTROL" member="SfDxutDialog.ToggleControlFocus">
+把交互焦点设到 DXUTDialog 中指定 ID 控件。
+
+```text
+0BA5 SF_DXUT_DIALOG_SET_FOCUSED_CONTROL
+in: self, id
+```
+
+```lua
+sfDxutDialogSetFocusedControl(self, id)
+```
+
+```js
+SfDxutDialog.toggleControlFocus(self, id)
+```
+</Opcode>
+
+## 控件几何 / 删除
+
+<Opcode id="0BA6" name="SF_DXUT_DIALOG_SET_DIMS_OF_CONTROL" member="SfDxutDialog.SetDims">
+修改 DXUTDialog 中指定 ID 控件的尺寸。
+
+```text
+0BA6 SF_DXUT_DIALOG_SET_DIMS_OF_CONTROL
+in: self, id, width, height
+```
+
+```lua
+sfDxutDialogSetDimsOfControl(self, id, width, height)
+```
+
+```js
+SfDxutDialog.setDims(self, id, width, height)
+```
+</Opcode>
+
+<Opcode id="0BA7" name="SF_DXUT_DIALOG_GET_DIMS_OF_CONTROL" member="SfDxutDialog.GetControlDims">
+返回 DXUTDialog 中指定 ID 控件的尺寸。
+
+```text
+0BA7 SF_DXUT_DIALOG_GET_DIMS_OF_CONTROL
+in: self, id
+out: width, height
+```
+
+```lua
+local width, height = sfDxutDialogGetDimsOfControl(self, id)
+```
+
+```js
+const { width, height } = SfDxutDialog.getControlDims(self, id)
+```
+</Opcode>
+
+<Opcode id="0BA8" name="SF_DXUT_DIALOG_SET_COORDS_OF_CONTROL" member="SfDxutDialog.SetControlCoords">
+设置 DXUTDialog 中指定 ID 控件的窗口位置。
+
+```text
+0BA8 SF_DXUT_DIALOG_SET_COORDS_OF_CONTROL
+in: self, id, relCoordX, relCoordY
+```
+
+```lua
+sfDxutDialogSetCoordsOfControl(self, id, relCoordX, relCoordY)
+```
+
+```js
+SfDxutDialog.setControlCoords(self, id, relCoordX, relCoordY)
+```
+</Opcode>
+
+<Opcode id="0BA9" name="SF_DXUT_DIALOG_GET_COORDS_OF_CONTROL" member="SfDxutDialog.GetControlCoords">
+返回 DXUTDialog 控件的窗口位置。
+
+```text
+0BA9 SF_DXUT_DIALOG_GET_COORDS_OF_CONTROL
+in: self, id
+out: coordX, coordY
+```
+
+```lua
+local coordX, coordY = sfDxutDialogGetCoordsOfControl(self, id)
+```
+
+```js
+const { coordX, coordY } = SfDxutDialog.getControlCoords(self, id)
+```
+</Opcode>
+
+<Opcode id="0BA3" name="SF_DXUT_DIALOG_DELETE_CONTROL" member="SfDxutDialog.DeleteControl">
+移除 DXUTDialog 中指定 ID 控件并释放其内存。
+
+```text
+0BA3 SF_DXUT_DIALOG_DELETE_CONTROL
+in: self, id
+```
+
+```lua
+sfDxutDialogDeleteControl(self, id)
+```
+
+```js
+SfDxutDialog.deleteControl(self, id)
+```
+</Opcode>
+
+<Opcode id="0BA4" name="SF_DXUT_DIALOG_DELETE" member="SfDxutDialog.Delete">
+删除 DXUTDialog 并释放其内存。
+
+```text
+0BA4 SF_DXUT_DIALOG_DELETE
+in: self
+```
+
+```lua
+sfDxutDialogDelete(self)
+```
+
+```js
+SfDxutDialog.delete(self)
+```
+</Opcode>
+
+<Opcode id="0BAB" name="SF_DXUT_DIALOG_EXIST" member="SfDxutDialog.DoesExist">
+若指定 DXUTDialog 存在则为真。
+
+```text
+0BAB SF_DXUT_DIALOG_EXIST
+in: self
+```
+
+```lua
+if sfDxutDialogExist(self) then
+end
+```
+
+```js
+if (SfDxutDialog.doesExist(self)) {
+}
+```
+</Opcode>

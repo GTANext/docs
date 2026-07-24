@@ -1,0 +1,1560 @@
+---
+title: 游戏 Game
+description: 全局规则 / 通缉 / 双人 / 帮战
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 83 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 最高通缉上限
+
+<Opcode id="01F0" name="SET_MAX_WANTED_LEVEL" member="Game.SetMaxWantedLevel">
+玩家可达到的最高通缉等级。
+
+```text
+01F0 SET_MAX_WANTED_LEVEL
+in: wantedLevel
+```
+
+```lua
+setMaxWantedLevel(wantedLevel)
+```
+
+```js
+Game.setMaxWantedLevel(wantedLevel)
+```
+</Opcode>
+
+## 警察无视玩家
+
+<Opcode id="01F7" name="SET_POLICE_IGNORE_PLAYER" member="Game.SetPoliceIgnorePlayer">
+警察是否无视玩家（与通缉无关）。
+
+```text
+01F7 SET_POLICE_IGNORE_PLAYER
+in: player, state
+```
+
+```lua
+setPoliceIgnorePlayer(player, state)
+```
+
+```js
+Game.setPoliceIgnorePlayer(player, state)
+```
+</Opcode>
+
+## 隐藏包裹总数
+
+<Opcode id="02ED" name="SET_COLLECTABLE1_TOTAL" member="Game.SetCollectableTotal">
+隐藏包裹总数。
+
+```text
+02ED SET_COLLECTABLE1_TOTAL
+in: amount
+```
+
+```lua
+setCollectable1Total(amount)
+```
+
+```js
+Game.setCollectableTotal(amount)
+```
+</Opcode>
+
+## 喷漆免费
+
+<Opcode id="0335" name="SET_FREE_RESPRAYS" member="Game.SetFreeResprays">
+喷漆店是否免费。
+
+```text
+0335 SET_FREE_RESPRAYS
+in: state
+```
+
+```lua
+setFreeResprays(state)
+```
+
+```js
+Game.setFreeResprays(state)
+```
+</Opcode>
+
+## 行人无视玩家
+
+<Opcode id="03BF" name="SET_EVERYONE_IGNORE_PLAYER" member="Game.SetEveryoneIgnorePlayer">
+行人是否无视玩家。
+
+```text
+03BF SET_EVERYONE_IGNORE_PLAYER
+in: player, state
+```
+
+```lua
+setEveryoneIgnorePlayer(player, state)
+```
+
+```js
+Game.setEveryoneIgnorePlayer(player, state)
+```
+</Opcode>
+
+## 通缉敏感度
+
+<Opcode id="03C7" name="SET_WANTED_MULTIPLIER" member="Game.SetWantedMultiplier">
+犯罪敏感度（多少罪才招警察）。
+
+```text
+03C7 SET_WANTED_MULTIPLIER
+in: multiplier
+```
+
+```lua
+setWantedMultiplier(multiplier)
+```
+
+```js
+Game.setWantedMultiplier(multiplier)
+```
+</Opcode>
+
+## 弹出存档菜单
+
+<Opcode id="03D8" name="ACTIVATE_SAVE_MENU" member="Game.ActivateSaveMenu">
+下一帧弹出存档菜单。
+
+```text
+03D8 ACTIVATE_SAVE_MENU
+```
+
+```lua
+activateSaveMenu()
+```
+
+```js
+Game.activateSaveMenu()
+```
+</Opcode>
+
+## 存档是否完成
+
+<Opcode id="03D9" name="HAS_SAVE_GAME_FINISHED" member="Game.HasSaveGameFinished">
+用在 if：存档菜单请求后是否已处理完（未弹出完为假）。
+
+```text
+03D9 HAS_SAVE_GAME_FINISHED
+```
+
+```lua
+hasSaveGameFinished()
+```
+
+```js
+Game.hasSaveGameFinished()
+```
+</Opcode>
+
+## 全车可受伤
+
+<Opcode id="03F4" name="SET_ALL_CARS_CAN_BE_DAMAGED" member="Game.SetAllCarsCanBeDamaged">
+是否所有车可受伤。
+
+```text
+03F4 SET_ALL_CARS_CAN_BE_DAMAGED
+in: state
+```
+
+```lua
+setAllCarsCanBeDamaged(state)
+```
+
+```js
+Game.setAllCarsCanBeDamaged(state)
+```
+</Opcode>
+
+## 是否德语版
+
+<Opcode id="040C" name="IS_GERMAN_GAME" member="Game.IsGerman">
+用在 if：语言是否为德语。
+
+```text
+040C IS_GERMAN_GAME
+```
+
+```lua
+isGermanGame()
+```
+
+```js
+Game.isGerman()
+```
+</Opcode>
+
+## 是否公制
+
+<Opcode id="0424" name="ARE_MEASUREMENTS_IN_METRES" member="Game.AreMeasurementsInMeters">
+用在 if：是否公制（米而非英尺）。
+
+```text
+0424 ARE_MEASUREMENTS_IN_METRES
+```
+
+```lua
+areMeasurementsInMetres()
+```
+
+```js
+Game.areMeasurementsInMeters()
+```
+</Opcode>
+
+## 是否用过作弊
+
+<Opcode id="0445" name="ARE_ANY_CAR_CHEATS_ACTIVATED" member="Game.AreAnyCarCheatsActivated">
+用在 if：是否用过任何作弊。
+
+```text
+0445 ARE_ANY_CAR_CHEATS_ACTIVATED
+```
+
+```lua
+areAnyCarCheatsActivated()
+```
+
+```js
+Game.areAnyCarCheatsActivated()
+```
+</Opcode>
+
+## 是否 PC 版
+
+<Opcode id="0485" name="IS_PC_VERSION" member="Game.IsPcVersion">
+用在 if：是否 PC 版。
+
+```text
+0485 IS_PC_VERSION
+```
+
+```lua
+isPcVersion()
+```
+
+```js
+Game.isPcVersion()
+```
+</Opcode>
+
+## 取通缉上限
+
+<Opcode id="050F" name="GET_MAX_WANTED_LEVEL" member="Game.GetMaxWantedLevel">
+取最高通缉上限。
+
+```text
+050F GET_MAX_WANTED_LEVEL
+out: level
+```
+
+```lua
+local level = getMaxWantedLevel()
+```
+
+```js
+Game.getMaxWantedLevel()
+```
+</Opcode>
+
+## 出租带氮气
+
+<Opcode id="0572" name="SET_ALL_TAXIS_HAVE_NITRO" member="Game.SetAllTaxisHaveNitro">
+是否所有出租车带氮气。
+
+```text
+0572 SET_ALL_TAXIS_HAVE_NITRO
+in: state
+```
+
+```lua
+setAllTaxisHaveNitro(state)
+```
+
+```js
+Game.setAllTaxisHaveNitro(state)
+```
+</Opcode>
+
+## 体育场雷达灰
+
+<Opcode id="057E" name="SET_PLAYER_IS_IN_STADIUM" member="Game.SetIsInStadium">
+雷达变灰（体育场等）。
+
+```text
+057E SET_PLAYER_IS_IN_STADIUM
+in: state
+```
+
+```lua
+setPlayerIsInStadium(state)
+```
+
+```js
+Game.setIsInStadium(state)
+```
+</Opcode>
+
+## 是否澳洲版
+
+<Opcode id="059A" name="IS_AUSTRALIAN_GAME" member="Game.IsAustralian">
+用在 if：是否澳洲版。
+
+```text
+059A IS_AUSTRALIAN_GAME
+```
+
+```lua
+isAustralianGame()
+```
+
+```js
+Game.isAustralian()
+```
+</Opcode>
+
+## 洛圣都暴乱
+
+<Opcode id="06C8" name="SET_LA_RIOTS" member="Game.SetLaRiots">
+开关洛圣都暴乱效果。
+
+```text
+06C8 SET_LA_RIOTS
+in: state
+```
+
+```lua
+setLaRiots(state)
+```
+
+```js
+Game.setLaRiots(state)
+```
+</Opcode>
+
+## 应急车辆
+
+<Opcode id="06D0" name="SWITCH_EMERGENCY_SERVICES" member="Game.SwitchEmergencyServices">
+是否刷应急车辆。
+
+```text
+06D0 SWITCH_EMERGENCY_SERVICES
+in: state
+```
+
+```lua
+switchEmergencyServices(state)
+```
+
+```js
+Game.switchEmergencyServices(state)
+```
+</Opcode>
+
+## 随机火车
+
+<Opcode id="06D7" name="SWITCH_RANDOM_TRAINS" member="Game.SwitchRandomTrains">
+是否生成火车。
+
+```text
+06D7 SWITCH_RANDOM_TRAINS
+in: state
+```
+
+```lua
+switchRandomTrains(state)
+```
+
+```js
+Game.switchRandomTrains(state)
+```
+</Opcode>
+
+## 双人最大距离
+
+<Opcode id="06F1" name="LIMIT_TWO_PLAYER_DISTANCE" member="Game.LimitTwoPlayerDistance">
+双人模式玩家最大距离。
+
+```text
+06F1 LIMIT_TWO_PLAYER_DISTANCE
+in: distance
+```
+
+```lua
+limitTwoPlayerDistance(distance)
+```
+
+```js
+Game.limitTwoPlayerDistance(distance)
+```
+</Opcode>
+
+## 解除双人距离
+
+<Opcode id="06F2" name="RELEASE_TWO_PLAYER_DISTANCE" member="Game.ReleaseTwoPlayerDistance">
+解除双人距离限制。
+
+```text
+06F2 RELEASE_TWO_PLAYER_DISTANCE
+```
+
+```lua
+releaseTwoPlayerDistance()
+```
+
+```js
+Game.releaseTwoPlayerDistance()
+```
+</Opcode>
+
+## 双人互瞄
+
+<Opcode id="06F3" name="SET_PLAYER_PLAYER_TARGETTING" member="Game.SetPlayerPlayerTargeting">
+双人是否可互瞄。
+
+```text
+06F3 SET_PLAYER_PLAYER_TARGETTING
+in: state
+```
+
+```lua
+setPlayerPlayerTargetting(state)
+```
+
+```js
+Game.setPlayerPlayerTargeting(state)
+```
+</Opcode>
+
+## 双人分乘
+
+<Opcode id="06FA" name="SET_PLAYERS_CAN_BE_IN_SEPARATE_CARS" member="Game.SetPlayersCanBeInSeparateCars">
+双人任务是否可分乘不同车。
+
+```text
+06FA SET_PLAYERS_CAN_BE_IN_SEPARATE_CARS
+in: state
+```
+
+```lua
+setPlayersCanBeInSeparateCars(state)
+```
+
+```js
+Game.setPlayersCanBeInSeparateCars(state)
+```
+</Opcode>
+
+## 警用摩托
+
+<Opcode id="072C" name="SWITCH_COPS_ON_BIKES" member="Game.SwitchCopsOnBikes">
+是否禁止刷警用摩托及骑手。
+
+```text
+072C SWITCH_COPS_ON_BIKES
+in: state
+```
+
+```lua
+switchCopsOnBikes(state)
+```
+
+```js
+Game.switchCopsOnBikes(state)
+```
+</Opcode>
+
+## 设置 ped 关系
+
+<Opcode id="0746" name="SET_RELATIONSHIP" member="Game.SetRelationship">
+设置两类 pedtype 之间关系。
+
+```text
+0746 SET_RELATIONSHIP
+in: relationshipType, ofPedType, toPedType
+```
+
+```lua
+setRelationship(relationshipType, ofPedType, toPedType)
+```
+
+```js
+Game.setRelationship(relationshipType, ofPedType, toPedType)
+```
+</Opcode>
+
+## 清除 ped 关系
+
+<Opcode id="0747" name="CLEAR_RELATIONSHIP" member="Game.ClearRelationship">
+清除 pedtype 关系。
+
+```text
+0747 CLEAR_RELATIONSHIP
+in: relationshipType, ofPedType, toPedType
+```
+
+```lua
+clearRelationship(relationshipType, ofPedType, toPedType)
+```
+
+```js
+Game.clearRelationship(relationshipType, ofPedType, toPedType)
+```
+</Opcode>
+
+## 51 区导弹
+
+<Opcode id="07A8" name="SET_AREA51_SAM_SITE" member="Game.SetArea51SamSite">
+开关 51 区防空导弹。
+
+```text
+07A8 SET_AREA51_SAM_SITE
+in: state
+```
+
+```lua
+setArea51SamSite(state)
+```
+
+```js
+Game.setArea51SamSite(state)
+```
+</Opcode>
+
+## 关系是否已设
+
+<Opcode id="07E8" name="IS_RELATIONSHIP_SET" member="Game.IsRelationshipSet">
+用在 if：指定 pedtype 关系是否已设。
+
+```text
+07E8 IS_RELATIONSHIP_SET
+in: relationshipType, ofPedType, toPedType
+```
+
+```lua
+isRelationshipSet(relationshipType, ofPedType, toPedType)
+```
+
+```js
+Game.isRelationshipSet(relationshipType, ofPedType, toPedType)
+```
+</Opcode>
+
+## 是否双人模式
+
+<Opcode id="0800" name="IS_2PLAYER_GAME_GOING_ON" member="Game.Is2PlayerGameGoingOn">
+用在 if：是否双人模式。
+
+```text
+0800 IS_2PLAYER_GAME_GOING_ON
+```
+
+```lua
+is2playerGameGoingOn()
+```
+
+```js
+Game.is2PlayerGameGoingOn()
+```
+</Opcode>
+
+## 火蔓延上限
+
+<Opcode id="0828" name="SET_MAX_FIRE_GENERATIONS" member="Game.SetMaxFireGenerations">
+火势蔓延时最多生成多少火（配合 02CF）。
+
+```text
+0828 SET_MAX_FIRE_GENERATIONS
+in: limit
+```
+
+```lua
+setMaxFireGenerations(limit)
+```
+
+```js
+Game.setMaxFireGenerations(limit)
+```
+</Opcode>
+
+## 室内刷行人
+
+<Opcode id="084D" name="ACTIVATE_INTERIOR_PEDS" member="Game.ActivateInteriorPeds">
+室内是否刷行人。
+
+```text
+084D ACTIVATE_INTERIOR_PEDS
+in: state
+```
+
+```lua
+activateInteriorPeds(state)
+```
+
+```js
+Game.activateInteriorPeds(state)
+```
+</Opcode>
+
+## 入口小组跟随
+
+<Opcode id="0864" name="ENABLE_ENTRY_EXIT_PLAYER_GROUP_WARPING" member="Game.EnableEntryExitPlayerGroupWarping">
+坐标半径内开关入口标记（小组跟随）。
+
+```text
+0864 ENABLE_ENTRY_EXIT_PLAYER_GROUP_WARPING
+in: x, y, radius, state
+```
+
+```lua
+enableEntryExitPlayerGroupWarping(x, y, radius, state)
+```
+
+```js
+Game.enableEntryExitPlayerGroupWarping(x, y, radius, state)
+```
+</Opcode>
+
+## 程序化室内
+
+<Opcode id="0867" name="IS_PROCEDURAL_INTERIOR_ACTIVE" member="Game.IsProceduralInteriorActive">
+用在 if：程序化室内是否激活。
+
+```text
+0867 IS_PROCEDURAL_INTERIOR_ACTIVE
+in: areaId
+```
+
+```lua
+isProceduralInteriorActive(areaId)
+```
+
+```js
+Game.isProceduralInteriorActive(areaId)
+```
+</Opcode>
+
+## 帮战开关
+
+<Opcode id="0879" name="SET_GANG_WARS_ACTIVE" member="Game.SetGangWarsActive">
+是否可开帮战。
+
+```text
+0879 SET_GANG_WARS_ACTIVE
+in: state
+```
+
+```lua
+setGangWarsActive(state)
+```
+
+```js
+Game.setGangWarsActive(state)
+```
+</Opcode>
+
+## 是否在帮战
+
+<Opcode id="087A" name="IS_GANG_WAR_GOING_ON" member="Game.IsGangWarGoingOn">
+用在 if：是否正在帮战。
+
+```text
+087A IS_GANG_WAR_GOING_ON
+```
+
+```lua
+isGangWarGoingOn()
+```
+
+```js
+Game.isGangWarGoingOn()
+```
+</Opcode>
+
+## 任务中可帮战
+
+<Opcode id="08A3" name="CAN_TRIGGER_GANG_WAR_WHEN_ON_A_MISSION" member="Game.CanTriggerGangWarWhenOnAMission">
+任务中是否可挑起地盘战。
+
+```text
+08A3 CAN_TRIGGER_GANG_WAR_WHEN_ON_A_MISSION
+in: state
+```
+
+```lua
+canTriggerGangWarWhenOnAMission(state)
+```
+
+```js
+Game.canTriggerGangWarWhenOnAMission(state)
+```
+</Opcode>
+
+## 3D 标记更远
+
+<Opcode id="08A8" name="SET_ALWAYS_DRAW_3D_MARKERS" member="Game.SetAlwaysDraw3DMarkers">
+实体头顶标记更远可见。
+
+```text
+08A8 SET_ALWAYS_DRAW_3D_MARKERS
+in: state
+```
+
+```lua
+setAlwaysDraw3DMarkers(state)
+```
+
+```js
+Game.setAlwaysDraw3DMarkers(state)
+```
+</Opcode>
+
+## 帮战训练任务
+
+<Opcode id="08AC" name="SET_GANG_WARS_TRAINING_MISSION" member="Game.SetGangWarsTrainingMission">
+地图/雷达不亮帮派地盘（训练任务）。
+
+```text
+08AC SET_GANG_WARS_TRAINING_MISSION
+in: state
+```
+
+```lua
+setGangWarsTrainingMission(state)
+```
+
+```js
+Game.setGangWarsTrainingMission(state)
+```
+</Opcode>
+
+## 夜视
+
+<Opcode id="08B1" name="SET_NIGHT_VISION" member="Game.SetNightVision">
+夜视效果。
+
+```text
+08B1 SET_NIGHT_VISION
+in: state
+```
+
+```lua
+setNightVision(state)
+```
+
+```js
+Game.setNightVision(state)
+```
+</Opcode>
+
+## 热成像
+
+<Opcode id="08B2" name="SET_INFRARED_VISION" member="Game.SetInfraredVision">
+热成像效果。
+
+```text
+08B2 SET_INFRARED_VISION
+in: state
+```
+
+```lua
+setInfraredVision(state)
+```
+
+```js
+Game.setInfraredVision(state)
+```
+</Opcode>
+
+## 死亡没收
+
+<Opcode id="08DD" name="SWITCH_DEATH_PENALTIES" member="Game.SwitchDeathPenalties">
+送医是否没收武器与物品。
+
+```text
+08DD SWITCH_DEATH_PENALTIES
+in: state
+```
+
+```lua
+switchDeathPenalties(state)
+```
+
+```js
+Game.switchDeathPenalties(state)
+```
+</Opcode>
+
+## 被捕没收
+
+<Opcode id="08DE" name="SWITCH_ARREST_PENALTIES" member="Game.SwitchArrestPenalties">
+被捕是否没收武器与物品。
+
+```text
+08DE SWITCH_ARREST_PENALTIES
+in: state
+```
+
+```lua
+switchArrestPenalties(state)
+```
+
+```js
+Game.switchArrestPenalties(state)
+```
+</Opcode>
+
+## 刷帮派成员
+
+<Opcode id="08EA" name="SET_CREATE_RANDOM_GANG_MEMBERS" member="Game.SetCreateRandomGangMembers">
+是否刷帮派成员。
+
+```text
+08EA SET_CREATE_RANDOM_GANG_MEMBERS
+in: state
+```
+
+```lua
+setCreateRandomGangMembers(state)
+```
+
+```js
+Game.setCreateRandomGangMembers(state)
+```
+</Opcode>
+
+## 招募人数上限
+
+<Opcode id="08F4" name="SET_SCRIPT_LIMIT_TO_GANG_SIZE" member="Game.SetScriptLimitToGangSize">
+玩家可招募人数上限。
+
+```text
+08F4 SET_SCRIPT_LIMIT_TO_GANG_SIZE
+in: maxSize
+```
+
+```lua
+setScriptLimitToGangSize(maxSize)
+```
+
+```js
+Game.setScriptLimitToGangSize(maxSize)
+```
+</Opcode>
+
+## 全区可帮战
+
+<Opcode id="090D" name="CLEAR_SPECIFIC_ZONES_TO_TRIGGER_GANG_WAR" member="Game.ClearSpecificZonesToTriggerGangWar">
+所有区域可挑起地盘战。
+
+```text
+090D CLEAR_SPECIFIC_ZONES_TO_TRIGGER_GANG_WAR
+```
+
+```lua
+clearSpecificZonesToTriggerGangWar()
+```
+
+```js
+Game.clearSpecificZonesToTriggerGangWar()
+```
+</Opcode>
+
+## 环境飞机
+
+<Opcode id="0923" name="SWITCH_AMBIENT_PLANES" member="Game.SwitchAmbientPlanes">
+开关环境飞机。
+
+```text
+0923 SWITCH_AMBIENT_PLANES
+in: state
+```
+
+```lua
+switchAmbientPlanes(state)
+```
+
+```js
+Game.switchAmbientPlanes(state)
+```
+</Opcode>
+
+## 按声望可招人数
+
+<Opcode id="0956" name="FIND_MAX_NUMBER_OF_GROUP_MEMBERS" member="Game.FindMaxNumberOfGroupMembers">
+按当前声望可招募人数。
+
+```text
+0956 FIND_MAX_NUMBER_OF_GROUP_MEMBERS
+out: maxNum
+```
+
+```lua
+local maxNum = findMaxNumberOfGroupMembers()
+```
+
+```js
+Game.findMaxNumberOfGroupMembers()
+```
+</Opcode>
+
+## 警用直升机
+
+<Opcode id="096A" name="SWITCH_POLICE_HELIS" member="Game.SwitchPoliceHelis">
+是否刷警用直升机。
+
+```text
+096A SWITCH_POLICE_HELIS
+in: state
+```
+
+```lua
+switchPoliceHelis(state)
+```
+
+```js
+Game.switchPoliceHelis(state)
+```
+</Opcode>
+
+## 强制死亡重启
+
+<Opcode id="0970" name="FORCE_DEATH_RESTART" member="Game.ForceDeathRestart">
+强制死亡重启流程（医院重生等）。
+
+```text
+0970 FORCE_DEATH_RESTART
+```
+
+```lua
+forceDeathRestart()
+```
+
+```js
+Game.forceDeathRestart()
+```
+</Opcode>
+
+## 复活共用后果
+
+<Opcode id="0974" name="RESET_STUFF_UPON_RESURRECTION" member="Game.ResetStuffUponResurrection">
+模拟死亡/被捕的共用后果。
+
+```text
+0974 RESET_STUFF_UPON_RESURRECTION
+```
+
+```lua
+resetStuffUponResurrection()
+```
+
+```js
+Game.resetStuffUponResurrection()
+```
+</Opcode>
+
+## 只刷帮派
+
+<Opcode id="0983" name="SET_ONLY_CREATE_GANG_MEMBERS" member="Game.SetOnlyCreateGangMembers">
+是否到处刷帮派（类似作弊）。
+
+```text
+0983 SET_ONLY_CREATE_GANG_MEMBERS
+in: state
+```
+
+```lua
+setOnlyCreateGangMembers(state)
+```
+
+```js
+Game.setOnlyCreateGangMembers(state)
+```
+</Opcode>
+
+## 暴乱枪声感知
+
+<Opcode id="098A" name="SET_GUNSHOT_SENSE_RANGE_FOR_RIOT2" member="Game.SetGunshotSenseRangeForRiot2">
+暴乱对枪声的感知距离。
+
+```text
+098A SET_GUNSHOT_SENSE_RANGE_FOR_RIOT2
+in: range
+```
+
+```lua
+setGunshotSenseRangeForRiot2(range)
+```
+
+```js
+Game.setGunshotSenseRangeForRiot2(range)
+```
+</Opcode>
+
+## enex 标志
+
+<Opcode id="098E" name="SET_NAMED_ENTRY_EXIT_FLAG" member="Game.SetNamedEntryExitFlag">
+设置指定 enex 标志。
+
+```text
+098E SET_NAMED_ENTRY_EXIT_FLAG
+in: name, flag, state
+```
+
+```lua
+setNamedEntryExitFlag(name, flag, state)
+```
+
+```js
+Game.setNamedEntryExitFlag(name, flag, state)
+```
+</Opcode>
+
+## 夜视是否开
+
+<Opcode id="099D" name="IS_NIGHT_VISION_ACTIVE" member="Game.IsNightVisionActive">
+用在 if：夜视是否开着。
+
+```text
+099D IS_NIGHT_VISION_ACTIVE
+```
+
+```lua
+isNightVisionActive()
+```
+
+```js
+Game.isNightVisionActive()
+```
+</Opcode>
+
+## 刷随机警察
+
+<Opcode id="099E" name="SET_CREATE_RANDOM_COPS" member="Game.SetCreateRandomCops">
+是否刷随机警察。
+
+```text
+099E SET_CREATE_RANDOM_COPS
+in: state
+```
+
+```lua
+setCreateRandomCops(state)
+```
+
+```js
+Game.setCreateRandomCops(state)
+```
+</Opcode>
+
+## 室内也显示光点
+
+<Opcode id="09A6" name="SHOW_BLIPS_ON_ALL_LEVELS" member="Game.ShowBlipsOnAllLevels">
+室内时实体光点是否显示在雷达/地图。
+
+```text
+09A6 SHOW_BLIPS_ON_ALL_LEVELS
+in: state
+```
+
+```lua
+showBlipsOnAllLevels(state)
+```
+
+```js
+Game.showBlipsOnAllLevels(state)
+```
+</Opcode>
+
+## 隐藏前端光点
+
+<Opcode id="09AC" name="HIDE_ALL_FRONTEND_BLIPS" member="Game.HideAllFrontendBlips">
+隐藏前端全部光点。
+
+```text
+09AC HIDE_ALL_FRONTEND_BLIPS
+in: state
+```
+
+```lua
+hideAllFrontendBlips(state)
+```
+
+```js
+Game.hideAllFrontendBlips(state)
+```
+</Opcode>
+
+## 小游戏进行中
+
+<Opcode id="09BD" name="SET_MINIGAME_IN_PROGRESS" member="Game.SetMinigameInProgress">
+禁止其它脚本显示帮助。
+
+```text
+09BD SET_MINIGAME_IN_PROGRESS
+in: state
+```
+
+```lua
+setMinigameInProgress(state)
+```
+
+```js
+Game.setMinigameInProgress(state)
+```
+</Opcode>
+
+## 是否小游戏禁帮助
+
+<Opcode id="09BE" name="IS_MINIGAME_IN_PROGRESS" member="Game.IsMinigameInProgress">
+用在 if：是否有脚本用 09BD 禁了帮助。
+
+```text
+09BE IS_MINIGAME_IN_PROGRESS
+```
+
+```lua
+isMinigameInProgress()
+```
+
+```js
+Game.isMinigameInProgress()
+```
+</Opcode>
+
+## 强制随机车型
+
+<Opcode id="09BF" name="SET_FORCE_RANDOM_CAR_MODEL" member="Game.SetForceRandomCarModel">
+强制刷出的车都用该模型。
+
+```text
+09BF SET_FORCE_RANDOM_CAR_MODEL
+in: modelId
+```
+
+```lua
+setForceRandomCarModel(modelId)
+```
+
+```js
+Game.setForceRandomCarModel(modelId)
+```
+</Opcode>
+
+## 字幕是否开
+
+<Opcode id="09C8" name="ARE_SUBTITLES_SWITCHED_ON" member="Game.AreSubtitlesSwitchedOn">
+用在 if：设置里字幕是否开启。
+
+```text
+09C8 ARE_SUBTITLES_SWITCHED_ON
+```
+
+```lua
+areSubtitlesSwitchedOn()
+```
+
+```js
+Game.areSubtitlesSwitchedOn()
+```
+</Opcode>
+
+## 环境犯罪
+
+<Opcode id="09D2" name="ENABLE_AMBIENT_CRIME" member="Game.EnableAmbientCrime">
+警察是否追杀罪犯任务。
+
+```text
+09D2 ENABLE_AMBIENT_CRIME
+in: state
+```
+
+```lua
+enableAmbientCrime(state)
+```
+
+```js
+Game.enableAmbientCrime(state)
+```
+</Opcode>
+
+## 车库挂起通缉
+
+<Opcode id="09D4" name="CLEAR_WANTED_LEVEL_IN_GARAGE" member="Game.ClearWantedLevelInGarage">
+挂起当前通缉。
+
+```text
+09D4 CLEAR_WANTED_LEVEL_IN_GARAGE
+```
+
+```lua
+clearWantedLevelInGarage()
+```
+
+```js
+Game.clearWantedLevelInGarage()
+```
+</Opcode>
+
+## 帮派空位
+
+<Opcode id="09DD" name="MAKE_ROOM_IN_PLAYER_GANG_FOR_MISSION_PEDS" member="Game.MakeRoomInPlayerGangForMissionPeds">
+保证玩家帮派还能再加人的空位。
+
+```text
+09DD MAKE_ROOM_IN_PLAYER_GANG_FOR_MISSION_PEDS
+in: _p1
+```
+
+```lua
+makeRoomInPlayerGangForMissionPeds(_p1)
+```
+
+```js
+Game.makeRoomInPlayerGangForMissionPeds(_p1)
+```
+</Opcode>
+
+## 航母导弹
+
+<Opcode id="09E4" name="SET_AIRCRAFT_CARRIER_SAM_SITE" member="Game.SetAircraftCarrierSamSite">
+开关航母导弹（圣辉海军站）。
+
+```text
+09E4 SET_AIRCRAFT_CARRIER_SAM_SITE
+in: state
+```
+
+```lua
+setAircraftCarrierSamSite(state)
+```
+
+```js
+Game.setAircraftCarrierSamSite(state)
+```
+</Opcode>
+
+## 入室 enex
+
+<Opcode id="09E6" name="ENABLE_BURGLARY_HOUSES" member="Game.EnableBurglaryHouses">
+开关入室任务用的 enex 标记。
+
+```text
+09E6 ENABLE_BURGLARY_HOUSES
+in: state
+```
+
+```lua
+enableBurglaryHouses(state)
+```
+
+```js
+Game.enableBurglaryHouses(state)
+```
+</Opcode>
+
+## 禁行人搭话
+
+<Opcode id="09F5" name="SHUT_ALL_CHARS_UP" member="Game.ShutAllCharsUp">
+禁止行人找玩家搭话。
+
+```text
+09F5 SHUT_ALL_CHARS_UP
+in: state
+```
+
+```lua
+shutAllCharsUp(state)
+```
+
+```js
+Game.shutAllCharsUp(state)
+```
+</Opcode>
+
+## 双人拷武器
+
+<Opcode id="09F8" name="DO_WEAPON_STUFF_AT_START_OF_2P_GAME" member="Game.DoWeaponStuffAtStartOf2PGame">
+合作任务：P1 武器拷给 P2。
+
+```text
+09F8 DO_WEAPON_STUFF_AT_START_OF_2P_GAME
+```
+
+```lua
+doWeaponStuffAtStartOf2PGame()
+```
+
+```js
+Game.doWeaponStuffAtStartOf2PGame()
+```
+</Opcode>
+
+## 刚退出菜单
+
+<Opcode id="09FA" name="HAS_GAME_JUST_RETURNED_FROM_FRONTEND" member="Game.HasGameJustReturnedFromFrontend">
+用在 if：上一帧刚退出菜单。
+
+```text
+09FA HAS_GAME_JUST_RETURNED_FROM_FRONTEND
+```
+
+```lua
+hasGameJustReturnedFromFrontend()
+```
+
+```js
+Game.hasGameJustReturnedFromFrontend()
+```
+</Opcode>
+
+## 当前语言
+
+<Opcode id="09FB" name="GET_CURRENT_LANGUAGE" member="Game.GetCurrentLanguage">
+菜单语言设置当前语言。
+
+```text
+09FB GET_CURRENT_LANGUAGE
+out: languageSlot
+```
+
+```lua
+local languageSlot = getCurrentLanguage()
+```
+
+```js
+Game.getCurrentLanguage()
+```
+</Opcode>
+
+## 是否在地盘战
+
+<Opcode id="0A03" name="IS_GANG_WAR_FIGHTING_GOING_ON" member="Game.IsGangWarFightingGoingOn">
+用在 if：是否挑起/防守地盘战。
+
+```text
+0A03 IS_GANG_WAR_FIGHTING_GOING_ON
+```
+
+```lua
+isGangWarFightingGoingOn()
+```
+
+```js
+Game.isGangWarFightingGoingOn()
+```
+</Opcode>
+
+## 语言是否变了
+
+<Opcode id="0A0F" name="HAS_LANGUAGE_CHANGED" member="Game.HasLanguageChanged">
+用在 if：语言设置相对上次是否变了。
+
+```text
+0A0F HAS_LANGUAGE_CHANGED
+```
+
+```lua
+hasLanguageChanged()
+```
+
+```js
+Game.hasLanguageChanged()
+```
+</Opcode>
+
+## 清理人口
+
+<Opcode id="0A13" name="MANAGE_ALL_POPULATION" member="Game.ManageAllPopulation">
+清远处无用物体与世界 dummy。
+
+```text
+0A13 MANAGE_ALL_POPULATION
+```
+
+```lua
+manageAllPopulation()
+```
+
+```js
+Game.manageAllPopulation()
+```
+</Opcode>
+
+## 禁喷漆店
+
+<Opcode id="0A14" name="SET_NO_RESPRAYS" member="Game.SetNoResprays">
+禁止喷漆店对玩家开门。
+
+```text
+0A14 SET_NO_RESPRAYS
+in: state
+```
+
+```lua
+setNoResprays(state)
+```
+
+```js
+Game.setNoResprays(state)
+```
+</Opcode>
+
+## 是否宽屏
+
+<Opcode id="0A2B" name="IS_WIDESCREEN_ON_IN_OPTIONS" member="Game.IsWidescreenOnInOptions">
+用在 if：显示设置是否宽屏。
+
+```text
+0A2B IS_WIDESCREEN_ON_IN_OPTIONS
+```
+
+```lua
+isWidescreenOnInOptions()
+```
+
+```js
+Game.isWidescreenOnInOptions()
+```
+</Opcode>
+
+## 关全部车灯
+
+<Opcode id="0A37" name="FORCE_ALL_VEHICLE_LIGHTS_OFF" member="Game.ForceAllVehicleLightsOff">
+开启时不渲染任何车灯。
+
+```text
+0A37 FORCE_ALL_VEHICLE_LIGHTS_OFF
+in: state
+```
+
+```lua
+forceAllVehicleLightsOff(state)
+```
+
+```js
+Game.forceAllVehicleLightsOff(state)
+```
+</Opcode>
+
+## 嫖妓反过来给钱
+
+<Opcode id="0A3D" name="ACTIVATE_PIMP_CHEAT" member="Game.ActivatePimpCheat">
+嫖妓是否反过来给钱。
+
+```text
+0A3D ACTIVATE_PIMP_CHEAT
+in: state
+```
+
+```lua
+activatePimpCheat(state)
+```
+
+```js
+Game.activatePimpCheat(state)
+```
+</Opcode>
+
+## 脚本合作标志
+
+<Opcode id="0A3F" name="SET_SCRIPT_COOP_GAME" member="Game.SetScriptCoopGame">
+设未用标志（地址 0x96A8A8）。
+
+```text
+0A3F SET_SCRIPT_COOP_GAME
+in: state
+```
+
+```lua
+setScriptCoopGame(state)
+```
+
+```js
+Game.setScriptCoopGame(state)
+```
+</Opcode>
+
+## 取消嫖妓
+
+<Opcode id="0A43" name="GET_RID_OF_PLAYER_PROSTITUTE" member="Game.GetRidOfPlayerProstitute">
+取消嫖妓邀请并让当前妓女离开。
+
+```text
+0A43 GET_RID_OF_PLAYER_PROSTITUTE
+```
+
+```lua
+getRidOfPlayerProstitute()
+```
+
+```js
+Game.getRidOfPlayerProstitute()
+```
+</Opcode>
+
+## 物体 brain 组
+
+<Opcode id="0A46" name="SWITCH_OBJECT_BRAINS" member="Game.SwitchObjectBrains">
+开关指定分组（0929）的物体触发。
+
+```text
+0A46 SWITCH_OBJECT_BRAINS
+in: groupingId, state
+```
+
+```lua
+switchObjectBrains(groupingId, state)
+```
+
+```js
+Game.switchObjectBrains(groupingId, state)
+```
+</Opcode>
+
+## 宽屏可暂停
+
+<Opcode id="0A48" name="ALLOW_PAUSE_IN_WIDESCREEN" member="Game.AllowPauseInWidescreen">
+宽屏时仍可进暂停菜单。
+
+```text
+0A48 ALLOW_PAUSE_IN_WIDESCREEN
+in: state
+```
+
+```lua
+allowPauseInWidescreen(state)
+```
+
+```js
+Game.allowPauseInWidescreen(state)
+```
+</Opcode>
+
+## 是否手柄
+
+<Opcode id="0A4B" name="IS_PC_USING_JOYPAD" member="Game.IsPcUsingJoypad">
+用在 if：操控是手柄而非键鼠。
+
+```text
+0A4B IS_PC_USING_JOYPAD
+```
+
+```lua
+isPcUsingJoypad()
+```
+
+```js
+Game.isPcUsingJoypad()
+```
+</Opcode>

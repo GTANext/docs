@@ -1,0 +1,285 @@
+---
+title: 矩阵 Matrix / Quat
+description: 矩阵旋转与四元数运算
+---
+
+`sa` · 扩展 `CLEO+` · 需 CLEO + CLEO+
+
+矩阵、四元数。参数里的 `matrix`/`quat` 多为结构体地址。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 矩阵旋转
+
+<Opcode id="0D01" name="ROTATE_MATRIX_ON_AXIS">
+绕轴旋转矩阵。
+
+```text
+0D01 ROTATE_MATRIX_ON_AXIS
+in: matrix, x, y, z, angle, rwCombine
+```
+
+```lua
+rotateMatrixOnAxis(mat, 0.0, 0.0, 1.0, 45.0, combine)
+```
+
+```js
+native("ROTATE_MATRIX_ON_AXIS", matrix, x, y, z, angle, rwCombine)
+```
+</Opcode>
+
+## 矩阵轴角
+
+<Opcode id="0D02" name="GET_MATRIX_X_ANGLE">
+取矩阵 X 轴角。
+
+```text
+0D02 GET_MATRIX_X_ANGLE
+in: matrix
+out: angle
+```
+
+```lua
+local ax = getMatrixXAngle(mat)
+```
+
+```js
+const angle = native("GET_MATRIX_X_ANGLE", matrix)
+```
+</Opcode>
+
+<Opcode id="0D03" name="GET_MATRIX_Y_ANGLE">
+取矩阵 Y 轴角。
+
+```text
+0D03 GET_MATRIX_Y_ANGLE
+in: matrix
+out: angle
+```
+
+```lua
+local ay = getMatrixYAngle(mat)
+```
+
+```js
+const angle = native("GET_MATRIX_Y_ANGLE", matrix)
+```
+</Opcode>
+
+<Opcode id="0D04" name="GET_MATRIX_Z_ANGLE">
+取矩阵 Z 轴角。
+
+```text
+0D04 GET_MATRIX_Z_ANGLE
+in: matrix
+out: angle
+```
+
+```lua
+local az = getMatrixZAngle(mat)
+```
+
+```js
+const angle = native("GET_MATRIX_Z_ANGLE", matrix)
+```
+</Opcode>
+
+## 局部 → 世界
+
+<Opcode id="0D0A" name="GET_OFFSET_FROM_MATRIX_IN_WORLD_COORDS">
+矩阵局部偏移 → 世界坐标。
+
+```text
+0D0A GET_OFFSET_FROM_MATRIX_IN_WORLD_COORDS
+in: matrix, x, y, z
+out: x, y, z
+```
+
+```lua
+local wx, wy, wz = getOffsetFromMatrixInWorldCoords(mat, 0.0, 1.0, 0.0)
+```
+
+```js
+const { x, y, z } = native("GET_OFFSET_FROM_MATRIX_IN_WORLD_COORDS", matrix, x, y, z)
+```
+</Opcode>
+
+## 矩阵 ↔ 四元数
+
+<Opcode id="0D16" name="SET_MATRIX_ROTATION_FROM_QUAT">
+用四元数设矩阵旋转。
+
+```text
+0D16 SET_MATRIX_ROTATION_FROM_QUAT
+in: matrix, quat
+```
+
+```lua
+setMatrixRotationFromQuat(mat, quat)
+```
+
+```js
+native("SET_MATRIX_ROTATION_FROM_QUAT", matrix, quat)
+```
+</Opcode>
+
+<Opcode id="0D17" name="SET_QUAT_FROM_MATRIX">
+从矩阵取四元数。
+
+```text
+0D17 SET_QUAT_FROM_MATRIX
+in: quat, matrix
+```
+
+```lua
+setQuatFromMatrix(quat, mat)
+```
+
+```js
+native("SET_QUAT_FROM_MATRIX", quat, matrix)
+```
+</Opcode>
+
+## 四元数运算
+
+<Opcode id="0D18" name="ROTATE_QUAT_ON_AXIS">
+四元数绕轴旋转。
+
+```text
+0D18 ROTATE_QUAT_ON_AXIS
+in: quat, x, y, z, angle, rwCombine
+```
+
+```lua
+rotateQuatOnAxis(quat, 0.0, 1.0, 0.0, 10.0, combine)
+```
+
+```js
+native("ROTATE_QUAT_ON_AXIS", quat, x, y, z, angle, rwCombine)
+```
+</Opcode>
+
+<Opcode id="0D19" name="GET_NORMALISED_QUAT">
+归一化四元数。
+
+```text
+0D19 GET_NORMALISED_QUAT
+in: quat
+out: quat
+```
+
+```lua
+local q2 = getNormalisedQuat(quat)
+```
+
+```js
+const quat = native("GET_NORMALISED_QUAT", quat)
+```
+</Opcode>
+
+<Opcode id="0D1A" name="MULTIPLY_QUATS">
+四元数相乘。
+
+```text
+0D1A MULTIPLY_QUATS
+in: quat1, quat2
+out: quatResult
+```
+
+```lua
+local r = multiplyQuats(q1, q2)
+```
+
+```js
+const quatResult = native("MULTIPLY_QUATS", quat1, quat2)
+```
+</Opcode>
+
+<Opcode id="0D1E" name="QUAT_SLERP">
+四元数球面插值。
+
+```text
+0D1E QUAT_SLERP
+in: from, to, lambda
+out: result
+```
+
+```lua
+local r = quatSlerp(qFrom, qTo, 0.5)
+```
+
+```js
+const result = native("QUAT_SLERP", from, to, lambda)
+```
+</Opcode>
+
+## 四元数读写
+
+<Opcode id="0D24" name="INITIALISE_QUAT">
+用分量初始化四元数。
+
+```text
+0D24 INITIALISE_QUAT
+in: quat, x, y, z, real
+```
+
+```lua
+initialiseQuat(quat, 0.0, 0.0, 0.0, 1.0)
+```
+
+```js
+native("INITIALISE_QUAT", quat, x, y, z, real)
+```
+</Opcode>
+
+<Opcode id="0D29" name="GET_QUAT_ELEMENTS">
+读四元数 xyz + real。
+
+```text
+0D29 GET_QUAT_ELEMENTS
+in: quat
+out: x, y, z, real
+```
+
+```lua
+local x, y, z, w = getQuatElements(quat)
+```
+
+```js
+const { x, y, z, real } = native("GET_QUAT_ELEMENTS", quat)
+```
+</Opcode>
+
+## 方向 / 朝向
+
+<Opcode id="0EB3" name="CONVERT_DIRECTION_TO_QUAT">
+方向向量写入四元数。
+
+```text
+0EB3 CONVERT_DIRECTION_TO_QUAT
+in: quat, x, y, z
+```
+
+```lua
+convertDirectionToQuat(quat, dx, dy, dz)
+```
+
+```js
+native("CONVERT_DIRECTION_TO_QUAT", quat, x, y, z)
+```
+</Opcode>
+
+<Opcode id="0F0D" name="SET_MATRIX_LOOK_DIRECTION">
+按原点 + 方向设矩阵朝向。
+
+```text
+0F0D SET_MATRIX_LOOK_DIRECTION
+in: matrix, originX, originY, originZ, dirX, dirY, dirZ
+```
+
+```lua
+setMatrixLookDirection(mat, ox, oy, oz, dx, dy, dz)
+```
+
+```js
+native("SET_MATRIX_LOOK_DIRECTION", matrix, originX, originY, originZ, dirX, dirY, dirZ)
+```
+</Opcode>

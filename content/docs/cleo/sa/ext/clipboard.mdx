@@ -1,0 +1,48 @@
+---
+title: 剪贴板 Clipboard
+description: 剪贴板扩展（与 CLEO+ 同号）
+---
+
+`sa` · 扩展 `clipboard` · 需对应 CLEO 扩展
+
+与 CLEO+ `0B20` / `0B21` 同号同语义；装了哪套用哪套。
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 读剪贴板
+
+<Opcode id="0B20" name="READ_CLIPBOARD_DATA" member="Clipboard.ReadData">
+从系统剪贴板拷到 `address`，最多 `number` 字节。缓冲自己留够。
+
+```text
+0B20 READ_CLIPBOARD_DATA
+in: address, number
+```
+
+```lua
+readClipboardData(buf, 64)
+```
+
+```js
+Clipboard.readData(address, number)
+```
+</Opcode>
+
+## 写剪贴板
+
+<Opcode id="0B21" name="WRITE_CLIPBOARD_DATA" member="Clipboard.WriteData">
+把 `address` 起 `number` 字节写进剪贴板。
+
+```text
+0B21 WRITE_CLIPBOARD_DATA
+in: address, number
+```
+
+```lua
+writeClipboardData(buf, 64)
+```
+
+```js
+Clipboard.writeData(address, number)
+```
+</Opcode>

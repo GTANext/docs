@@ -1,0 +1,1050 @@
+---
+title: 客户端 SampClient
+description: 客户端状态、对话框、池指针与光标
+---
+
+`sa` · 扩展 `SAMPFUNCS` · 仅 SA-MP；需 SAMPFUNCS
+
+共 59 条。客户端基址 / 对话框 / 光标 / 池指针。调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 基础 / 实体
+
+<Opcode id="0AF7" name="SAMP_GET_BASE_ADDRESS" member="SampClient.GetBaseAddress">
+返回 `samp.dll` 的内存基址指针。
+
+```text
+0AF7 SAMP_GET_BASE_ADDRESS
+out: pointer
+```
+
+```lua
+local pointer = sampGetBaseAddress()
+```
+
+```js
+const pointer = SampClient.GetBaseAddress()
+```
+</Opcode>
+
+<Opcode id="0AFA" name="SAMP_IS_AVAILABLE" member="SampClient.IsAvailable">
+若 SAMP 结构体已初始化则为真。用于判断当前是 SA-MP 还是单机。
+
+```text
+0AFA SAMP_IS_AVAILABLE
+```
+
+```lua
+if sampIsAvailable() then
+end
+```
+
+```js
+if (SampClient.IsAvailable()) {
+}
+```
+</Opcode>
+
+<Opcode id="0AFD" name="SAMP_SET_SPECIAL_ACTION" member="SampClient.SetSpecialAction">
+设置本地玩家的特殊动作。
+
+```text
+0AFD SAMP_SET_SPECIAL_ACTION
+in: id
+```
+
+```lua
+sampSetSpecialAction(id)
+```
+
+```js
+SampClient.SetSpecialAction(id)
+```
+</Opcode>
+
+<Opcode id="0AFF" name="SAMP_GET_CAR_BY_ID" member="SampClient.GetCar">
+按 SA-MP 车辆 ID 返回车辆句柄；不在流送区则返回 0。
+
+```text
+0AFF SAMP_GET_CAR_BY_ID
+in: id
+out: handle
+```
+
+```lua
+local handle = sampGetCarById(id)
+```
+
+```js
+const handle = SampClient.GetCar(id)
+```
+</Opcode>
+
+<Opcode id="0B50" name="SAMP_GET_OBJECT_BY_ID" member="SampClient.GetObject">
+按 SA-MP 物体 ID 返回物体句柄。
+
+```text
+0B50 SAMP_GET_OBJECT_BY_ID
+in: id
+out: handle
+```
+
+```lua
+local handle = sampGetObjectById(id)
+```
+
+```js
+const handle = SampClient.GetObject(id)
+```
+</Opcode>
+
+<Opcode id="0B51" name="SAMP_GET_PICKUP_BY_ID" member="SampClient.GetPickup">
+按 SA-MP 拾取物 ID 返回拾取物句柄。
+
+```text
+0B51 SAMP_GET_PICKUP_BY_ID
+in: id
+out: handle
+```
+
+```lua
+local handle = sampGetPickupById(id)
+```
+
+```js
+const handle = SampClient.GetPickup(id)
+```
+</Opcode>
+
+## 连接 / 内存 / 服务器
+
+<Opcode id="0B22" name="SAMP_SET_SEND_RATE" member="SampClient.SetSendRate">
+设置向服务器发送指定数据类型的周期间隔（毫秒）。
+
+```text
+0B22 SAMP_SET_SEND_RATE
+in: type, delay
+```
+
+```lua
+sampSetSendRate(type, delay)
+```
+
+```js
+SampClient.SetSendRate(type, delay)
+```
+</Opcode>
+
+<Opcode id="0B27" name="SAMP_SET_GAMESTATE" member="SampClient.SetGameState">
+设置与服务器的连接状态。可用于重连或断开。
+
+```text
+0B27 SAMP_SET_GAMESTATE
+in: id
+```
+
+```lua
+sampSetGamestate(id)
+```
+
+```js
+SampClient.SetGameState(id)
+```
+</Opcode>
+
+<Opcode id="0B4F" name="SAMP_GET_GAMESTATE" member="SampClient.GetGamestate">
+返回本地与服务器的连接状态。
+
+```text
+0B4F SAMP_GET_GAMESTATE
+out: statusId
+```
+
+```lua
+local statusId = sampGetGamestate()
+```
+
+```js
+const statusId = SampClient.GetGamestate()
+```
+</Opcode>
+
+<Opcode id="0B2D" name="SAMP_WRITE_SAMP_MEMORY_WITH_OFFSET" member="SampClient.WriteMemoryWithOffset">
+按 size 向 `samp.dll+offset` 写入值。
+
+```text
+0B2D SAMP_WRITE_SAMP_MEMORY_WITH_OFFSET
+in: offset, value, size
+```
+
+```lua
+sampWriteSampMemoryWithOffset(offset, value, size)
+```
+
+```js
+SampClient.WriteMemoryWithOffset(offset, value, size)
+```
+</Opcode>
+
+<Opcode id="0B2E" name="SAMP_READ_SAMP_MEMORY_WITH_OFFSET" member="SampClient.ReadMemoryWithOffset">
+按 size 从 `samp.dll+offset` 读取值。
+
+```text
+0B2E SAMP_READ_SAMP_MEMORY_WITH_OFFSET
+in: offset, size
+out: value
+```
+
+```lua
+local value = sampReadSampMemoryWithOffset(offset, size)
+```
+
+```js
+const value = SampClient.ReadMemoryWithOffset(offset, size)
+```
+</Opcode>
+
+<Opcode id="0B39" name="SAMP_GET_SERVER_ADDRESS" member="SampClient.GetServerAddress">
+返回服务器端口，并把服务器 IP 写入 buffer。
+
+```text
+0B39 SAMP_GET_SERVER_ADDRESS
+out: buffer, port
+```
+
+```lua
+local buffer, port = sampGetServerAddress()
+```
+
+```js
+const { buffer, port } = SampClient.GetServerAddress()
+```
+</Opcode>
+
+<Opcode id="0B3A" name="SAMP_GET_SERVER_NAME" member="SampClient.GetServerName">
+把服务器名称写入 buffer。
+
+```text
+0B3A SAMP_GET_SERVER_NAME
+out: buffer
+```
+
+```lua
+local buffer = sampGetServerName()
+```
+
+```js
+const buffer = SampClient.GetServerName()
+```
+</Opcode>
+
+## 对话框
+
+<Opcode id="0B3B" name="SAMP_SHOW_DIALOG" member="SampClient.ShowDialog">
+按给定参数显示一个模拟的 SA-MP 对话框。
+
+```text
+0B3B SAMP_SHOW_DIALOG
+in: id, title, content, leftOrMiddleButtonName, rightButtonName, style
+```
+
+```lua
+sampShowDialog(id, title, content, leftOrMiddleButtonName, rightButtonName, style)
+```
+
+```js
+SampClient.ShowDialog(id, title, content, leftOrMiddleButtonName, rightButtonName, style)
+```
+</Opcode>
+
+<Opcode id="0B3C" name="SAMP_HAS_DIALOG_RESPONDED" member="SampClient.HasDialogResponded">
+若最近一次提交的 SA-MP 对话框 ID 等于 dialogid 则为真。
+
+```text
+0B3C SAMP_HAS_DIALOG_RESPONDED
+in: dialogId
+out: buttonId, listItemId, inputTextBuffer
+```
+
+```lua
+local buttonId, listItemId, inputTextBuffer = sampHasDialogResponded(dialogId)
+```
+
+```js
+const { buttonId, listItemId, inputTextBuffer } = SampClient.HasDialogResponded(dialogId)
+```
+</Opcode>
+
+<Opcode id="0B47" name="SAMP_CLOSE_ACTIVE_DIALOG_WITH_BUTTON" member="SampClient.CloseDialog">
+用程序按下指定按钮关闭当前对话框。用在 `if` 里。
+
+```text
+0B47 SAMP_CLOSE_ACTIVE_DIALOG_WITH_BUTTON
+in: button
+```
+
+```lua
+if sampCloseActiveDialogWithButton(button) then
+end
+```
+
+```js
+if (SampClient.CloseDialog(button)) {
+}
+```
+</Opcode>
+
+<Opcode id="0B48" name="SAMP_GET_ACTIVE_DIALOG_SELECTED_LIST_ITEM" member="SampClient.GetDialogSelectedItem">
+返回列表中当前选中项的 ID。
+
+```text
+0B48 SAMP_GET_ACTIVE_DIALOG_SELECTED_LIST_ITEM
+out: itemId
+```
+
+```lua
+local itemId = sampGetActiveDialogSelectedListItem()
+```
+
+```js
+const itemId = SampClient.GetDialogSelectedItem()
+```
+</Opcode>
+
+<Opcode id="0B49" name="SAMP_SELECT_ACTIVE_DIALOG_LIST_ITEM" member="SampClient.SelectDialogItem">
+选中对话框列表中指定 ID 的项。用在 `if` 里。
+
+```text
+0B49 SAMP_SELECT_ACTIVE_DIALOG_LIST_ITEM
+in: itemId
+```
+
+```lua
+if sampSelectActiveDialogListItem(itemId) then
+end
+```
+
+```js
+if (SampClient.SelectDialogItem(itemId)) {
+}
+```
+</Opcode>
+
+<Opcode id="0B4A" name="SAMP_GET_ACTIVE_DIALOG_EDITBOX_TEXT" member="SampClient.GetDialogEditboxText">
+把当前对话框输入框文本写入 buffer。
+
+```text
+0B4A SAMP_GET_ACTIVE_DIALOG_EDITBOX_TEXT
+out: buffer
+```
+
+```lua
+local buffer = sampGetActiveDialogEditboxText()
+```
+
+```js
+const buffer = SampClient.GetDialogEditboxText()
+```
+</Opcode>
+
+<Opcode id="0B4B" name="SAMP_SET_ACTIVE_DIALOG_EDITBOX_TEXT" member="SampClient.SetDialogEditboxText">
+设置当前对话框编辑框文本。用在 `if` 里。
+
+```text
+0B4B SAMP_SET_ACTIVE_DIALOG_EDITBOX_TEXT
+in: text
+```
+
+```lua
+if sampSetActiveDialogEditboxText(text) then
+end
+```
+
+```js
+if (SampClient.SetDialogEditboxText(text)) {
+}
+```
+</Opcode>
+
+<Opcode id="0B4C" name="SAMP_IS_DIALOG_ACTIVE" member="SampClient.IsDialogActive">
+若指定 ID 的对话框当前可见则为真。
+
+```text
+0B4C SAMP_IS_DIALOG_ACTIVE
+in: id
+```
+
+```lua
+if sampIsDialogActive(id) then
+end
+```
+
+```js
+if (SampClient.IsDialogActive(id)) {
+}
+```
+</Opcode>
+
+<Opcode id="0B4D" name="SAMP_GET_DIALOG_STYLE" member="SampClient.GetDialogStyle">
+返回当前对话框样式；未打开则返回上次打开对话框的样式。
+
+```text
+0B4D SAMP_GET_DIALOG_STYLE
+out: style
+```
+
+```lua
+local style = sampGetDialogStyle()
+```
+
+```js
+const style = SampClient.GetDialogStyle()
+```
+</Opcode>
+
+<Opcode id="0B4E" name="SAMP_GET_DIALOG_ID" member="SampClient.GetDialogId">
+返回当前对话框 ID；未打开则返回上次打开对话框的 ID。
+
+```text
+0B4E SAMP_GET_DIALOG_ID
+out: id
+```
+
+```lua
+local id = sampGetDialogId()
+```
+
+```js
+const id = SampClient.GetDialogId()
+```
+</Opcode>
+
+<Opcode id="0B54" name="SAMP_GET_DIALOG_LIST_ITEMS_COUNT" member="SampClient.GetDialogItemsCount">
+返回当前对话框列表项总数；未打开则用上次打开的对话框。
+
+```text
+0B54 SAMP_GET_DIALOG_LIST_ITEMS_COUNT
+out: itemsCount
+```
+
+```lua
+local itemsCount = sampGetDialogListItemsCount()
+```
+
+```js
+const itemsCount = SampClient.GetDialogItemsCount()
+```
+</Opcode>
+
+<Opcode id="0B5B" name="SAMP_GET_DIALOG_LIST_ITEM_TEXT" member="SampClient.GetDialogItemText">
+把当前对话框列表中指定 ID 项的文本写入 buffer；未打开则用上次打开的对话框。
+
+```text
+0B5B SAMP_GET_DIALOG_LIST_ITEM_TEXT
+in: itemId
+out: buffer
+```
+
+```lua
+local buffer = sampGetDialogListItemText(itemId)
+```
+
+```js
+const buffer = SampClient.GetDialogItemText(itemId)
+```
+</Opcode>
+
+<Opcode id="0BD7" name="SAMP_GET_DIALOG_CONTENT" member="SampClient.GetDialogContent">
+把当前对话框内容写入 buffer；未打开则用上次打开的对话框。
+
+```text
+0BD7 SAMP_GET_DIALOG_CONTENT
+in: buffer
+```
+
+```lua
+sampGetDialogContent(buffer)
+```
+
+```js
+SampClient.GetDialogContent(buffer)
+```
+</Opcode>
+
+<Opcode id="0BD8" name="SAMP_GET_DIALOG_TITLE" member="SampClient.GetDialogTitle">
+把当前对话框标题写入 buffer；未打开则用上次打开的对话框。
+
+```text
+0BD8 SAMP_GET_DIALOG_TITLE
+in: buffer
+```
+
+```lua
+sampGetDialogTitle(buffer)
+```
+
+```js
+SampClient.GetDialogTitle(buffer)
+```
+</Opcode>
+
+<Opcode id="0BD9" name="SAMP_SET_ACTIVE_DIALOG_ENVIRONMENT" member="SampClient.SetDialogEnv">
+设置当前对话框交互是否同步到服务器（服务端对话框 / 客户端对话框）。
+
+```text
+0BD9 SAMP_SET_ACTIVE_DIALOG_ENVIRONMENT
+in: isClientSide
+```
+
+```lua
+sampSetActiveDialogEnvironment(isClientSide)
+```
+
+```js
+SampClient.SetDialogEnv(isClientSide)
+```
+</Opcode>
+
+<Opcode id="0BDA" name="SAMP_IS_ACTIVE_DIALOG_CLIENTSIDE" member="SampClient.IsDialogClientSide">
+若当前对话框为客户端侧属性则为真。
+
+```text
+0BDA SAMP_IS_ACTIVE_DIALOG_CLIENTSIDE
+```
+
+```lua
+if sampIsActiveDialogClientside() then
+end
+```
+
+```js
+if (SampClient.IsDialogClientSide()) {
+}
+```
+</Opcode>
+
+## 动画 / 光标 / 计分板
+
+<Opcode id="0B58" name="SAMP_GET_ANIMATION_NAME" member="SampClient.GetAnimName">
+按动画的 SA-MP ID 把文件名与动画名写入缓冲。
+
+```text
+0B58 SAMP_GET_ANIMATION_NAME
+in: animId
+out: fileName, animName
+```
+
+```lua
+local fileName, animName = sampGetAnimationName(animId)
+```
+
+```js
+const { fileName, animName } = SampClient.GetAnimName(animId)
+```
+</Opcode>
+
+<Opcode id="0B59" name="SAMP_GET_ANIMATION_ID" member="SampClient.GetAnimId">
+按动画名与来源文件返回动画的 SA-MP ID。
+
+```text
+0B59 SAMP_GET_ANIMATION_ID
+in: animName, fileName
+out: animId
+```
+
+```lua
+local animId = sampGetAnimationId(animName, fileName)
+```
+
+```js
+const animId = SampClient.GetAnimId(animName, fileName)
+```
+</Opcode>
+
+<Opcode id="0B5D" name="SAMP_SET_CURSOR_VISIBILITY" member="SampClient.SetCursorVisibility">
+设置鼠标光标是否可见。
+
+```text
+0B5D SAMP_SET_CURSOR_VISIBILITY
+in: isVisible
+```
+
+```lua
+sampSetCursorVisibility(isVisible)
+```
+
+```js
+SampClient.SetCursorVisibility(isVisible)
+```
+</Opcode>
+
+<Opcode id="0B8C" name="SAMP_IS_CURSOR_ACTIVE" member="SampClient.IsCursorActive">
+检查鼠标光标是否既可见又可移动。
+
+```text
+0B8C SAMP_IS_CURSOR_ACTIVE
+```
+
+```lua
+if sampIsCursorActive() then
+end
+```
+
+```js
+if (SampClient.IsCursorActive()) {
+}
+```
+</Opcode>
+
+<Opcode id="0B8D" name="SAMP_SET_CURSOR_MODE" member="SampClient.SetCursorMode">
+设置光标模式。
+
+```text
+0B8D SAMP_SET_CURSOR_MODE
+in: mode
+```
+
+```lua
+sampSetCursorMode(mode)
+```
+
+```js
+SampClient.SetCursorMode(mode)
+```
+</Opcode>
+
+<Opcode id="0B8E" name="SAMP_GET_CURSOR_MODE" member="SampClient.GetCursorMode">
+返回当前鼠标光标模式。
+
+```text
+0B8E SAMP_GET_CURSOR_MODE
+out: mode
+```
+
+```lua
+local mode = sampGetCursorMode()
+```
+
+```js
+const mode = SampClient.GetCursorMode()
+```
+</Opcode>
+
+<Opcode id="0BD5" name="SAMP_IS_SCOREBOARD_VISIBLE" member="SampClient.IsScoreboardVisible">
+若计分板可见则为真。
+
+```text
+0BD5 SAMP_IS_SCOREBOARD_VISIBLE
+```
+
+```lua
+if sampIsScoreboardVisible() then
+end
+```
+
+```js
+if (SampClient.IsScoreboardVisible()) {
+}
+```
+</Opcode>
+
+<Opcode id="0BD6" name="SAMP_SET_SCOREBOARD_VISIBILITY" member="SampClient.SetScoreboardVisibility">
+设置计分板是否可见。
+
+```text
+0BD6 SAMP_SET_SCOREBOARD_VISIBILITY
+in: isVisible
+```
+
+```lua
+sampSetScoreboardVisibility(isVisible)
+```
+
+```js
+SampClient.SetScoreboardVisibility(isVisible)
+```
+</Opcode>
+
+## RakNet / Info 指针
+
+<Opcode id="0B7A" name="SAMP_GET_RAKCLIENT_INTERFACE" member="SampClient.GetRakClientInterface">
+返回 RakClientInterface 对象指针。
+
+```text
+0B7A SAMP_GET_RAKCLIENT_INTERFACE
+out: pointer
+```
+
+```lua
+local pointer = sampGetRakclientInterface()
+```
+
+```js
+const pointer = SampClient.GetRakClientInterface()
+```
+</Opcode>
+
+<Opcode id="0B7B" name="SAMP_GET_RAKPEER" member="SampClient.GetRakPeer">
+返回 RakPeer 指针。
+
+```text
+0B7B SAMP_GET_RAKPEER
+out: pointer
+```
+
+```lua
+local pointer = sampGetRakpeer()
+```
+
+```js
+const pointer = SampClient.GetRakPeer()
+```
+</Opcode>
+
+<Opcode id="0B7C" name="SAMP_GET_RAKCLIENT_FUNC_BY_INDEX" member="SampClient.GetRakClientFunc">
+按索引返回 RakClientInterface 虚表函数地址。
+
+```text
+0B7C SAMP_GET_RAKCLIENT_FUNC_BY_INDEX
+in: index
+out: address
+```
+
+```lua
+local address = sampGetRakclientFuncByIndex(index)
+```
+
+```js
+const address = SampClient.GetRakClientFunc(index)
+```
+</Opcode>
+
+<Opcode id="0B7D" name="SAMP_GET_RPC_FUNC_BY_INDEX" member="SampClient.GetRpcFunc">
+按索引返回 RPC 回调地址。
+
+```text
+0B7D SAMP_GET_RPC_FUNC_BY_INDEX
+in: index
+out: address
+```
+
+```lua
+local address = sampGetRpcFuncByIndex(index)
+```
+
+```js
+const address = SampClient.GetRpcFunc(index)
+```
+</Opcode>
+
+<Opcode id="0B7E" name="SAMP_GET_RPC_NODE_BY_INDEX" member="SampClient.GetRpcNode">
+返回指定索引处的 RPC 结构体指针。
+
+```text
+0B7E SAMP_GET_RPC_NODE_BY_INDEX
+in: index
+out: address
+```
+
+```lua
+local address = sampGetRpcNodeByIndex(index)
+```
+
+```js
+const address = SampClient.GetRpcNode(index)
+```
+</Opcode>
+
+<Opcode id="0B7F" name="SAMP_GET_INFO_POINTER" member="SampClient.GetInfoPtr">
+返回 SampInfo 结构体指针。
+
+```text
+0B7F SAMP_GET_INFO_POINTER
+out: address
+```
+
+```lua
+local address = sampGetInfoPointer()
+```
+
+```js
+const address = SampClient.GetInfoPtr()
+```
+</Opcode>
+
+## 池指针
+
+<Opcode id="0BAC" name="SAMP_GET_SERVER_SETTINGS_POINTER" member="SampClient.GetServerSettingsPtr">
+返回服务器设置结构体指针。
+
+```text
+0BAC SAMP_GET_SERVER_SETTINGS_POINTER
+out: address
+```
+
+```lua
+local address = sampGetServerSettingsPointer()
+```
+
+```js
+const address = SampClient.GetServerSettingsPtr()
+```
+</Opcode>
+
+<Opcode id="0BAD" name="SAMP_GET_POOLS_POINTER" member="SampClient.GetPoolsPtr">
+返回 SA-MP pools 结构体指针。
+
+```text
+0BAD SAMP_GET_POOLS_POINTER
+out: address
+```
+
+```lua
+local address = sampGetPoolsPointer()
+```
+
+```js
+const address = SampClient.GetPoolsPtr()
+```
+</Opcode>
+
+<Opcode id="0BAE" name="SAMP_GET_CHAT_INFO_POINTER" member="SampClient.GetChatInfoPtr">
+返回 SA-MP 聊天信息结构体指针。
+
+```text
+0BAE SAMP_GET_CHAT_INFO_POINTER
+out: address
+```
+
+```lua
+local address = sampGetChatInfoPointer()
+```
+
+```js
+const address = SampClient.GetChatInfoPtr()
+```
+</Opcode>
+
+<Opcode id="0BAF" name="SAMP_GET_CHAT_INPUT_INFO_POINTER" member="SampClient.GetChatInfoPtr">
+返回 SA-MP 聊天输入框结构体指针。
+
+```text
+0BAF SAMP_GET_CHAT_INPUT_INFO_POINTER
+out: address
+```
+
+```lua
+local address = sampGetChatInputInfoPointer()
+```
+
+```js
+const address = SampClient.GetChatInfoPtr()
+```
+</Opcode>
+
+<Opcode id="0BB0" name="SAMP_GET_DIALOG_INFO_POINTER" member="SampClient.GetDialogInfoPtr">
+返回 SA-MP 对话框结构体指针。
+
+```text
+0BB0 SAMP_GET_DIALOG_INFO_POINTER
+out: address
+```
+
+```lua
+local address = sampGetDialogInfoPointer()
+```
+
+```js
+const address = SampClient.GetDialogInfoPtr()
+```
+</Opcode>
+
+<Opcode id="0BB1" name="SAMP_GET_KILL_INFO_POINTER" member="SampClient.GetKillInfoPtr">
+返回 SA-MP 击杀列表结构体指针。
+
+```text
+0BB1 SAMP_GET_KILL_INFO_POINTER
+out: address
+```
+
+```lua
+local address = sampGetKillInfoPointer()
+```
+
+```js
+const address = SampClient.GetKillInfoPtr()
+```
+</Opcode>
+
+<Opcode id="0BB2" name="SAMP_GET_MISC_INFO_POINTER" member="SampClient.GetMiscInfoPtr">
+返回 SA-MP 杂项数据结构体指针。
+
+```text
+0BB2 SAMP_GET_MISC_INFO_POINTER
+out: address
+```
+
+```lua
+local address = sampGetMiscInfoPointer()
+```
+
+```js
+const address = SampClient.GetMiscInfoPtr()
+```
+</Opcode>
+
+<Opcode id="0BB3" name="SAMP_GET_TEXTDRAW_POOL_POINTER" member="SampClient.GetTextDrawPoolPtr">
+返回 SA-MP TextDraw 池结构体指针。
+
+```text
+0BB3 SAMP_GET_TEXTDRAW_POOL_POINTER
+out: address
+```
+
+```lua
+local address = sampGetTextdrawPoolPointer()
+```
+
+```js
+const address = SampClient.GetTextDrawPoolPtr()
+```
+</Opcode>
+
+<Opcode id="0BB4" name="SAMP_GET_OBJECT_POOL_POINTER" member="SampClient.GetObjectPoolPtr">
+返回 SA-MP 物体池结构体指针。
+
+```text
+0BB4 SAMP_GET_OBJECT_POOL_POINTER
+out: address
+```
+
+```lua
+local address = sampGetObjectPoolPointer()
+```
+
+```js
+const address = SampClient.GetObjectPoolPtr()
+```
+</Opcode>
+
+<Opcode id="0BB5" name="SAMP_GET_GANGZONE_POOL_POINTER" member="SampClient.GetGangZonePoolPtr">
+返回 SA-MP 地盘（帮派领地）池指针。
+
+```text
+0BB5 SAMP_GET_GANGZONE_POOL_POINTER
+out: address
+```
+
+```lua
+local address = sampGetGangzonePoolPointer()
+```
+
+```js
+const address = SampClient.GetGangZonePoolPtr()
+```
+</Opcode>
+
+<Opcode id="0BB6" name="SAMP_GET_TEXTLABEL_POOL_POINTER" member="SampClient.GetTextLabelPoolPtr">
+返回 3D 文本池结构体指针。
+
+```text
+0BB6 SAMP_GET_TEXTLABEL_POOL_POINTER
+out: address
+```
+
+```lua
+local address = sampGetTextlabelPoolPointer()
+```
+
+```js
+const address = SampClient.GetTextLabelPoolPtr()
+```
+</Opcode>
+
+<Opcode id="0BB7" name="SAMP_GET_PLAYER_POOL_POINTER" member="SampClient.GetPlayerPoolPtr">
+返回玩家池结构体指针。
+
+```text
+0BB7 SAMP_GET_PLAYER_POOL_POINTER
+out: address
+```
+
+```lua
+local address = sampGetPlayerPoolPointer()
+```
+
+```js
+const address = SampClient.GetPlayerPoolPtr()
+```
+</Opcode>
+
+<Opcode id="0BB8" name="SAMP_GET_CAR_POOL_POINTER" member="SampClient.GetCarPoolPtr">
+返回 SA-MP 车辆池结构体指针。
+
+```text
+0BB8 SAMP_GET_CAR_POOL_POINTER
+out: address
+```
+
+```lua
+local address = sampGetCarPoolPointer()
+```
+
+```js
+const address = SampClient.GetCarPoolPtr()
+```
+</Opcode>
+
+<Opcode id="0BB9" name="SAMP_GET_PICKUP_POOL_POINTER" member="SampClient.GetPickupPoolPtr">
+返回 SA-MP 拾取物池结构体指针。
+
+```text
+0BB9 SAMP_GET_PICKUP_POOL_POINTER
+out: address
+```
+
+```lua
+local address = sampGetPickupPoolPointer()
+```
+
+```js
+const address = SampClient.GetPickupPoolPtr()
+```
+</Opcode>
+
+## 玩家数
+
+<Opcode id="0C8A" name="SAMP_GET_MAX_PLAYER_ID" member="SampClient.MaxPlayerId">
+`streamedOnly=true` 时返回当前流送中的最大玩家 ID；否则返回服务器允许的最大玩家 ID。
+
+```text
+0C8A SAMP_GET_MAX_PLAYER_ID
+in: streamedOnly
+out: maxPlayerId
+```
+
+```lua
+local maxPlayerId = sampGetMaxPlayerId(streamedOnly)
+```
+
+```js
+const maxPlayerId = SampClient.MaxPlayerId(streamedOnly)
+```
+</Opcode>
+
+<Opcode id="0C8B" name="SAMP_GET_PLAYER_COUNT" member="SampClient.GetPlayerCount">
+`streamedOnly=true` 时返回当前流送中的玩家数量；否则返回服务器允许的玩家数量。
+
+```text
+0C8B SAMP_GET_PLAYER_COUNT
+in: streamedOnly
+out: playerCount
+```
+
+```lua
+local playerCount = sampGetPlayerCount(streamedOnly)
+```
+
+```js
+const playerCount = SampClient.GetPlayerCount(streamedOnly)
+```
+</Opcode>

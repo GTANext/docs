@@ -1,0 +1,114 @@
+---
+title: 计时 CTimer
+description: 帧步长、游戏时间与暂停
+---
+
+`CTimer.h`
+
+逻辑帧步长、游戏时间、暂停与慢动作。插值、冷却、计时都靠它。
+
+## 帧步长
+
+<Api name="ms_fTimeStep / ms_fTimeStepNonClipped">
+物理 / 动画乘 dt 用。
+
+```cpp
+static float& ms_fTimeStep;
+static float& ms_fTimeStepNonClipped;
+static float& ms_fOldTimeStep;
+```
+
+```cpp
+float dt = CTimer::ms_fTimeStep;
+// pos += vel * dt; // 以游戏单位约定为准
+```
+</Api>
+
+## 游戏毫秒
+
+<Api name="m_snTimeInMilliseconds">
+
+```cpp
+static unsigned int& m_snTimeInMilliseconds;
+static unsigned int& m_snTimeInMillisecondsNonClipped;
+static unsigned int& m_snTimeInMillisecondsPauseMode;
+static unsigned int& m_snPreviousTimeInMilliseconds;
+```
+
+```cpp
+unsigned int now = CTimer::m_snTimeInMilliseconds;
+if (now - last >= 1000u) {
+    last = now;
+}
+```
+</Api>
+
+## 时间缩放与慢动作
+
+<Api name="ms_fTimeScale / bSlowMotionActive">
+
+```cpp
+static float& ms_fTimeScale;
+static float& ms_fSlowMotionScale;
+static bool& bSlowMotionActive;
+static bool GetIsSlowMotionActive();
+```
+
+```cpp
+// 改缩放要备份还原，别每帧乱拧
+// float old = CTimer::ms_fTimeScale;
+// CTimer::ms_fTimeScale = 0.5f;
+```
+</Api>
+
+## 暂停
+
+<Api name="m_UserPause / StartUserPause / Suspend">
+
+```cpp
+static bool& m_UserPause;
+static bool& m_CodePause;
+static void StartUserPause();
+static void EndUserPause();
+static void Suspend();
+static void Resume();
+```
+
+```cpp
+if (CTimer::m_UserPause) {
+    return; // 菜单暂停时多数逻辑可跳过
+}
+```
+</Api>
+
+## 帧计数与 FPS
+
+<Api name="m_FrameCounter / game_FPS">
+
+```cpp
+static unsigned int& m_FrameCounter;
+static float& game_FPS;
+static bool& bSkipProcessThisFrame;
+```
+
+```cpp
+if ((CTimer::m_FrameCounter % 30u) == 0u) {
+    // 约每 30 逻辑帧做一次重活
+}
+```
+</Api>
+
+## 高精度周期
+
+<Api name="GetCurrentTimeInCycles / GetCyclesPerMillisecond">
+
+```cpp
+static unsigned int GetCurrentTimeInCycles();
+static int GetCyclesPerMillisecond();
+static int GetCyclesPerFrame();
+```
+
+```cpp
+unsigned int c = CTimer::GetCurrentTimeInCycles();
+```
+</Api>

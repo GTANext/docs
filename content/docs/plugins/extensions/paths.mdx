@@ -1,0 +1,116 @@
+---
+title: 路径 paths
+description: 游戏目录与 ASI 目录路径
+---
+
+`Paths.h` · `plugin::paths`
+
+多数接口返回 **静态缓冲**，下一次调用会覆盖。需要长期保存时拷到 `std::string`。
+
+## 取游戏与插件目录
+
+<Api name="GetGameDirPathA / GetPluginDirPathA">
+窄字符：游戏根目录与本 ASI 所在目录。
+
+```cpp
+static void GetGameDirPathA(char* out);
+static const char* GetGameDirPathA();
+static void GetPluginDirPathA(char* out);
+static const char* GetPluginDirPathA();
+```
+
+```cpp
+const char* game = plugin::paths::GetGameDirPathA();
+const char* plug = plugin::paths::GetPluginDirPathA();
+```
+</Api>
+
+## 宽字符目录
+
+<Api name="GetGameDirPathW / GetPluginDirPathW">
+
+```cpp
+static void GetGameDirPathW(wchar_t* out);
+static const wchar_t* GetGameDirPathW();
+static void GetPluginDirPathW(wchar_t* out);
+static const wchar_t* GetPluginDirPathW();
+```
+
+```cpp
+const wchar_t* dir = plugin::paths::GetGameDirPathW();
+```
+</Api>
+
+## 拼相对路径
+
+<Api name="GetGameDirRelativePathA / GetPluginDirRelativePathA">
+根目录 + 相对子路径。也有写入外部缓冲的重载。
+
+```cpp
+static const char* GetGameDirRelativePathA(const char* substring);
+static const char* GetPluginDirRelativePathA(const char* substring);
+```
+
+```cpp
+std::string path = plugin::paths::GetGameDirRelativePathA("data\\handling.cfg");
+std::string ini = plugin::paths::GetPluginDirRelativePathA("config.ini");
+```
+</Api>
+
+## 宽字符相对路径
+
+<Api name="GetGameDirRelativePathW / GetPluginDirRelativePathW">
+
+```cpp
+static const wchar_t* GetGameDirRelativePathW(const wchar_t* subpath);
+static const wchar_t* GetPluginDirRelativePathW(const wchar_t* subpath);
+```
+
+```cpp
+const wchar_t* p = plugin::paths::GetPluginDirRelativePathW(L"a.ini");
+```
+</Api>
+
+## 按类型拼路径
+
+<Api name="GetDirPath / ePathDir">
+
+```cpp
+static const char* GetDirPath(const char* substring, ePathDir dir);
+enum ePathDir { DirAbsolute, DirGame, DirPlugin };
+```
+
+```cpp
+auto a = plugin::paths::GetDirPath("C:\\x.txt", plugin::paths::DirAbsolute);
+auto b = plugin::paths::GetDirPath("models\\a.dff", plugin::paths::DirGame);
+auto c = plugin::paths::GetDirPath("ui.png", plugin::paths::DirPlugin);
+```
+</Api>
+
+## 本 ASI 文件名
+
+<Api name="GetPluginFileNameA / GetPluginFileNameW">
+
+```cpp
+static const char* GetPluginFileNameA();
+static const wchar_t* GetPluginFileNameW();
+```
+
+```cpp
+const char* name = plugin::paths::GetPluginFileNameA();
+```
+</Api>
+
+## 路径宏
+
+日常写 ini / 资源路径最省事：
+
+```cpp
+GAME_PATH("data\\x.ini")
+PLUGIN_PATH("config.ini")
+PLUGIN_FILENAME
+```
+
+```cpp
+std::string ini = PLUGIN_PATH("mod.ini");
+```

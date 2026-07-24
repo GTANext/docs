@@ -1,0 +1,103 @@
+---
+title: 对象池 CPools
+description: 句柄互转与池指针
+---
+
+`CPools.h`
+
+跨帧存 **handle**，再用 `Get*` 取指针。池满会创建失败。
+
+## 句柄转指针
+
+<Api name="GetPed / GetVehicle / GetObject">
+脚本句柄 → 指针。无效 null。
+
+```cpp
+static CPed* GetPed(int handle);
+static CVehicle* GetVehicle(int handle);
+static CObject* GetObject(int handle);
+```
+
+```cpp
+CPed* ped = CPools::GetPed(handle);
+if (!ped) {
+    return;
+}
+```
+</Api>
+
+## 指针转句柄
+
+<Api name="GetPedRef / GetVehicleRef / GetObjectRef">
+
+```cpp
+static int GetPedRef(CPed* ped);
+static int GetVehicleRef(CVehicle* vehicle);
+static int GetObjectRef(CObject* object);
+```
+
+```cpp
+int h = CPools::GetPedRef(ped);
+CPed* p2 = CPools::GetPed(h);
+```
+</Api>
+
+## 主对象池
+
+<Api name="ms_pPedPool / ms_pVehiclePool / ms_pObjectPool">
+
+```cpp
+static CPool<CPed, CCopPed*>& ms_pPedPool;
+static CPool<CVehicle, CHeli*>& ms_pVehiclePool;
+static CPool<CObject, CCutsceneObject*>& ms_pObjectPool;
+static CPool<CBuilding*>& ms_pBuildingPool;
+static CPool<CDummy*>& ms_pDummyPool;
+```
+
+```cpp
+#include "extensions/PoolIterator.h"
+
+for (CVehicle* v : *CPools::ms_pVehiclePool) {
+    if (!v) {
+        continue;
+    }
+}
+```
+</Api>
+
+## 任务与其它池
+
+<Api name="ms_pTaskPool / ms_pPedIntelligencePool">
+任务槽紧，别泄漏 Task。
+
+```cpp
+static CPool<CTask, char[128]*>& ms_pTaskPool;
+static CPool<CPedIntelligence*>& ms_pPedIntelligencePool;
+static CPool<CColModel*>& ms_pColModelPool;
+static CPool<CPtrNodeSingleLink*>& ms_pPtrNodeSingleLinkPool;
+static CPool<CPtrNodeDoubleLink*>& ms_pPtrNodeDoubleLinkPool;
+```
+
+```cpp
+// 看占用：pool->GetNoOfUsedSpaces() 等，以 CPool 头文件为准
+```
+</Api>
+
+## 存档与槽位
+
+<Api name="Save / Load / MakeSureSlotInObjectPoolIsEmpty">
+一般只读；改存档流程要极谨慎。
+
+```cpp
+static bool Save();
+static bool Load();
+static bool SavePedPool();
+static bool LoadPedPool();
+// Vehicle / Object 同理
+static void MakeSureSlotInObjectPoolIsEmpty(int slot);
+```
+
+```cpp
+// 正常 ASI 不直接调 Save/Load
+```
+</Api>

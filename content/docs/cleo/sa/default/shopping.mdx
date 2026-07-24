@@ -1,0 +1,260 @@
+---
+title: 商店 Shopping
+description: 商店 / 购物
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 13 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 加载价格
+
+<Opcode id="075D" name="LOAD_PRICES" member="Shopping.LoadPrices">
+加载 shopping 价格段。
+
+```text
+075D LOAD_PRICES
+in: sectionName
+```
+
+```lua
+loadPrices(sectionName)
+```
+
+```js
+Shopping.loadPrices(sectionName)
+```
+</Opcode>
+
+## 加载商店
+
+<Opcode id="075E" name="LOAD_SHOP" member="Shopping.Load">
+加载商店数据。
+
+```text
+075E LOAD_SHOP
+in: name
+```
+
+```lua
+loadShop(name)
+```
+
+```js
+Shopping.load(name)
+```
+</Opcode>
+
+## 商品数
+
+<Opcode id="075F" name="GET_NUMBER_OF_ITEMS_IN_SHOP" member="Shopping.GetNumberOfItems">
+当前店商品数。
+
+```text
+075F GET_NUMBER_OF_ITEMS_IN_SHOP
+out: numItems
+```
+
+```lua
+local numItems = getNumberOfItemsInShop()
+```
+
+```js
+const numItems = Shopping.getNumberOfItems()
+```
+</Opcode>
+
+## 第 n 商品
+
+<Opcode id="0760" name="GET_ITEM_IN_SHOP" member="Shopping.GetItem">
+第 n 个商品 ID。
+
+```text
+0760 GET_ITEM_IN_SHOP
+in: nth
+out: id
+```
+
+```lua
+local id = getItemInShop(nth)
+```
+
+```js
+const id = Shopping.getItem(nth)
+```
+</Opcode>
+
+## 价格
+
+<Opcode id="0761" name="GET_PRICE_OF_ITEM" member="Shopping.GetPriceOfItem">
+商品价格。
+
+```text
+0761 GET_PRICE_OF_ITEM
+in: itemId
+out: price
+```
+
+```lua
+local price = getPriceOfItem(itemId)
+```
+
+```js
+const price = Shopping.getPriceOfItem(itemId)
+```
+</Opcode>
+
+## 附加信息
+
+<Opcode id="0783" name="GET_SHOPPING_EXTRA_INFO" member="Shopping.GetExtraInfo">
+商品附加信息（按 flag）。
+
+```text
+0783 GET_SHOPPING_EXTRA_INFO
+in: itemId, flag
+out: value
+```
+
+```lua
+local value = getShoppingExtraInfo(itemId, flag)
+```
+
+```js
+const value = Shopping.getExtraInfo(itemId, flag)
+```
+</Opcode>
+
+## 商品名
+
+<Opcode id="078C" name="GET_NAME_OF_ITEM" member="Shopping.GetNameOfItem">
+商品名。
+
+```text
+078C GET_NAME_OF_ITEM
+in: itemId
+out: name
+```
+
+```lua
+local name = getNameOfItem(itemId)
+```
+
+```js
+const name = Shopping.getNameOfItem(itemId)
+```
+</Opcode>
+
+## 购买
+
+<Opcode id="0790" name="BUY_ITEM" member="Shopping.BuyItem">
+扣款购买；多数情况会直接给玩家物品。
+
+```text
+0790 BUY_ITEM
+in: itemId
+```
+
+```lua
+buyItem(itemId)
+```
+
+```js
+Shopping.buyItem(itemId)
+```
+</Opcode>
+
+## 当前商店
+
+<Opcode id="07B0" name="GET_LOADED_SHOP" member="Shopping.GetLoaded">
+当前已加载商店子段名。
+
+```text
+07B0 GET_LOADED_SHOP
+out: name
+```
+
+```lua
+local name = getLoadedShop()
+```
+
+```js
+const name = Shopping.getLoaded()
+```
+</Opcode>
+
+## 清商店数据
+
+<Opcode id="087C" name="CLEAR_LOADED_SHOP" member="Shopping.ClearLoaded">
+释放已加载购物数据。
+
+```text
+087C CLEAR_LOADED_SHOP
+```
+
+```lua
+clearLoadedShop()
+```
+
+```js
+Shopping.clearLoaded()
+```
+</Opcode>
+
+## 改价
+
+<Opcode id="08C8" name="ADD_PRICE_MODIFIER" member="Shopping.AddPriceModifier">
+改 shopping.dat 商品基价。
+
+```text
+08C8 ADD_PRICE_MODIFIER
+in: itemId, price
+```
+
+```lua
+addPriceModifier(itemId, price)
+```
+
+```js
+Shopping.addPriceModifier(itemId, price)
+```
+</Opcode>
+
+## 恢复基价
+
+<Opcode id="08C9" name="REMOVE_PRICE_MODIFIER" member="Shopping.RemovePriceModifier">
+恢复被 `08C8` 改过的基价。
+
+```text
+08C9 REMOVE_PRICE_MODIFIER
+in: itemId
+```
+
+```lua
+removePriceModifier(itemId)
+```
+
+```js
+Shopping.removePriceModifier(itemId)
+```
+</Opcode>
+
+## 是否已买
+
+<Opcode id="0942" name="HAS_PLAYER_BOUGHT_ITEM" member="Shopping.HasPlayerBoughtItem">
+该商品是否已买过。用在 `if` 里。
+
+```text
+0942 HAS_PLAYER_BOUGHT_ITEM
+in: itemId
+```
+
+```lua
+if hasPlayerBoughtItem(itemId) then
+end
+```
+
+```js
+if (Shopping.hasPlayerBoughtItem(itemId)) {
+}
+```
+</Opcode>

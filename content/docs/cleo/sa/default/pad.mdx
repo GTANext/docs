@@ -1,0 +1,260 @@
+---
+title: 手柄 Pad
+description: 手柄 / 按键控制
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 13 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 键是否按下
+
+<Opcode id="00E1" name="IS_BUTTON_PRESSED" member="Pad.IsButtonPressed">
+手柄键是否按下。用在 `if` 里。
+
+```text
+00E1 IS_BUTTON_PRESSED
+in: pad, buttonId
+```
+
+```lua
+if isButtonPressed(pad, buttonId) then
+end
+```
+
+```js
+if (Pad.isButtonPressed(pad, buttonId)) {
+}
+```
+</Opcode>
+
+## 键状态
+
+<Opcode id="00E2" name="GET_PAD_STATE" member="Pad.GetState">
+取键状态值。
+
+```text
+00E2 GET_PAD_STATE
+in: pad, buttonId
+out: state
+```
+
+```lua
+local state = getPadState(pad, buttonId)
+```
+
+```js
+const state = Pad.getState(pad, buttonId)
+```
+</Opcode>
+
+## 震动
+
+<Opcode id="015B" name="SHAKE_PAD" member="Pad.Shake">
+震动手柄：时长 + 强度。
+
+```text
+015B SHAKE_PAD
+in: pad, time, intensity
+```
+
+```lua
+shakePad(pad, time, intensity)
+```
+
+```js
+Pad.shake(pad, time, intensity)
+```
+</Opcode>
+
+## 控制方案
+
+<Opcode id="0293" name="GET_CONTROLLER_MODE" member="Pad.GetControllerMode">
+取当前控制方案模式。
+
+```text
+0293 GET_CONTROLLER_MODE
+out: mode
+```
+
+```lua
+local mode = getControllerMode()
+```
+
+```js
+const mode = Pad.getControllerMode()
+```
+</Opcode>
+
+## 醉酒延迟
+
+<Opcode id="03FD" name="SET_DRUNK_INPUT_DELAY" member="Pad.SetDrunkInputDelay">
+醉酒输入延迟（影响开车左右转向）。
+
+```text
+03FD SET_DRUNK_INPUT_DELAY
+in: pad, delay
+```
+
+```lua
+setDrunkInputDelay(pad, delay)
+```
+
+```js
+Pad.setDrunkInputDelay(pad, delay)
+```
+</Opcode>
+
+## 摇杆位置
+
+<Opcode id="0494" name="GET_POSITION_OF_ANALOGUE_STICKS" member="Pad.GetPositionOfAnalogueSticks">
+取左右摇杆偏移。
+
+```text
+0494 GET_POSITION_OF_ANALOGUE_STICKS
+in: pad
+out: leftStickX, leftStickY, rightStickX, rightStickY
+```
+
+```lua
+local leftStickX, leftStickY, rightStickX, rightStickY = getPositionOfAnalogueSticks(pad)
+```
+
+```js
+const { leftStickX, leftStickY, rightStickX, rightStickY } = Pad.getPositionOfAnalogueSticks(pad)
+```
+</Opcode>
+
+## 上下车键
+
+<Opcode id="07CC" name="SET_PLAYER_ENTER_CAR_BUTTON" member="Pad.SetPlayerEnterCarButton">
+是否允许上下车。
+
+```text
+07CC SET_PLAYER_ENTER_CAR_BUTTON
+in: playerId, enabled
+```
+
+```lua
+setPlayerEnterCarButton(playerId, enabled)
+```
+
+```js
+Pad.setPlayerEnterCarButton(playerId, enabled)
+```
+</Opcode>
+
+## 蹲键
+
+<Opcode id="082A" name="SET_PLAYER_DUCK_BUTTON" member="Pad.SetPlayerDuckButton">
+是否允许蹲。
+
+```text
+082A SET_PLAYER_DUCK_BUTTON
+in: playerId, enabled
+```
+
+```lua
+setPlayerDuckButton(playerId, enabled)
+```
+
+```js
+Pad.setPlayerDuckButton(playerId, enabled)
+```
+</Opcode>
+
+## 开火键
+
+<Opcode id="0881" name="SET_PLAYER_FIRE_BUTTON" member="Pad.SetPlayerFireButton">
+是否允许开火用枪。
+
+```text
+0881 SET_PLAYER_FIRE_BUTTON
+in: playerId, enabled
+```
+
+```lua
+setPlayerFireButton(playerId, enabled)
+```
+
+```js
+Pad.setPlayerFireButton(playerId, enabled)
+```
+</Opcode>
+
+## 跳过场键
+
+<Opcode id="08D0" name="IS_SKIP_CUTSCENE_BUTTON_PRESSED" member="Pad.IsSkipCutsceneButtonPressed">
+是否按了跳过场键，或游戏已最小化。用在 `if` 里。
+
+```text
+08D0 IS_SKIP_CUTSCENE_BUTTON_PRESSED
+```
+
+```lua
+if isSkipCutsceneButtonPressed() then
+end
+```
+
+```js
+if (Pad.isSkipCutsceneButtonPressed()) {
+}
+```
+</Opcode>
+
+## 跳键
+
+<Opcode id="0901" name="SET_PLAYER_JUMP_BUTTON" member="Pad.SetPlayerJumpButton">
+是否允许跳。
+
+```text
+0901 SET_PLAYER_JUMP_BUTTON
+in: playerId, enabled
+```
+
+```lua
+setPlayerJumpButton(playerId, enabled)
+```
+
+```js
+Pad.setPlayerJumpButton(playerId, enabled)
+```
+</Opcode>
+
+## 状态面板键
+
+<Opcode id="0960" name="SET_PLAYER_DISPLAY_VITAL_STATS_BUTTON" member="Pad.SetPlayerDisplayVitalStatsButton">
+是否可用 ACTION 键打开状态面板。
+
+```text
+0960 SET_PLAYER_DISPLAY_VITAL_STATS_BUTTON
+in: playerId, enabled
+```
+
+```lua
+setPlayerDisplayVitalStatsButton(playerId, enabled)
+```
+
+```js
+Pad.setPlayerDisplayVitalStatsButton(playerId, enabled)
+```
+</Opcode>
+
+## 切枪键
+
+<Opcode id="0992" name="SET_PLAYER_CYCLE_WEAPON_BUTTON" member="Pad.SetPlayerCycleWeaponButton">
+是否允许切枪。
+
+```text
+0992 SET_PLAYER_CYCLE_WEAPON_BUTTON
+in: playerId, enabled
+```
+
+```lua
+setPlayerCycleWeaponButton(playerId, enabled)
+```
+
+```js
+Pad.setPlayerCycleWeaponButton(playerId, enabled)
+```
+</Opcode>

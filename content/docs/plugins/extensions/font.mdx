@@ -1,0 +1,74 @@
+---
+title: 屏幕字 gamefont
+description: 屏幕与世界坐标文字绘制
+---
+
+`FontPrint.h` · `plugin::gamefont`
+
+在 `drawing` / `drawFonts` / `drawHud` 等绘制事件中调用。  
+`FONT_DEFAULT`：III 为 0，VC / SA 为 1。
+
+## 不缩放打印
+
+<Api name="PrintUnscaled">
+像素坐标，不做分辨率缩放。
+
+```cpp
+static void PrintUnscaled(const std::string& line, float x, float y, ...);
+```
+
+```cpp
+plugin::gamefont::PrintUnscaled("hello", 100.0f, 100.0f);
+```
+</Api>
+
+## 缩放打印
+
+<Api name="Print">
+按 Screen 规则缩放。支持单行、角落对齐、多行。
+
+```cpp
+static void Print(const std::string& line, float x, float y, ...);
+static void Print(ScreenSide side, Alignment align, const std::string& line, float x, float y, ...);
+static void Print(std::vector<std::string> const& lines, float x, float y, float spacing = 1.0f, ...);
+```
+
+```cpp
+plugin::Events::drawingEvent += [] {
+    plugin::gamefont::Print("ok", 50.0f, 50.0f);
+};
+plugin::gamefont::Print(
+    plugin::gamefont::RightTop,
+    plugin::gamefont::AlignRight,
+    "TR", 20.0f, 20.0f);
+```
+</Api>
+
+## 世界坐标打印
+
+<Api name="PrintAt3d">
+把世界坐标投影到屏幕再绘制。不在视野内时返回 `false`。
+
+```cpp
+static bool PrintAt3d(CVector const& posn, const std::string& line, float offset_x = 0.0f, float offset_y = 0.0f, ...);
+```
+
+```cpp
+CPed* ped = FindPlayerPed();
+if (!ped) {
+    return;
+}
+CVector pos = ped->GetPosition();
+pos.z += 1.0f;
+plugin::gamefont::PrintAt3d(pos, "PLAYER", 0.0f, -10.0f);
+```
+</Api>
+
+## 对齐与锚点
+
+```cpp
+enum Alignment { AlignCenter, AlignLeft, AlignRight };
+enum ScreenSide { LeftTop, LeftBottom, RightTop, RightBottom };
+```
+
+与 `Print` 的 `ScreenSide` / `Alignment` 重载配合使用。

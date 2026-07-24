@@ -1,0 +1,118 @@
+---
+title: 聊天 SampChat
+description: 聊天行追加与显示模式
+---
+
+`sa` · 扩展 `SAMPFUNCS` · 仅 SA-MP；需 SAMPFUNCS
+
+共 6 条。调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 消息 / 行
+
+<Opcode id="0AF8" name="SAMP_ADD_MESSAGE_TO_CHAT" member="SampChat.AddMsg">
+向聊天追加一行带颜色的消息。
+
+```text
+0AF8 SAMP_ADD_MESSAGE_TO_CHAT
+in: format, color, args
+```
+
+```lua
+sampAddMessageToChat(format, color, args)
+```
+
+```js
+SampChat.AddMsg(format, color, args)
+```
+</Opcode>
+
+<Opcode id="0B74" name="SAMP_SET_CHAT_LINE" member="SampChat.SetLine">
+把指定聊天行改成自定义文本。用在 `if` 里。
+
+```text
+0B74 SAMP_SET_CHAT_LINE
+in: chatLineid, body, prefix, bodyColor, prefixColor
+```
+
+```lua
+if sampSetChatLine(chatLineid, body, prefix, bodyColor, prefixColor) then
+end
+```
+
+```js
+if (SampChat.SetLine(chatLineid, body, prefix, bodyColor, prefixColor)) {
+}
+```
+</Opcode>
+
+<Opcode id="0B75" name="SAMP_GET_CHAT_LINE" member="SampChat.GetLine">
+返回指定聊天行的文本参数。
+
+```text
+0B75 SAMP_GET_CHAT_LINE
+in: index
+out: bodyBuffer, prefixBuffer, bodyColor, prefixColor
+```
+
+```lua
+local bodyBuffer, prefixBuffer, bodyColor, prefixColor = sampGetChatLine(index)
+```
+
+```js
+const { bodyBuffer, prefixBuffer, bodyColor, prefixColor } = SampChat.GetLine(index)
+```
+</Opcode>
+
+## 可见性 / 模式
+
+<Opcode id="0BDB" name="SAMP_IS_CHAT_VISIBLE" member="SampChat.IsVisible">
+若聊天行可见则为真。
+
+```text
+0BDB SAMP_IS_CHAT_VISIBLE
+```
+
+```lua
+if sampIsChatVisible() then
+end
+```
+
+```js
+if (SampChat.IsVisible()) {
+}
+```
+</Opcode>
+
+<Opcode id="0BDC" name="SAMP_GET_CHAT_DISPLAY_MODE" member="SampChat.GetDisplayMode">
+返回当前聊天显示模式。
+
+```text
+0BDC SAMP_GET_CHAT_DISPLAY_MODE
+out: mode
+```
+
+```lua
+local mode = sampGetChatDisplayMode()
+```
+
+```js
+const mode = SampChat.GetDisplayMode()
+```
+</Opcode>
+
+<Opcode id="0BDD" name="SAMP_SET_CHAT_DISPLAY_MODE" member="SampChat.SetDisplayMode">
+设置聊天显示模式。
+
+```text
+0BDD SAMP_SET_CHAT_DISPLAY_MODE
+in: mode
+```
+
+```lua
+sampSetChatDisplayMode(mode)
+```
+
+```js
+SampChat.SetDisplayMode(mode)
+```
+</Opcode>

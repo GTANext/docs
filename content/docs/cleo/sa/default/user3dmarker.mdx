@@ -1,0 +1,47 @@
+---
+title: 3D标记 User3DMarker
+description: 用户 3D 标记
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 2 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 创建
+
+<Opcode id="0A40" name="CREATE_USER_3D_MARKER" member="User3DMarker.Create">
+创建类似黄色入口标记的 3D 标记。
+
+```text
+0A40 CREATE_USER_3D_MARKER
+in: x, y, z, color
+out: handle
+```
+
+```lua
+local handle = createUser3DMarker(x, y, z, color)
+```
+
+```js
+const handle = User3DMarker.create(x, y, z, color)
+```
+</Opcode>
+
+## 删除
+
+<Opcode id="0A41" name="REMOVE_USER_3D_MARKER" member="User3DMarker.Remove">
+删掉 `0A40` 建的标记。
+
+```text
+0A41 REMOVE_USER_3D_MARKER
+in: self
+```
+
+```lua
+removeUser3DMarker(self)
+```
+
+```js
+User3DMarker.remove(self)
+```
+</Opcode>

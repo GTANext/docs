@@ -1,0 +1,67 @@
+---
+title: 下载 SfDownload
+description: 异步下载文件
+---
+
+`sa` · 扩展 `SAMPFUNCS` · 仅 SA-MP；需 SAMPFUNCS
+
+共 3 条。调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 下载
+
+<Opcode id="0C65" name="SF_DOWNLOAD_FILE" member="SfDownload.File">
+从 url 异步下载文件并保存到 filePath，返回 SfDownload 句柄以便跟踪。
+
+```text
+0C65 SF_DOWNLOAD_FILE
+in: url, filePath
+out: handle
+```
+
+```lua
+local handle = sfDownloadFile(url, filePath)
+```
+
+```js
+const handle = SfDownload.File(url, filePath)
+```
+</Opcode>
+
+## 状态 / 释放
+
+<Opcode id="0C66" name="SF_GET_DOWNLOAD_STATE" member="SfDownload.GetState">
+返回 SfDownload 对象的下载状态。
+
+```text
+0C66 SF_GET_DOWNLOAD_STATE
+in: self
+out: state
+```
+
+```lua
+local state = sfGetDownloadState(self)
+```
+
+```js
+const state = SfDownload.getState(self)
+```
+</Opcode>
+
+<Opcode id="0C7D" name="SF_RELEASE_DOWNLOAD" member="SfDownload.Release">
+释放 SfDownload 对象内存。用在 `if` 里。
+
+```text
+0C7D SF_RELEASE_DOWNLOAD
+in: self
+```
+
+```lua
+if sfReleaseDownload(self) then
+end
+```
+
+```js
+if (SfDownload.release(self)) {
+}
+```
+</Opcode>

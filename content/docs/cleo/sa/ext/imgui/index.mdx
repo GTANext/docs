@@ -1,0 +1,1584 @@
+---
+title: 界面 ImGui
+description: ImGui 扩展全表（87 条）
+---
+
+`sa` · 扩展 `imgui` · 需 CLEO + ImGui 相关插件
+
+源：`sa.json` → `imgui`（`2200`…`2256`）。**必须** `BeginFrame` / `EndFrame` 成对。
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 典型结构
+
+```lua
+imguiBeginFrame("my_ui")
+local open = imguiBegin("demo", true, false, false, false, false)
+if open then
+  imguiText("hello")
+  if imguiButton("ok", 80.0, 24.0) then
+  end
+end
+imguiEnd()
+imguiEndFrame()
+```
+
+```js
+ImGui.beginFrame("my_ui")
+const open = ImGui.begin("demo", true, false, false, false, false)
+if (open) {
+  ImGui.text("hello")
+  if (ImGui.button("ok", 80.0, 24.0)) {
+  }
+}
+ImGui.end()
+ImGui.endFrame()
+```
+
+## 帧 / 窗口
+
+<Opcode id="2200" name="IMGUI_BEGIN_FRAME" member="ImGui.BeginFrame">
+开一帧独立 UI 空间；必须配对 `2201`。
+
+```text
+2200 IMGUI_BEGIN_FRAME
+in: uniqueId
+```
+
+```lua
+imguiBeginFrame("my_ui")
+```
+
+```js
+ImGui.beginFrame(uniqueId)
+```
+</Opcode>
+
+<Opcode id="2201" name="IMGUI_END_FRAME" member="ImGui.EndFrame">
+结束 `2200` 帧。
+
+```text
+2201 IMGUI_END_FRAME
+```
+
+```lua
+imguiEndFrame()
+```
+
+```js
+ImGui.endFrame()
+```
+</Opcode>
+
+<Opcode id="2202" name="IMGUI_BEGIN" member="ImGui.Begin">
+开窗口；返回当前是否打开。
+
+```text
+2202 IMGUI_BEGIN
+in: windowName, state, noTitleBar, noResize, noMove, autoResize
+out: state
+```
+
+```lua
+local open = imguiBegin("win", true, false, false, false, false)
+```
+
+```js
+const state = ImGui.begin(windowName, state, noTitleBar, noResize, noMove, autoResize)
+```
+</Opcode>
+
+<Opcode id="2203" name="IMGUI_END" member="ImGui.End">
+关窗口，配对 `2202`。
+
+```text
+2203 IMGUI_END
+```
+
+```lua
+imguiEnd()
+```
+
+```js
+ImGui.end()
+```
+</Opcode>
+
+## 菜单 / 子区 / 页签
+
+<Opcode id="2204" name="IMGUI_BEGIN_MAINMENUBAR" member="ImGui.BeginMainMenuBar">
+主菜单栏开始。
+
+```text
+2204 IMGUI_BEGIN_MAINMENUBAR
+in: uniqueId
+```
+
+```lua
+imguiBeginMainmenubar("mb")
+```
+
+```js
+ImGui.beginMainMenuBar(uniqueId)
+```
+</Opcode>
+
+<Opcode id="2205" name="IMGUI_END_MAINMENUBAR" member="ImGui.EndMainMenuBar">
+主菜单栏结束。
+
+```text
+2205 IMGUI_END_MAINMENUBAR
+```
+
+```lua
+imguiEndMainmenubar()
+```
+
+```js
+ImGui.endMainMenuBar()
+```
+</Opcode>
+
+<Opcode id="2206" name="IMGUI_BEGIN_CHILD" member="ImGui.BeginChild">
+子区域开始。
+
+```text
+2206 IMGUI_BEGIN_CHILD
+in: uniqueId
+```
+
+```lua
+imguiBeginChild("child")
+```
+
+```js
+ImGui.beginChild(uniqueId)
+```
+</Opcode>
+
+<Opcode id="2207" name="IMGUI_END_CHILD" member="ImGui.EndChild">
+子区域结束。
+
+```text
+2207 IMGUI_END_CHILD
+```
+
+```lua
+imguiEndChild()
+```
+
+```js
+ImGui.endChild()
+```
+</Opcode>
+
+<Opcode id="2208" name="IMGUI_TABS" member="ImGui.Tabs">
+逗号分隔页签名；返回当前可见页下标。
+
+```text
+2208 IMGUI_TABS
+in: name, tabNames
+out: index
+```
+
+```lua
+local i = imguiTabs("tabs", "A,B,C")
+```
+
+```js
+const index = ImGui.tabs(name, tabNames)
+```
+</Opcode>
+
+<Opcode id="2209" name="IMGUI_COLLAPSING_HEADER" member="ImGui.CollapsingHeader">
+折叠标题。用在 `if` 里。
+
+```text
+2209 IMGUI_COLLAPSING_HEADER
+in: label
+```
+
+```lua
+if imguiCollapsingHeader("opts") then
+end
+```
+
+```js
+if (ImGui.collapsingHeader(label)) {
+}
+```
+</Opcode>
+
+<Opcode id="2252" name="IMGUI_BEGIN_CHILDEX" member="ImGui.BeginChildEx">
+扩展版子窗口。
+
+```text
+2252 IMGUI_BEGIN_CHILDEX
+in: uniqueId, width, height, border, flags
+```
+
+```lua
+imguiBeginChildex("c", 200.0, 100.0, true, 0)
+```
+
+```js
+ImGui.beginChildEx(uniqueId, width, height, border, flags)
+```
+</Opcode>
+
+<Opcode id="2253" name="IMGUI_BEGIN_DISABLED" member="ImGui.BeginDisabled">
+禁用块开始。
+
+```text
+2253 IMGUI_BEGIN_DISABLED
+in: disabled
+```
+
+```lua
+imguiBeginDisabled(true)
+```
+
+```js
+ImGui.beginDisabled(disabled)
+```
+</Opcode>
+
+<Opcode id="2254" name="IMGUI_END_DISABLED" member="ImGui.EndDisabled">
+禁用块结束。
+
+```text
+2254 IMGUI_END_DISABLED
+```
+
+```lua
+imguiEndDisabled()
+```
+
+```js
+ImGui.endDisabled()
+```
+</Opcode>
+
+<Opcode id="2255" name="IMGUI_BEGIN_MENU" member="ImGui.BeginMenu">
+菜单块开始。用在 `if` 里。
+
+```text
+2255 IMGUI_BEGIN_MENU
+in: label, enabled
+```
+
+```lua
+if imguiBeginMenu("File", true) then
+  imguiEndMenu()
+end
+```
+
+```js
+if (ImGui.beginMenu(label, enabled)) {
+  ImGui.endMenu()
+}
+```
+</Opcode>
+
+<Opcode id="2256" name="IMGUI_END_MENU" member="ImGui.EndMenu">
+菜单块结束。
+
+```text
+2256 IMGUI_END_MENU
+```
+
+```lua
+imguiEndMenu()
+```
+
+```js
+ImGui.endMenu()
+```
+</Opcode>
+
+## 窗口位置 / 尺寸
+
+<Opcode id="220A" name="IMGUI_SET_WINDOW_POS" member="ImGui.SetWindowPos">
+设当前窗口位置（须在 Begin…End 内）。
+
+```text
+220A IMGUI_SET_WINDOW_POS
+in: x, y, imGuiCond
+```
+
+```lua
+imguiSetWindowPos(100.0, 100.0, cond)
+```
+
+```js
+ImGui.setWindowPos(x, y, imGuiCond)
+```
+</Opcode>
+
+<Opcode id="220B" name="IMGUI_SET_WINDOW_SIZE" member="ImGui.SetWindowSize">
+设当前窗口大小（Begin…End 内）。
+
+```text
+220B IMGUI_SET_WINDOW_SIZE
+in: width, height, imGuiCond
+```
+
+```lua
+imguiSetWindowSize(320.0, 240.0, cond)
+```
+
+```js
+ImGui.setWindowSize(width, height, imGuiCond)
+```
+</Opcode>
+
+<Opcode id="220C" name="IMGUI_SET_NEXT_WINDOW_POS" member="ImGui.SetNextWindowPos">
+设**下一**个 Begin 窗口位置。
+
+```text
+220C IMGUI_SET_NEXT_WINDOW_POS
+in: x, y, imGuiCond
+```
+
+```lua
+imguiSetNextWindowPos(50.0, 50.0, cond)
+```
+
+```js
+ImGui.setNextWindowPos(x, y, imGuiCond)
+```
+</Opcode>
+
+<Opcode id="220D" name="IMGUI_SET_NEXT_WINDOW_SIZE" member="ImGui.SetNextWindowSize">
+设下一个 Begin 窗口大小。
+
+```text
+220D IMGUI_SET_NEXT_WINDOW_SIZE
+in: width, height, imGuiCond
+```
+
+```lua
+imguiSetNextWindowSize(400.0, 300.0, cond)
+```
+
+```js
+ImGui.setNextWindowSize(width, height, imGuiCond)
+```
+</Opcode>
+
+<Opcode id="224F" name="IMGUI_SET_NEXT_WINDOW_TRANSPARENCY" member="ImGui.SetNextWindowTransparency">
+下一窗口背景透明度 0–1。
+
+```text
+224F IMGUI_SET_NEXT_WINDOW_TRANSPARENCY
+in: alpha
+```
+
+```lua
+imguiSetNextWindowTransparency(0.8)
+```
+
+```js
+ImGui.setNextWindowTransparency(alpha)
+```
+</Opcode>
+
+## 文本
+
+<Opcode id="220E" name="IMGUI_TEXT" member="ImGui.Text">
+文本行。
+
+```text
+220E IMGUI_TEXT
+in: text
+```
+
+```lua
+imguiText("hello")
+```
+
+```js
+ImGui.text(text)
+```
+</Opcode>
+
+<Opcode id="220F" name="IMGUI_TEXT_CENTERED" member="ImGui.TextCentered">
+居中文本。
+
+```text
+220F IMGUI_TEXT_CENTERED
+in: text
+```
+
+```lua
+imguiTextCentered("title")
+```
+
+```js
+ImGui.textCentered(text)
+```
+</Opcode>
+
+<Opcode id="2210" name="IMGUI_TEXT_DISABLED" member="ImGui.TextDisabled">
+灰色禁用色文本。
+
+```text
+2210 IMGUI_TEXT_DISABLED
+in: text
+```
+
+```lua
+imguiTextDisabled("hint")
+```
+
+```js
+ImGui.textDisabled(text)
+```
+</Opcode>
+
+<Opcode id="2211" name="IMGUI_TEXT_WRAPPED" member="ImGui.TextWrapped">
+自动换行文本。
+
+```text
+2211 IMGUI_TEXT_WRAPPED
+in: text
+```
+
+```lua
+imguiTextWrapped("long line...")
+```
+
+```js
+ImGui.textWrapped(text)
+```
+</Opcode>
+
+<Opcode id="2212" name="IMGUI_TEXT_COLORED" member="ImGui.TextColored">
+RGBA(0–1) 着色文本。
+
+```text
+2212 IMGUI_TEXT_COLORED
+in: text, red, green, blue, alpha
+```
+
+```lua
+imguiTextColored("warn", 1.0, 0.2, 0.2, 1.0)
+```
+
+```js
+ImGui.textColored(text, red, green, blue, alpha)
+```
+</Opcode>
+
+<Opcode id="2213" name="IMGUI_BULLET_TEXT" member="ImGui.TextWithBullet">
+带圆点的文本。
+
+```text
+2213 IMGUI_BULLET_TEXT
+in: text
+```
+
+```lua
+imguiBulletText("item")
+```
+
+```js
+ImGui.textWithBullet(text)
+```
+</Opcode>
+
+<Opcode id="2214" name="IMGUI_BULLET" member="ImGui.Bullet">
+只画一个圆点。
+
+```text
+2214 IMGUI_BULLET
+```
+
+```lua
+imguiBullet()
+```
+
+```js
+ImGui.bullet()
+```
+</Opcode>
+
+## 控件
+
+<Opcode id="2215" name="IMGUI_CHECKBOX" member="ImGui.Checkbox">
+复选框；返回勾选状态。
+
+```text
+2215 IMGUI_CHECKBOX
+in: label, isChecked
+out: state
+```
+
+```lua
+local on = imguiCheckbox("god", on)
+```
+
+```js
+const state = ImGui.checkbox(label, isChecked)
+```
+</Opcode>
+
+<Opcode id="2216" name="IMGUI_COMBO" member="ImGui.ComboBox">
+下拉框；选项逗号分隔。
+
+```text
+2216 IMGUI_COMBO
+in: name, options, selection
+out: selected
+```
+
+```lua
+local i = imguiCombo("mode", "A,B,C", i)
+```
+
+```js
+const selected = ImGui.comboBox(name, options, selection)
+```
+</Opcode>
+
+<Opcode id="2217" name="IMGUI_SET_TOOLTIP" member="ImGui.SetTooltip">
+悬停提示文本。
+
+```text
+2217 IMGUI_SET_TOOLTIP
+in: text
+```
+
+```lua
+imguiSetTooltip("tip")
+```
+
+```js
+ImGui.setTooltip(text)
+```
+</Opcode>
+
+<Opcode id="2218" name="IMGUI_BUTTON" member="ImGui.Button">
+按钮；按下时条件真。用在 `if` 里。
+
+```text
+2218 IMGUI_BUTTON
+in: buttonName, width, height
+```
+
+```lua
+if imguiButton("ok", 80.0, 24.0) then
+end
+```
+
+```js
+if (ImGui.button(buttonName, width, height)) {
+}
+```
+</Opcode>
+
+<Opcode id="2219" name="IMGUI_IMAGE_BUTTON" member="ImGui.ButtonImage">
+图片按钮。用在 `if` 里。
+
+```text
+2219 IMGUI_IMAGE_BUTTON
+in: name, image, width, height
+```
+
+```lua
+if imguiImageButton("ib", image, 32.0, 32.0) then
+end
+```
+
+```js
+if (ImGui.buttonImage(name, image, width, height)) {
+}
+```
+</Opcode>
+
+<Opcode id="221A" name="IMGUI_INVISIBLE_BUTTON" member="ImGui.ButtonInvisible">
+隐形按钮（占位点击区）。用在 `if` 里。
+
+```text
+221A IMGUI_INVISIBLE_BUTTON
+in: buttonName, width, height
+```
+
+```lua
+if imguiInvisibleButton("hit", 100.0, 40.0) then
+end
+```
+
+```js
+if (ImGui.buttonInvisible(buttonName, width, height)) {
+}
+```
+</Opcode>
+
+<Opcode id="221B" name="IMGUI_COLOR_BUTTON" member="ImGui.ButtonColored">
+自定义色按钮（RGBA 0–1）。用在 `if` 里。
+
+```text
+221B IMGUI_COLOR_BUTTON
+in: buttonName, red, green, blue, alpha, width, height
+```
+
+```lua
+if imguiColorButton("cb", 1.0, 0.2, 0.2, 1.0, 80.0, 24.0) then
+end
+```
+
+```js
+if (ImGui.buttonColored(buttonName, red, green, blue, alpha, width, height)) {
+}
+```
+</Opcode>
+
+<Opcode id="221C" name="IMGUI_ARROW_BUTTON" member="ImGui.ButtonArrow">
+方向箭头按钮。用在 `if` 里。
+
+```text
+221C IMGUI_ARROW_BUTTON
+in: name, imGuiDir
+```
+
+```lua
+if imguiArrowButton("left", dir) then
+end
+```
+
+```js
+if (ImGui.buttonArrow(name, imGuiDir)) {
+}
+```
+</Opcode>
+
+<Opcode id="221D" name="IMGUI_SLIDER_INT" member="ImGui.SliderInt">
+整数滑条；返回当前值。
+
+```text
+221D IMGUI_SLIDER_INT
+in: label, initValue, min, max
+out: val
+```
+
+```lua
+local v = imguiSliderInt("hp", v, 0, 100)
+```
+
+```js
+const val = ImGui.sliderInt(label, initValue, min, max)
+```
+</Opcode>
+
+<Opcode id="221E" name="IMGUI_SLIDER_FLOAT" member="ImGui.SliderFloat">
+浮点滑条。
+
+```text
+221E IMGUI_SLIDER_FLOAT
+in: label, initValue, min, max
+out: val
+```
+
+```lua
+local f = imguiSliderFloat("scale", f, 0.0, 1.0)
+```
+
+```js
+const val = ImGui.sliderFloat(label, initValue, min, max)
+```
+</Opcode>
+
+<Opcode id="221F" name="IMGUI_INPUT_INT" member="ImGui.InputInt">
+整数输入框。
+
+```text
+221F IMGUI_INPUT_INT
+in: label, initValue, min, max
+out: val
+```
+
+```lua
+local n = imguiInputInt("count", n, 0, 999)
+```
+
+```js
+const val = ImGui.inputInt(label, initValue, min, max)
+```
+</Opcode>
+
+<Opcode id="2220" name="IMGUI_INPUT_FLOAT" member="ImGui.InputFloat">
+浮点输入框。
+
+```text
+2220 IMGUI_INPUT_FLOAT
+in: label, initValue, min, max
+out: val
+```
+
+```lua
+local x = imguiInputFloat("x", x, -100.0, 100.0)
+```
+
+```js
+const val = ImGui.inputFloat(label, initValue, min, max)
+```
+</Opcode>
+
+<Opcode id="2221" name="IMGUI_INPUT_TEXT" member="ImGui.InputText">
+文本输入；返回串。
+
+```text
+2221 IMGUI_INPUT_TEXT
+in: label
+out: text
+```
+
+```lua
+local t = imguiInputText("name")
+```
+
+```js
+const text = ImGui.inputText(label)
+```
+</Opcode>
+
+<Opcode id="2222" name="IMGUI_RADIO_BUTTON" member="ImGui.RadioButton">
+单选；`selectedBtn` 当前选中号，`btnNo` 本钮号，返回选中号。
+
+```text
+2222 IMGUI_RADIO_BUTTON
+in: label, selectedBtn, btnNo
+out: val
+```
+
+```lua
+local sel = imguiRadioButton("A", sel, 0)
+```
+
+```js
+const val = ImGui.radioButton(label, selectedBtn, btnNo)
+```
+</Opcode>
+
+<Opcode id="2223" name="IMGUI_COLOR_PICKER" member="ImGui.ColorPicker">
+颜色选择；输出 RGBA 0–255。
+
+```text
+2223 IMGUI_COLOR_PICKER
+in: label
+out: red, green, blue, alpha
+```
+
+```lua
+local r, g, b, a = imguiColorPicker("col")
+```
+
+```js
+const { red, green, blue, alpha } = ImGui.colorPicker(label)
+```
+</Opcode>
+
+<Opcode id="2224" name="IMGUI_MENU_ITEM" member="ImGui.MenuItem">
+菜单项。用在 `if` 里。
+
+```text
+2224 IMGUI_MENU_ITEM
+in: text, selected, enabled
+```
+
+```lua
+if imguiMenuItem("Quit", false, true) then
+end
+```
+
+```js
+if (ImGui.menuItem(text, selected, enabled)) {
+}
+```
+</Opcode>
+
+<Opcode id="2225" name="IMGUI_SELECTABLE" member="ImGui.Selectable">
+可选行。用在 `if` 里。
+
+```text
+2225 IMGUI_SELECTABLE
+in: text, selected
+```
+
+```lua
+if imguiSelectable("row", false) then
+end
+```
+
+```js
+if (ImGui.selectable(text, selected)) {
+}
+```
+</Opcode>
+
+## 布局
+
+<Opcode id="2226" name="IMGUI_DUMMY" member="ImGui.Dummy">
+空白占位（间距）。
+
+```text
+2226 IMGUI_DUMMY
+in: width, height
+```
+
+```lua
+imguiDummy(0.0, 8.0)
+```
+
+```js
+ImGui.dummy(width, height)
+```
+</Opcode>
+
+<Opcode id="2227" name="IMGUI_SAMELINE" member="ImGui.SameLine">
+下一控件同一行。
+
+```text
+2227 IMGUI_SAMELINE
+```
+
+```lua
+imguiSameline()
+```
+
+```js
+ImGui.sameLine()
+```
+</Opcode>
+
+<Opcode id="2228" name="IMGUI_NEWLINE" member="ImGui.NewLine">
+强制换行。
+
+```text
+2228 IMGUI_NEWLINE
+```
+
+```lua
+imguiNewline()
+```
+
+```js
+ImGui.newLine()
+```
+</Opcode>
+
+<Opcode id="2229" name="IMGUI_COLUMNS" member="ImGui.Columns">
+分 N 列；结束用 `columns(1)`。
+
+```text
+2229 IMGUI_COLUMNS
+in: count
+```
+
+```lua
+imguiColumns(2)
+```
+
+```js
+ImGui.columns(count)
+```
+</Opcode>
+
+<Opcode id="222A" name="IMGUI_NEXT_COLUMN" member="ImGui.NextColumn">
+下一列。
+
+```text
+222A IMGUI_NEXT_COLUMN
+```
+
+```lua
+imguiNextColumn()
+```
+
+```js
+ImGui.nextColumn()
+```
+</Opcode>
+
+<Opcode id="222B" name="IMGUI_SPACING" member="ImGui.Spacing">
+控件间距。
+
+```text
+222B IMGUI_SPACING
+```
+
+```lua
+imguiSpacing()
+```
+
+```js
+ImGui.spacing()
+```
+</Opcode>
+
+<Opcode id="222C" name="IMGUI_SEPARATOR" member="ImGui.Separator">
+水平分隔线。
+
+```text
+222C IMGUI_SEPARATOR
+```
+
+```lua
+imguiSeparator()
+```
+
+```js
+ImGui.separator()
+```
+</Opcode>
+
+<Opcode id="222D" name="IMGUI_PUSH_ITEM_WIDTH" member="ImGui.PushItemWidth">
+压入后续控件宽度。
+
+```text
+222D IMGUI_PUSH_ITEM_WIDTH
+in: width
+```
+
+```lua
+imguiPushItemWidth(120.0)
+```
+
+```js
+ImGui.pushItemWidth(width)
+```
+</Opcode>
+
+<Opcode id="222E" name="IMGUI_POP_ITEM_WIDTH" member="ImGui.PopItemWidth">
+弹出 `222D` 宽度。
+
+```text
+222E IMGUI_POP_ITEM_WIDTH
+```
+
+```lua
+imguiPopItemWidth()
+```
+
+```js
+ImGui.popItemWidth()
+```
+</Opcode>
+
+<Opcode id="2251" name="IMGUI_SET_COLUMN_WIDTH" member="ImGui.SetColumnWidth">
+设列宽。
+
+```text
+2251 IMGUI_SET_COLUMN_WIDTH
+in: index, width
+```
+
+```lua
+imguiSetColumnWidth(0, 120.0)
+```
+
+```js
+ImGui.setColumnWidth(index, width)
+```
+</Opcode>
+
+## 控件状态 / 写值
+
+<Opcode id="222F" name="IMGUI_IS_ITEM_ACTIVE" member="ImGui.IsItemActive">
+上一控件是否 active。用在 `if` 里。
+
+```text
+222F IMGUI_IS_ITEM_ACTIVE
+in: uniqueId
+```
+
+```lua
+if imguiIsItemActive("id") then
+end
+```
+
+```js
+if (ImGui.isItemActive(uniqueId)) {
+}
+```
+</Opcode>
+
+<Opcode id="2230" name="IMGUI_IS_ITEM_CLICKED" member="ImGui.IsItemClicked">
+上一控件是否点击。用在 `if` 里。
+
+```text
+2230 IMGUI_IS_ITEM_CLICKED
+in: uniqueId
+```
+
+```lua
+if imguiIsItemClicked("id") then
+end
+```
+
+```js
+if (ImGui.isItemClicked(uniqueId)) {
+}
+```
+</Opcode>
+
+<Opcode id="2231" name="IMGUI_IS_ITEM_FOCUSED" member="ImGui.IsItemFocused">
+上一控件是否聚焦。用在 `if` 里。
+
+```text
+2231 IMGUI_IS_ITEM_FOCUSED
+in: uniqueId
+```
+
+```lua
+if imguiIsItemFocused("id") then
+end
+```
+
+```js
+if (ImGui.isItemFocused(uniqueId)) {
+}
+```
+</Opcode>
+
+<Opcode id="2232" name="IMGUI_IS_ITEM_HOVERED" member="ImGui.IsItemHovered">
+上一控件是否悬停。用在 `if` 里。
+
+```text
+2232 IMGUI_IS_ITEM_HOVERED
+in: uniqueId
+```
+
+```lua
+if imguiIsItemHovered("id") then
+end
+```
+
+```js
+if (ImGui.isItemHovered(uniqueId)) {
+}
+```
+</Opcode>
+
+<Opcode id="2233" name="IMGUI_SET_ITEM_INT" member="ImGui.SetItemValueInt">
+写 int 输入/滑条的值。
+
+```text
+2233 IMGUI_SET_ITEM_INT
+in: id, val
+```
+
+```lua
+imguiSetItemInt("hp", 100)
+```
+
+```js
+ImGui.setItemValueInt(id, val)
+```
+</Opcode>
+
+<Opcode id="2234" name="IMGUI_SET_ITEM_FLOAT" member="ImGui.SetItemValueFloat">
+写 float 输入/滑条的值。
+
+```text
+2234 IMGUI_SET_ITEM_FLOAT
+in: id, val
+```
+
+```lua
+imguiSetItemFloat("scale", 1.0)
+```
+
+```js
+ImGui.setItemValueFloat(id, val)
+```
+</Opcode>
+
+<Opcode id="2235" name="IMGUI_SET_ITEM_TEXT" member="ImGui.SetItemValueText">
+写文本输入的值。
+
+```text
+2235 IMGUI_SET_ITEM_TEXT
+in: id, val
+```
+
+```lua
+imguiSetItemText("name", "player")
+```
+
+```js
+ImGui.setItemValueText(id, val)
+```
+</Opcode>
+
+## 图片
+
+<Opcode id="2236" name="IMGUI_SET_IMAGE_BG_COLOR" member="ImGui.SetImageBgColor">
+设图片背景色（RGBA 0–1）。
+
+```text
+2236 IMGUI_SET_IMAGE_BG_COLOR
+in: r, g, b, a
+```
+
+```lua
+imguiSetImageBgColor(0.0, 0.0, 0.0, 0.5)
+```
+
+```js
+ImGui.setImageBgColor(r, g, b, a)
+```
+</Opcode>
+
+<Opcode id="2237" name="IMGUI_SET_IMAGE_TINT_COLOR" member="ImGui.SetImageTintColor">
+设图片着色。
+
+```text
+2237 IMGUI_SET_IMAGE_TINT_COLOR
+in: r, g, b, a
+```
+
+```lua
+imguiSetImageTintColor(1.0, 1.0, 1.0, 1.0)
+```
+
+```js
+ImGui.setImageTintColor(r, g, b, a)
+```
+</Opcode>
+
+<Opcode id="2238" name="IMGUI_LOAD_IMAGE" member="ImGui.LoadImage">
+从磁盘加载图（相对 CLEO 目录）。
+
+```text
+2238 IMGUI_LOAD_IMAGE
+in: path
+out: image
+```
+
+```lua
+local img = imguiLoadImage("ui/icon.png")
+```
+
+```js
+const image = ImGui.loadImage(path)
+```
+</Opcode>
+
+<Opcode id="2239" name="IMGUI_FREE_IMAGE" member="ImGui.FreeImage">
+释放已加载图。
+
+```text
+2239 IMGUI_FREE_IMAGE
+in: image
+```
+
+```lua
+imguiFreeImage(img)
+```
+
+```js
+ImGui.freeImage(image)
+```
+</Opcode>
+
+## 样式
+
+<Opcode id="223A" name="IMGUI_PUSH_STYLE_VAR" member="ImGui.PushStyleVar">
+压入单个 float 风格变量。
+
+```text
+223A IMGUI_PUSH_STYLE_VAR
+in: imGuiStyleVar, val
+```
+
+```lua
+imguiPushStyleVar(var, 4.0)
+```
+
+```js
+ImGui.pushStyleVar(imGuiStyleVar, val)
+```
+</Opcode>
+
+<Opcode id="223B" name="IMGUI_PUSH_STYLE_VAR2" member="ImGui.PushStyleVar2">
+压入二维风格变量。
+
+```text
+223B IMGUI_PUSH_STYLE_VAR2
+in: imGuiStyleVar, x, y
+```
+
+```lua
+imguiPushStyleVar2(var, 8.0, 8.0)
+```
+
+```js
+ImGui.pushStyleVar2(imGuiStyleVar, x, y)
+```
+</Opcode>
+
+<Opcode id="223C" name="IMGUI_PUSH_STYLE_COLOR" member="ImGui.PushStyleColor">
+压入颜色（RGBA 0–255）。
+
+```text
+223C IMGUI_PUSH_STYLE_COLOR
+in: imGuiCol, r, g, b, a
+```
+
+```lua
+imguiPushStyleColor(col, 255, 255, 255, 255)
+```
+
+```js
+ImGui.pushStyleColor(imGuiCol, r, g, b, a)
+```
+</Opcode>
+
+<Opcode id="223D" name="IMGUI_POP_STYLE_VAR" member="ImGui.PopStyleVar">
+弹出 `count` 个 style var。
+
+```text
+223D IMGUI_POP_STYLE_VAR
+in: count
+```
+
+```lua
+imguiPopStyleVar(1)
+```
+
+```js
+ImGui.popStyleVar(count)
+```
+</Opcode>
+
+<Opcode id="223E" name="IMGUI_POP_STYLE_COLOR" member="ImGui.PopStyleColor">
+弹出 `count` 个 style color。
+
+```text
+223E IMGUI_POP_STYLE_COLOR
+in: count
+```
+
+```lua
+imguiPopStyleColor(1)
+```
+
+```js
+ImGui.popStyleColor(count)
+```
+</Opcode>
+
+## DrawList
+
+<Opcode id="223F" name="IMGUI_GET_FOREGROUND_DRAWLIST" member="ImGui.GetForegroundDrawList">
+前景 draw list 指针。
+
+```text
+223F IMGUI_GET_FOREGROUND_DRAWLIST
+out: drawList
+```
+
+```lua
+local dl = imguiGetForegroundDrawlist()
+```
+
+```js
+const drawList = ImGui.getForegroundDrawList()
+```
+</Opcode>
+
+<Opcode id="2240" name="IMGUI_GET_BACKGROUND_DRAWLIST" member="ImGui.GetBackgroundDrawList">
+背景 draw list。
+
+```text
+2240 IMGUI_GET_BACKGROUND_DRAWLIST
+out: drawList
+```
+
+```lua
+local dl = imguiGetBackgroundDrawlist()
+```
+
+```js
+const drawList = ImGui.getBackgroundDrawList()
+```
+</Opcode>
+
+<Opcode id="2241" name="IMGUI_GET_WINDOW_DRAWLIST" member="ImGui.GetWindowDrawlist">
+当前窗 draw list。
+
+```text
+2241 IMGUI_GET_WINDOW_DRAWLIST
+out: drawList
+```
+
+```lua
+local dl = imguiGetWindowDrawlist()
+```
+
+```js
+const drawList = ImGui.getWindowDrawlist()
+```
+</Opcode>
+
+<Opcode id="2242" name="IMGUI_DRAWLIST_ADD_TEXT" member="ImGui.AddText">
+在 draw list 上画字。
+
+```text
+2242 IMGUI_DRAWLIST_ADD_TEXT
+in: drawList, posX, posY, r, g, b, a, text
+```
+
+```lua
+imguiDrawlistAddText(dl, 10.0, 10.0, 255, 255, 255, 255, "hi")
+```
+
+```js
+ImGui.addText(drawList, posX, posY, r, g, b, a, text)
+```
+</Opcode>
+
+<Opcode id="2243" name="IMGUI_DRAWLIST_ADD_LINE" member="ImGui.AddLine">
+在 draw list 上画线。
+
+```text
+2243 IMGUI_DRAWLIST_ADD_LINE
+in: drawList, p1X, p1Y, p2X, p2Y, r, g, b, a, thickness
+```
+
+```lua
+imguiDrawlistAddLine(dl, 0.0, 0.0, 100.0, 100.0, 255, 0, 0, 255, 1.0)
+```
+
+```js
+ImGui.addLine(drawList, p1X, p1Y, p2X, p2Y, r, g, b, a, thickness)
+```
+</Opcode>
+
+## 查询 / 杂项
+
+<Opcode id="2244" name="GET_FRAMERATE" member="Game.GetFramerate">
+游戏 FPS。
+
+```text
+2244 GET_FRAMERATE
+out: fps
+```
+
+```lua
+local fps = getFramerate()
+```
+
+```js
+const fps = Game.getFramerate()
+```
+</Opcode>
+
+<Opcode id="2245" name="IMGUI_GET_VERSION" member="ImGui.GetVersion">
+ImGui 版本号。
+
+```text
+2245 IMGUI_GET_VERSION
+out: version
+```
+
+```lua
+local v = imguiGetVersion()
+```
+
+```js
+const version = ImGui.getVersion()
+```
+</Opcode>
+
+<Opcode id="2246" name="IMGUI_GET_PLUGIN_VERSION" member="ImGui.GetPluginVersion">
+ImGuiRedux 插件版本。
+
+```text
+2246 IMGUI_GET_PLUGIN_VERSION
+out: version
+```
+
+```lua
+local v = imguiGetPluginVersion()
+```
+
+```js
+const version = ImGui.getPluginVersion()
+```
+</Opcode>
+
+<Opcode id="2247" name="IMGUI_SET_CURSOR_VISIBLE" member="ImGui.SetCursorVisible">
+显示/隐藏光标。
+
+```text
+2247 IMGUI_SET_CURSOR_VISIBLE
+in: show
+```
+
+```lua
+imguiSetCursorVisible(true)
+```
+
+```js
+ImGui.setCursorVisible(show)
+```
+</Opcode>
+
+<Opcode id="2248" name="IMGUI_GET_FRAME_HEIGHT" member="ImGui.GetFrameHeight">
+帧高度。
+
+```text
+2248 IMGUI_GET_FRAME_HEIGHT
+out: height
+```
+
+```lua
+local h = imguiGetFrameHeight()
+```
+
+```js
+const height = ImGui.getFrameHeight()
+```
+</Opcode>
+
+<Opcode id="2249" name="IMGUI_GET_WINDOW_POS" member="ImGui.GetWindowPos">
+窗口屏幕坐标。
+
+```text
+2249 IMGUI_GET_WINDOW_POS
+in: uniqueId
+out: x, y
+```
+
+```lua
+local x, y = imguiGetWindowPos("win")
+```
+
+```js
+const { x, y } = ImGui.getWindowPos(uniqueId)
+```
+</Opcode>
+
+<Opcode id="224A" name="IMGUI_GET_WINDOW_SIZE" member="ImGui.GetWindowSize">
+窗口宽高。
+
+```text
+224A IMGUI_GET_WINDOW_SIZE
+in: uniqueId
+out: width, height
+```
+
+```lua
+local w, h = imguiGetWindowSize("win")
+```
+
+```js
+const { width, height } = ImGui.getWindowSize(uniqueId)
+```
+</Opcode>
+
+<Opcode id="224B" name="IMGUI_CALC_TEXT_SIZE" member="ImGui.CalcTextSize">
+测文字宽高。
+
+```text
+224B IMGUI_CALC_TEXT_SIZE
+in: text
+out: width, height
+```
+
+```lua
+local tw, th = imguiCalcTextSize("hello")
+```
+
+```js
+const { width, height } = ImGui.calcTextSize(text)
+```
+</Opcode>
+
+<Opcode id="224C" name="IMGUI_GET_WINDOW_CONTENT_REGION_WIDTH" member="ImGui.GetWindowContentRegionWidth">
+内容区宽度。
+
+```text
+224C IMGUI_GET_WINDOW_CONTENT_REGION_WIDTH
+in: uniqueId
+out: width
+```
+
+```lua
+local cw = imguiGetWindowContentRegionWidth("win")
+```
+
+```js
+const width = ImGui.getWindowContentRegionWidth(uniqueId)
+```
+</Opcode>
+
+<Opcode id="224D" name="IMGUI_GET_SCALING_SIZE" member="ImGui.GetScalingSize">
+按窗口尺寸算缩放因子。
+
+```text
+224D IMGUI_GET_SCALING_SIZE
+in: uniqueId, count, spacing
+out: x, y
+```
+
+```lua
+local sx, sy = imguiGetScalingSize("win", 1, true)
+```
+
+```js
+const { x, y } = ImGui.getScalingSize(uniqueId, count, spacing)
+```
+</Opcode>
+
+<Opcode id="224E" name="IMGUI_GET_DISPLAY_SIZE" member="ImGui.GetDisplaySize">
+显示宽高。
+
+```text
+224E IMGUI_GET_DISPLAY_SIZE
+out: width, height
+```
+
+```lua
+local dw, dh = imguiGetDisplaySize()
+```
+
+```js
+const { width, height } = ImGui.getDisplaySize()
+```
+</Opcode>
+
+<Opcode id="2250" name="IMGUI_SET_MESSAGE" member="ImGui.SetMessage">
+左上角短消息（无 `showTextBox` 时好用）。
+
+```text
+2250 IMGUI_SET_MESSAGE
+in: text
+```
+
+```lua
+imguiSetMessage("loaded")
+```
+
+```js
+ImGui.setMessage(text)
+```
+</Opcode>
+
+## 覆盖
+
+| 状态 | 说明 |
+|---|---|
+| **本页** | `2200`…`2256` 全表（与 `sa.json` imgui 对齐） |
+| **装载** | CLEO + ImGui/ImGuiRedux 类插件 |
+
+<Callout type="warn" title="成对">
+`BeginFrame`/`EndFrame`、`Begin`/`End`、菜单栏/子区/菜单/Disabled 都要成对，缺 `End*` 会崩或 UI 串层。
+</Callout>
+
+<Callout type="info" title="进度">
+imgui 全量已齐（87 条）。
+</Callout>

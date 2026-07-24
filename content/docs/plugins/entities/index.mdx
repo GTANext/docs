@@ -1,0 +1,92 @@
+---
+title: 综述
+description: SA 游戏类 API 入口（ASI 高频）
+---
+
+SA 游戏类 API 入口。源在 `plugin_sa/game_sa` 等。
+
+逻辑帧用 `processScriptsEvent`；静态构造里 `FindPlayer*` 常为 null。跨游戏基础见 `shared/game/`（`CVector` / `CRGBA`）。`game_sa` 约 500+ 头：本站只收 **ASI 高频**，边界见 [覆盖边界](/docs/plugins/entities/coverage)。
+
+## 基类与玩家
+
+<Cards>
+  <Card title="CPlaceable" href="/docs/plugins/entities/placeable" description="位置、朝向、矩阵" />
+  <Card title="CEntity" href="/docs/plugins/entities/entity" description="模型、标志、传送、RW" />
+  <Card title="CPhysical" href="/docs/plugins/entities/physical" description="速度、力、附着、免疫" />
+  <Card title="FindPlayer*" href="/docs/plugins/entities/player" description="common.h 快捷" />
+  <Card title="CPlayerPed" href="/docs/plugins/entities/player-ped" description="通缉、小队、冲刺" />
+  <Card title="CPlayerInfo" href="/docs/plugins/entities/player-info" description="钱、最大血甲、免累" />
+</Cards>
+
+## 池与实体
+
+<Cards>
+  <Card title="对象池" href="/docs/plugins/entities/pools" description="CPools 句柄与池" />
+  <Card title="行人" href="/docs/plugins/entities/ped" description="CPed" />
+  <Card title="载具" href="/docs/plugins/entities/vehicle" description="CVehicle" />
+  <Card title="物体" href="/docs/plugins/entities/object" description="CObject" />
+  <Card title="世界" href="/docs/plugins/entities/world" description="CWorld" />
+  <Card title="火" href="/docs/plugins/entities/fire" description="CFireManager" />
+  <Card title="爆炸" href="/docs/plugins/entities/explosion" description="CExplosion" />
+  <Card title="拾取物" href="/docs/plugins/entities/pickups" description="CPickups" />
+  <Card title="抛射物" href="/docs/plugins/entities/projectile" description="CProjectileInfo" />
+  <Card title="武器实例" href="/docs/plugins/entities/weapon" description="CWeapon" />
+</Cards>
+
+## 流式与资源
+
+<Cards>
+  <Card title="模型流" href="/docs/plugins/entities/streaming" description="CStreaming" />
+  <Card title="模型信息" href="/docs/plugins/entities/model-info" description="CModelInfo" />
+  <Card title="TXD" href="/docs/plugins/entities/txd-store" description="CTxdStore" />
+  <Card title="动画" href="/docs/plugins/entities/anim" description="CAnimManager" />
+  <Card title="文件" href="/docs/plugins/entities/file-mgr" description="CFileMgr" />
+</Cards>
+
+## 人口交通路径
+
+<Cards>
+  <Card title="人口" href="/docs/plugins/entities/population" description="CPopulation" />
+  <Card title="交通" href="/docs/plugins/entities/car-ctrl" description="CCarCtrl" />
+  <Card title="路径" href="/docs/plugins/entities/pathfind" description="ThePaths" />
+  <Card title="水" href="/docs/plugins/entities/water" description="CWaterLevel" />
+  <Card title="室内门" href="/docs/plugins/entities/entry-exit" description="CEntryExitManager" />
+</Cards>
+
+## 绘制与 HUD
+
+<Cards>
+  <Card title="2D 精灵" href="/docs/plugins/entities/sprite2d" description="CSprite2d" />
+  <Card title="游戏字体" href="/docs/plugins/entities/font" description="CFont" />
+  <Card title="光晕 / 3D 标" href="/docs/plugins/entities/markers" description="CCoronas / C3dMarkers" />
+  <Card title="影子" href="/docs/plugins/entities/shadows" description="CShadows" />
+  <Card title="雷达 Blip" href="/docs/plugins/entities/radar" description="CRadar" />
+  <Card title="HUD / 消息" href="/docs/plugins/entities/hud-messages" description="CHud / CMessages" />
+  <Card title="镜头" href="/docs/plugins/entities/camera" description="TheCamera" />
+  <Card title="CDraw" href="/docs/plugins/entities/draw" description="FOV / 裁剪" />
+</Cards>
+
+## 游戏态
+
+<Cards>
+  <Card title="计时" href="/docs/plugins/entities/timer" description="CTimer" />
+  <Card title="时间周期" href="/docs/plugins/entities/time-cycle" description="CTimeCycle" />
+  <Card title="时间天气武器表" href="/docs/plugins/entities/world-state" description="CClock / CWeather / CWeaponInfo" />
+  <Card title="统计" href="/docs/plugins/entities/stats" description="CStats" />
+  <Card title="通缉" href="/docs/plugins/entities/wanted" description="CWanted" />
+  <Card title="输入" href="/docs/plugins/entities/pad" description="CPad" />
+  <Card title="菜单" href="/docs/plugins/entities/menu" description="FrontEndMenuManager" />
+  <Card title="CGame" href="/docs/plugins/entities/game" description="区域 / gGameState" />
+  <Card title="脚本" href="/docs/plugins/entities/scripts" description="CTheScripts" />
+  <Card title="音频" href="/docs/plugins/entities/audio-engine" description="AudioEngine" />
+  <Card title="覆盖边界" href="/docs/plugins/entities/coverage" description="已收 / 不扩" />
+</Cards>
+
+## 注意
+
+| 点 | 说明 |
+|---|---|
+| null | `FindPlayer*` / `GetPed` 全判空 |
+| 跨帧 | 存 handle 不存裸指针 |
+| 改全局 | patch / 武器表 / 天气 / 密度 备份还原 |
+| 绘制帧 | 别 CREATE/DELETE；字/精灵放 `drawingEvent` |

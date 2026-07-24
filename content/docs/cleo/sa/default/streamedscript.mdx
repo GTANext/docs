@@ -1,0 +1,201 @@
+---
+title: 流式脚本 StreamedScript
+description: 环境脚本流加载 / 启动
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 10 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 注册脚本脑
+
+<Opcode id="07D3" name="REGISTER_SCRIPT_BRAIN_FOR_CODE_USE" member="StreamedScript.RegisterScriptBrainForCodeUse">
+按名注册环境脚本脑（如室内行人行为）。
+
+```text
+07D3 REGISTER_SCRIPT_BRAIN_FOR_CODE_USE
+in: id, scriptName
+```
+
+```lua
+registerScriptBrainForCodeUse(id, scriptName)
+```
+
+```js
+StreamedScript.registerScriptBrainForCodeUse(id, scriptName)
+```
+</Opcode>
+
+## 注册吸引点脚本脑
+
+<Opcode id="0884" name="REGISTER_ATTRACTOR_SCRIPT_BRAIN_FOR_CODE_USE" member="StreamedScript.RegisterAttractorScriptBrainForCodeUse">
+为地图吸引点行人注册环境脚本（如购物）。
+
+```text
+0884 REGISTER_ATTRACTOR_SCRIPT_BRAIN_FOR_CODE_USE
+in: id, scriptName
+```
+
+```lua
+registerAttractorScriptBrainForCodeUse(id, scriptName)
+```
+
+```js
+StreamedScript.registerAttractorScriptBrainForCodeUse(id, scriptName)
+```
+</Opcode>
+
+## 流加载
+
+<Opcode id="08A9" name="STREAM_SCRIPT" member="StreamedScript.Stream">
+从 script.img 流式加载环境脚本。
+
+```text
+08A9 STREAM_SCRIPT
+in: id
+```
+
+```lua
+streamScript(id)
+```
+
+```js
+StreamedScript.stream(id)
+```
+</Opcode>
+
+## 是否加载完
+
+<Opcode id="08AB" name="HAS_STREAMED_SCRIPT_LOADED" member="StreamedScript.HasLoaded">
+`08A9` 是否已加载完。用在 `if` 里。
+
+```text
+08AB HAS_STREAMED_SCRIPT_LOADED
+in: id
+```
+
+```lua
+if hasStreamedScriptLoaded(id) then
+end
+```
+
+```js
+if (StreamedScript.hasLoaded(id)) {
+}
+```
+</Opcode>
+
+## 标记可卸载
+
+<Opcode id="090F" name="MARK_STREAMED_SCRIPT_AS_NO_LONGER_NEEDED" member="StreamedScript.MarkAsNoLongerNeeded">
+标记环境脚本可卸载。
+
+```text
+090F MARK_STREAMED_SCRIPT_AS_NO_LONGER_NEEDED
+in: id
+```
+
+```lua
+markStreamedScriptAsNoLongerNeeded(id)
+```
+
+```js
+StreamedScript.markAsNoLongerNeeded(id)
+```
+</Opcode>
+
+## 释放
+
+<Opcode id="0910" name="REMOVE_STREAMED_SCRIPT" member="StreamedScript.Remove">
+释放该 ID 环境脚本内存。
+
+```text
+0910 REMOVE_STREAMED_SCRIPT
+in: id
+```
+
+```lua
+removeStreamedScript(id)
+```
+
+```js
+StreamedScript.remove(id)
+```
+</Opcode>
+
+## 启动实例
+
+<Opcode id="0913" name="START_NEW_STREAMED_SCRIPT" member="StreamedScript.StartNew">
+启动该 ID 环境脚本实例。
+
+```text
+0913 START_NEW_STREAMED_SCRIPT
+in: id, args
+```
+
+```lua
+startNewStreamedScript(id, args)
+```
+
+```js
+StreamedScript.startNew(id, args)
+```
+</Opcode>
+
+## 实例数
+
+<Opcode id="0926" name="GET_NUMBER_OF_INSTANCES_OF_STREAMED_SCRIPT" member="StreamedScript.GetNumberOfInstances">
+该脚本当前实例数。
+
+```text
+0926 GET_NUMBER_OF_INSTANCES_OF_STREAMED_SCRIPT
+in: id
+out: numScripts
+```
+
+```lua
+local numScripts = getNumberOfInstancesOfStreamedScript(id)
+```
+
+```js
+const numScripts = StreamedScript.getNumberOfInstances(id)
+```
+</Opcode>
+
+## 绑随机行人
+
+<Opcode id="0928" name="ALLOCATE_STREAMED_SCRIPT_TO_RANDOM_PED" member="StreamedScript.AllocateToRandomPed">
+玩家靠近某模型行人时启动环境脚本。
+
+```text
+0928 ALLOCATE_STREAMED_SCRIPT_TO_RANDOM_PED
+in: id, modelId, priority
+```
+
+```lua
+allocateStreamedScriptToRandomPed(id, modelId, priority)
+```
+
+```js
+StreamedScript.allocateToRandomPed(id, modelId, priority)
+```
+</Opcode>
+
+## 绑物体
+
+<Opcode id="0929" name="ALLOCATE_STREAMED_SCRIPT_TO_OBJECT" member="StreamedScript.AllocateToObject">
+玩家靠近某模型物体时启动环境脚本。
+
+```text
+0929 ALLOCATE_STREAMED_SCRIPT_TO_OBJECT
+in: id, modelId, priority, radius, groupingId
+```
+
+```lua
+allocateStreamedScriptToObject(id, modelId, priority, radius, groupingId)
+```
+
+```js
+StreamedScript.allocateToObject(id, modelId, priority, radius, groupingId)
+```
+</Opcode>

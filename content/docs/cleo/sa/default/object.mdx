@@ -1,0 +1,1678 @@
+---
+title: 物体 Object
+description: 物体创建 / 物理 / 附着 / 动画
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 87 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 创建物体
+
+<Opcode id="0107" name="CREATE_OBJECT" member="Object.Create">
+在坐标用指定模型创建物体。
+
+```text
+0107 CREATE_OBJECT
+in: modelId, x, y, z
+out: handle
+```
+
+```lua
+local handle = createObject(modelId, x, y, z)
+```
+
+```js
+Object.create(modelId, x, y, z)
+```
+</Opcode>
+
+## 删除物体
+
+<Opcode id="0108" name="DELETE_OBJECT" member="Object.Delete">
+销毁物体并腾内存。
+
+```text
+0108 DELETE_OBJECT
+in: self
+```
+
+```lua
+deleteObject(self)
+```
+
+```js
+Object.delete(self)
+```
+</Opcode>
+
+## 取朝向
+
+<Opcode id="0176" name="GET_OBJECT_HEADING" member="Object.GetHeading">
+取物体朝向（Z 角）。
+
+```text
+0176 GET_OBJECT_HEADING
+in: self
+out: heading
+```
+
+```lua
+local heading = getObjectHeading(self)
+```
+
+```js
+Object.getHeading(self)
+```
+</Opcode>
+
+## 设朝向
+
+<Opcode id="0177" name="SET_OBJECT_HEADING" member="Object.SetHeading">
+设物体朝向（Z 角）。
+
+```text
+0177 SET_OBJECT_HEADING
+in: self, heading
+```
+
+```lua
+setObjectHeading(self, heading)
+```
+
+```js
+Object.setHeading(self, heading)
+```
+</Opcode>
+
+## 取坐标
+
+<Opcode id="01BB" name="GET_OBJECT_COORDINATES" member="Object.GetCoordinates">
+取物体坐标。
+
+```text
+01BB GET_OBJECT_COORDINATES
+in: self
+out: x, y, z
+```
+
+```lua
+local x, y, z = getObjectCoordinates(self)
+```
+
+```js
+Object.getCoordinates(self)
+```
+</Opcode>
+
+## 设坐标
+
+<Opcode id="01BC" name="SET_OBJECT_COORDINATES" member="Object.SetCoordinates">
+把物体放到指定坐标。
+
+```text
+01BC SET_OBJECT_COORDINATES
+in: self, x, y, z
+```
+
+```lua
+setObjectCoordinates(self, x, y, z)
+```
+
+```js
+Object.setCoordinates(self, x, y, z)
+```
+</Opcode>
+
+## 可卸载
+
+<Opcode id="01C4" name="MARK_OBJECT_AS_NO_LONGER_NEEDED" member="Object.MarkAsNoLongerNeeded">
+允许游戏按需删除，并从任务清理列表移除。
+
+```text
+01C4 MARK_OBJECT_AS_NO_LONGER_NEEDED
+in: self
+```
+
+```lua
+markObjectAsNoLongerNeeded(self)
+```
+
+```js
+Object.markAsNoLongerNeeded(self)
+```
+</Opcode>
+
+## 任务结束不删
+
+<Opcode id="01C7" name="DONT_REMOVE_OBJECT" member="Object.DontRemove">
+从任务清理列表移除，任务结束不删。
+
+```text
+01C7 DONT_REMOVE_OBJECT
+in: self
+```
+
+```lua
+dontRemoveObject(self)
+```
+
+```js
+Object.dontRemove(self)
+```
+</Opcode>
+
+## 无偏移创建
+
+<Opcode id="029B" name="CREATE_OBJECT_NO_OFFSET" member="Object.CreateNoOffset">
+无偏移创建物体。
+
+```text
+029B CREATE_OBJECT_NO_OFFSET
+in: modelId, x, y, z
+out: handle
+```
+
+```lua
+local handle = createObjectNoOffset(modelId, x, y, z)
+```
+
+```js
+Object.createNoOffset(modelId, x, y, z)
+```
+</Opcode>
+
+## 是否在屏上
+
+<Opcode id="02CC" name="IS_OBJECT_ON_SCREEN" member="Object.IsOnScreen">
+用在 if：物体是否可见（在屏上）。
+
+```text
+02CC IS_OBJECT_ON_SCREEN
+in: self
+```
+
+```lua
+isObjectOnScreen(self)
+```
+
+```js
+Object.isOnScreen(self)
+```
+</Opcode>
+
+## 旋转到角度
+
+<Opcode id="034D" name="ROTATE_OBJECT" member="Object.Rotate">
+从一角转到另一角，可选碰撞。
+
+```text
+034D ROTATE_OBJECT
+in: self, fromAngle, toAngle, collisionCheck
+```
+
+```lua
+rotateObject(self, fromAngle, toAngle, collisionCheck)
+```
+
+```js
+Object.rotate(self, fromAngle, toAngle, collisionCheck)
+```
+</Opcode>
+
+## 滑向坐标
+
+<Opcode id="034E" name="SLIDE_OBJECT" member="Object.Slide">
+滑向目标坐标；到位时条件真。
+
+```text
+034E SLIDE_OBJECT
+in: self, posX, posY, posZ, speedX, speedY, speedZ, collisionCheck
+```
+
+```lua
+slideObject(self, posX, posY, posZ, speedX, speedY, speedZ, collisionCheck)
+```
+
+```js
+Object.slide(self, posX, posY, posZ, speedX, speedY, speedZ, collisionCheck)
+```
+</Opcode>
+
+## 相对车放置
+
+<Opcode id="035C" name="PLACE_OBJECT_RELATIVE_TO_CAR" member="Object.PlaceRelativeToCar">
+相对车辆偏移放置。
+
+```text
+035C PLACE_OBJECT_RELATIVE_TO_CAR
+in: self, vehicle, xOffset, yOffset, zOffset
+```
+
+```lua
+placeObjectRelativeToCar(self, vehicle, xOffset, yOffset, zOffset)
+```
+
+```js
+Object.placeRelativeToCar(self, vehicle, xOffset, yOffset, zOffset)
+```
+</Opcode>
+
+## 可被瞄准
+
+<Opcode id="035D" name="MAKE_OBJECT_TARGETTABLE" member="Object.MakeTargetable">
+是否可被自动瞄准。
+
+```text
+035D MAKE_OBJECT_TARGETTABLE
+in: self, state
+```
+
+```lua
+makeObjectTargettable(self, state)
+```
+
+```js
+Object.makeTargetable(self, state)
+```
+</Opcode>
+
+## 是否损坏
+
+<Opcode id="0366" name="HAS_OBJECT_BEEN_DAMAGED" member="Object.HasBeenDamaged">
+用在 if：物体是否损坏。
+
+```text
+0366 HAS_OBJECT_BEEN_DAMAGED
+in: self
+```
+
+```lua
+hasObjectBeenDamaged(self)
+```
+
+```js
+Object.hasBeenDamaged(self)
+```
+</Opcode>
+
+## 设线速度
+
+<Opcode id="0381" name="SET_OBJECT_VELOCITY" member="Object.SetVelocity">
+设物体线速度。
+
+```text
+0381 SET_OBJECT_VELOCITY
+in: self, xSpeed, ySpeed, zSpeed
+```
+
+```lua
+setObjectVelocity(self, xSpeed, ySpeed, zSpeed)
+```
+
+```js
+Object.setVelocity(self, xSpeed, ySpeed, zSpeed)
+```
+</Opcode>
+
+## 碰撞检测
+
+<Opcode id="0382" name="SET_OBJECT_COLLISION" member="Object.SetCollision">
+开关物体碰撞检测。
+
+```text
+0382 SET_OBJECT_COLLISION
+in: self, state
+```
+
+```lua
+setObjectCollision(self, state)
+```
+
+```js
+Object.setCollision(self, state)
+```
+</Opcode>
+
+## 叠加速度
+
+<Opcode id="038C" name="ADD_TO_OBJECT_VELOCITY" member="Object.AddToVelocity">
+给线速度叠加向量（0381）。
+
+```text
+038C ADD_TO_OBJECT_VELOCITY
+in: self, x, y, z
+```
+
+```lua
+addToObjectVelocity(self, x, y, z)
+```
+
+```js
+Object.addToVelocity(self, x, y, z)
+```
+</Opcode>
+
+## 可被推动
+
+<Opcode id="0392" name="SET_OBJECT_DYNAMIC" member="Object.SetDynamic">
+是否可被物理推动。
+
+```text
+0392 SET_OBJECT_DYNAMIC
+in: self, state
+```
+
+```lua
+setObjectDynamic(self, state)
+```
+
+```js
+Object.setDynamic(self, state)
+```
+</Opcode>
+
+## 句柄是否有效
+
+<Opcode id="03CA" name="DOES_OBJECT_EXIST" member="Object.DoesExist">
+用在 if：句柄是否有效物体。
+
+```text
+03CA DOES_OBJECT_EXIST
+in: handle
+```
+
+```lua
+doesObjectExist(handle)
+```
+
+```js
+Object.doesExist(handle)
+```
+</Opcode>
+
+## 偏移世界坐标
+
+<Opcode id="0400" name="GET_OFFSET_FROM_OBJECT_IN_WORLD_COORDS" member="Object.GetOffsetInWorldCoords">
+取带偏移的世界坐标。
+
+```text
+0400 GET_OFFSET_FROM_OBJECT_IN_WORLD_COORDS
+in: self, xOffset, yOffset, zOffset
+out: x, y, z
+```
+
+```lua
+local x, y, z = getOffsetFromObjectInWorldCoords(self, xOffset, yOffset, zOffset)
+```
+
+```js
+Object.getOffsetInWorldCoords(self, xOffset, yOffset, zOffset)
+```
+</Opcode>
+
+## 最后绘制
+
+<Opcode id="0418" name="SET_OBJECT_DRAW_LAST" member="Object.SetDrawLast">
+是否总画在其它物体之上。
+
+```text
+0418 SET_OBJECT_DRAW_LAST
+in: self, state
+```
+
+```lua
+setObjectDrawLast(self, state)
+```
+
+```js
+Object.setDrawLast(self, state)
+```
+</Opcode>
+
+## 设旋转
+
+<Opcode id="0453" name="SET_OBJECT_ROTATION" member="Object.SetRotation">
+设 XYZ 旋转。
+
+```text
+0453 SET_OBJECT_ROTATION
+in: self, x, y, z
+```
+
+```lua
+setObjectRotation(self, x, y, z)
+```
+
+```js
+Object.setRotation(self, x, y, z)
+```
+</Opcode>
+
+## 记录碰撞
+
+<Opcode id="04D9" name="SET_OBJECT_RECORDS_COLLISIONS" member="Object.SetRecordsCollisions">
+启用物体碰撞记录。
+
+```text
+04D9 SET_OBJECT_RECORDS_COLLISIONS
+in: self, state
+```
+
+```lua
+setObjectRecordsCollisions(self, state)
+```
+
+```js
+Object.setRecordsCollisions(self, state)
+```
+</Opcode>
+
+## 是否发生碰撞
+
+<Opcode id="04DA" name="HAS_OBJECT_COLLIDED_WITH_ANYTHING" member="Object.HasCollidedWithAnything">
+用在 if：是否发生过碰撞。
+
+```text
+04DA HAS_OBJECT_COLLIDED_WITH_ANYTHING
+in: self
+```
+
+```lua
+hasObjectCollidedWithAnything(self)
+```
+
+```js
+Object.hasCollidedWithAnything(self)
+```
+</Opcode>
+
+## 靠近 2D
+
+<Opcode id="04E5" name="LOCATE_OBJECT_2D" member="Object.Locate2D">
+用在 if：是否靠近指定坐标。
+
+```text
+04E5 LOCATE_OBJECT_2D
+in: self, x, y, xRadius, yRadius, drawSphere
+```
+
+```lua
+locateObject2D(self, x, y, xRadius, yRadius, drawSphere)
+```
+
+```js
+Object.locate2D(self, x, y, xRadius, yRadius, drawSphere)
+```
+</Opcode>
+
+## 靠近 3D
+
+<Opcode id="04E6" name="LOCATE_OBJECT_3D" member="Object.Locate3D">
+用在 if：是否靠近指定点。
+
+```text
+04E6 LOCATE_OBJECT_3D
+in: self, x, y, z, xRadius, yRadius, zRadius, drawSphere
+```
+
+```lua
+locateObject3D(self, x, y, z, xRadius, yRadius, zRadius, drawSphere)
+```
+
+```js
+Object.locate3D(self, x, y, z, xRadius, yRadius, zRadius, drawSphere)
+```
+</Opcode>
+
+## 是否在水中
+
+<Opcode id="04E7" name="IS_OBJECT_IN_WATER" member="Object.IsInWater">
+用在 if：是否在水中。
+
+```text
+04E7 IS_OBJECT_IN_WATER
+in: self
+```
+
+```lua
+isObjectInWater(self)
+```
+
+```js
+Object.isInWater(self)
+```
+</Opcode>
+
+## 是否在 2D 区
+
+<Opcode id="04E9" name="IS_OBJECT_IN_AREA_2D" member="Object.IsInArea2D">
+用在 if：是否在 2D 区域内。
+
+```text
+04E9 IS_OBJECT_IN_AREA_2D
+in: self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere
+```
+
+```lua
+isObjectInArea2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere)
+```
+
+```js
+Object.isInArea2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere)
+```
+</Opcode>
+
+## 是否在 3D 区
+
+<Opcode id="04EA" name="IS_OBJECT_IN_AREA_3D" member="Object.IsInArea3D">
+用在 if：是否在 3D 区域内。
+
+```text
+04EA IS_OBJECT_IN_AREA_3D
+in: self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere
+```
+
+```lua
+isObjectInArea3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere)
+```
+
+```js
+Object.isInArea3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere)
+```
+</Opcode>
+
+## 与车无碰撞
+
+<Opcode id="050E" name="SORT_OUT_OBJECT_COLLISION_WITH_CAR" member="Object.SortOutCollisionWithCar">
+指定车与该物体无碰撞。
+
+```text
+050E SORT_OUT_OBJECT_COLLISION_WITH_CAR
+in: self, handle
+```
+
+```lua
+sortOutObjectCollisionWithCar(self, handle)
+```
+
+```js
+Object.sortOutCollisionWithCar(self, handle)
+```
+</Opcode>
+
+## 冻结位置
+
+<Opcode id="0550" name="FREEZE_OBJECT_POSITION" member="Object.FreezePosition">
+冻结物体位置。
+
+```text
+0550 FREEZE_OBJECT_POSITION
+in: self, state
+```
+
+```lua
+freezeObjectPosition(self, state)
+```
+
+```js
+Object.freezePosition(self, state)
+```
+</Opcode>
+
+## 可见 interior
+
+<Opcode id="0566" name="SET_OBJECT_AREA_VISIBLE" member="Object.SetAreaVisible">
+物体可见于哪个 interior。
+
+```text
+0566 SET_OBJECT_AREA_VISIBLE
+in: self, areaId
+```
+
+```lua
+setObjectAreaVisible(self, areaId)
+```
+
+```js
+Object.setAreaVisible(self, areaId)
+```
+</Opcode>
+
+## 取线速度
+
+<Opcode id="059F" name="GET_OBJECT_VELOCITY" member="Object.GetVelocity">
+取线速度 XYZ。
+
+```text
+059F GET_OBJECT_VELOCITY
+in: self
+out: x, y, z
+```
+
+```lua
+local x, y, z = getObjectVelocity(self)
+```
+
+```js
+Object.getVelocity(self)
+```
+</Opcode>
+
+## 叠加角速度
+
+<Opcode id="05A1" name="ADD_TO_OBJECT_ROTATION_VELOCITY" member="Object.AddToRotationVelocity">
+相对质心叠加角速度。
+
+```text
+05A1 ADD_TO_OBJECT_ROTATION_VELOCITY
+in: self, x, y, z
+```
+
+```lua
+addToObjectRotationVelocity(self, x, y, z)
+```
+
+```js
+Object.addToRotationVelocity(self, x, y, z)
+```
+</Opcode>
+
+## 设角速度
+
+<Opcode id="05A2" name="SET_OBJECT_ROTATION_VELOCITY" member="Object.SetRotationVelocity">
+设角速度（带帧同步）。
+
+```text
+05A2 SET_OBJECT_ROTATION_VELOCITY
+in: self, x, y, z
+```
+
+```lua
+setObjectRotationVelocity(self, x, y, z)
+```
+
+```js
+Object.setRotationVelocity(self, x, y, z)
+```
+</Opcode>
+
+## 是否静止
+
+<Opcode id="05A3" name="IS_OBJECT_STATIC" member="Object.IsStatic">
+用在 if：是否静止。
+
+```text
+05A3 IS_OBJECT_STATIC
+in: self
+```
+
+```lua
+isObjectStatic(self)
+```
+
+```js
+Object.isStatic(self)
+```
+</Opcode>
+
+## 取角速度
+
+<Opcode id="05A6" name="GET_OBJECT_ROTATION_VELOCITY" member="Object.GetRotationVelocity">
+取角速度。
+
+```text
+05A6 GET_OBJECT_ROTATION_VELOCITY
+in: self
+out: x, y, z
+```
+
+```lua
+local x, y, z = getObjectRotationVelocity(self)
+```
+
+```js
+Object.getRotationVelocity(self)
+```
+</Opcode>
+
+## 相对叠加速度
+
+<Opcode id="05A7" name="ADD_VELOCITY_RELATIVE_TO_OBJECT_VELOCITY" member="Object.AddVelocityRelative">
+设物体线速度。
+
+```text
+05A7 ADD_VELOCITY_RELATIVE_TO_OBJECT_VELOCITY
+in: self, x, y, z
+```
+
+```lua
+addVelocityRelativeToObjectVelocity(self, x, y, z)
+```
+
+```js
+Object.addVelocityRelative(self, x, y, z)
+```
+</Opcode>
+
+## 取速率
+
+<Opcode id="05A8" name="GET_OBJECT_SPEED" member="Object.GetSpeed">
+取物体速率。
+
+```text
+05A8 GET_OBJECT_SPEED
+in: self
+out: speed
+```
+
+```lua
+local speed = getObjectSpeed(self)
+```
+
+```js
+Object.getSpeed(self)
+```
+</Opcode>
+
+## 烧焦外观
+
+<Opcode id="0654" name="SET_OBJECT_RENDER_SCORCHED" member="Object.SetRenderScorched">
+外观烧焦。
+
+```text
+0654 SET_OBJECT_RENDER_SCORCHED
+in: self, state
+```
+
+```lua
+setObjectRenderScorched(self, state)
+```
+
+```js
+Object.setRenderScorched(self, state)
+```
+</Opcode>
+
+## 附着到车
+
+<Opcode id="0681" name="ATTACH_OBJECT_TO_CAR" member="Object.AttachToCar">
+附着到车上。
+
+```text
+0681 ATTACH_OBJECT_TO_CAR
+in: self, handle, xOffset, yOffset, zOffset, xRotation, yRotation, zRotation
+```
+
+```lua
+attachObjectToCar(self, handle, xOffset, yOffset, zOffset, xRotation, yRotation, zRotation)
+```
+
+```js
+Object.attachToCar(self, handle, xOffset, yOffset, zOffset, xRotation, yRotation, zRotation)
+```
+</Opcode>
+
+## 分离
+
+<Opcode id="0682" name="DETACH_OBJECT" member="Object.Detach">
+分离物体（可选旋转与力）。
+
+```text
+0682 DETACH_OBJECT
+in: self, pitch, heading, strength, applyTurnForce
+```
+
+```lua
+detachObject(self, pitch, heading, strength, applyTurnForce)
+```
+
+```js
+Object.detach(self, pitch, heading, strength, applyTurnForce)
+```
+</Opcode>
+
+## 是否附着中
+
+<Opcode id="0685" name="IS_OBJECT_ATTACHED" member="Object.IsAttached">
+用在 if：是否附着中。
+
+```text
+0685 IS_OBJECT_ATTACHED
+in: self
+```
+
+```lua
+isObjectAttached(self)
+```
+
+```js
+Object.isAttached(self)
+```
+</Opcode>
+
+## 附着到物体
+
+<Opcode id="069A" name="ATTACH_OBJECT_TO_OBJECT" member="Object.AttachToObject">
+附着到另一物体。
+
+```text
+069A ATTACH_OBJECT_TO_OBJECT
+in: self, handle, xOffset, yOffset, zOffset, xRotation, yRotation, zRotation
+```
+
+```lua
+attachObjectToObject(self, handle, xOffset, yOffset, zOffset, xRotation, yRotation, zRotation)
+```
+
+```js
+Object.attachToObject(self, handle, xOffset, yOffset, zOffset, xRotation, yRotation, zRotation)
+```
+</Opcode>
+
+## 附着到角色
+
+<Opcode id="069B" name="ATTACH_OBJECT_TO_CHAR" member="Object.AttachToChar">
+附着到角色。
+
+```text
+069B ATTACH_OBJECT_TO_CHAR
+in: self, handle, xOffset, yOffset, zOffset, xRotation, yRotation, zRotation
+```
+
+```lua
+attachObjectToChar(self, handle, xOffset, yOffset, zOffset, xRotation, yRotation, zRotation)
+```
+
+```js
+Object.attachToChar(self, handle, xOffset, yOffset, zOffset, xRotation, yRotation, zRotation)
+```
+</Opcode>
+
+## 取生命
+
+<Opcode id="071E" name="GET_OBJECT_HEALTH" member="Object.GetHealth">
+取物体生命。
+
+```text
+071E GET_OBJECT_HEALTH
+in: self
+out: health
+```
+
+```lua
+local health = getObjectHealth(self)
+```
+
+```js
+Object.getHealth(self)
+```
+</Opcode>
+
+## 设生命
+
+<Opcode id="071F" name="SET_OBJECT_HEALTH" member="Object.SetHealth">
+设物体生命。
+
+```text
+071F SET_OBJECT_HEALTH
+in: self, health
+```
+
+```lua
+setObjectHealth(self, health)
+```
+
+```js
+Object.setHealth(self, health)
+```
+</Opcode>
+
+## 砸碎
+
+<Opcode id="0723" name="BREAK_OBJECT" member="Object.Break">
+砸碎物体。
+
+```text
+0723 BREAK_OBJECT
+in: self, intensity
+```
+
+```lua
+breakObject(self, intensity)
+```
+
+```js
+Object.break(self, intensity)
+```
+</Opcode>
+
+## 显隐
+
+<Opcode id="0750" name="SET_OBJECT_VISIBLE" member="Object.SetVisible">
+显隐物体。
+
+```text
+0750 SET_OBJECT_VISIBLE
+in: self, state
+```
+
+```lua
+setObjectVisible(self, state)
+```
+
+```js
+Object.setVisible(self, state)
+```
+</Opcode>
+
+## 播放动画
+
+<Opcode id="075A" name="PLAY_OBJECT_ANIM" member="Object.PlayAnim">
+播放物体动画。
+
+```text
+075A PLAY_OBJECT_ANIM
+in: self, animationName, animationFile, frameDelta, lockF, loop
+```
+
+```lua
+playObjectAnim(self, animationName, animationFile, frameDelta, lockF, loop)
+```
+
+```js
+Object.playAnim(self, animationName, animationFile, frameDelta, lockF, loop)
+```
+</Opcode>
+
+## 取绳高
+
+<Opcode id="0796" name="GET_ROPE_HEIGHT_FOR_OBJECT" member="Object.GetRopeHeight">
+取绳索高度。
+
+```text
+0796 GET_ROPE_HEIGHT_FOR_OBJECT
+in: self
+out: height
+```
+
+```lua
+local height = getRopeHeightForObject(self)
+```
+
+```js
+Object.getRopeHeight(self)
+```
+</Opcode>
+
+## 设绳高
+
+<Opcode id="0797" name="SET_ROPE_HEIGHT_FOR_OBJECT" member="Object.SetRopeHeight">
+设绳索高度。
+
+```text
+0797 SET_ROPE_HEIGHT_FOR_OBJECT
+in: self, height
+```
+
+```lua
+setRopeHeightForObject(self, height)
+```
+
+```js
+Object.setRopeHeight(self, height)
+```
+</Opcode>
+
+## 抓住绳上实体
+
+<Opcode id="0798" name="GRAB_ENTITY_ON_ROPE_FOR_OBJECT" member="Object.GrabEntityOnRope">
+抓住绳上实体。
+
+```text
+0798 GRAB_ENTITY_ON_ROPE_FOR_OBJECT
+in: self
+out: vehicle, char, object
+```
+
+```lua
+local vehicle, char, object = grabEntityOnRopeForObject(self)
+```
+
+```js
+Object.grabEntityOnRope(self)
+```
+</Opcode>
+
+## 释放绳上实体
+
+<Opcode id="0799" name="RELEASE_ENTITY_FROM_ROPE_FOR_OBJECT" member="Object.ReleaseEntityFromRope">
+从绳上释放实体。
+
+```text
+0799 RELEASE_ENTITY_FROM_ROPE_FOR_OBJECT
+in: self
+```
+
+```lua
+releaseEntityFromRopeForObject(self)
+```
+
+```js
+Object.releaseEntityFromRope(self)
+```
+</Opcode>
+
+## 取四元数
+
+<Opcode id="07C3" name="GET_OBJECT_QUATERNION" member="Object.GetQuaternion">
+取四元数。
+
+```text
+07C3 GET_OBJECT_QUATERNION
+in: self
+out: x, y, z, w
+```
+
+```lua
+local x, y, z, w = getObjectQuaternion(self)
+```
+
+```js
+Object.getQuaternion(self)
+```
+</Opcode>
+
+## 设四元数
+
+<Opcode id="07C4" name="SET_OBJECT_QUATERNION" member="Object.SetQuaternion">
+设四元数。
+
+```text
+07C4 SET_OBJECT_QUATERNION
+in: self, x, y, z, w
+```
+
+```lua
+setObjectQuaternion(self, x, y, z, w)
+```
+
+```js
+Object.setQuaternion(self, x, y, z, w)
+```
+</Opcode>
+
+## 碰撞伤害效果
+
+<Opcode id="07F7" name="SET_OBJECT_COLLISION_DAMAGE_EFFECT" member="Object.SetCollisionDamageEffect">
+是否可被摧毁。
+
+```text
+07F7 SET_OBJECT_COLLISION_DAMAGE_EFFECT
+in: self, state
+```
+
+```lua
+setObjectCollisionDamageEffect(self, state)
+```
+
+```js
+Object.setCollisionDamageEffect(self, state)
+```
+</Opcode>
+
+## 关卡设计坐标
+
+<Opcode id="080A" name="GET_LEVEL_DESIGN_COORDS_FOR_OBJECT" member="Object.GetLevelDesignCoords">
+取关卡设计坐标。
+
+```text
+080A GET_LEVEL_DESIGN_COORDS_FOR_OBJECT
+in: self, nth
+out: x, y, z
+```
+
+```lua
+local x, y, z = getLevelDesignCoordsForObject(self, nth)
+```
+
+```js
+Object.getLevelDesignCoords(self, nth)
+```
+</Opcode>
+
+## 改坐标保旋转
+
+<Opcode id="0815" name="SET_OBJECT_COORDINATES_AND_VELOCITY" member="Object.SetCoordinatesAndVelocity">
+改坐标且不改旋转。
+
+```text
+0815 SET_OBJECT_COORDINATES_AND_VELOCITY
+in: self, x, y, z
+```
+
+```lua
+setObjectCoordinatesAndVelocity(self, x, y, z)
+```
+
+```js
+Object.setCoordinatesAndVelocity(self, x, y, z)
+```
+</Opcode>
+
+## 连接 LOD
+
+<Opcode id="0827" name="CONNECT_LODS" member="Object.ConnectLods">
+远处显示的 LOD 物体。
+
+```text
+0827 CONNECT_LODS
+in: self, lodObject
+```
+
+```lua
+connectLods(self, lodObject)
+```
+
+```js
+Object.connectLods(self, lodObject)
+```
+</Opcode>
+
+## 是否被拍照
+
+<Opcode id="0833" name="HAS_OBJECT_BEEN_PHOTOGRAPHED" member="Object.HasBeenPhotographed">
+用在 if：是否被拍过照。
+
+```text
+0833 HAS_OBJECT_BEEN_PHOTOGRAPHED
+in: self
+```
+
+```lua
+hasObjectBeenPhotographed(self)
+```
+
+```js
+Object.hasBeenPhotographed(self)
+```
+</Opcode>
+
+## 动画速度
+
+<Opcode id="0836" name="SET_OBJECT_ANIM_SPEED" member="Object.SetAnimSpeed">
+物体动画播放速度。
+
+```text
+0836 SET_OBJECT_ANIM_SPEED
+in: self, animationName, speed
+```
+
+```lua
+setObjectAnimSpeed(self, animationName, speed)
+```
+
+```js
+Object.setAnimSpeed(self, animationName, speed)
+```
+</Opcode>
+
+## 是否在播动画
+
+<Opcode id="0837" name="IS_OBJECT_PLAYING_ANIM" member="Object.IsPlayingAnim">
+用在 if：是否在播指定动画。
+
+```text
+0837 IS_OBJECT_PLAYING_ANIM
+in: self, animationName
+```
+
+```lua
+isObjectPlayingAnim(self, animationName)
+```
+
+```js
+Object.isPlayingAnim(self, animationName)
+```
+</Opcode>
+
+## 取动画进度
+
+<Opcode id="0839" name="GET_OBJECT_ANIM_CURRENT_TIME" member="Object.GetAnimCurrentTime">
+取动画进度。
+
+```text
+0839 GET_OBJECT_ANIM_CURRENT_TIME
+in: self, animationName
+out: time
+```
+
+```lua
+local time = getObjectAnimCurrentTime(self, animationName)
+```
+
+```js
+Object.getAnimCurrentTime(self, animationName)
+```
+</Opcode>
+
+## 设动画进度
+
+<Opcode id="083A" name="SET_OBJECT_ANIM_CURRENT_TIME" member="Object.SetAnimCurrentTime">
+设动画进度（0 起）。
+
+```text
+083A SET_OBJECT_ANIM_CURRENT_TIME
+in: self, animationName, time
+```
+
+```lua
+setObjectAnimCurrentTime(self, animationName, time)
+```
+
+```js
+Object.setAnimCurrentTime(self, animationName, time)
+```
+</Opcode>
+
+## 仅玩家可伤
+
+<Opcode id="0875" name="SET_OBJECT_ONLY_DAMAGED_BY_PLAYER" member="Object.SetOnlyDamagedByPlayer">
+仅玩家能伤害该物体。
+
+```text
+0875 SET_OBJECT_ONLY_DAMAGED_BY_PLAYER
+in: self, state
+```
+
+```lua
+setObjectOnlyDamagedByPlayer(self, state)
+```
+
+```js
+Object.setOnlyDamagedByPlayer(self, state)
+```
+</Opcode>
+
+## 设缩放
+
+<Opcode id="08D2" name="SET_OBJECT_SCALE" member="Object.SetScale">
+设缩放。
+
+```text
+08D2 SET_OBJECT_SCALE
+in: self, scale
+```
+
+```lua
+setObjectScale(self, scale)
+```
+
+```js
+Object.setScale(self, scale)
+```
+</Opcode>
+
+## 倾斜 2D 区
+
+<Opcode id="08E3" name="IS_OBJECT_IN_ANGLED_AREA_2D" member="Object.IsInAngledArea2D">
+用在 if：是否在倾斜 2D 区内。
+
+```text
+08E3 IS_OBJECT_IN_ANGLED_AREA_2D
+in: self, leftBottomX, leftBottomY, rightTopX, rightTopY, angle, drawSphere
+```
+
+```lua
+isObjectInAngledArea2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, angle, drawSphere)
+```
+
+```js
+Object.isInAngledArea2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, angle, drawSphere)
+```
+</Opcode>
+
+## 倾斜 3D 区
+
+<Opcode id="08E4" name="IS_OBJECT_IN_ANGLED_AREA_3D" member="Object.IsInAngledArea3D">
+用在 if：是否在倾斜 3D 区内。
+
+```text
+08E4 IS_OBJECT_IN_ANGLED_AREA_3D
+in: self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, angle, drawSphere
+```
+
+```lua
+isObjectInAngledArea3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, angle, drawSphere)
+```
+
+```js
+Object.isInAngledArea3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, angle, drawSphere)
+```
+</Opcode>
+
+## 可偷取搬运
+
+<Opcode id="08E9" name="SET_OBJECT_AS_STEALABLE" member="Object.SetAsStealable">
+是否可拾取搬运。
+
+```text
+08E9 SET_OBJECT_AS_STEALABLE
+in: self, state
+```
+
+```lua
+setObjectAsStealable(self, state)
+```
+
+```js
+Object.setAsStealable(self, state)
+```
+</Opcode>
+
+## 是否被武器打伤
+
+<Opcode id="08FF" name="HAS_OBJECT_BEEN_DAMAGED_BY_WEAPON" member="Object.HasBeenDamagedByWeapon">
+用在 if：是否被指定武器/伤害类型打伤。
+
+```text
+08FF HAS_OBJECT_BEEN_DAMAGED_BY_WEAPON
+in: self, weaponType
+```
+
+```lua
+hasObjectBeenDamagedByWeapon(self, weaponType)
+```
+
+```js
+Object.hasBeenDamagedByWeapon(self, weaponType)
+```
+</Opcode>
+
+## 清武器伤害记录
+
+<Opcode id="0900" name="CLEAR_OBJECT_LAST_WEAPON_DAMAGE" member="Object.ClearLastWeaponDamage">
+清上次造成伤害的武器 ID。
+
+```text
+0900 CLEAR_OBJECT_LAST_WEAPON_DAMAGE
+in: self
+```
+
+```lua
+clearObjectLastWeaponDamage(self)
+```
+
+```js
+Object.clearLastWeaponDamage(self)
+```
+</Opcode>
+
+## 门锁
+
+<Opcode id="0905" name="LOCK_DOOR" member="Object.LockDoor">
+门锁在当前角，实体可推开一次。
+
+```text
+0905 LOCK_DOOR
+in: self, state
+```
+
+```lua
+lockDoor(self, state)
+```
+
+```js
+Object.lockDoor(self, state)
+```
+</Opcode>
+
+## 设质量
+
+<Opcode id="0906" name="SET_OBJECT_MASS" member="Object.SetMass">
+设质量。
+
+```text
+0906 SET_OBJECT_MASS
+in: self, mass
+```
+
+```lua
+setObjectMass(self, mass)
+```
+
+```js
+Object.setMass(self, mass)
+```
+</Opcode>
+
+## 取质量
+
+<Opcode id="0907" name="GET_OBJECT_MASS" member="Object.GetMass">
+取质量。
+
+```text
+0907 GET_OBJECT_MASS
+in: self
+out: mass
+```
+
+```lua
+local mass = getObjectMass(self)
+```
+
+```js
+Object.getMass(self)
+```
+</Opcode>
+
+## 设转动惯量
+
+<Opcode id="0908" name="SET_OBJECT_TURN_MASS" member="Object.SetTurnMass">
+设转动惯量。
+
+```text
+0908 SET_OBJECT_TURN_MASS
+in: self, turnMass
+```
+
+```lua
+setObjectTurnMass(self, turnMass)
+```
+
+```js
+Object.setTurnMass(self, turnMass)
+```
+</Opcode>
+
+## 取转动惯量
+
+<Opcode id="0909" name="GET_OBJECT_TURN_MASS" member="Object.GetTurnMass">
+取转动惯量。
+
+```text
+0909 GET_OBJECT_TURN_MASS
+in: self
+out: turnMass
+```
+
+```lua
+local turnMass = getObjectTurnMass(self)
+```
+
+```js
+Object.getTurnMass(self)
+```
+</Opcode>
+
+## 吊车可吊
+
+<Opcode id="0916" name="WINCH_CAN_PICK_OBJECT_UP" member="Object.WinchCanPickUp">
+是否可被磁力吊车吊起。
+
+```text
+0916 WINCH_CAN_PICK_OBJECT_UP
+in: self, state
+```
+
+```lua
+winchCanPickObjectUp(self, state)
+```
+
+```js
+Object.winchCanPickUp(self, state)
+```
+</Opcode>
+
+## 是否已可动
+
+<Opcode id="095B" name="HAS_OBJECT_BEEN_UPROOTED" member="Object.HasBeenUprooted">
+用在 if：是否已被 0392 设为可动。
+
+```text
+095B HAS_OBJECT_BEEN_UPROOTED
+in: self
+```
+
+```lua
+hasObjectBeenUprooted(self)
+```
+
+```js
+Object.hasBeenUprooted(self)
+```
+</Opcode>
+
+## brain 触发半径
+
+<Opcode id="0977" name="IS_OBJECT_WITHIN_BRAIN_ACTIVATION_RANGE" member="Object.IsWithinBrainActivationRange">
+用在 if：是否在外部脚本触发半径内。
+
+```text
+0977 IS_OBJECT_WITHIN_BRAIN_ACTIVATION_RANGE
+in: self
+```
+
+```lua
+isObjectWithinBrainActivationRange(self)
+```
+
+```js
+Object.isWithinBrainActivationRange(self)
+```
+</Opcode>
+
+## 取模型
+
+<Opcode id="0984" name="GET_OBJECT_MODEL" member="Object.GetModel">
+取模型索引。
+
+```text
+0984 GET_OBJECT_MODEL
+in: self
+out: model
+```
+
+```lua
+local model = getObjectModel(self)
+```
+
+```js
+Object.getModel(self)
+```
+</Opcode>
+
+## 淡出删除
+
+<Opcode id="09A2" name="REMOVE_OBJECT_ELEGANTLY" member="Object.RemoveElegantly">
+淡出并释放内存。
+
+```text
+09A2 REMOVE_OBJECT_ELEGANTLY
+in: self
+```
+
+```lua
+removeObjectElegantly(self)
+```
+
+```js
+Object.removeElegantly(self)
+```
+</Opcode>
+
+## 伤害免疫
+
+<Opcode id="09CA" name="SET_OBJECT_PROOFS" member="Object.SetProofs">
+设各类伤害免疫。
+
+```text
+09CA SET_OBJECT_PROOFS
+in: self, bulletProof, fireProof, explosionProof, collisionProof, meleeProof
+```
+
+```lua
+setObjectProofs(self, bulletProof, fireProof, explosionProof, collisionProof, meleeProof)
+```
+
+```js
+Object.setProofs(self, bulletProof, fireProof, explosionProof, collisionProof, meleeProof)
+```
+</Opcode>
+
+## 模型是否匹配
+
+<Opcode id="09CC" name="DOES_OBJECT_HAVE_THIS_MODEL" member="Object.DoesHaveThisModel">
+用在 if：模型是否匹配。
+
+```text
+09CC DOES_OBJECT_HAVE_THIS_MODEL
+in: self, modelId
+```
+
+```lua
+doesObjectHaveThisModel(self, modelId)
+```
+
+```js
+Object.doesHaveThisModel(self, modelId)
+```
+</Opcode>
+
+## 是否与世界相交
+
+<Opcode id="09FC" name="IS_OBJECT_INTERSECTING_WORLD" member="Object.IsIntersectingWorld">
+用在 if：创建/改坐标后是否有东西进入过该位置。
+
+```text
+09FC IS_OBJECT_INTERSECTING_WORLD
+in: self
+```
+
+```lua
+isObjectIntersectingWorld(self)
+```
+
+```js
+Object.isIntersectingWorld(self)
+```
+</Opcode>
+
+## 吸引行人
+
+<Opcode id="0A0A" name="ENABLE_DISABLED_ATTRACTORS_ON_OBJECT" member="Object.EnableDisabledAttractors">
+是否吸引行人与之交互。
+
+```text
+0A0A ENABLE_DISABLED_ATTRACTORS_ON_OBJECT
+in: self, state
+```
+
+```lua
+enableDisabledAttractorsOnObject(self, state)
+```
+
+```js
+Object.enableDisabledAttractors(self, state)
+```
+</Opcode>

@@ -1,0 +1,47 @@
+---
+title: 标记 CleoBlip
+description: 不占原生上限的自定义雷达点
+---
+
+`sa` · 扩展 `CLEO+` · 需 CLEO + CLEO+
+
+不进存档、可任意纹理/透明度、不占原生 blip 上限的雷达点。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 添加
+
+<Opcode id="0E2A" name="ADD_CLEO_BLIP" member="CleoBlip.Add">
+加 CLEO 雷达点：纹理/雷达图标、坐标、是否短标、RGBA。返回句柄。
+
+```text
+0E2A ADD_CLEO_BLIP
+in: rwTextureOrRadarSprite, x, y, short, red, green, blue, alpha
+out: handle
+```
+
+```lua
+local blip = addCleoBlip(sprite, x, y, true, 255, 255, 255, 255)
+```
+
+```js
+const handle = CleoBlip.add(rwTextureOrRadarSprite, x, y, short, red, green, blue, alpha)
+```
+</Opcode>
+
+## 删除
+
+<Opcode id="0E2B" name="REMOVE_CLEO_BLIP" member="CleoBlip.Remove">
+删除 CLEO 雷达点。
+
+```text
+0E2B REMOVE_CLEO_BLIP
+in: self
+```
+
+```lua
+removeCleoBlip(blip)
+```
+
+```js
+CleoBlip.remove(self)
+```
+</Opcode>

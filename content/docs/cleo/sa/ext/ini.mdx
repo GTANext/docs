@@ -1,0 +1,170 @@
+---
+title: 配置 IniFile
+description: 读写 ini 段与键
+---
+
+`sa` · 扩展 `ini` · 需对应 CLEO 扩展
+
+读写 ini 段 / 键。读 / 写失败时条件为假。
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 读整数
+
+<Opcode id="0AF0" name="READ_INT_FROM_INI_FILE" member="IniFile.ReadInt">
+用在 `if` 里。
+
+```text
+0AF0 READ_INT_FROM_INI_FILE
+in: path, section, key
+out: value
+```
+
+```lua
+local v = readIntFromIniFile("cleo/mod.ini", "Main", "Count")
+if v then
+end
+```
+
+```js
+const value = IniFile.readInt(path, section, key)
+```
+</Opcode>
+
+## 写整数
+
+<Opcode id="0AF1" name="WRITE_INT_TO_INI_FILE" member="IniFile.WriteInt">
+用在 `if` 里。
+
+```text
+0AF1 WRITE_INT_TO_INI_FILE
+in: value, path, section, key
+```
+
+```lua
+if writeIntToIniFile(3, "cleo/mod.ini", "Main", "Count") then
+end
+```
+
+```js
+IniFile.writeInt(value, path, section, key)
+```
+</Opcode>
+
+## 读浮点
+
+<Opcode id="0AF2" name="READ_FLOAT_FROM_INI_FILE" member="IniFile.ReadFloat">
+用在 `if` 里。
+
+```text
+0AF2 READ_FLOAT_FROM_INI_FILE
+in: path, section, key
+out: value
+```
+
+```lua
+local f = readFloatFromIniFile("cleo/mod.ini", "Main", "Scale")
+```
+
+```js
+const value = IniFile.readFloat(path, section, key)
+```
+</Opcode>
+
+## 写浮点
+
+<Opcode id="0AF3" name="WRITE_FLOAT_TO_INI_FILE" member="IniFile.WriteFloat">
+用在 `if` 里。
+
+```text
+0AF3 WRITE_FLOAT_TO_INI_FILE
+in: value, path, section, key
+```
+
+```lua
+writeFloatToIniFile(1.5, "cleo/mod.ini", "Main", "Scale")
+```
+
+```js
+IniFile.writeFloat(value, path, section, key)
+```
+</Opcode>
+
+## 读字符串
+
+<Opcode id="0AF4" name="READ_STRING_FROM_INI_FILE" member="IniFile.ReadString">
+用在 `if` 里。
+
+```text
+0AF4 READ_STRING_FROM_INI_FILE
+in: path, section, key
+out: value
+```
+
+```lua
+local s = readStringFromIniFile("cleo/mod.ini", "Main", "Name")
+```
+
+```js
+const value = IniFile.readString(path, section, key)
+```
+</Opcode>
+
+## 写字符串
+
+<Opcode id="0AF5" name="WRITE_STRING_TO_INI_FILE" member="IniFile.WriteString">
+用在 `if` 里。
+
+```text
+0AF5 WRITE_STRING_TO_INI_FILE
+in: value, path, section, key
+```
+
+```lua
+writeStringToIniFile("ok", "cleo/mod.ini", "Main", "Name")
+```
+
+```js
+IniFile.writeString(value, path, section, key)
+```
+</Opcode>
+
+## 删 section
+
+<Opcode id="2800" name="DELETE_SECTION_FROM_INI_FILE" member="IniFile.DeleteSection">
+用在 `if` 里。
+
+```text
+2800 DELETE_SECTION_FROM_INI_FILE
+in: path, section
+```
+
+```lua
+if deleteSectionFromIniFile("cleo/mod.ini", "Tmp") then
+end
+```
+
+```js
+IniFile.deleteSection(path, section)
+```
+</Opcode>
+
+## 删 key
+
+<Opcode id="2801" name="DELETE_KEY_FROM_INI_FILE" member="IniFile.DeleteKey">
+用在 `if` 里。
+
+```text
+2801 DELETE_KEY_FROM_INI_FILE
+in: path, section, key
+```
+
+```lua
+if deleteKeyFromIniFile("cleo/mod.ini", "Main", "Tmp") then
+end
+```
+
+```js
+IniFile.deleteKey(path, section, key)
+```
+</Opcode>

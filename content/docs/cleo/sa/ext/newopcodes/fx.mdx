@@ -1,0 +1,270 @@
+---
+title: 特效 Fx
+description: 阴影光 corona 太阳 天气 音量 分辨率
+---
+
+`sa` · 扩展 `NewOpcodes` · 需 CLEO + NewOpcodes
+
+阴影、光、日晕、太阳、天气、音量、分辨率。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 阴影 / 光 / corona
+
+<Opcode id="0D50" name="DRAW_TEMPORARY_SHADOW">
+画一帧临时阴影：位置、尺寸、旋转、贴图、强度、颜色。
+
+```text
+0D50 DRAW_TEMPORARY_SHADOW
+in: type, x, y, z, width, height, rotation, distance, texture, intensity, red, blue, green, shadowData
+```
+
+```lua
+drawTemporaryShadow(type, x, y, z, w, h, rot, dist, tex, intensity, r, b, g, data)
+```
+
+```js
+native(0x0D50, type, x, y, z, width, height, rotation, distance, texture, intensity, red, blue, green, shadowData)
+```
+</Opcode>
+
+<Opcode id="0D51" name="DRAW_PERMANENT_SHADOW">
+画持久阴影；最后一参 `time` 为持续时间（ms）。
+
+```text
+0D51 DRAW_PERMANENT_SHADOW
+in: type, x, y, z, width, height, rotation, distance, texture, intensity, red, green, blue, time
+```
+
+```lua
+drawPermanentShadow(type, x, y, z, w, h, rot, dist, tex, intensity, r, g, b, time)
+```
+
+```js
+native(0x0D51, type, x, y, z, width, height, rotation, distance, texture, intensity, red, green, blue, time)
+```
+</Opcode>
+
+<Opcode id="0D52" name="DRAW_TEMPORARY_LIGHT">
+画临时点光：类型、位置、方向、半径、RGB。
+
+```text
+0D52 DRAW_TEMPORARY_LIGHT
+in: type, x, y, z, dirX, dirY, dirZ, radius, red, blue, green, affectEntity
+```
+
+```lua
+drawTemporaryLight(type, x, y, z, dx, dy, dz, radius, r, b, g, affect)
+```
+
+```js
+native(0x0D52, type, x, y, z, dirX, dirY, dirZ, radius, red, blue, green, affectEntity)
+```
+</Opcode>
+
+<Opcode id="0D53" name="DRAW_TEMPORARY_CORONA">
+画临时光晕（corona）：贴图、RGBA、位置、尺寸。
+
+```text
+0D53 DRAW_TEMPORARY_CORONA
+in: texture, red, blue, green, alpha, entity, x, y, z, size
+```
+
+```lua
+drawTemporaryCorona(tex, r, b, g, a, entity, x, y, z, size)
+```
+
+```js
+native(0x0D53, texture, red, blue, green, alpha, entity, x, y, z, size)
+```
+</Opcode>
+
+<Opcode id="0D54" name="DRAW_TEMPORARY_CORONA_EX">
+corona 扩展版：远近裁剪、flare、反射、淡入淡出等。
+
+```text
+0D54 DRAW_TEMPORARY_CORONA_EX
+in: texture, red, green, blue, alpha, entity, x, y, z, size,
+    farClip, nearClip, flare, enableReflection, checkObstacles,
+    flashWhileFading, fadeSpeed, onlyFromBelow
+```
+
+```lua
+drawTemporaryCoronaEx(
+  tex, r, g, b, a, entity, x, y, z, size,
+  far, near, flare, refl, obst, flash, fade, below
+)
+```
+
+```js
+native(
+  0x0D54, texture, red, green, blue, alpha, entity, x, y, z, size,
+  farClip, nearClip, flare, enableReflection, checkObstacles,
+  flashWhileFading, fadeSpeed, onlyFromBelow
+)
+```
+</Opcode>
+
+## 太阳
+
+<Opcode id="0D55" name="GET_SUN_COLORS">
+取太阳核心 RGB 与光晕 RGB。
+
+```text
+0D55 GET_SUN_COLORS
+out: coreRed, coreBlue, coreGreen, glowRed, glowBlue, glowGreen
+```
+
+```lua
+local cr, cb, cg, gr, gb, gg = getSunColors()
+```
+
+```js
+const { coreRed, coreBlue, coreGreen, glowRed, glowBlue, glowGreen } = native(0x0D55)
+```
+</Opcode>
+
+<Opcode id="0D56" name="GET_SUN_SCREEN_COORS">
+取太阳在屏幕上的 2D 坐标。
+
+```text
+0D56 GET_SUN_SCREEN_COORS
+out: x, y
+```
+
+```lua
+local sx, sy = getSunScreenCoors()
+```
+
+```js
+const { x, y } = native(0x0D56)
+```
+</Opcode>
+
+<Opcode id="0D57" name="GET_SUN_WORLD_COORS">
+取太阳世界坐标；在地平线以下返回失败。用在 `if` 里。
+
+```text
+0D57 GET_SUN_WORLD_COORS
+out: x, y, z
+```
+
+```lua
+if getSunWorldCoors() then
+end
+```
+
+```js
+if (native(0x0D57)) {
+}
+```
+</Opcode>
+
+<Opcode id="0D58" name="GET_SUN_SIZE">
+取太阳核心尺寸与光晕尺寸。
+
+```text
+0D58 GET_SUN_SIZE
+out: core, glow
+```
+
+```lua
+local core, glow = getSunSize()
+```
+
+```js
+const { core, glow } = native(0x0D58)
+```
+</Opcode>
+
+## 天气 / 灯 / 聚光
+
+<Opcode id="0D59" name="GET_CURRENT_WEATHER">
+取当前天气类型（`CWeather::OldWeatherType`）。
+
+```text
+0D59 GET_CURRENT_WEATHER
+out: currentWeather
+```
+
+```lua
+local w = getCurrentWeather()
+```
+
+```js
+const currentWeather = native(0x0D59)
+```
+</Opcode>
+
+<Opcode id="0D5A" name="GET_TRAFFICLIGHTS_CURRENT_COLOR">
+取南北 / 东西向当前红绿灯色。
+
+```text
+0D5A GET_TRAFFICLIGHTS_CURRENT_COLOR
+out: ns, we
+```
+
+```lua
+local ns, we = getTrafficlightsCurrentColor()
+```
+
+```js
+const { ns, we } = native(0x0D5A)
+```
+</Opcode>
+
+<Opcode id="0D5B" name="DRAW_SPOTLIGHT">
+从起点到终点画聚光锥，可带阴影参数。
+
+```text
+0D5B DRAW_SPOTLIGHT
+in: fromX, fromY, fromZ, toX, toY, toZ, baseRadius, targetRadius, enableShadow, shadowIntensity, flag1, flag2
+```
+
+```lua
+drawSpotlight(fx, fy, fz, tx, ty, tz, baseR, targetR, true, 128, false, false)
+```
+
+```js
+native(
+  0x0D5B, fromX, fromY, fromZ, toX, toY, toZ,
+  baseRadius, targetRadius, enableShadow, shadowIntensity, flag1, flag2
+)
+```
+</Opcode>
+
+## 音量 / 分辨率
+
+<Opcode id="0D72" name="GET_GAME_VOLUME">
+取 SFX / 电台音量（按 `ParamTypes` 返回 int 或 float 语义）。
+
+```text
+0D72 GET_GAME_VOLUME
+in: type
+out: sfxVolume, radioVolume
+```
+
+```lua
+local sfx, radio = getGameVolume(type)
+```
+
+```js
+const { sfxVolume, radioVolume } = native(0x0D72, type)
+```
+</Opcode>
+
+<Opcode id="0D73" name="GET_SCREEN_WIDTH_AND_HEIGHT">
+取屏幕宽高。
+
+```text
+0D73 GET_SCREEN_WIDTH_AND_HEIGHT
+in: type
+out: width, height
+```
+
+```lua
+local w, h = getScreenWidthAndHeight(type)
+```
+
+```js
+const { width, height } = native(0x0D73, type)
+```
+</Opcode>

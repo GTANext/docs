@@ -1,0 +1,91 @@
+---
+title: 寻路 CPathFind
+description: ThePaths 搜路与路径节点
+---
+
+`CPathFind.h` · 全局 `ThePaths`
+
+车 / 人路径节点。搜路参数多，先小范围试。
+
+## 搜路
+
+<Api name="DoPathSearch">
+从起点到终点填节点序列。
+
+```cpp
+void DoPathSearch(unsigned char pathType, CVector origin, CNodeAddress originAddr,
+    CVector target, CNodeAddress* pResultNodes, short* pNodesCount, int maxNodesToFind, float* pDistance,
+    float maxSearchDistance, CNodeAddress* targetAddr, float maxUnkLimit, bool oneSideOnly,
+    CNodeAddress forbiddenNodeAddr, bool includeNodesWithoutLinks, bool waterPath);
+```
+
+```cpp
+// ThePaths.DoPathSearch(...); // 参数顺序以头文件为准，失败看 *pNodesCount
+```
+</Api>
+
+## 取节点
+
+<Api name="GetPathNode">
+用 `CNodeAddress` 取 `CPathNode*`。
+
+```cpp
+CPathNode* GetPathNode(CNodeAddress address);
+```
+
+```cpp
+// CPathNode* node = ThePaths.GetPathNode(addr);
+// if (node) { CVector p = node->GetPosition(); } // 具体访问以 CPathNode 为准
+```
+</Api>
+
+## 流式路径
+
+<Api name="SetPathsNeededAtPosition / UpdateStreaming">
+按位置拉路径区。
+
+```cpp
+void SetPathsNeededAtPosition(const CVector& pos);
+void UpdateStreaming(bool bForceStreaming);
+```
+
+```cpp
+ThePaths.SetPathsNeededAtPosition(playerPos);
+ThePaths.UpdateStreaming(false);
+```
+</Api>
+
+## 水域节点
+
+<Api name="IsWaterNodeNearby">
+
+```cpp
+bool IsWaterNodeNearby(CVector position, float radius);
+```
+
+```cpp
+if (ThePaths.IsWaterNodeNearby(pos, 30.0f)) {
+}
+```
+</Api>
+
+## 禁区字段
+
+<Api name="m_aForbiddenAreas / m_bForbiddenForScriptedCarsEnabled">
+脚本车绕行相关。
+
+```cpp
+unsigned int m_dwNumForbiddenAreas;
+CForbiddenArea m_aForbiddenAreas[64];
+bool m_bForbiddenForScriptedCarsEnabled;
+float m_fForbiddenForScrCarsX1; // X2 Y1 Y2
+```
+
+```cpp
+// 读禁区列表排查 AI 不走路段
+```
+</Api>
+
+## 与交通
+
+随机车挂节点见 [CCarCtrl](/docs/plugins/entities/car-ctrl)。本对象只持图数据与搜路。

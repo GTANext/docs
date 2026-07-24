@@ -1,0 +1,27 @@
+---
+title: 球体 Sphere
+description: 球体显示颜色
+---
+
+`sa` · 扩展 `Sphere` · 需对应 CLEO 扩展
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 设球体颜色
+
+<Opcode id="2880" name="SET_SPHERE_COLOR" member="Sphere.SetColor">
+改球体显示颜色。
+
+```text
+2880 SET_SPHERE_COLOR
+in: self, r, g, b
+```
+
+```lua
+setSphereColor(sphere, 255, 0, 0)
+```
+
+```js
+Sphere.setColor(self, r, g, b)
+```
+</Opcode>

@@ -1,0 +1,201 @@
+---
+title: 镜头 Camera
+description: 镜头控制、偏移、淡入与结构地址
+---
+
+`sa` · 扩展 `CLEO+` · 需 CLEO + CLEO+
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 控制开关
+
+<Opcode id="0E60" name="SET_CAMERA_CONTROL" member="Camera.SetCameraControl">
+开/关镜头旋转控制。
+
+```text
+0E60 SET_CAMERA_CONTROL
+in: state
+```
+
+```lua
+setCameraControl(true)
+```
+
+```js
+Camera.setCameraControl(state)
+```
+</Opcode>
+
+## 当前模式
+
+<Opcode id="0E64" name="GET_CURRENT_CAMERA_MODE" member="Camera.GetCurrentMode">
+当前镜头模式。
+
+```text
+0E64 GET_CURRENT_CAMERA_MODE
+out: mode
+```
+
+```lua
+local mode = getCurrentCameraMode()
+```
+
+```js
+const mode = Camera.getCurrentMode()
+```
+</Opcode>
+
+## 本地偏移 → 世界
+
+<Opcode id="0EB2" name="GET_OFFSET_FROM_CAMERA_IN_WORLD_COORDS" member="Camera.GetOffsetFromCameraInWorldCoords">
+镜头本地偏移 → 世界坐标。
+
+```text
+0EB2 GET_OFFSET_FROM_CAMERA_IN_WORLD_COORDS
+in: offsetX, offsetY, offsetZ
+out: x, y, z
+```
+
+```lua
+local x, y, z = getOffsetFromCameraInWorldCoords(0.0, 1.0, 0.0)
+```
+
+```js
+const { x, y, z } = Camera.getOffsetFromCameraInWorldCoords(offsetX, offsetY, offsetZ)
+```
+</Opcode>
+
+## 距离判定
+
+<Opcode id="0EBE" name="LOCATE_CAMERA_DISTANCE_TO_COORDINATES" member="Camera.LocateDistanceToCoordinates">
+镜头是否在坐标半径内。用在 `if` 里。
+
+```text
+0EBE LOCATE_CAMERA_DISTANCE_TO_COORDINATES
+in: x, y, z, radius
+```
+
+```lua
+if locateCameraDistanceToCoordinates(x, y, z, 10.0) then
+end
+```
+
+```js
+if (Camera.locateDistanceToCoordinates(x, y, z, radius)) {
+}
+```
+</Opcode>
+
+## 淡入 alpha
+
+<Opcode id="0EC7" name="GET_FADE_ALPHA" member="Camera.GetFadeAlpha">
+当前淡入淡出 alpha（通常小于 255）。
+
+```text
+0EC7 GET_FADE_ALPHA
+out: alpha
+```
+
+```lua
+local a = getFadeAlpha()
+```
+
+```js
+const alpha = Camera.getFadeAlpha()
+```
+</Opcode>
+
+## 第三人称目标线
+
+<Opcode id="0F0E" name="GET_THIRD_PERSON_CAMERA_TARGET" member="Camera.GetThirdPersonTarget">
+第三人称镜头目标线：起点/终点（给定 range 与 source）。
+
+```text
+0F0E GET_THIRD_PERSON_CAMERA_TARGET
+in: range, sourceX, sourceY, sourceZ
+out: startX, startY, startZ, endX, endY, endZ
+```
+
+```lua
+local sx, sy, sz, ex, ey, ez = getThirdPersonCameraTarget(range, x, y, z)
+```
+
+```js
+const { startX, startY, startZ, endX, endY, endZ } =
+  Camera.getThirdPersonTarget(range, sourceX, sourceY, sourceZ)
+```
+</Opcode>
+
+## 活动旋转
+
+<Opcode id="0F10" name="GET_ACTIVE_CAMERA_ROTATION" member="Camera.GetActiveRotation">
+活动镜头旋转。
+
+```text
+0F10 GET_ACTIVE_CAMERA_ROTATION
+out: x, y, z
+```
+
+```lua
+local rx, ry, rz = getActiveCameraRotation()
+```
+
+```js
+const { x, y, z } = Camera.getActiveRotation()
+```
+</Opcode>
+
+## 结构地址
+
+<Opcode id="0F12" name="GET_CAMERA_STRUCT" member="Camera.GetStruct">
+`TheCamera`（CCamera）与 ActiveCam（CCam）地址。
+
+```text
+0F12 GET_CAMERA_STRUCT
+out: cCamera, activeCCam
+```
+
+```lua
+local cam, active = getCameraStruct()
+```
+
+```js
+const { cCamera, activeCCam } = Camera.getStruct()
+```
+</Opcode>
+
+## 旋转输入
+
+<Opcode id="0F14" name="GET_CAMERA_ROTATION_INPUT_VALUES" member="Camera.GetRotationInputValues">
+镜头旋转输入值。
+
+```text
+0F14 GET_CAMERA_ROTATION_INPUT_VALUES
+out: x, y
+```
+
+```lua
+local ix, iy = getCameraRotationInputValues()
+```
+
+```js
+const { x, y } = Camera.getRotationInputValues()
+```
+</Opcode>
+
+<Opcode id="0F15" name="SET_CAMERA_ROTATION_INPUT_VALUES" member="Camera.SetRotationInputValues">
+写镜头旋转输入。
+
+```text
+0F15 SET_CAMERA_ROTATION_INPUT_VALUES
+in: x, y
+```
+
+```lua
+setCameraRotationInputValues(ix, iy)
+```
+
+```js
+Camera.setRotationInputValues(x, y)
+```
+</Opcode>

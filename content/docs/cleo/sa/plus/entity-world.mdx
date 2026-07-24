@@ -1,0 +1,372 @@
+---
+title: 世界实体 Entity World
+description: 距离判定、池遍历、实体类型与金钱
+---
+
+`sa` · 扩展 `CLEO+` · 需 CLEO + CLEO+
+
+距离判定、池遍历、实体类型、金钱等。入口见 [entity](/docs/cleo/sa/plus/entity)。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 类型 / 金钱
+
+<Opcode id="0E13" name="GET_ENTITY_TYPE" member="Entity.GetType">
+取实体类型（任意 entity 句柄/指针语境）。
+
+```text
+0E13 GET_ENTITY_TYPE
+in: entity
+out: type
+```
+
+```lua
+local t = getEntityType(entity)
+```
+
+```js
+const type = Entity.getType(entity)
+```
+</Opcode>
+
+<Opcode id="0E5E" name="CHANGE_PLAYER_MONEY" member="Player.ChangeMoney">
+按 mode 设/加/减玩家金钱。
+
+```text
+0E5E CHANGE_PLAYER_MONEY
+in: self, mode, value
+```
+
+```lua
+changePlayerMoney(player, mode, 1000)
+```
+
+```js
+Player.changeMoney(self, mode, value)
+```
+</Opcode>
+
+## 警察 / 池遍历
+
+<Opcode id="0EA6" name="GET_CLOSEST_COP_NEAR_POS" member="World.GetClosestCopNearPos">
+取坐标附近最近警察。用在 `if` 里。
+
+```text
+0EA6 GET_CLOSEST_COP_NEAR_POS
+in: x, y, z, radius, alive, inCar, onFoot
+out: closestCop
+```
+
+```lua
+local cop = getClosestCopNearPos(x, y, z, 30.0, true, true, true)
+```
+
+```js
+const closestCop = World.getClosestCopNearPos(x, y, z, radius, alive, inCar, onFoot)
+```
+</Opcode>
+
+<Opcode id="0EA7" name="GET_ANY_CHAR_NO_SAVE_RECURSIVE" member="World.GetAnyCharNoSaveRecursive">
+遍历角色池：传入 progress，返回下一个 progress + 句柄。用在 `if` 里。
+
+```text
+0EA7 GET_ANY_CHAR_NO_SAVE_RECURSIVE
+in: progress
+out: progress, anyChar
+```
+
+```lua
+local progress, ped = 0, nil
+progress, ped = getAnyCharNoSaveRecursive(progress)
+```
+
+```js
+const { progress, anyChar } = World.getAnyCharNoSaveRecursive(progress)
+```
+</Opcode>
+
+<Opcode id="0EA8" name="GET_ANY_CAR_NO_SAVE_RECURSIVE" member="World.GetAnyCarNoSaveRecursive">
+遍历载具池。用在 `if` 里。
+
+```text
+0EA8 GET_ANY_CAR_NO_SAVE_RECURSIVE
+in: progress
+out: progress, anyCar
+```
+
+```lua
+local progress, car = 0, nil
+progress, car = getAnyCarNoSaveRecursive(progress)
+```
+
+```js
+const { progress, anyCar } = World.getAnyCarNoSaveRecursive(progress)
+```
+</Opcode>
+
+<Opcode id="0EA9" name="GET_ANY_OBJECT_NO_SAVE_RECURSIVE" member="World.GetAnyObjectNoSaveRecursive">
+遍历物体池。用在 `if` 里。
+
+```text
+0EA9 GET_ANY_OBJECT_NO_SAVE_RECURSIVE
+in: progress
+out: progress, anyObject
+```
+
+```lua
+local progress, obj = 0, nil
+progress, obj = getAnyObjectNoSaveRecursive(progress)
+```
+
+```js
+const { progress, anyObject } = World.getAnyObjectNoSaveRecursive(progress)
+```
+</Opcode>
+
+## 距离 · 实体间
+
+<Opcode id="0EE4" name="LOCATE_CHAR_DISTANCE_TO_CHAR" member="Char.LocateDistanceToChar">
+角色是否在另一角色半径内。用在 `if` 里。
+
+```text
+0EE4 LOCATE_CHAR_DISTANCE_TO_CHAR
+in: self, character, radius
+```
+
+```lua
+if locateCharDistanceToChar(ped, other, 5.0) then
+end
+```
+
+```js
+if (Char.locateDistanceToChar(self, character, radius)) {
+}
+```
+</Opcode>
+
+<Opcode id="0EE5" name="LOCATE_CHAR_DISTANCE_TO_CAR" member="Char.LocateDistanceToCar">
+角色是否在载具半径内。用在 `if` 里。
+
+```text
+0EE5 LOCATE_CHAR_DISTANCE_TO_CAR
+in: self, car, radius
+```
+
+```lua
+if locateCharDistanceToCar(ped, car, 8.0) then
+end
+```
+
+```js
+if (Char.locateDistanceToCar(self, car, radius)) {
+}
+```
+</Opcode>
+
+<Opcode id="0EE6" name="LOCATE_CHAR_DISTANCE_TO_OBJECT" member="Char.LocateDistanceToObject">
+角色是否在物体半径内。用在 `if` 里。
+
+```text
+0EE6 LOCATE_CHAR_DISTANCE_TO_OBJECT
+in: self, object, radius
+```
+
+```lua
+if locateCharDistanceToObject(ped, obj, 3.0) then
+end
+```
+
+```js
+if (Char.locateDistanceToObject(self, object, radius)) {
+}
+```
+</Opcode>
+
+<Opcode id="0EE7" name="LOCATE_CAR_DISTANCE_TO_OBJECT" member="Car.LocateDistanceToObject">
+载具是否在物体半径内。用在 `if` 里。
+
+```text
+0EE7 LOCATE_CAR_DISTANCE_TO_OBJECT
+in: self, object, radius
+```
+
+```lua
+if locateCarDistanceToObject(car, obj, 5.0) then
+end
+```
+
+```js
+if (Car.locateDistanceToObject(self, object, radius)) {
+}
+```
+</Opcode>
+
+<Opcode id="0EE8" name="LOCATE_CAR_DISTANCE_TO_CAR" member="Car.LocateDistanceToCar">
+两车是否在半径内。用在 `if` 里。
+
+```text
+0EE8 LOCATE_CAR_DISTANCE_TO_CAR
+in: self, car, radius
+```
+
+```lua
+if locateCarDistanceToCar(car, other, 10.0) then
+end
+```
+
+```js
+if (Car.locateDistanceToCar(self, car, radius)) {
+}
+```
+</Opcode>
+
+<Opcode id="0EE9" name="LOCATE_OBJECT_DISTANCE_TO_OBJECT" member="Object.LocateDistanceToObject">
+两物体是否在半径内。用在 `if` 里。
+
+```text
+0EE9 LOCATE_OBJECT_DISTANCE_TO_OBJECT
+in: self, object, radius
+```
+
+```lua
+if locateObjectDistanceToObject(obj, other, 2.0) then
+end
+```
+
+```js
+if (Object.locateDistanceToObject(self, object, radius)) {
+}
+```
+</Opcode>
+
+## 距离 · 坐标
+
+<Opcode id="0EEA" name="LOCATE_CHAR_DISTANCE_TO_COORDINATES" member="Char.LocateDistanceToCoordinates">
+角色是否在坐标半径内。用在 `if` 里。
+
+```text
+0EEA LOCATE_CHAR_DISTANCE_TO_COORDINATES
+in: self, x, y, z, radius
+```
+
+```lua
+if locateCharDistanceToCoordinates(ped, x, y, z, 5.0) then
+end
+```
+
+```js
+if (Char.locateDistanceToCoordinates(self, x, y, z, radius)) {
+}
+```
+</Opcode>
+
+<Opcode id="0EEB" name="LOCATE_CAR_DISTANCE_TO_COORDINATES" member="Car.LocateDistanceToCoordinates">
+载具是否在坐标半径内。用在 `if` 里。
+
+```text
+0EEB LOCATE_CAR_DISTANCE_TO_COORDINATES
+in: self, x, y, z, radius
+```
+
+```lua
+if locateCarDistanceToCoordinates(car, x, y, z, 10.0) then
+end
+```
+
+```js
+if (Car.locateDistanceToCoordinates(self, x, y, z, radius)) {
+}
+```
+</Opcode>
+
+<Opcode id="0EEC" name="LOCATE_OBJECT_DISTANCE_TO_COORDINATES" member="Object.LocateDistanceToCoordinates">
+物体是否在坐标半径内。用在 `if` 里。
+
+```text
+0EEC LOCATE_OBJECT_DISTANCE_TO_COORDINATES
+in: self, x, y, z, radius
+```
+
+```lua
+if locateObjectDistanceToCoordinates(obj, x, y, z, 3.0) then
+end
+```
+
+```js
+if (Object.locateDistanceToCoordinates(self, x, y, z, radius)) {
+}
+```
+</Opcode>
+
+<Opcode id="0EED" name="LOCATE_ENTITY_DISTANCE_TO_ENTITY" member="Entity.LocateDistanceToEntity">
+两 entity 地址是否在半径内。用在 `if` 里。
+
+```text
+0EED LOCATE_ENTITY_DISTANCE_TO_ENTITY
+in: entityA, entityB, radius
+```
+
+```lua
+if locateEntityDistanceToEntity(ptrA, ptrB, 5.0) then
+end
+```
+
+```js
+if (Entity.locateDistanceToEntity(entityA, entityB, radius)) {
+}
+```
+</Opcode>
+
+## 实体坐标 / 朝向
+
+<Opcode id="0EEE" name="GET_ENTITY_COORDINATES" member="Entity.GetCoordinates">
+按 entity 地址取世界坐标。
+
+```text
+0EEE GET_ENTITY_COORDINATES
+in: address
+out: x, y, z
+```
+
+```lua
+local x, y, z = getEntityCoordinates(entityPtr)
+```
+
+```js
+const { x, y, z } = Entity.getCoordinates(address)
+```
+</Opcode>
+
+<Opcode id="0EEF" name="GET_ENTITY_HEADING" member="Entity.GetHeading">
+按 entity 地址取朝向。
+
+```text
+0EEF GET_ENTITY_HEADING
+in: address
+out: heading
+```
+
+```lua
+local h = getEntityHeading(entityPtr)
+```
+
+```js
+const heading = Entity.getHeading(address)
+```
+</Opcode>
+
+<Opcode id="0EF0" name="GET_COORD_FROM_ANGLED_DISTANCE" member="World.GetCoordFromAngledDistance">
+从 `(x,y)` 沿 `angle` 走 `distance` 得到 2D 坐标。
+
+```text
+0EF0 GET_COORD_FROM_ANGLED_DISTANCE
+in: x, y, angle, distance
+out: x, y
+```
+
+```lua
+local nx, ny = getCoordFromAngledDistance(x, y, angle, dist)
+```
+
+```js
+const { x, y } = World.getCoordFromAngledDistance(x, y, angle, distance)
+```
+</Opcode>

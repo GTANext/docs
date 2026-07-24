@@ -1,0 +1,149 @@
+---
+title: 脚本火 ScriptFire
+description: 脚本火
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 7 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 坐标起火
+
+<Opcode id="02CF" name="START_SCRIPT_FIRE" member="ScriptFire.Start">
+在坐标生成脚本火。
+
+```text
+02CF START_SCRIPT_FIRE
+in: x, y, z, propagation, size
+out: handle
+```
+
+```lua
+local handle = startScriptFire(x, y, z, propagation, size)
+```
+
+```js
+const handle = ScriptFire.start(x, y, z, propagation, size)
+```
+</Opcode>
+
+## 是否已灭
+
+<Opcode id="02D0" name="IS_SCRIPT_FIRE_EXTINGUISHED" member="ScriptFire.IsExtinguished">
+脚本火是否已灭。用在 `if` 里。
+
+```text
+02D0 IS_SCRIPT_FIRE_EXTINGUISHED
+in: self
+```
+
+```lua
+if isScriptFireExtinguished(self) then
+end
+```
+
+```js
+if (ScriptFire.isExtinguished(self)) {
+}
+```
+</Opcode>
+
+## 移除
+
+<Opcode id="02D1" name="REMOVE_SCRIPT_FIRE" member="ScriptFire.Remove">
+移除脚本火。
+
+```text
+02D1 REMOVE_SCRIPT_FIRE
+in: self
+```
+
+```lua
+removeScriptFire(self)
+```
+
+```js
+ScriptFire.remove(self)
+```
+</Opcode>
+
+## 车上起火
+
+<Opcode id="0325" name="START_CAR_FIRE" member="ScriptFire.CreateCarFire">
+在车上点脚本火。
+
+```text
+0325 START_CAR_FIRE
+in: vehicle
+out: handle
+```
+
+```lua
+local handle = startCarFire(vehicle)
+```
+
+```js
+const handle = ScriptFire.createCarFire(vehicle)
+```
+</Opcode>
+
+## 角色起火
+
+<Opcode id="0326" name="START_CHAR_FIRE" member="ScriptFire.CreateCharFire">
+在角色上点脚本火。
+
+```text
+0326 START_CHAR_FIRE
+in: char
+out: handle
+```
+
+```lua
+local handle = startCharFire(char)
+```
+
+```js
+const handle = ScriptFire.createCharFire(char)
+```
+</Opcode>
+
+## 取坐标
+
+<Opcode id="06F5" name="GET_SCRIPT_FIRE_COORDS" member="ScriptFire.GetCoords">
+取火的坐标。
+
+```text
+06F5 GET_SCRIPT_FIRE_COORDS
+in: self
+out: x, y, z
+```
+
+```lua
+local x, y, z = getScriptFireCoords(self)
+```
+
+```js
+const { x, y, z } = ScriptFire.getCoords(self)
+```
+</Opcode>
+
+## 是否存在
+
+<Opcode id="0973" name="DOES_SCRIPT_FIRE_EXIST" member="ScriptFire.DoesExist">
+handle 是否是有效脚本火。用在 `if` 里。
+
+```text
+0973 DOES_SCRIPT_FIRE_EXIST
+in: handle
+```
+
+```lua
+if doesScriptFireExist(handle) then
+end
+```
+
+```js
+if (ScriptFire.doesExist(handle)) {
+}
+```
+</Opcode>

@@ -1,0 +1,441 @@
+---
+title: 标记 Blip
+description: 雷达标记
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 22 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 车旧式标记
+
+<Opcode id="0161" name="ADD_BLIP_FOR_CAR_OLD" member="Blip.AddForCarOld">
+给车加带颜色 / 显示模式的旧式标记。
+
+```text
+0161 ADD_BLIP_FOR_CAR_OLD
+in: vehicle, color, display
+out: handle
+```
+
+```lua
+local handle = addBlipForCarOld(vehicle, color, display)
+```
+
+```js
+const handle = Blip.addForCarOld(vehicle, color, display)
+```
+</Opcode>
+
+## 删除
+
+<Opcode id="0164" name="REMOVE_BLIP" member="Blip.Remove">
+删除标记。
+
+```text
+0164 REMOVE_BLIP
+in: self
+```
+
+```lua
+removeBlip(self)
+```
+
+```js
+Blip.remove(self)
+```
+</Opcode>
+
+## 改颜色
+
+<Opcode id="0165" name="CHANGE_BLIP_COLOUR" member="Blip.ChangeColor">
+改标记颜色。
+
+```text
+0165 CHANGE_BLIP_COLOUR
+in: self, color
+```
+
+```lua
+changeBlipColour(self, color)
+```
+
+```js
+Blip.changeColor(self, color)
+```
+</Opcode>
+
+## 坐标旧式
+
+<Opcode id="0167" name="ADD_BLIP_FOR_COORD_OLD" member="Blip.AddForCoordOld">
+坐标上旧式标记（颜色 / 显示）。
+
+```text
+0167 ADD_BLIP_FOR_COORD_OLD
+in: x, y, z, colour, display
+out: handle
+```
+
+```lua
+local handle = addBlipForCoordOld(x, y, z, colour, display)
+```
+
+```js
+const handle = Blip.addForCoordOld(x, y, z, colour, display)
+```
+</Opcode>
+
+## 改大小
+
+<Opcode id="0168" name="CHANGE_BLIP_SCALE" member="Blip.ChangeScale">
+改标记大小。
+
+```text
+0168 CHANGE_BLIP_SCALE
+in: self, size
+```
+
+```lua
+changeBlipScale(self, size)
+```
+
+```js
+Blip.changeScale(self, size)
+```
+</Opcode>
+
+## 车标记
+
+<Opcode id="0186" name="ADD_BLIP_FOR_CAR" member="Blip.AddForCar">
+给车加雷达点与 3D 标记。
+
+```text
+0186 ADD_BLIP_FOR_CAR
+in: vehicle
+out: handle
+```
+
+```lua
+local handle = addBlipForCar(vehicle)
+```
+
+```js
+const handle = Blip.addForCar(vehicle)
+```
+</Opcode>
+
+## 角色标记
+
+<Opcode id="0187" name="ADD_BLIP_FOR_CHAR" member="Blip.AddForChar">
+给角色加雷达点与 3D 标记。
+
+```text
+0187 ADD_BLIP_FOR_CHAR
+in: char
+out: handle
+```
+
+```lua
+local handle = addBlipForChar(char)
+```
+
+```js
+const handle = Blip.addForChar(char)
+```
+</Opcode>
+
+## 物体标记
+
+<Opcode id="0188" name="ADD_BLIP_FOR_OBJECT" member="Blip.AddForObject">
+给物体加雷达点与 3D 标记。
+
+```text
+0188 ADD_BLIP_FOR_OBJECT
+in: object
+out: handle
+```
+
+```lua
+local handle = addBlipForObject(object)
+```
+
+```js
+const handle = Blip.addForObject(object)
+```
+</Opcode>
+
+## 坐标标记
+
+<Opcode id="018A" name="ADD_BLIP_FOR_COORD" member="Blip.AddForCoord">
+坐标雷达点。
+
+```text
+018A ADD_BLIP_FOR_COORD
+in: x, y, z
+out: handle
+```
+
+```lua
+local handle = addBlipForCoord(x, y, z)
+```
+
+```js
+const handle = Blip.addForCoord(x, y, z)
+```
+</Opcode>
+
+## 显示模式
+
+<Opcode id="018B" name="CHANGE_BLIP_DISPLAY" member="Blip.ChangeDisplay">
+改显示模式（仅雷达 / 仅 3D 等）。
+
+```text
+018B CHANGE_BLIP_DISPLAY
+in: self, display
+```
+
+```lua
+changeBlipDisplay(self, display)
+```
+
+```js
+Blip.changeDisplay(self, display)
+```
+</Opcode>
+
+## 联系点精灵
+
+<Opcode id="02A7" name="ADD_SPRITE_BLIP_FOR_CONTACT_POINT" member="Blip.AddSpriteForContactPoint">
+联系点长距离精灵标记（任务中不显示）。
+
+```text
+02A7 ADD_SPRITE_BLIP_FOR_CONTACT_POINT
+in: x, y, z, sprite
+out: handle
+```
+
+```lua
+local handle = addSpriteBlipForContactPoint(x, y, z, sprite)
+```
+
+```js
+const handle = Blip.addSpriteForContactPoint(x, y, z, sprite)
+```
+</Opcode>
+
+## 坐标精灵
+
+<Opcode id="02A8" name="ADD_SPRITE_BLIP_FOR_COORD" member="Blip.AddSpriteForCoord">
+坐标精灵标记。
+
+```text
+02A8 ADD_SPRITE_BLIP_FOR_COORD
+in: x, y, z, sprite
+out: handle
+```
+
+```lua
+local handle = addSpriteBlipForCoord(x, y, z, sprite)
+```
+
+```js
+const handle = Blip.addSpriteForCoord(x, y, z, sprite)
+```
+</Opcode>
+
+## 拾取物标记
+
+<Opcode id="03DC" name="ADD_BLIP_FOR_PICKUP" member="Blip.AddForPickup">
+给拾取物加标记。
+
+```text
+03DC ADD_BLIP_FOR_PICKUP
+in: pickup
+out: handle
+```
+
+```lua
+local handle = addBlipForPickup(pickup)
+```
+
+```js
+const handle = Blip.addForPickup(pickup)
+```
+</Opcode>
+
+## 短距坐标精灵
+
+<Opcode id="04CE" name="ADD_SHORT_RANGE_SPRITE_BLIP_FOR_COORD" member="Blip.AddShortRangeSpriteForCoord">
+坐标短距离精灵标记。
+
+```text
+04CE ADD_SHORT_RANGE_SPRITE_BLIP_FOR_COORD
+in: x, y, z, sprite
+out: handle
+```
+
+```lua
+local handle = addShortRangeSpriteBlipForCoord(x, y, z, sprite)
+```
+
+```js
+const handle = Blip.addShortRangeSpriteForCoord(x, y, z, sprite)
+```
+</Opcode>
+
+## 短距联系点
+
+<Opcode id="0570" name="ADD_SHORT_RANGE_SPRITE_BLIP_FOR_CONTACT_POINT" member="Blip.AddShortRangeSpriteForContactPoint">
+联系点短距离精灵标记（任务中不显示）。
+
+```text
+0570 ADD_SHORT_RANGE_SPRITE_BLIP_FOR_CONTACT_POINT
+in: x, y, z, sprite
+out: handle
+```
+
+```lua
+local handle = addShortRangeSpriteBlipForContactPoint(x, y, z, sprite)
+```
+
+```js
+const handle = Blip.addShortRangeSpriteForContactPoint(x, y, z, sprite)
+```
+</Opcode>
+
+## 探照灯标记
+
+<Opcode id="06C4" name="ADD_BLIP_FOR_SEARCHLIGHT" member="Blip.AddForSearchlight">
+探照灯雷达位置标记。
+
+```text
+06C4 ADD_BLIP_FOR_SEARCHLIGHT
+in: searchlight
+out: handle
+```
+
+```lua
+local handle = addBlipForSearchlight(searchlight)
+```
+
+```js
+const handle = Blip.addForSearchlight(searchlight)
+```
+</Opcode>
+
+## 是否存在
+
+<Opcode id="075C" name="DOES_BLIP_EXIST" member="Blip.DoesExist">
+handle 是否有效标记。用在 `if` 里。
+
+```text
+075C DOES_BLIP_EXIST
+in: handle
+```
+
+```lua
+if doesBlipExist(handle) then
+end
+```
+
+```js
+if (Blip.doesExist(handle)) {
+}
+```
+</Opcode>
+
+## 缩放雷达始终显示
+
+<Opcode id="07BF" name="SET_BLIP_ALWAYS_DISPLAY_ON_ZOOMED_RADAR" member="Blip.SetAlwaysDisplayOnZoomedRadar">
+缩放雷达上是否始终显示追踪标记。
+
+```text
+07BF SET_BLIP_ALWAYS_DISPLAY_ON_ZOOMED_RADAR
+in: self, state
+```
+
+```lua
+setBlipAlwaysDisplayOnZoomedRadar(self, state)
+```
+
+```js
+Blip.setAlwaysDisplayOnZoomedRadar(self, state)
+```
+</Opcode>
+
+## 友方样式
+
+<Opcode id="07E0" name="SET_BLIP_AS_FRIENDLY" member="Blip.SetAsFriendly">
+标记为友方样式。
+
+```text
+07E0 SET_BLIP_AS_FRIENDLY
+in: self, state
+```
+
+```lua
+setBlipAsFriendly(self, state)
+```
+
+```js
+Blip.setAsFriendly(self, state)
+```
+</Opcode>
+
+## 死亡角色
+
+<Opcode id="0888" name="ADD_BLIP_FOR_DEAD_CHAR" member="Blip.AddForDeadChar">
+给死亡角色加标记（同 `0187`）。
+
+```text
+0888 ADD_BLIP_FOR_DEAD_CHAR
+in: char
+out: handle
+```
+
+```lua
+local handle = addBlipForDeadChar(char)
+```
+
+```js
+const handle = Blip.addForDeadChar(char)
+```
+</Opcode>
+
+## 出入口
+
+<Opcode id="08DC" name="SET_BLIP_ENTRY_EXIT" member="Blip.SetEntryExit">
+绑到入口 / 出口标记区域。
+
+```text
+08DC SET_BLIP_ENTRY_EXIT
+in: self, x, y, radius
+```
+
+```lua
+setBlipEntryExit(self, x, y, radius)
+```
+
+```js
+Blip.setEntryExit(self, x, y, radius)
+```
+</Opcode>
+
+## 坐标外观色
+
+<Opcode id="08FB" name="SET_COORD_BLIP_APPEARANCE" member="Blip.SetCoordAppearance">
+改坐标标记外观色（非追踪标记；不同于 `0165` 色表）。
+
+```text
+08FB SET_COORD_BLIP_APPEARANCE
+in: self, color
+```
+
+```lua
+setCoordBlipAppearance(self, color)
+```
+
+```js
+Blip.setCoordAppearance(self, color)
+```
+</Opcode>

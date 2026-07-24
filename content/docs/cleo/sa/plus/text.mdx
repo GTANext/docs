@@ -1,0 +1,227 @@
+---
+title: 文本 Text
+description: 字符串工具与扩展绘制
+---
+
+`sa` · 扩展 `CLEO+` · 需 CLEO + CLEO+
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 长度 / 拷贝
+
+<Opcode id="0D4C" name="GET_STRING_LENGTH" member="Text.GetStringLength">
+字符串长度。
+
+```text
+0D4C GET_STRING_LENGTH
+in: text
+out: length
+```
+
+```lua
+local n = getStringLength("abc")
+```
+
+```js
+const length = Text.getStringLength(text)
+```
+</Opcode>
+
+<Opcode id="0D4D" name="COPY_STRING" member="Text.CopyString">
+把字符串拷到目标地址。
+
+```text
+0D4D COPY_STRING
+in: string, address
+```
+
+```lua
+copyString("hi", buf)
+```
+
+```js
+Text.copyString(string, address)
+```
+</Opcode>
+
+## 绘制
+
+<Opcode id="0E62" name="DRAW_STRING" member="Text.DrawString">
+在指定 drawEvent 上画一次字符串（字号/字体/宽高比）。
+
+```text
+0E62 DRAW_STRING
+in: string, drawEvent, posX, posY, sizeX, sizeY, fixAr, font
+```
+
+```lua
+drawString("hello", drawEvent, 320.0, 200.0, 0.5, 0.5, true, font)
+```
+
+```js
+Text.drawString(string, drawEvent, posX, posY, sizeX, sizeY, fixAr, font)
+```
+</Opcode>
+
+<Opcode id="0E63" name="DRAW_STRING_EXT" member="Text.DrawStringExt">
+同上，带对齐/换行/颜色/描边/阴影/背景等扩展样式。
+
+```text
+0E63 DRAW_STRING_EXT
+in: string, drawEvent, posX, posY, sizeX, sizeY, fixAr, font,
+    prop, align, wrap, justify,
+    red, green, blue, alpha, edge, shadow,
+    dropRed, dropGreen, dropBlue, dropAlpha,
+    background, backRed, backGreen, backBlue, backAlpha
+```
+
+```lua
+drawStringExt(
+  "hi", drawEvent, 100.0, 100.0, 0.4, 0.4, true, font,
+  true, align, 200.0, false,
+  255, 255, 255, 255, 1, 0,
+  0, 0, 0, 255,
+  false, 0, 0, 0, 0
+)
+```
+
+```js
+Text.drawStringExt(
+  string, drawEvent, posX, posY, sizeX, sizeY, fixAr, font,
+  prop, align, wrap, justify,
+  red, green, blue, alpha, edge, shadow,
+  dropRed, dropGreen, dropBlue, dropAlpha,
+  background, backRed, backGreen, backBlue, backAlpha
+)
+```
+</Opcode>
+
+## 比较 / 注释
+
+<Opcode id="0E80" name="IS_STRING_EQUAL" member="Text.IsStringEqual">
+两串是否相等；可限长、大小写、忽略指定字符。用在 `if` 里。
+
+```text
+0E80 IS_STRING_EQUAL
+in: string1, string2, maxSize, caseSensitive, ignoreCharacter
+```
+
+```lua
+if isStringEqual(a, b, 64, false, "") then
+end
+```
+
+```js
+if (Text.isStringEqual(string1, string2, maxSize, caseSensitive, ignoreCharacter)) {
+}
+```
+</Opcode>
+
+<Opcode id="0E81" name="IS_STRING_COMMENT" member="Text.IsStringComment">
+是否以 `#` `;` `//` 开头（注释行）。用在 `if` 里。
+
+```text
+0E81 IS_STRING_COMMENT
+in: string
+```
+
+```lua
+if isStringComment(line) then
+end
+```
+
+```js
+if (Text.isStringComment(string)) {
+}
+```
+</Opcode>
+
+## 大小写 / 查找 / 截断
+
+<Opcode id="0EC2" name="SET_STRING_UPPER" member="Text.SetStringUpper">
+把地址上的 C 串改成全大写。
+
+```text
+0EC2 SET_STRING_UPPER
+in: stringAddress
+```
+
+```lua
+setStringUpper(buf)
+```
+
+```js
+Text.setStringUpper(stringAddress)
+```
+</Opcode>
+
+<Opcode id="0EC3" name="SET_STRING_LOWER" member="Text.SetStringLower">
+改成全小写。
+
+```text
+0EC3 SET_STRING_LOWER
+in: stringAddress
+```
+
+```lua
+setStringLower(buf)
+```
+
+```js
+Text.setStringLower(stringAddress)
+```
+</Opcode>
+
+<Opcode id="0EC4" name="STRING_FIND" member="Text.StringFind">
+在 `stringOrigin` 里找 `strFind`，返回下标。用在 `if` 里。
+
+```text
+0EC4 STRING_FIND
+in: stringFind, stringOrigin, strFind
+out: index
+```
+
+```lua
+local i = stringFind(mode, haystack, needle)
+```
+
+```js
+const index = Text.stringFind(stringFind, stringOrigin, strFind)
+```
+</Opcode>
+
+<Opcode id="0EC5" name="CUT_STRING_AT" member="Text.CutStringAt">
+在指定字符下标处截断地址上的串。
+
+```text
+0EC5 CUT_STRING_AT
+in: stringAddress, index
+```
+
+```lua
+cutStringAt(buf, 8)
+```
+
+```js
+Text.cutStringAt(stringAddress, index)
+```
+</Opcode>
+
+<Opcode id="0EC6" name="IS_STRING_CHARACTER_AT" member="Text.IsStringCharacterAt">
+指定下标处是否匹配给定字符序列。用在 `if` 里。
+
+```text
+0EC6 IS_STRING_CHARACTER_AT
+in: string, characters, index
+```
+
+```lua
+if isStringCharacterAt(s, "ab", 0) then
+end
+```
+
+```js
+if (Text.isStringCharacterAt(string, characters, index)) {
+}
+```
+</Opcode>

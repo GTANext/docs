@@ -1,0 +1,484 @@
+---
+title: 比特流 SampBitstream
+description: RakNet BitStream 读写与收发
+---
+
+`sa` · 扩展 `SAMPFUNCS` · 仅 SA-MP；需 SAMPFUNCS
+
+共 25 条。BitStream 创建、读写、RPC/Packet 发送与模拟。调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 生命周期
+
+<Opcode id="0B3D" name="SAMP_RAKNET_CREATE_BITSTREAM" member="SampBitstream.Create">
+创建新的 RakNet BitStream 对象。
+
+```text
+0B3D SAMP_RAKNET_CREATE_BITSTREAM
+out: handle
+```
+
+```lua
+local handle = sampRaknetCreateBitstream()
+```
+
+```js
+const handle = SampBitstream.Create()
+```
+</Opcode>
+
+<Opcode id="0B3E" name="SAMP_RAKNET_DELETE_BITSTREAM" member="SampBitstream.Delete">
+删除指定 BitStream 并释放内存。用在 `if` 里。
+
+```text
+0B3E SAMP_RAKNET_DELETE_BITSTREAM
+in: self
+```
+
+```lua
+if sampRaknetDeleteBitstream(self) then
+end
+```
+
+```js
+if (SampBitstream.delete(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0B3F" name="SAMP_RAKNET_RESET_BITSTREAM" member="SampBitstream.Reset">
+重置/清空 BitStream 全部参数。用在 `if` 里。
+
+```text
+0B3F SAMP_RAKNET_RESET_BITSTREAM
+in: self
+```
+
+```lua
+if sampRaknetResetBitstream(self) then
+end
+```
+
+```js
+if (SampBitstream.reset(self)) {
+}
+```
+</Opcode>
+
+## 写 / 发
+
+<Opcode id="0B40" name="SAMP_RAKNET_BITSTREAM_WRITE" member="SampBitstream.Write">
+在写指针处按数据类型与尺寸写入值，并推进写指针。用在 `if` 里。
+
+```text
+0B40 SAMP_RAKNET_BITSTREAM_WRITE
+in: self, value, dataType, dataSize
+```
+
+```lua
+if sampRaknetBitstreamWrite(self, value, dataType, dataSize) then
+end
+```
+
+```js
+if (SampBitstream.write(self, value, dataType, dataSize)) {
+}
+```
+</Opcode>
+
+<Opcode id="0B41" name="SAMP_RAKNET_SEND_RPC_WITH_PARAMS" member="SampBitstream.SendAsRpcWithParams">
+按给定参数把 BitStream 作为 RPC 发送。用在 `if` 里。
+
+```text
+0B41 SAMP_RAKNET_SEND_RPC_WITH_PARAMS
+in: rpc, self, priority, reliability, orderingChannel, shiftTimeStamp
+```
+
+```lua
+if sampRaknetSendRpcWithParams(rpc, self, priority, reliability, orderingChannel, shiftTimeStamp) then
+end
+```
+
+```js
+if (SampBitstream.sendAsRpcWithParams(rpc, self, priority, reliability, orderingChannel, shiftTimeStamp)) {
+}
+```
+</Opcode>
+
+<Opcode id="0B42" name="SAMP_RAKNET_SEND_PACKET_WITH_PARAMS" member="SampBitstream.SendAsPacketWithParams">
+按给定参数发送 Packet BitStream（常用于向服务器发包）。用在 `if` 里。
+
+```text
+0B42 SAMP_RAKNET_SEND_PACKET_WITH_PARAMS
+in: self, priority, reliability, orderingChannel
+```
+
+```lua
+if sampRaknetSendPacketWithParams(self, priority, reliability, orderingChannel) then
+end
+```
+
+```js
+if (SampBitstream.sendAsPacketWithParams(self, priority, reliability, orderingChannel)) {
+}
+```
+</Opcode>
+
+<Opcode id="0B8A" name="SAMP_RAKNET_SEND_RPC" member="SampBitstream.SendAsRpc">
+把 BitStream 作为 RPC 发到服务器。用在 `if` 里。
+
+```text
+0B8A SAMP_RAKNET_SEND_RPC
+in: rpcId, self
+```
+
+```lua
+if sampRaknetSendRpc(rpcId, self) then
+end
+```
+
+```js
+if (SampBitstream.sendAsRpc(rpcId, self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0B8B" name="SAMP_RAKNET_SEND_PACKET" member="SampBitstream.SendAsPacket">
+把 Packet BitStream 发到服务器。用在 `if` 里。
+
+```text
+0B8B SAMP_RAKNET_SEND_PACKET
+in: self
+```
+
+```lua
+if sampRaknetSendPacket(self) then
+end
+```
+
+```js
+if (SampBitstream.sendAsPacket(self)) {
+}
+```
+</Opcode>
+
+## 读 / 指针
+
+<Opcode id="0BE7" name="SAMP_RAKNET_BITSTREAM_READ" member="SampBitstream.Read">
+在读指针处按数据类型读取值，并推进读指针。
+
+```text
+0BE7 SAMP_RAKNET_BITSTREAM_READ
+in: self, dataType
+out: value
+```
+
+```lua
+local value = sampRaknetBitstreamRead(self, dataType)
+```
+
+```js
+const value = SampBitstream.read(self, dataType)
+```
+</Opcode>
+
+<Opcode id="0BE8" name="SAMP_RAKNET_BITSTREAM_READ_ARRAY" member="SampBitstream.ReadArray">
+从 BitStream 读取字节数组到 buffer。用在 `if` 里。
+
+```text
+0BE8 SAMP_RAKNET_BITSTREAM_READ_ARRAY
+in: self, buffer, size
+```
+
+```lua
+if sampRaknetBitstreamReadArray(self, buffer, size) then
+end
+```
+
+```js
+if (SampBitstream.readArray(self, buffer, size)) {
+}
+```
+</Opcode>
+
+<Opcode id="0BE9" name="SAMP_RAKNET_BITSTREAM_RESET_READ_POINTER" member="SampBitstream.ResetReadPtr">
+重置 BitStream 读指针。用在 `if` 里。
+
+```text
+0BE9 SAMP_RAKNET_BITSTREAM_RESET_READ_POINTER
+in: self
+```
+
+```lua
+if sampRaknetBitstreamResetReadPointer(self) then
+end
+```
+
+```js
+if (SampBitstream.resetReadPtr(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0BEA" name="SAMP_RAKNET_BITSTREAM_RESET_WRITE_POINTER" member="SampBitstream.ResetWritePtr">
+重置写指针（有 bug：会把 write offset 置 0，勿用）。用在 `if` 里。
+
+```text
+0BEA SAMP_RAKNET_BITSTREAM_RESET_WRITE_POINTER
+in: self
+```
+
+```lua
+if sampRaknetBitstreamResetWritePointer(self) then
+end
+```
+
+```js
+if (SampBitstream.resetWritePtr(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0BEB" name="SAMP_RAKNET_BITSTREAM_SKIP_BITS" member="SampBitstream.SkipBits">
+把读指针与写指针各前移指定位数。用在 `if` 里。
+
+```text
+0BEB SAMP_RAKNET_BITSTREAM_SKIP_BITS
+in: self, bitCount
+```
+
+```lua
+if sampRaknetBitstreamSkipBits(self, bitCount) then
+end
+```
+
+```js
+if (SampBitstream.skipBits(self, bitCount)) {
+}
+```
+</Opcode>
+
+<Opcode id="0BEC" name="SAMP_RAKNET_BITSTREAM_SET_WRITE_OFFSET" member="SampBitstream.SetWriteOffset">
+设置 BitStream 写偏移。用在 `if` 里。
+
+```text
+0BEC SAMP_RAKNET_BITSTREAM_SET_WRITE_OFFSET
+in: self, offset
+```
+
+```lua
+if sampRaknetBitstreamSetWriteOffset(self, offset) then
+end
+```
+
+```js
+if (SampBitstream.setWriteOffset(self, offset)) {
+}
+```
+</Opcode>
+
+<Opcode id="0BED" name="SAMP_RAKNET_BITSTREAM_SET_READ_OFFSET" member="SampBitstream.SetReadPtr">
+设置 BitStream 读偏移。用在 `if` 里。
+
+```text
+0BED SAMP_RAKNET_BITSTREAM_SET_READ_OFFSET
+in: self, offset
+```
+
+```lua
+if sampRaknetBitstreamSetReadOffset(self, offset) then
+end
+```
+
+```js
+if (SampBitstream.setReadPtr(self, offset)) {
+}
+```
+</Opcode>
+
+## 统计
+
+<Opcode id="0BEE" name="SAMP_RAKNET_BITSTREAM_GET_NUMBER_OF_BITS_USED" member="SampBitstream.GetBitsUsed">
+返回 BitStream 已用位数。
+
+```text
+0BEE SAMP_RAKNET_BITSTREAM_GET_NUMBER_OF_BITS_USED
+in: self
+out: usedBits
+```
+
+```lua
+local usedBits = sampRaknetBitstreamGetNumberOfBitsUsed(self)
+```
+
+```js
+const usedBits = SampBitstream.getBitsUsed(self)
+```
+</Opcode>
+
+<Opcode id="0BEF" name="SAMP_RAKNET_BITSTREAM_GET_NUMBER_OF_BYTES_USED" member="SampBitstream.GetBytesUsed">
+返回 BitStream 已用字节数。
+
+```text
+0BEF SAMP_RAKNET_BITSTREAM_GET_NUMBER_OF_BYTES_USED
+in: self
+out: usedBytes
+```
+
+```lua
+local usedBytes = sampRaknetBitstreamGetNumberOfBytesUsed(self)
+```
+
+```js
+const usedBytes = SampBitstream.getBytesUsed(self)
+```
+</Opcode>
+
+<Opcode id="0BF0" name="SAMP_RAKNET_BITSTREAM_GET_NUMBER_OF_UNREAD_BITS" member="SampBitstream.GetUnreadBits">
+返回 BitStream 未读位数。
+
+```text
+0BF0 SAMP_RAKNET_BITSTREAM_GET_NUMBER_OF_UNREAD_BITS
+in: self
+out: unreadBits
+```
+
+```lua
+local unreadBits = sampRaknetBitstreamGetNumberOfUnreadBits(self)
+```
+
+```js
+const unreadBits = SampBitstream.getUnreadBits(self)
+```
+</Opcode>
+
+<Opcode id="0BF1" name="SAMP_RAKNET_BITSTREAM_GET_WRITE_OFFSET" member="SampBitstream.GetWriteOffset">
+返回 BitStream 当前写偏移。
+
+```text
+0BF1 SAMP_RAKNET_BITSTREAM_GET_WRITE_OFFSET
+in: self
+out: offset
+```
+
+```lua
+local offset = sampRaknetBitstreamGetWriteOffset(self)
+```
+
+```js
+const offset = SampBitstream.getWriteOffset(self)
+```
+</Opcode>
+
+<Opcode id="0BF2" name="SAMP_RAKNET_BITSTREAM_GET_READ_OFFSET" member="SampBitstream.GetReadOffset">
+返回 BitStream 当前读偏移。
+
+```text
+0BF2 SAMP_RAKNET_BITSTREAM_GET_READ_OFFSET
+in: self
+out: offset
+```
+
+```lua
+local offset = sampRaknetBitstreamGetReadOffset(self)
+```
+
+```js
+const offset = SampBitstream.getReadOffset(self)
+```
+</Opcode>
+
+<Opcode id="0BF3" name="SAMP_RAKNET_BITSTREAM_GET_DATA_POINTER" member="SampBitstream.GetDataPtr">
+返回 BitStream 数据区指针。
+
+```text
+0BF3 SAMP_RAKNET_BITSTREAM_GET_DATA_POINTER
+in: self
+out: address
+```
+
+```lua
+local address = sampRaknetBitstreamGetDataPointer(self)
+```
+
+```js
+const address = SampBitstream.getDataPtr(self)
+```
+</Opcode>
+
+## 串 / 模拟
+
+<Opcode id="0BF4" name="SAMP_RAKNET_BITSTREAM_DECODE_COMPRESSED_STRING" member="SampBitstream.DecodeCString">
+从 BitStream 解码压缩字符串（CString）到 buffer。用在 `if` 里。
+
+```text
+0BF4 SAMP_RAKNET_BITSTREAM_DECODE_COMPRESSED_STRING
+in: self, buffer, buffersize
+```
+
+```lua
+if sampRaknetBitstreamDecodeCompressedString(self, buffer, buffersize) then
+end
+```
+
+```js
+if (SampBitstream.decodeCString(self, buffer, buffersize)) {
+}
+```
+</Opcode>
+
+<Opcode id="0BF5" name="SAMP_RAKNET_BITSTREAM_ENCODE_STRING" member="SampBitstream.EncodeString">
+把 buffer 中字符串压缩后写入 BitStream（CString）。用在 `if` 里。
+
+```text
+0BF5 SAMP_RAKNET_BITSTREAM_ENCODE_STRING
+in: self, buffer, bufferSize
+```
+
+```lua
+if sampRaknetBitstreamEncodeString(self, buffer, bufferSize) then
+end
+```
+
+```js
+if (SampBitstream.encodeString(self, buffer, bufferSize)) {
+}
+```
+</Opcode>
+
+<Opcode id="0BF6" name="SAMP_RAKNET_BITSTREAM_EMULATE_AS_INCOMING_RPC" member="SampBitstream.EmulateAsRpcIn">
+把 BitStream 数据模拟为入站 RPC。用在 `if` 里。
+
+```text
+0BF6 SAMP_RAKNET_BITSTREAM_EMULATE_AS_INCOMING_RPC
+in: id, self
+```
+
+```lua
+if sampRaknetBitstreamEmulateAsIncomingRpc(id, self) then
+end
+```
+
+```js
+if (SampBitstream.emulateAsRpcIn(id, self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0BF7" name="SAMP_RAKNET_BITSTREAM_EMULATE_AS_INCOMING_PACKET" member="SampBitstream.EmulateAsPacketIn">
+把 BitStream 数据模拟为入站 Packet。用在 `if` 里。
+
+```text
+0BF7 SAMP_RAKNET_BITSTREAM_EMULATE_AS_INCOMING_PACKET
+in: id, self
+```
+
+```lua
+if sampRaknetBitstreamEmulateAsIncomingPacket(id, self) then
+end
+```
+
+```js
+if (SampBitstream.emulateAsPacketIn(id, self)) {
+}
+```
+</Opcode>

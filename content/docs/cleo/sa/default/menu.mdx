@@ -1,0 +1,258 @@
+---
+title: 菜单 Menu
+description: 屏上面板菜单
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 13 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 创建
+
+<Opcode id="08D4" name="CREATE_MENU" member="Menu.Create">
+建屏上面板（标题、位置、列数、可否交互等）。
+
+```text
+08D4 CREATE_MENU
+in: header, topLeftX, topLeftY, width, numColumns, interactive, background, alignment
+out: handle
+```
+
+```lua
+local handle = createMenu(header, topLeftX, topLeftY, width, numColumns, interactive, background, alignment)
+```
+
+```js
+const handle = Menu.create(header, topLeftX, topLeftY, width, numColumns, interactive, background, alignment)
+```
+</Opcode>
+
+## 列对齐
+
+<Opcode id="08D6" name="SET_MENU_COLUMN_ORIENTATION" member="Menu.SetColumnOrientation">
+设列对齐。
+
+```text
+08D6 SET_MENU_COLUMN_ORIENTATION
+in: self, column, alignment
+```
+
+```lua
+setMenuColumnOrientation(self, column, alignment)
+```
+
+```js
+Menu.setColumnOrientation(self, column, alignment)
+```
+</Opcode>
+
+## 高亮行
+
+<Opcode id="08D7" name="GET_MENU_ITEM_SELECTED" member="Menu.GetItemSelected">
+当前高亮行。
+
+```text
+08D7 GET_MENU_ITEM_SELECTED
+in: self
+out: row
+```
+
+```lua
+local row = getMenuItemSelected(self)
+```
+
+```js
+const row = Menu.getItemSelected(self)
+```
+</Opcode>
+
+## 确认行
+
+<Opcode id="08D8" name="GET_MENU_ITEM_ACCEPTED" member="Menu.GetItemAccepted">
+用冲刺键确认的最后一行。
+
+```text
+08D8 GET_MENU_ITEM_ACCEPTED
+in: self
+out: row
+```
+
+```lua
+local row = getMenuItemAccepted(self)
+```
+
+```js
+const row = Menu.getItemAccepted(self)
+```
+</Opcode>
+
+## 启停行
+
+<Opcode id="08D9" name="ACTIVATE_MENU_ITEM" member="Menu.ActivateItem">
+启用 / 禁用某一行。
+
+```text
+08D9 ACTIVATE_MENU_ITEM
+in: self, row, state
+```
+
+```lua
+activateMenuItem(self, row, state)
+```
+
+```js
+Menu.activateItem(self, row, state)
+```
+</Opcode>
+
+## 删除
+
+<Opcode id="08DA" name="DELETE_MENU" member="Menu.Delete">
+从屏幕移除面板。
+
+```text
+08DA DELETE_MENU
+in: self
+```
+
+```lua
+deleteMenu(self)
+```
+
+```js
+Menu.delete(self)
+```
+</Opcode>
+
+## 设列
+
+<Opcode id="08DB" name="SET_MENU_COLUMN" member="Menu.SetColumn">
+设一列标题与最多 12 行 GXT。
+
+```text
+08DB SET_MENU_COLUMN
+in: self, column, title, row0, row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11
+```
+
+```lua
+setMenuColumn(self, column, title, row0, row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11)
+```
+
+```js
+Menu.setColumn(self, column, title, row0, row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11)
+```
+</Opcode>
+
+## 行带一数字
+
+<Opcode id="08EE" name="SET_MENU_ITEM_WITH_NUMBER" member="Menu.SetItemWithNumber">
+行文本带一个数字占位。
+
+```text
+08EE SET_MENU_ITEM_WITH_NUMBER
+in: self, column, row, gxt, number
+```
+
+```lua
+setMenuItemWithNumber(self, column, row, gxt, number)
+```
+
+```js
+Menu.setItemWithNumber(self, column, row, gxt, number)
+```
+</Opcode>
+
+## 行带两数字
+
+<Opcode id="08EF" name="SET_MENU_ITEM_WITH_2_NUMBERS" member="Menu.SetItemWith2Numbers">
+行文本带两个数字。
+
+```text
+08EF SET_MENU_ITEM_WITH_2_NUMBERS
+in: self, column, row, gxt, number1, number2
+```
+
+```lua
+setMenuItemWith2Numbers(self, column, row, gxt, number1, number2)
+```
+
+```js
+Menu.setItemWith2Numbers(self, column, row, gxt, number1, number2)
+```
+</Opcode>
+
+## 活动行
+
+<Opcode id="090E" name="SET_ACTIVE_MENU_ITEM" member="Menu.SetActiveItem">
+设当前活动 / 高亮行。
+
+```text
+090E SET_ACTIVE_MENU_ITEM
+in: self, row
+```
+
+```lua
+setActiveMenuItem(self, row)
+```
+
+```js
+Menu.setActiveItem(self, row)
+```
+</Opcode>
+
+## 列宽
+
+<Opcode id="09DB" name="SET_MENU_COLUMN_WIDTH" member="Menu.SetColumnWidth">
+设列宽。
+
+```text
+09DB SET_MENU_COLUMN_WIDTH
+in: self, column, width
+```
+
+```lua
+setMenuColumnWidth(self, column, width)
+```
+
+```js
+Menu.setColumnWidth(self, column, width)
+```
+</Opcode>
+
+## 菜单改车色
+
+<Opcode id="0A22" name="CHANGE_CAR_COLOUR_FROM_MENU" member="Menu.ChangeCarColor">
+按菜单行改车身色槽。
+
+```text
+0A22 CHANGE_CAR_COLOUR_FROM_MENU
+in: self, vehicle, colorSlot, row
+```
+
+```lua
+changeCarColourFromMenu(self, vehicle, colorSlot, row)
+```
+
+```js
+Menu.changeCarColor(self, vehicle, colorSlot, row)
+```
+</Opcode>
+
+## 高亮商品
+
+<Opcode id="0A23" name="HIGHLIGHT_MENU_ITEM" member="Menu.HighlightItem">
+高亮行（常标已购商品）。
+
+```text
+0A23 HIGHLIGHT_MENU_ITEM
+in: self, row, state
+```
+
+```lua
+highlightMenuItem(self, row, state)
+```
+
+```js
+Menu.highlightItem(self, row, state)
+```
+</Opcode>

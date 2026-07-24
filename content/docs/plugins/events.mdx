@@ -1,0 +1,339 @@
+---
+title: 生命周期 Events
+description: 挂游戏帧、绘制与实体构造析构回调（SA 为主）
+---
+
+`shared/Events.h` · `plugin::Events`
+
+把逻辑挂在游戏生命周期上。**不要在 `DllMain` 里碰游戏对象。** 文档以 SA 为主；III / VC 的同名事件以 `Events.h` 为准。
+
+## 注册回调
+
+`+=` / `before` / `after` / `-=` 的签名必须与事件一致。在 **静态全局对象的构造函数** 里 `+=`；全局实例必须存在，否则构造不会执行。
+
+```cpp
+event += callback;
+event.before += callback;
+event.after += callback;
+event -= callback;
+```
+
+```cpp
+#include "plugin.h"
+
+class MyPlugin {
+public:
+    MyPlugin() {
+        plugin::Events::processScriptsEvent += OnProcessScripts;
+        plugin::Events::drawingEvent += OnDraw;
+        plugin::Events::pedCtorEvent += OnPedCtor;
+    }
+
+private:
+    static void OnProcessScripts() {}
+    static void OnDraw() {}
+    static void OnPedCtor(CPed* ped) { (void)ped; }
+};
+
+MyPlugin g_my_plugin;
+```
+
+## 阶段速查
+
+| 阶段 | 适合 | 避免 |
+|---|---|---|
+| 静态构造 | `+=`、读自己的 ini | `FindPlayerPed`、刷车 |
+| `initRwEvent` | 贴图、Pattern、配置 | 假定已有玩家 |
+| `initPoolsEvent` | 按池分配 Extender | 遍历尚不存在的实体 |
+| `processScriptsEvent` | 逻辑、Command、按键 | 重 IO |
+| `drawing` / `drawHud` | 2D 绘制 | 创建 / 删除实体 |
+| `*RenderEvent` | 矩阵、材质 | 删除实体 |
+| `*DtorEvent` | 释放附属数据 | 之后继续用指针 |
+| `d3dLost` / `Reset` | 释放 / 重建 GPU 资源 | Lost 后继续 Draw |
+
+## 重开游戏
+
+<Api name="restartGameEvent" header="void()">
+新开一局时清理插件自身状态。
+
+```cpp
+plugin::Events::restartGameEvent += [] {
+    // clear flags / caches
+};
+```
+</Api>
+
+## RenderWare 初始化与关闭
+
+<Api name="initRwEvent / shutdownRwEvent" header="void()">
+RW 就绪后加载贴图与资源；关闭前释放。
+
+```cpp
+plugin::Events::initRwEvent += [] {
+    // load sprites / pattern / ini
+};
+plugin::Events::shutdownRwEvent += [] {
+    // clear sprites
+};
+```
+</Api>
+
+## 对象池
+
+<Api name="initPoolsEvent / shutdownPoolsEvent" header="void()">
+池建好后分配 Extender；池销毁时释放。
+
+```cpp
+plugin::Events::initPoolsEvent += [] {};
+plugin::Events::shutdownPoolsEvent += [] {};
+```
+</Api>
+
+## 进游戏与再初始化
+
+<Api name="initGameEvent / reInitGameEvent" header="void()">
+进入游戏，以及读档后的再初始化。
+
+```cpp
+plugin::Events::initGameEvent += [] {};
+plugin::Events::reInitGameEvent += [] {};
+```
+</Api>
+
+## 脚本系统就绪
+
+<Api name="initScriptsEvent" header="void()">
+脚本系统起来之后。
+
+```cpp
+plugin::Events::initScriptsEvent += [] {};
+```
+</Api>
+
+## 每帧逻辑
+
+<Api name="processScriptsEvent" header="void()">
+每帧逻辑的主入口：按键、Command、改实体状态。
+
+```cpp
+#include "common.h"
+
+plugin::Events::processScriptsEvent += [] {
+    CPed* ped = FindPlayerPed();
+    if (!ped) {
+        return;
+    }
+    ped->m_fHealth = ped->m_fMaxHealth;
+};
+```
+</Api>
+
+## 主循环钩子
+
+<Api name="gameProcessEvent" header="void()">
+主循环上的另一钩子。改脚本 / 实体状态时优先 `processScriptsEvent`。
+
+```cpp
+plugin::Events::gameProcessEvent += [] {};
+```
+</Api>
+
+## 2D 绘制
+
+<Api name="drawingEvent / drawHudEvent / drawAfterFadeEvent / drawFontsEvent" header="void()">
+只做绘制，不要在这里创建或删除实体。
+
+```cpp
+plugin::Events::drawingEvent += [] {
+    // gamefont / sprite
+};
+plugin::Events::drawHudEvent += [] {};
+plugin::Events::drawAfterFadeEvent += [] {};
+plugin::Events::drawFontsEvent += [] {};
+```
+</Api>
+
+## 雷达绘制
+
+<Api name="drawRadarEvent / drawBlipsEvent / drawRadarOverlayEvent">
+
+```cpp
+plugin::Events::drawRadarEvent += [] {};
+plugin::Events::drawBlipsEvent += [] {};
+// SA: void(bool)
+plugin::Events::drawRadarOverlayEvent += [](bool flag) {
+    (void)flag;
+};
+```
+</Api>
+
+## 暂停菜单绘制
+
+<Api name="drawMenuBackgroundEvent / menuDrawingEvent">
+参数类型以当前游戏头文件为准。
+
+```cpp
+plugin::Events::drawMenuBackgroundEvent += [](void*) {};
+plugin::Events::menuDrawingEvent += [](CMenuManager* menu) {
+    (void)menu;
+};
+```
+</Api>
+
+## 3D 场景与特效
+
+<Api name="renderSceneEvent / renderEffectsEvent" header="void()">
+可以改矩阵、材质；不要在这里删除实体。
+
+```cpp
+plugin::Events::renderSceneEvent += [] {};
+plugin::Events::renderEffectsEvent += [] {};
+```
+</Api>
+
+## 镜子渲染（SA）
+
+<Api name="renderMirrorEvent" header="void() · SA">
+需要画进镜面内容时使用；不要在这里改游戏逻辑状态。
+
+```cpp
+plugin::Events::renderMirrorEvent += [] {
+    // mirror pass extras
+};
+```
+</Api>
+
+## 行人构造与析构
+
+<Api name="pedCtorEvent / pedDtorEvent" header="void(CPed*)">
+构造后初始化附属数据；析构前释放。dtor 之后不要再使用该指针。
+
+```cpp
+plugin::Events::pedCtorEvent += [](CPed* ped) {
+    if (!ped) {
+        return;
+    }
+};
+plugin::Events::pedDtorEvent += [](CPed* ped) {
+    (void)ped;
+};
+```
+</Api>
+
+## 载具构造与析构
+
+<Api name="vehicleCtorEvent / vehicleDtorEvent" header="void(CVehicle*)">
+
+```cpp
+plugin::Events::vehicleCtorEvent += [](CVehicle* veh) {
+    (void)veh;
+};
+plugin::Events::vehicleDtorEvent += [](CVehicle* veh) {
+    (void)veh;
+};
+```
+</Api>
+
+## 物体构造与析构
+
+<Api name="objectCtorEvent / objectDtorEvent" header="void(CObject*)">
+
+```cpp
+plugin::Events::objectCtorEvent += [](CObject* obj) {
+    (void)obj;
+};
+plugin::Events::objectDtorEvent += [](CObject* obj) {
+    (void)obj;
+};
+```
+</Api>
+
+## 实体渲染前
+
+<Api name="pedRenderEvent / vehicleRenderEvent / objectRenderEvent">
+适合改骨骼矩阵；不要删除实体。
+
+```cpp
+plugin::Events::pedRenderEvent += [](CPed* ped) {
+    if (!ped || !ped->m_pRwClump) {
+        return;
+    }
+};
+plugin::Events::vehicleRenderEvent += [](CVehicle*) {};
+plugin::Events::objectRenderEvent += [](CObject*) {};
+```
+</Api>
+
+## 换模型后
+
+<Api name="pedSetModelEvent / vehicleSetModelEvent">
+
+```cpp
+// void(CPed*, int) / void(CVehicle*, int)
+plugin::Events::pedSetModelEvent += [](CPed* ped, int model) {
+    (void)ped;
+    (void)model;
+};
+plugin::Events::vehicleSetModelEvent += [](CVehicle*, int) {};
+```
+</Api>
+
+## D3D 设备丢失与重置
+
+<Api name="d3dLostEvent / d3dResetEvent" header="void()">
+设备丢失时释放 GPU 资源，重置后重建。
+
+```cpp
+plugin::Events::d3dLostEvent += [] {};
+plugin::Events::d3dResetEvent += [] {};
+```
+</Api>
+
+## 全局静音与恢复
+
+<Api name="onPauseAllSounds / onResumeAllSounds">
+签名以头文件为准。
+
+```cpp
+plugin::Events::onPauseAllSounds += [](void* p) {
+    (void)p;
+};
+plugin::Events::onResumeAllSounds += [](void*) {};
+```
+</Api>
+
+## 挂 RenderWare 插件
+
+<Api name="attachRwPluginsEvent" header="bool()">
+
+```cpp
+plugin::Events::attachRwPluginsEvent += [] {
+    return true;
+};
+```
+</Api>
+
+## 组合示例
+
+```cpp
+#include "plugin.h"
+#include "common.h"
+#include "extensions/KeyCheck.h"
+
+class Plugin {
+public:
+    Plugin() {
+        plugin::Events::processScriptsEvent += [] {
+            KeyCheck::Update();
+            if (!KeyCheck::CheckJustDown(VK_F7)) {
+                return;
+            }
+            CPed* ped = FindPlayerPed();
+            if (!ped) {
+                return;
+            }
+            ped->m_fHealth = ped->m_fMaxHealth;
+        };
+    }
+} g_plugin;
+```

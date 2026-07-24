@@ -1,0 +1,119 @@
+---
+title: 交通 CCarCtrl
+description: 交通密度、脚本造车与路网
+---
+
+`CCarCtrl.h`
+
+交通密度、随机车、脚本造车、AI 挂路网。和 [CPopulation](/docs/plugins/entities/population) / [CPathFind](/docs/plugins/entities/pathfind) 配套。
+
+## 密度与计数
+
+<Api name="CarDensityMultiplier / MaxNumberOfCarsInUse">
+
+```cpp
+static float& CarDensityMultiplier;
+static unsigned int& MaxNumberOfCarsInUse;
+static int& NumRandomCars;
+static int& NumMissionCars;
+static int& NumParkedCars;
+static int& NumPermanentVehicles;
+```
+
+```cpp
+// CCarCtrl::CarDensityMultiplier = 0.0f; // 少车
+```
+</Api>
+
+## 应急与警察车
+
+<Api name="NumLawEnforcerCars / bAllowEmergencyServicesToBeCreated">
+
+```cpp
+static unsigned int& NumLawEnforcerCars;
+static unsigned int& NumAmbulancesOnDuty;
+static unsigned int& NumFireTrucksOnDuty;
+static bool& bAllowEmergencyServicesToBeCreated;
+```
+
+```cpp
+CCarCtrl::bAllowEmergencyServicesToBeCreated = false;
+```
+</Api>
+
+## 脚本造车
+
+<Api name="CreateCarForScript / SetCoordsOfScriptCar">
+
+```cpp
+static CVehicle* CreateCarForScript(int modelid, CVector posn, unsigned char MissionCleanUpFlag);
+static void SetCoordsOfScriptCar(CVehicle* pVehicle, float x, float y, float z, unsigned char arg5, unsigned char arg6);
+static CVehicle* GetNewVehicleDependingOnCarModel(int modelID, unsigned char createdBy);
+```
+
+```cpp
+// 模型已加载：
+// CVehicle* v = CCarCtrl::CreateCarForScript(model, pos, 1);
+```
+</Api>
+
+## 随机生成
+
+<Api name="GenerateRandomCars / GenerateEmergencyServicesCar">
+
+```cpp
+static void GenerateRandomCars();
+static void GenerateOneRandomCar();
+static void GenerateEmergencyServicesCar();
+static bool GenerateOneEmergencyServicesCar(unsigned int modelID, CVector posn);
+```
+
+```cpp
+// 游戏主循环会调；ASI 一般只改密度/开关
+```
+</Api>
+
+## 挂路网
+
+<Api name="JoinCarWithRoadSystem / JoinCarWithRoadSystemGotoCoors">
+
+```cpp
+static void JoinCarWithRoadSystem(CVehicle* pVehicle);
+static bool JoinCarWithRoadSystemGotoCoors(CVehicle* pVehicle, CVector const& posn, bool unused, bool bIsBoat);
+static void JoinCarWithRoadAccordingToMission(CVehicle* pVehicle);
+```
+
+```cpp
+// CCarCtrl::JoinCarWithRoadSystem(veh);
+```
+</Api>
+
+## 移除与兴趣车
+
+<Api name="PossiblyRemoveVehicle / RegisterVehicleOfInterest">
+
+```cpp
+static void PossiblyRemoveVehicle(CVehicle* pVehicle);
+static void RemoveDistantCars();
+static void RemoveCarsIfThePoolGetsFull();
+static void RegisterVehicleOfInterest(CVehicle* pVehicle);
+static void RemoveFromInterestingVehicleList(CVehicle* pVehicle);
+```
+
+```cpp
+// 池满时游戏会清远车；任务车要保护好标志
+```
+</Api>
+
+## 上下乘客
+
+<Api name="SetUpDriverAndPassengersForVehicle">
+
+```cpp
+static void SetUpDriverAndPassengersForVehicle(CVehicle* pVehicle, int arg2, int arg3, bool arg4, bool arg5, int passengersNum);
+```
+
+```cpp
+// 随机交通填充驾驶员/乘客
+```
+</Api>

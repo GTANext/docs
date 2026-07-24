@@ -1,0 +1,466 @@
+---
+title: 音频 Audio
+description: 任务语音 / 电台 / 节拍轨
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 24 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 通关曲
+
+<Opcode id="0394" name="PLAY_MISSION_PASSED_TUNE" member="Audio.PlayMissionPassedTune">
+播放 Audio 目录下指定 ID 通关曲。
+
+```text
+0394 PLAY_MISSION_PASSED_TUNE
+in: soundId
+```
+
+```lua
+playMissionPassedTune(soundId)
+```
+
+```js
+Audio.playMissionPassedTune(soundId)
+```
+</Opcode>
+
+## 加载任务语音
+
+<Opcode id="03CF" name="LOAD_MISSION_AUDIO" member="Audio.LoadMissionAudio">
+加载任务语音槽。
+
+```text
+03CF LOAD_MISSION_AUDIO
+in: slotId, audioId
+```
+
+```lua
+loadMissionAudio(slotId, audioId)
+```
+
+```js
+Audio.loadMissionAudio(slotId, audioId)
+```
+</Opcode>
+
+## 语音是否加载完
+
+<Opcode id="03D0" name="HAS_MISSION_AUDIO_LOADED" member="Audio.HasMissionAudioLoaded">
+`03CF` 是否加载完。用在 `if` 里。
+
+```text
+03D0 HAS_MISSION_AUDIO_LOADED
+in: slotId
+```
+
+```lua
+if hasMissionAudioLoaded(slotId) then
+end
+```
+
+```js
+if (Audio.hasMissionAudioLoaded(slotId)) {
+}
+```
+</Opcode>
+
+## 播放任务语音
+
+<Opcode id="03D1" name="PLAY_MISSION_AUDIO" member="Audio.PlayMissionAudio">
+播放已加载任务语音。
+
+```text
+03D1 PLAY_MISSION_AUDIO
+in: slotId
+```
+
+```lua
+playMissionAudio(slotId)
+```
+
+```js
+Audio.playMissionAudio(slotId)
+```
+</Opcode>
+
+## 语音是否播完
+
+<Opcode id="03D2" name="HAS_MISSION_AUDIO_FINISHED" member="Audio.HasMissionAudioFinished">
+该槽语音是否播完。用在 `if` 里。
+
+```text
+03D2 HAS_MISSION_AUDIO_FINISHED
+in: slotId
+```
+
+```lua
+if hasMissionAudioFinished(slotId) then
+end
+```
+
+```js
+if (Audio.hasMissionAudioFinished(slotId)) {
+}
+```
+</Opcode>
+
+## 语音位置
+
+<Opcode id="03D7" name="SET_MISSION_AUDIO_POSITION" member="Audio.SetMissionAudioPosition">
+设任务语音听感位置。
+
+```text
+03D7 SET_MISSION_AUDIO_POSITION
+in: slotId, x, y, z
+```
+
+```lua
+setMissionAudioPosition(slotId, x, y, z)
+```
+
+```js
+Audio.setMissionAudioPosition(slotId, x, y, z)
+```
+</Opcode>
+
+## 清语音槽
+
+<Opcode id="040D" name="CLEAR_MISSION_AUDIO" member="Audio.ClearMissionAudio">
+卸载槽语音，腾内存。
+
+```text
+040D CLEAR_MISSION_AUDIO
+in: slotId
+```
+
+```lua
+clearMissionAudio(slotId)
+```
+
+```js
+Audio.clearMissionAudio(slotId)
+```
+</Opcode>
+
+## 设电台
+
+<Opcode id="041E" name="SET_RADIO_CHANNEL" member="Audio.SetRadioChannel">
+在车内时设电台。
+
+```text
+041E SET_RADIO_CHANNEL
+in: channel
+```
+
+```lua
+setRadioChannel(channel)
+```
+
+```js
+Audio.setRadioChannel(channel)
+```
+</Opcode>
+
+## 音乐淡入淡出
+
+<Opcode id="043C" name="SET_MUSIC_DOES_FADE" member="Audio.SetMusicDoesFade">
+音乐是否随画面淡入淡出。
+
+```text
+043C SET_MUSIC_DOES_FADE
+in: state
+```
+
+```lua
+setMusicDoesFade(state)
+```
+
+```js
+Audio.setMusicDoesFade(state)
+```
+</Opcode>
+
+## 取电台
+
+<Opcode id="051E" name="GET_RADIO_CHANNEL" member="Audio.GetRadioChannel">
+当前电台。
+
+```text
+051E GET_RADIO_CHANNEL
+out: channel
+```
+
+```lua
+local channel = getRadioChannel()
+```
+
+```js
+const channel = Audio.getRadioChannel()
+```
+</Opcode>
+
+## 节拍邻近
+
+<Opcode id="07B1" name="GET_BEAT_PROXIMITY" member="Audio.GetBeatProximity">
+相对当前节拍轨（`0954`）的拍点信息。
+
+```text
+07B1 GET_BEAT_PROXIMITY
+in: offset
+out: beatTime, beatType, beatIndex
+```
+
+```lua
+local beatTime, beatType, beatIndex = getBeatProximity(offset)
+```
+
+```js
+const { beatTime, beatType, beatIndex } = Audio.getBeatProximity(offset)
+```
+</Opcode>
+
+## 语音绑角色
+
+<Opcode id="0949" name="ATTACH_MISSION_AUDIO_TO_CHAR" member="Audio.AttachMissionAudioToChar">
+任务语音绑在角色位置。
+
+```text
+0949 ATTACH_MISSION_AUDIO_TO_CHAR
+in: slotId, handle
+```
+
+```lua
+attachMissionAudioToChar(slotId, handle)
+```
+
+```js
+Audio.attachMissionAudioToChar(slotId, handle)
+```
+</Opcode>
+
+## 预载节拍轨
+
+<Opcode id="0952" name="PRELOAD_BEAT_TRACK" member="Audio.PreloadBeatTrack">
+预载 streams/BEATS 里的曲目。
+
+```text
+0952 PRELOAD_BEAT_TRACK
+in: trackId
+```
+
+```lua
+preloadBeatTrack(trackId)
+```
+
+```js
+Audio.preloadBeatTrack(trackId)
+```
+</Opcode>
+
+## 节拍轨状态
+
+<Opcode id="0953" name="GET_BEAT_TRACK_STATUS" member="Audio.GetBeatTrackStatus">
+当前节拍轨状态。
+
+```text
+0953 GET_BEAT_TRACK_STATUS
+out: status
+```
+
+```lua
+local status = getBeatTrackStatus()
+```
+
+```js
+const status = Audio.getBeatTrackStatus()
+```
+</Opcode>
+
+## 播放节拍轨
+
+<Opcode id="0954" name="PLAY_BEAT_TRACK" member="Audio.PlayBeatTrack">
+播放 `0952` 预载的曲。
+
+```text
+0954 PLAY_BEAT_TRACK
+```
+
+```lua
+playBeatTrack()
+```
+
+```js
+Audio.playBeatTrack()
+```
+</Opcode>
+
+## 停节拍轨
+
+<Opcode id="0955" name="STOP_BEAT_TRACK" member="Audio.StopBeatTrack">
+停当前节拍轨。
+
+```text
+0955 STOP_BEAT_TRACK
+```
+
+```lua
+stopBeatTrack()
+```
+
+```js
+Audio.stopBeatTrack()
+```
+</Opcode>
+
+## 坐标音频事件
+
+<Opcode id="097A" name="REPORT_MISSION_AUDIO_EVENT_AT_POSITION" member="Audio.ReportMissionAudioEventAtPosition">
+在坐标触发任务音频事件。
+
+```text
+097A REPORT_MISSION_AUDIO_EVENT_AT_POSITION
+in: x, y, z, soundId
+```
+
+```lua
+reportMissionAudioEventAtPosition(x, y, z, soundId)
+```
+
+```js
+Audio.reportMissionAudioEventAtPosition(x, y, z, soundId)
+```
+</Opcode>
+
+## 物体音频事件
+
+<Opcode id="097B" name="REPORT_MISSION_AUDIO_EVENT_AT_OBJECT" member="Audio.ReportMissionAudioEventAtObject">
+在物体处触发任务音频事件。
+
+```text
+097B REPORT_MISSION_AUDIO_EVENT_AT_OBJECT
+in: handle, soundId
+```
+
+```lua
+reportMissionAudioEventAtObject(handle, soundId)
+```
+
+```js
+Audio.reportMissionAudioEventAtObject(handle, soundId)
+```
+</Opcode>
+
+## 语音绑物体
+
+<Opcode id="097C" name="ATTACH_MISSION_AUDIO_TO_OBJECT" member="Audio.AttachMissionAudioToObject">
+任务语音绑在物体上。
+
+```text
+097C ATTACH_MISSION_AUDIO_TO_OBJECT
+in: slotId, handle
+```
+
+```lua
+attachMissionAudioToObject(slotId, handle)
+```
+
+```js
+Audio.attachMissionAudioToObject(slotId, handle)
+```
+</Opcode>
+
+## 暂停节拍轨
+
+<Opcode id="0991" name="PAUSE_CURRENT_BEAT_TRACK" member="Audio.PauseCurrentBeatTrack">
+暂停 / 恢复节拍轨。
+
+```text
+0991 PAUSE_CURRENT_BEAT_TRACK
+in: state
+```
+
+```lua
+pauseCurrentBeatTrack(state)
+```
+
+```js
+Audio.pauseCurrentBeatTrack(state)
+```
+</Opcode>
+
+## 角色音频事件
+
+<Opcode id="09F1" name="REPORT_MISSION_AUDIO_EVENT_AT_CHAR" member="Audio.ReportMissionAudioEventAtChar">
+在角色处触发任务音频事件。
+
+```text
+09F1 REPORT_MISSION_AUDIO_EVENT_AT_CHAR
+in: handle, soundId
+```
+
+```lua
+reportMissionAudioEventAtChar(handle, soundId)
+```
+
+```js
+Audio.reportMissionAudioEventAtChar(handle, soundId)
+```
+</Opcode>
+
+## 车音频事件
+
+<Opcode id="09F7" name="REPORT_MISSION_AUDIO_EVENT_AT_CAR" member="Audio.ReportMissionAudioEventAtCar">
+在车处触发任务音频事件。
+
+```text
+09F7 REPORT_MISSION_AUDIO_EVENT_AT_CAR
+in: handle, soundId
+```
+
+```lua
+reportMissionAudioEventAtCar(handle, soundId)
+```
+
+```js
+Audio.reportMissionAudioEventAtCar(handle, soundId)
+```
+</Opcode>
+
+## 语音绑车
+
+<Opcode id="0A16" name="ATTACH_MISSION_AUDIO_TO_CAR" member="Audio.AttachMissionAudioToCar">
+任务语音绑在车上。
+
+```text
+0A16 ATTACH_MISSION_AUDIO_TO_CAR
+in: slotId, handle
+```
+
+```lua
+attachMissionAudioToCar(slotId, handle)
+```
+
+```js
+Audio.attachMissionAudioToCar(slotId, handle)
+```
+</Opcode>
+
+## 最爱电台
+
+<Opcode id="0A26" name="SET_RADIO_TO_PLAYERS_FAVOURITE_STATION" member="Audio.SetRadioToPlayersFavouriteStation">
+当前车电台切到玩家最爱台（统计 326）。
+
+```text
+0A26 SET_RADIO_TO_PLAYERS_FAVOURITE_STATION
+```
+
+```lua
+setRadioToPlayersFavouriteStation()
+```
+
+```js
+Audio.setRadioToPlayersFavouriteStation()
+```
+</Opcode>

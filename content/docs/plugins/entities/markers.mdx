@@ -1,0 +1,108 @@
+---
+title: 标记 CCoronas / C3dMarkers
+description: 光晕与 3D 标记
+---
+
+`CCoronas.h` · `C3dMarkers.h`
+
+光晕与 3D 标记。每帧重新 `Register` / `Place`（引擎槽位语义）；id 固定便于更新。
+
+## 注册光晕
+
+<Api name="CCoronas::RegisterCorona">
+按类型或纹理。
+
+```cpp
+static void RegisterCorona(unsigned int id, CEntity* attachTo, unsigned char red, unsigned char green, unsigned char blue,
+    unsigned char alpha, CVector const& posn, float radius, float farClip, eCoronaType coronaType, eCoronaFlareType flaretype,
+    bool enableReflection, bool checkObstacles, int _param_not_used, float angle, bool longDistance, float nearClip,
+    unsigned char fadeState, float fadeSpeed, bool onlyFromBelow, bool reflectionDelay);
+// 另有 RwTexture* 重载
+```
+
+```cpp
+// 每帧 drawing / 合适钩子：
+// CCoronas::RegisterCorona(myId, nullptr, 255, 200, 50, 255, pos, 1.0f, 150.0f, type, flare, ...);
+```
+</Api>
+
+## 更新光晕坐标
+
+<Api name="UpdateCoronaCoors">
+
+```cpp
+static void UpdateCoronaCoors(unsigned int id, CVector const& posn, float farClip, float angle);
+```
+
+```cpp
+// CCoronas::UpdateCoronaCoors(myId, pos, 150.0f, 0.0f);
+```
+</Api>
+
+## 放 3D 标记
+
+<Api name="PlaceMarker / PlaceMarkerSet / PlaceMarkerCone">
+
+```cpp
+static C3dMarker* PlaceMarker(unsigned int id, unsigned short type, CVector& posn, float size,
+    unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha,
+    unsigned short pulsePeriod, float pulseFraction, short rotateRate,
+    float nrm_x, float nrm_y, float nrm_z, bool zCheck);
+static void PlaceMarkerSet(unsigned int id, unsigned short type, CVector& posn, float size,
+    unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha,
+    unsigned short pulsePeriod, float pulseFraction, short rotateRate);
+static void PlaceMarkerCone(unsigned int id, CVector& posn, float size,
+    unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha,
+    unsigned short pulsePeriod, float pulseFraction, short rotateRate, unsigned char bEnableCollision);
+```
+
+```cpp
+CVector p = FindPlayerCoors();
+p.z += 1.0f;
+// C3dMarkers::PlaceMarkerSet(1, type, p, 1.0f, 255, 0, 0, 255, 1024, 0.2f, 0);
+```
+</Api>
+
+## 方向箭头
+
+<Api name="DirectionArrowSet">
+
+```cpp
+static void DirectionArrowSet(CVector posn, float size, int red, int green, int blue, int alpha,
+    float dir_x, float dir_y, float dir_z);
+```
+
+```cpp
+// C3dMarkers::DirectionArrowSet(pos, 1.0f, 255, 255, 0, 255, 0, 1, 0);
+```
+</Api>
+
+## 用户标记
+
+<Api name="User3dMarkerDelete / User3dMarkerDeleteAll">
+
+```cpp
+static void User3dMarkerDelete(int slotIndex);
+static void User3dMarkerDeleteAll();
+```
+
+```cpp
+// C3dMarkers::User3dMarkerDeleteAll();
+```
+</Api>
+
+## 强制渲染
+
+<Api name="ForceRender / IgnoreRenderLimit">
+
+```cpp
+static void ForceRender(unsigned char bEnable);
+static bool& IgnoreRenderLimit;
+```
+
+```cpp
+C3dMarkers::ForceRender(1);
+```
+</Api>
+
+雷达 2D blip 见 [CRadar](/docs/plugins/entities/radar)。

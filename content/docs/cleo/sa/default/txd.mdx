@@ -1,0 +1,64 @@
+---
+title: 贴图 Txd
+description: 贴图字典 / 精灵槽
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 3 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 加载精灵
+
+<Opcode id="038F" name="LOAD_SPRITE" member="Txd.LoadSprite">
+从最近加载的字典（`0390`）取贴图进精灵槽。
+
+```text
+038F LOAD_SPRITE
+in: spriteSlot, textureName
+```
+
+```lua
+loadSprite(spriteSlot, textureName)
+```
+
+```js
+Txd.loadSprite(spriteSlot, textureName)
+```
+</Opcode>
+
+## 加载字典
+
+<Opcode id="0390" name="LOAD_TEXTURE_DICTIONARY" member="Txd.LoadDictionary">
+加载贴图字典，供屏上画精灵（`038D` 等）。
+
+```text
+0390 LOAD_TEXTURE_DICTIONARY
+in: name
+```
+
+```lua
+loadTextureDictionary(name)
+```
+
+```js
+Txd.loadDictionary(name)
+```
+</Opcode>
+
+## 卸载字典
+
+<Opcode id="0391" name="REMOVE_TEXTURE_DICTIONARY" member="Txd.Remove">
+卸掉已加载精灵与字典，腾内存。
+
+```text
+0391 REMOVE_TEXTURE_DICTIONARY
+```
+
+```lua
+removeTextureDictionary()
+```
+
+```js
+Txd.remove()
+```
+</Opcode>

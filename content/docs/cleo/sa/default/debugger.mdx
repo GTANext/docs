@@ -1,0 +1,102 @@
+---
+title: 调试 Debugger
+description: 脚本调试
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 5 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 调试行
+
+<Opcode id="0052" name="LINE" member="Debugger.Line">
+屏上显示 6 个浮点（调试行）。
+
+```text
+0052 LINE
+in: f1, f2, f3, f4, f5, f6
+```
+
+```lua
+line(f1, f2, f3, f4, f5, f6)
+```
+
+```js
+Debugger.line(f1, f2, f3, f4, f5, f6)
+```
+</Opcode>
+
+## 开调试
+
+<Opcode id="00C3" name="DEBUG_ON" member="Debugger.Enable">
+打开本脚本调试特性。
+
+```text
+00C3 DEBUG_ON
+```
+
+```lua
+debugOn()
+```
+
+```js
+Debugger.enable()
+```
+</Opcode>
+
+## 关调试
+
+<Opcode id="00C4" name="DEBUG_OFF" member="Debugger.Disable">
+关闭本脚本调试特性。
+
+```text
+00C4 DEBUG_OFF
+```
+
+```lua
+debugOff()
+```
+
+```js
+Debugger.disable()
+```
+</Opcode>
+
+## 调试相机
+
+<Opcode id="05A0" name="IS_DEBUG_CAMERA_ON" member="Debugger.IsDebugCameraOn">
+调试相机是否开启。用在 `if` 里。
+
+```text
+05A0 IS_DEBUG_CAMERA_ON
+```
+
+```lua
+if isDebugCameraOn() then
+end
+```
+
+```js
+if (Debugger.isDebugCameraOn()) {
+}
+```
+</Opcode>
+
+## 写调试文件
+
+<Opcode id="05B6" name="SAVE_STRING_TO_DEBUG_FILE" member="Debugger.SaveStringToDebugFile">
+把字符串写入调试文件。
+
+```text
+05B6 SAVE_STRING_TO_DEBUG_FILE
+in: msg
+```
+
+```lua
+saveStringToDebugFile(msg)
+```
+
+```js
+Debugger.saveStringToDebugFile(msg)
+```
+</Opcode>

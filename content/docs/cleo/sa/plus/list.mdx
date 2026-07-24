@@ -1,0 +1,311 @@
+---
+title: 列表 List
+description: 动态数值/字符串列表
+---
+
+`sa` · 扩展 `CLEO+` · 需 CLEO + CLEO+
+
+动态列表（数值 / 字符串）。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 生命周期
+
+<Opcode id="0E72" name="CREATE_LIST" member="List.Create">
+按 `ListType` 建列表。
+
+```text
+0E72 CREATE_LIST
+in: type
+out: handle
+```
+
+```lua
+local list = createList(listType)
+```
+
+```js
+const handle = List.create(type)
+```
+</Opcode>
+
+<Opcode id="0E73" name="DELETE_LIST" member="List.Delete">
+删列表。
+
+```text
+0E73 DELETE_LIST
+in: self
+```
+
+```lua
+deleteList(list)
+```
+
+```js
+List.delete(self)
+```
+</Opcode>
+
+## 数值项
+
+<Opcode id="0E74" name="LIST_ADD" member="List.Add">
+追加数值项。
+
+```text
+0E74 LIST_ADD
+in: self, value
+```
+
+```lua
+listAdd(list, 42)
+```
+
+```js
+List.add(self, value)
+```
+</Opcode>
+
+<Opcode id="0E75" name="LIST_REMOVE_VALUE" member="List.RemoveValue">
+按数值移除一项。
+
+```text
+0E75 LIST_REMOVE_VALUE
+in: self, value
+```
+
+```lua
+listRemoveValue(list, 42)
+```
+
+```js
+List.removeValue(self, value)
+```
+</Opcode>
+
+<Opcode id="0E76" name="LIST_REMOVE_INDEX" member="List.RemoveIndex">
+按下标移除。
+
+```text
+0E76 LIST_REMOVE_INDEX
+in: self, index
+```
+
+```lua
+listRemoveIndex(list, 0)
+```
+
+```js
+List.removeIndex(self, index)
+```
+</Opcode>
+
+<Opcode id="0E77" name="GET_LIST_SIZE" member="List.GetSize">
+元素个数。
+
+```text
+0E77 GET_LIST_SIZE
+in: self
+out: entries
+```
+
+```lua
+local n = getListSize(list)
+```
+
+```js
+const entries = List.getSize(self)
+```
+</Opcode>
+
+<Opcode id="0E78" name="GET_LIST_VALUE_BY_INDEX" member="List.GetValueByIndex">
+按下标取数值。
+
+```text
+0E78 GET_LIST_VALUE_BY_INDEX
+in: self, index
+out: value
+```
+
+```lua
+local v = getListValueByIndex(list, 0)
+```
+
+```js
+const value = List.getValueByIndex(self, index)
+```
+</Opcode>
+
+<Opcode id="0E79" name="RESET_LIST" member="List.Reset">
+清空所有项。
+
+```text
+0E79 RESET_LIST
+in: self
+```
+
+```lua
+resetList(list)
+```
+
+```js
+List.reset(self)
+```
+</Opcode>
+
+## 字符串项
+
+<Opcode id="0E7A" name="GET_LIST_STRING_VALUE_BY_INDEX" member="List.GetStringValueByIndex">
+按下标取字符串。
+
+```text
+0E7A GET_LIST_STRING_VALUE_BY_INDEX
+in: self, index
+out: string
+```
+
+```lua
+local s = getListStringValueByIndex(list, 0)
+```
+
+```js
+const string = List.getStringValueByIndex(self, index)
+```
+</Opcode>
+
+<Opcode id="0E7B" name="LIST_ADD_STRING" member="List.AddString">
+追加字符串。
+
+```text
+0E7B LIST_ADD_STRING
+in: self, string
+```
+
+```lua
+listAddString(list, "hi")
+```
+
+```js
+List.addString(self, string)
+```
+</Opcode>
+
+<Opcode id="0E7C" name="LIST_REMOVE_STRING_VALUE" member="List.RemoveStringValue">
+按字符串内容移除。
+
+```text
+0E7C LIST_REMOVE_STRING_VALUE
+in: self, string
+```
+
+```lua
+listRemoveStringValue(list, "hi")
+```
+
+```js
+List.removeStringValue(self, string)
+```
+</Opcode>
+
+## 区间 / 反转
+
+<Opcode id="0E7D" name="LIST_REMOVE_INDEX_RANGE" member="List.RemoveIndexRange">
+按下标区间移除 `[start, stop)`。
+
+```text
+0E7D LIST_REMOVE_INDEX_RANGE
+in: self, start, stop
+```
+
+```lua
+listRemoveIndexRange(list, 0, 2)
+```
+
+```js
+List.removeIndexRange(self, start, stop)
+```
+</Opcode>
+
+<Opcode id="0E7E" name="REVERSE_LIST" member="List.Reverse">
+反转顺序。
+
+```text
+0E7E REVERSE_LIST
+in: self
+```
+
+```lua
+reverseList(list)
+```
+
+```js
+List.reverse(self)
+```
+</Opcode>
+
+## 替换 / 插入
+
+<Opcode id="0F06" name="REPLACE_LIST_VALUE_BY_INDEX" member="List.ReplaceValueByIndex">
+按下标替换数值项。
+
+```text
+0F06 REPLACE_LIST_VALUE_BY_INDEX
+in: self, index, value
+```
+
+```lua
+replaceListValueByIndex(list, 0, 99)
+```
+
+```js
+List.replaceValueByIndex(self, index, value)
+```
+</Opcode>
+
+<Opcode id="0F07" name="REPLACE_LIST_STRING_VALUE_BY_INDEX" member="List.ReplaceStringValueByIndex">
+按下标替换字符串项。
+
+```text
+0F07 REPLACE_LIST_STRING_VALUE_BY_INDEX
+in: self, index, string
+```
+
+```lua
+replaceListStringValueByIndex(list, 0, "new")
+```
+
+```js
+List.replaceStringValueByIndex(self, index, string)
+```
+</Opcode>
+
+<Opcode id="0F08" name="INSERT_LIST_VALUE_BY_INDEX" member="List.InsertValueByIndex">
+按下标插入数值。
+
+```text
+0F08 INSERT_LIST_VALUE_BY_INDEX
+in: self, index, value
+```
+
+```lua
+insertListValueByIndex(list, 0, 1)
+```
+
+```js
+List.insertValueByIndex(self, index, value)
+```
+</Opcode>
+
+<Opcode id="0F09" name="INSERT_LIST_STRING_VALUE_BY_INDEX" member="List.InsertStringValueByIndex">
+按下标插入字符串。
+
+```text
+0F09 INSERT_LIST_STRING_VALUE_BY_INDEX
+in: self, index, string
+```
+
+```lua
+insertListStringValueByIndex(list, 0, "hi")
+```
+
+```js
+List.insertStringValueByIndex(self, index, string)
+```
+</Opcode>

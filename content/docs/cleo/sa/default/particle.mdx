@@ -1,0 +1,262 @@
+---
+title: 粒子 Particle
+description: 粒子特效
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 13 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 创建
+
+<Opcode id="064B" name="CREATE_FX_SYSTEM" member="Particle.Create">
+在坐标创建粒子特效。
+
+```text
+064B CREATE_FX_SYSTEM
+in: name, x, y, z, ignoreBoundingChecks
+out: handle
+```
+
+```lua
+local handle = createFxSystem(name, x, y, z, ignoreBoundingChecks)
+```
+
+```js
+const handle = Particle.create(name, x, y, z, ignoreBoundingChecks)
+```
+</Opcode>
+
+## 播放
+
+<Opcode id="064C" name="PLAY_FX_SYSTEM" member="Particle.Play">
+播放 / 显示粒子。
+
+```text
+064C PLAY_FX_SYSTEM
+in: self
+```
+
+```lua
+playFxSystem(self)
+```
+
+```js
+Particle.play(self)
+```
+</Opcode>
+
+## 停止
+
+<Opcode id="064E" name="STOP_FX_SYSTEM" member="Particle.Stop">
+在源点停止粒子。
+
+```text
+064E STOP_FX_SYSTEM
+in: self
+```
+
+```lua
+stopFxSystem(self)
+```
+
+```js
+Particle.stop(self)
+```
+</Opcode>
+
+## 播完自灭
+
+<Opcode id="064F" name="PLAY_AND_KILL_FX_SYSTEM" member="Particle.PlayAndKill">
+播放后脚本不再接管（播完自灭）。
+
+```text
+064F PLAY_AND_KILL_FX_SYSTEM
+in: self
+```
+
+```lua
+playAndKillFxSystem(self)
+```
+
+```js
+Particle.playAndKill(self)
+```
+</Opcode>
+
+## 删除
+
+<Opcode id="0650" name="KILL_FX_SYSTEM" member="Particle.Kill">
+停掉并删除粒子。
+
+```text
+0650 KILL_FX_SYSTEM
+in: self
+```
+
+```lua
+killFxSystem(self)
+```
+
+```js
+Particle.kill(self)
+```
+</Opcode>
+
+## 绑角色
+
+<Opcode id="0669" name="CREATE_FX_SYSTEM_ON_CHAR" member="Particle.CreateOnChar">
+绑在角色上的粒子。
+
+```text
+0669 CREATE_FX_SYSTEM_ON_CHAR
+in: name, char, xOffset, yOffset, zOffset, ignoreBoundingChecks
+out: handle
+```
+
+```lua
+local handle = createFxSystemOnChar(name, char, xOffset, yOffset, zOffset, ignoreBoundingChecks)
+```
+
+```js
+const handle = Particle.createOnChar(name, char, xOffset, yOffset, zOffset, ignoreBoundingChecks)
+```
+</Opcode>
+
+## 角色 + 方向
+
+<Opcode id="066A" name="CREATE_FX_SYSTEM_ON_CHAR_WITH_DIRECTION" member="Particle.CreateOnCharWithDirection">
+角色上粒子 + 方向。
+
+```text
+066A CREATE_FX_SYSTEM_ON_CHAR_WITH_DIRECTION
+in: name, char, xOffset, yOffset, zOffset, xDirection, yDirection, zDirection, ignoreBoundingChecks
+out: handle
+```
+
+```lua
+local handle = createFxSystemOnCharWithDirection(name, char, xOffset, yOffset, zOffset, xDirection, yDirection, zDirection, ignoreBoundingChecks)
+```
+
+```js
+const handle = Particle.createOnCharWithDirection(name, char, xOffset, yOffset, zOffset, xDirection, yDirection, zDirection, ignoreBoundingChecks)
+```
+</Opcode>
+
+## 绑车
+
+<Opcode id="066B" name="CREATE_FX_SYSTEM_ON_CAR" member="Particle.CreateOnCar">
+绑在车上的粒子。
+
+```text
+066B CREATE_FX_SYSTEM_ON_CAR
+in: name, vehicle, xOffset, yOffset, zOffset, ignoreBoundingChecks
+out: handle
+```
+
+```lua
+local handle = createFxSystemOnCar(name, vehicle, xOffset, yOffset, zOffset, ignoreBoundingChecks)
+```
+
+```js
+const handle = Particle.createOnCar(name, vehicle, xOffset, yOffset, zOffset, ignoreBoundingChecks)
+```
+</Opcode>
+
+## 车 + 方向
+
+<Opcode id="066C" name="CREATE_FX_SYSTEM_ON_CAR_WITH_DIRECTION" member="Particle.CreateOnCarWithDirection">
+车上粒子 + 方向。
+
+```text
+066C CREATE_FX_SYSTEM_ON_CAR_WITH_DIRECTION
+in: name, vehicle, xOffset, yOffset, zOffset, xDirection, yDirection, zDirection, ignoreBoundingChecks
+out: handle
+```
+
+```lua
+local handle = createFxSystemOnCarWithDirection(name, vehicle, xOffset, yOffset, zOffset, xDirection, yDirection, zDirection, ignoreBoundingChecks)
+```
+
+```js
+const handle = Particle.createOnCarWithDirection(name, vehicle, xOffset, yOffset, zOffset, xDirection, yDirection, zDirection, ignoreBoundingChecks)
+```
+</Opcode>
+
+## 绑物体
+
+<Opcode id="066D" name="CREATE_FX_SYSTEM_ON_OBJECT" member="Particle.CreateOnObject">
+绑在物体上的粒子。
+
+```text
+066D CREATE_FX_SYSTEM_ON_OBJECT
+in: name, object, xOffset, yOffset, zOffset, ignoreBoundingChecks
+out: handle
+```
+
+```lua
+local handle = createFxSystemOnObject(name, object, xOffset, yOffset, zOffset, ignoreBoundingChecks)
+```
+
+```js
+const handle = Particle.createOnObject(name, object, xOffset, yOffset, zOffset, ignoreBoundingChecks)
+```
+</Opcode>
+
+## 物体 + 方向
+
+<Opcode id="066E" name="CREATE_FX_SYSTEM_ON_OBJECT_WITH_DIRECTION" member="Particle.CreateOnObjectWithDirection">
+物体上粒子 + 方向。
+
+```text
+066E CREATE_FX_SYSTEM_ON_OBJECT_WITH_DIRECTION
+in: name, object, xOffset, yOffset, zOffset, xDirection, yDirection, zDirection, ignoreBoundingChecks
+out: handle
+```
+
+```lua
+local handle = createFxSystemOnObjectWithDirection(name, object, xOffset, yOffset, zOffset, xDirection, yDirection, zDirection, ignoreBoundingChecks)
+```
+
+```js
+const handle = Particle.createOnObjectWithDirection(name, object, xOffset, yOffset, zOffset, xDirection, yDirection, zDirection, ignoreBoundingChecks)
+```
+</Opcode>
+
+## 挂骨骼
+
+<Opcode id="0883" name="ATTACH_FX_SYSTEM_TO_CHAR_BONE" member="Particle.AttachToCharBone">
+粒子挂到角色骨骼。
+
+```text
+0883 ATTACH_FX_SYSTEM_TO_CHAR_BONE
+in: self, handle, pedBone
+```
+
+```lua
+attachFxSystemToCharBone(self, handle, pedBone)
+```
+
+```js
+Particle.attachToCharBone(self, handle, pedBone)
+```
+</Opcode>
+
+## 立刻销毁
+
+<Opcode id="0976" name="KILL_FX_SYSTEM_NOW" member="Particle.KillNow">
+立刻销毁粒子。
+
+```text
+0976 KILL_FX_SYSTEM_NOW
+in: self
+```
+
+```lua
+killFxSystemNow(self)
+```
+
+```js
+Particle.killNow(self)
+```
+</Opcode>

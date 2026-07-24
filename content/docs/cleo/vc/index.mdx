@@ -1,0 +1,30 @@
+---
+title: Vice City
+description: Vice City CLEO 扩展 opcode 按类型分页
+---
+
+`vc` · 扩展 `CLEO` · 需 CLEO
+
+Vice City 与 SA 同名 op 语义接近。JSON 里常见 **两套 id**：
+
+- 经典：`05xx` / `06xx`（老 CLEO）
+- 现代：`0Axx`（与 SA 对齐）
+
+页内签名 **优先现代 id**；经典别名写在 text 注释。地址以 VC 为准。
+
+源：`sanny-builder-library/vc/vc.json` + `vc/snippets/CLEO/`
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+| 类型 | 页 |
+|---|---|
+| Memory | [memory](/docs/cleo/vc/memory) |
+| 算术 | [arith](/docs/cleo/vc/arith) |
+| 自定义脚本 | [script](/docs/cleo/vc/script) |
+| File / Fs | [file](/docs/cleo/vc/file) |
+| DynamicLibrary | [dll](/docs/cleo/vc/dll) |
+| Game / Pad | [game](/docs/cleo/vc/game) |
+| Entity | [entity](/docs/cleo/vc/entity) |
+| Text | [text](/docs/cleo/vc/text) |
+| Math | [math](/docs/cleo/vc/math) |
+| 杂项 | [misc](/docs/cleo/vc/misc) |

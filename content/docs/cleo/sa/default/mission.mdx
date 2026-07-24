@@ -1,0 +1,63 @@
+---
+title: 任务 Mission
+description: 任务启动与收尾
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 3 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 任务收尾
+
+<Opcode id="00D8" name="MISSION_HAS_FINISHED" member="Mission.Finish">
+收尾任务 / 脚本里常见的一批状态重置。
+
+```text
+00D8 MISSION_HAS_FINISHED
+```
+
+```lua
+missionHasFinished()
+```
+
+```js
+Mission.finish()
+```
+</Opcode>
+
+## 加载并启动
+
+<Opcode id="0417" name="LOAD_AND_LAUNCH_MISSION_INTERNAL" member="Mission.LoadAndLaunchInternal">
+按 main.scm 头里的任务表下标加载并启动任务。
+
+```text
+0417 LOAD_AND_LAUNCH_MISSION_INTERNAL
+in: index
+```
+
+```lua
+loadAndLaunchMissionInternal(index)
+```
+
+```js
+Mission.loadAndLaunchInternal(index)
+```
+</Opcode>
+
+## 失败当前任务
+
+<Opcode id="045C" name="FAIL_CURRENT_MISSION" member="Mission.Fail">
+跑当前任务的清理逻辑并失败收场。
+
+```text
+045C FAIL_CURRENT_MISSION
+```
+
+```lua
+failCurrentMission()
+```
+
+```js
+Mission.fail()
+```
+</Opcode>

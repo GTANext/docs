@@ -1,0 +1,84 @@
+---
+title: 船只 Boat
+description: 船移动 / 巡航 / 锚泊
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 4 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 驶向坐标
+
+<Opcode id="02D3" name="BOAT_GOTO_COORDS" member="Boat.Goto">
+让船驶向坐标。
+
+```text
+02D3 BOAT_GOTO_COORDS
+in: self, x, y, z
+```
+
+```lua
+boatGotoCoords(self, x, y, z)
+```
+
+```js
+Boat.goto(self, x, y, z)
+```
+</Opcode>
+
+## 停船
+
+<Opcode id="02D4" name="BOAT_STOP" member="Boat.Stop">
+停船（关动力）。
+
+```text
+02D4 BOAT_STOP
+in: self
+```
+
+```lua
+boatStop(self)
+```
+
+```js
+Boat.stop(self)
+```
+</Opcode>
+
+## 巡航速度
+
+<Opcode id="02DB" name="SET_BOAT_CRUISE_SPEED" member="Boat.SetCruiseSpeed">
+设船巡航 / 最大速度。
+
+```text
+02DB SET_BOAT_CRUISE_SPEED
+in: self, maxSpeed
+```
+
+```lua
+setBoatCruiseSpeed(self, maxSpeed)
+```
+
+```js
+Boat.setCruiseSpeed(self, maxSpeed)
+```
+</Opcode>
+
+## 锚泊
+
+<Opcode id="0323" name="ANCHOR_BOAT" member="Boat.Anchor">
+锚泊：船在水上基本不动。
+
+```text
+0323 ANCHOR_BOAT
+in: self, state
+```
+
+```lua
+anchorBoat(self, state)
+```
+
+```js
+Boat.anchor(self, state)
+```
+</Opcode>

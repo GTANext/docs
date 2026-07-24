@@ -1,0 +1,98 @@
+---
+title: 聊天输入 SampChatInput
+description: 聊天输入框文本与可见性
+---
+
+`sa` · 扩展 `SAMPFUNCS` · 仅 SA-MP；需 SAMPFUNCS
+
+共 5 条。调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 可见 / 文本
+
+<Opcode id="0B21" name="SAMP_IS_CHAT_INPUT_VISIBLE" member="SampChatInput.IsVisible">
+检查聊天输入框是否打开/可见。
+
+```text
+0B21 SAMP_IS_CHAT_INPUT_VISIBLE
+```
+
+```lua
+if sampIsChatInputVisible() then
+end
+```
+
+```js
+if (SampChatInput.IsVisible()) {
+}
+```
+</Opcode>
+
+<Opcode id="0B76" name="SAMP_SET_CHAT_INPUT_TEXT" member="SampChatInput.SetText">
+覆盖聊天输入框中的文本。
+
+```text
+0B76 SAMP_SET_CHAT_INPUT_TEXT
+in: text
+```
+
+```lua
+sampSetChatInputText(text)
+```
+
+```js
+SampChatInput.SetText(text)
+```
+</Opcode>
+
+<Opcode id="0B77" name="SAMP_GET_CHAT_INPUT_TEXT" member="SampChatInput.GetText">
+返回聊天输入框当前文本。
+
+```text
+0B77 SAMP_GET_CHAT_INPUT_TEXT
+out: buffer
+```
+
+```lua
+local buffer = sampGetChatInputText()
+```
+
+```js
+const buffer = SampChatInput.GetText()
+```
+</Opcode>
+
+<Opcode id="0B79" name="SAMP_SET_CHAT_INPUT_VISIBILITY" member="SampChatInput.SetVisibility">
+设置聊天输入框打开/关闭。
+
+```text
+0B79 SAMP_SET_CHAT_INPUT_VISIBILITY
+in: isVisible
+```
+
+```lua
+sampSetChatInputVisibility(isVisible)
+```
+
+```js
+SampChatInput.SetVisibility(isVisible)
+```
+</Opcode>
+
+## 发送
+
+<Opcode id="0C8F" name="SAMP_PROCESS_CHAT_INPUT" member="SampChatInput.Process">
+经 SAMPFUNCS 回调处理后，作为 SampRpc.Chat 发往服务器。
+
+```text
+0C8F SAMP_PROCESS_CHAT_INPUT
+in: text
+```
+
+```lua
+sampProcessChatInput(text)
+```
+
+```js
+SampChatInput.Process(text)
+```
+</Opcode>

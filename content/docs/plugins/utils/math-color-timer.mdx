@@ -1,0 +1,68 @@
+---
+title: 色数学墙钟 color / maths / Timer
+description: 颜色、圆周率与墙钟计时
+---
+
+`Color.h` / `Maths.h` / `Timer.h`
+
+## 预置颜色
+
+大量 CSS 风格色名，类型为 `CRGBA`。
+
+```cpp
+namespace color {
+    extern CRGBA Red, Green, Blue, White, Black, /* ... */;
+}
+```
+
+```cpp
+#include "Color.h"
+CRGBA c = plugin::color::Orange;
+```
+
+## 圆周率
+
+```cpp
+namespace maths {
+    template <typename T> static inline T pi();
+}
+#define PI (plugin::maths::pi<double>())
+#define TWOPI (PI*2)
+```
+
+```cpp
+#include "Maths.h"
+double p = PI;
+float half = static_cast<float>(plugin::maths::pi<float>());
+```
+
+## 墙钟计时
+
+`Timer` 使用高精度时钟，自构造起计时；**暂停游戏仍继续走**。需要游戏时间时用 `CTimer::m_snTimeInMilliseconds`。
+
+```cpp
+class Timer {
+    Timer();
+    template <typename T = int32_t>
+    static T GetTimeInMilliseconds();
+    template <typename T = double>
+    static T GetTimeInSeconds();
+};
+```
+
+```cpp
+#include "Timer.h"
+
+static plugin::Timer g_timer;
+static int32_t last_ms = 0;
+
+plugin::Events::processScriptsEvent += [] {
+    int32_t now = plugin::Timer::GetTimeInMilliseconds();
+    if (now - last_ms < 200) {
+        return;
+    }
+    last_ms = now;
+};
+```
+
+角度、限幅、插值见 [杂项工具](/docs/plugins/utils/other)。

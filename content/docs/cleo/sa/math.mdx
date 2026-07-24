@@ -1,0 +1,48 @@
+---
+title: 数学 Math
+description: 幂与对数
+---
+
+`sa` · 扩展 `CLEO` · 需 CLEO
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 幂
+
+<Opcode id="0AEE" name="POW" member="Math.Pow">
+`number ^ power`。
+
+```text
+0AEE POW
+in: number, power
+out: result
+```
+
+```lua
+local r = pow(2.0, 8.0)
+```
+
+```js
+const result = Math.pow(number, power)
+```
+</Opcode>
+
+## 对数
+
+<Opcode id="0AEF" name="LOG" member="Math.Log">
+以 `base` 为底的对数。
+
+```text
+0AEF LOG
+in: number, base
+out: result
+```
+
+```lua
+local r = log(100.0, 10.0)
+```
+
+```js
+const result = Math.log(number, base)
+```
+</Opcode>

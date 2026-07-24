@@ -1,0 +1,1257 @@
+---
+title: 世界 World
+description: 区域清理 / 密度 / 查询 / 世界状态
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 65 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 车流量密度
+
+<Opcode id="01EB" name="SET_CAR_DENSITY_MULTIPLIER" member="World.SetCarDensityMultiplier">
+车流量密度倍率。
+
+```text
+01EB SET_CAR_DENSITY_MULTIPLIER
+in: multiplier
+```
+
+```lua
+setCarDensityMultiplier(multiplier)
+```
+
+```js
+World.setCarDensityMultiplier(multiplier)
+```
+</Opcode>
+
+## 地面高度 Z
+
+<Opcode id="02CE" name="GET_GROUND_Z_FOR_3D_COORD" member="World.GetGroundZFor3DCoord">
+该点对应地面高度 Z。
+
+```text
+02CE GET_GROUND_Z_FOR_3D_COORD
+in: x, y, z
+out: groundZ
+```
+
+```lua
+local groundZ = getGroundZFor3DCoord(x, y, z)
+```
+
+```js
+World.getGroundZFor3DCoord(x, y, z)
+```
+</Opcode>
+
+## 区内是否有抛射物
+
+<Opcode id="02EE" name="IS_PROJECTILE_IN_AREA" member="World.IsProjectileInArea">
+用在 if：3D 区内是否有抛射物。
+
+```text
+02EE IS_PROJECTILE_IN_AREA
+in: leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ
+```
+
+```lua
+isProjectileInArea(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+
+```js
+World.isProjectileInArea(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+</Opcode>
+
+## 清全部脚本火
+
+<Opcode id="031A" name="REMOVE_ALL_SCRIPT_FIRES" member="World.RemoveAllScriptFires">
+清掉全部脚本火（`02CF`）。
+
+```text
+031A REMOVE_ALL_SCRIPT_FIRES
+```
+
+```lua
+removeAllScriptFires()
+```
+
+```js
+World.removeAllScriptFires()
+```
+</Opcode>
+
+## 区内随机车型
+
+<Opcode id="0327" name="GET_RANDOM_CAR_OF_TYPE_IN_AREA" member="World.GetRandomCarOfTypeInArea">
+2D 区内随机一辆指定型号车，无则 -1。
+
+```text
+0327 GET_RANDOM_CAR_OF_TYPE_IN_AREA
+in: leftBottomX, leftBottomY, rightTopX, rightTopY, modelId
+out: handle
+```
+
+```lua
+local handle = getRandomCarOfTypeInArea(leftBottomX, leftBottomY, rightTopX, rightTopY, modelId)
+```
+
+```js
+World.getRandomCarOfTypeInArea(leftBottomX, leftBottomY, rightTopX, rightTopY, modelId)
+```
+</Opcode>
+
+## 区是否被占用
+
+<Opcode id="0339" name="IS_AREA_OCCUPIED" member="World.IsAreaOccupied">
+用在 if：3D 区内是否有指定类型占用。
+
+```text
+0339 IS_AREA_OCCUPIED
+in: leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, solid, car, char, object, particle
+```
+
+```lua
+isAreaOccupied(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, solid, car, char, object, particle)
+```
+
+```js
+World.isAreaOccupied(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, solid, car, char, object, particle)
+```
+</Opcode>
+
+## 区内是否有爆炸
+
+<Opcode id="0356" name="IS_EXPLOSION_IN_AREA" member="World.IsExplosionInArea">
+用在 if：3D 区内是否有指定类型爆炸。
+
+```text
+0356 IS_EXPLOSION_IN_AREA
+in: explosionType, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ
+```
+
+```lua
+isExplosionInArea(explosionType, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+
+```js
+World.isExplosionInArea(explosionType, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+</Opcode>
+
+## 最近物体显隐
+
+<Opcode id="0363" name="SET_VISIBILITY_OF_CLOSEST_OBJECT_OF_TYPE" member="World.SetVisibilityOfClosestObjectOfType">
+坐标附近最近匹配模型的物体显隐。
+
+```text
+0363 SET_VISIBILITY_OF_CLOSEST_OBJECT_OF_TYPE
+in: x, y, z, radius, modelId, state
+```
+
+```lua
+setVisibilityOfClosestObjectOfType(x, y, z, radius, modelId, state)
+```
+
+```js
+World.setVisibilityOfClosestObjectOfType(x, y, z, radius, modelId, state)
+```
+</Opcode>
+
+## 点是否被任务实体挡
+
+<Opcode id="038A" name="IS_POINT_OBSCURED_BY_A_MISSION_ENTITY" member="World.IsPointObscuredByAMissionEntity">
+用在 if：点半径内是否被任务实体挡住（常查车）。
+
+```text
+038A IS_POINT_OBSCURED_BY_A_MISSION_ENTITY
+in: x, y, z, radiusX, radiusY, radiusZ
+```
+
+```lua
+isPointObscuredByAMissionEntity(x, y, z, radiusX, radiusY, radiusZ)
+```
+
+```js
+World.isPointObscuredByAMissionEntity(x, y, z, radiusX, radiusY, radiusZ)
+```
+</Opcode>
+
+## 清区域
+
+<Opcode id="0395" name="CLEAR_AREA" member="World.ClearArea">
+清区域：非任务占用的车/人（可选粒子）。
+
+```text
+0395 CLEAR_AREA
+in: x, y, z, radius, clearParticles
+```
+
+```lua
+clearArea(x, y, z, radius, clearParticles)
+```
+
+```js
+World.clearArea(x, y, z, radius, clearParticles)
+```
+</Opcode>
+
+## 替换最近建筑
+
+<Opcode id="03B6" name="SWAP_NEAREST_BUILDING_MODEL" member="World.SwapNearestBuildingModel">
+搜索中心附近最近建筑模型替换。
+
+```text
+03B6 SWAP_NEAREST_BUILDING_MODEL
+in: x, y, z, radius, fromModelId, toModelId
+```
+
+```lua
+swapNearestBuildingModel(x, y, z, radius, fromModelId, toModelId)
+```
+
+```js
+World.swapNearestBuildingModel(x, y, z, radius, fromModelId, toModelId)
+```
+</Opcode>
+
+## 开关世界处理
+
+<Opcode id="03B7" name="SWITCH_WORLD_PROCESSING" member="World.SwitchProcessing">
+是否处理/渲染世界（可只留过场物体）。
+
+```text
+03B7 SWITCH_WORLD_PROCESSING
+in: state
+```
+
+```lua
+switchWorldProcessing(state)
+```
+
+```js
+World.switchProcessing(state)
+```
+</Opcode>
+
+## 清区内车
+
+<Opcode id="03BA" name="CLEAR_AREA_OF_CARS" member="World.ClearAreaOfCars">
+清 3D 区内所有车。
+
+```text
+03BA CLEAR_AREA_OF_CARS
+in: leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ
+```
+
+```lua
+clearAreaOfCars(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+
+```js
+World.clearAreaOfCars(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+</Opcode>
+
+## 停车场随机车
+
+<Opcode id="03C5" name="CREATE_RANDOM_CAR_FOR_CAR_PARK" member="World.CreateRandomCarForCarPark">
+在坐标生成停车场用随机车。
+
+```text
+03C5 CREATE_RANDOM_CAR_FOR_CAR_PARK
+in: x, y, z, heading
+```
+
+```lua
+createRandomCarForCarPark(x, y, z, heading)
+```
+
+```js
+World.createRandomCarForCarPark(x, y, z, heading)
+```
+</Opcode>
+
+## 行人密度
+
+<Opcode id="03DE" name="SET_PED_DENSITY_MULTIPLIER" member="World.SetPedDensityMultiplier">
+行人密度倍率。
+
+```text
+03DE SET_PED_DENSITY_MULTIPLIER
+in: multiplier
+```
+
+```lua
+setPedDensityMultiplier(multiplier)
+```
+
+```js
+World.setPedDensityMultiplier(multiplier)
+```
+</Opcode>
+
+## 清区内人
+
+<Opcode id="042B" name="CLEAR_AREA_OF_CHARS" member="World.ClearAreaOfChars">
+清 3D 区内行人。
+
+```text
+042B CLEAR_AREA_OF_CHARS
+in: leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ
+```
+
+```lua
+clearAreaOfChars(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+
+```js
+World.clearAreaOfChars(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+</Opcode>
+
+## 坐标是否有拾取
+
+<Opcode id="048C" name="IS_ANY_PICKUP_AT_COORDS" member="World.IsAnyPickupAtCoords">
+用在 if：坐标处拾取物是否可捡。
+
+```text
+048C IS_ANY_PICKUP_AT_COORDS
+in: x, y, z
+```
+
+```lua
+isAnyPickupAtCoords(x, y, z)
+```
+
+```js
+World.isAnyPickupAtCoords(x, y, z)
+```
+</Opcode>
+
+## 尸体旁拾取坐标
+
+<Opcode id="04A5" name="GET_DEAD_CHAR_PICKUP_COORDS" member="World.GetDeadCharPickupCoords">
+在尸体旁适合刷拾取物的坐标。
+
+```text
+04A5 GET_DEAD_CHAR_PICKUP_COORDS
+in: char
+out: x, y, z
+```
+
+```lua
+local x, y, z = getDeadCharPickupCoords(char)
+```
+
+```js
+World.getDeadCharPickupCoords(char)
+```
+</Opcode>
+
+## 脚本路障
+
+<Opcode id="04C0" name="CREATE_SCRIPT_ROADBLOCK" member="World.CreateScriptRoadblock">
+指定区域脚本路障。
+
+```text
+04C0 CREATE_SCRIPT_ROADBLOCK
+in: leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, type
+```
+
+```lua
+createScriptRoadblock(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, type)
+```
+
+```js
+World.createScriptRoadblock(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, type)
+```
+</Opcode>
+
+## 清脚本路障
+
+<Opcode id="04C1" name="CLEAR_ALL_SCRIPT_ROADBLOCKS" member="World.ClearAllScriptRoadblocks">
+清全部脚本路障引用。
+
+```text
+04C1 CLEAR_ALL_SCRIPT_ROADBLOCKS
+```
+
+```lua
+clearAllScriptRoadblocks()
+```
+
+```js
+World.clearAllScriptRoadblocks()
+```
+</Opcode>
+
+## 追车刷警区
+
+<Opcode id="04F8" name="ADD_SET_PIECE" member="World.AddSetPiece">
+追车时刷警察的触发区。
+
+```text
+04F8 ADD_SET_PIECE
+in: type, fromX, fromY, toX, toY, spawnPoliceAAtX, spawnPoliceAAtY, headedTowardsAAtX, headedTowardsAAtY, spawnPoliceBAtX, spawnPoliceBAtY, headedTowardsBAtX, headedTowardsBAtY
+```
+
+```lua
+addSetPiece(type, fromX, fromY, toX, toY, spawnPoliceAAtX, spawnPoliceAAtY, headedTowardsAAtX, headedTowardsAAtY, spawnPoliceBAtX, spawnPoliceBAtY, headedTowardsBAtX, headedTowardsBAtY)
+```
+
+```js
+World.addSetPiece(type, fromX, fromY, toX, toY, spawnPoliceAAtX, spawnPoliceAAtY, headedTowardsAAtX, headedTowardsAAtY, spawnPoliceBAtX, spawnPoliceBAtY, headedTowardsBAtX, headedTowardsBAtY)
+```
+</Opcode>
+
+## 天空额外色
+
+<Opcode id="04F9" name="SET_EXTRA_COLOURS" member="World.SetExtraColors">
+天空额外色调。
+
+```text
+04F9 SET_EXTRA_COLOURS
+in: color, fade
+```
+
+```lua
+setExtraColours(color, fade)
+```
+
+```js
+World.setExtraColors(color, fade)
+```
+</Opcode>
+
+## 清天空额外色
+
+<Opcode id="04FA" name="CLEAR_EXTRA_COLOURS" member="World.ClearExtraColors">
+清天空额外色调。
+
+```text
+04FA CLEAR_EXTRA_COLOURS
+in: withFade
+```
+
+```lua
+clearExtraColours(withFade)
+```
+
+```js
+World.clearExtraColors(withFade)
+```
+</Opcode>
+
+## 区内随机车 no save
+
+<Opcode id="053E" name="GET_RANDOM_CAR_OF_TYPE_IN_AREA_NO_SAVE" member="World.GetRandomCarOfTypeInAreaNoSave">
+2D 区池遍历取匹配车型（不 save 标记）。
+
+```text
+053E GET_RANDOM_CAR_OF_TYPE_IN_AREA_NO_SAVE
+in: leftBottomX, leftBottomY, rightTopX, rightTopY, modelId
+out: handle
+```
+
+```lua
+local handle = getRandomCarOfTypeInAreaNoSave(leftBottomX, leftBottomY, rightTopX, rightTopY, modelId)
+```
+
+```js
+World.getRandomCarOfTypeInAreaNoSave(leftBottomX, leftBottomY, rightTopX, rightTopY, modelId)
+```
+</Opcode>
+
+## 打一发子弹
+
+<Opcode id="06BC" name="FIRE_SINGLE_BULLET" member="World.FireSingleBullet">
+两点间打一发弹道（有痕迹可伤）。
+
+```text
+06BC FIRE_SINGLE_BULLET
+in: fromX, fromY, fromZ, toX, toY, toZ, damage
+```
+
+```lua
+fireSingleBullet(fromX, fromY, fromZ, toX, toY, toZ, damage)
+```
+
+```js
+World.fireSingleBullet(fromX, fromY, fromZ, toX, toY, toZ, damage)
+```
+</Opcode>
+
+## 视线是否通
+
+<Opcode id="06BD" name="IS_LINE_OF_SIGHT_CLEAR" member="World.IsLineOfSightClear">
+用在 if：两点视线是否被指定类型挡住。
+
+```text
+06BD IS_LINE_OF_SIGHT_CLEAR
+in: fromX, fromY, fromZ, toX, toY, toZ, buildings, cars, chars, objects, particles
+```
+
+```lua
+isLineOfSightClear(fromX, fromY, fromZ, toX, toY, toZ, buildings, cars, chars, objects, particles)
+```
+
+```js
+World.isLineOfSightClear(fromX, fromY, fromZ, toX, toY, toZ, buildings, cars, chars, objects, particles)
+```
+</Opcode>
+
+## 球内火点数
+
+<Opcode id="06C3" name="GET_NUMBER_OF_FIRES_IN_RANGE" member="World.GetNumberOfFiresInRange">
+球范围内火点数。
+
+```text
+06C3 GET_NUMBER_OF_FIRES_IN_RANGE
+in: x, y, z, radius
+out: numFires
+```
+
+```lua
+local numFires = getNumberOfFiresInRange(x, y, z, radius)
+```
+
+```js
+World.getNumberOfFiresInRange(x, y, z, radius)
+```
+</Opcode>
+
+## 删脚本火车
+
+<Opcode id="06D9" name="DELETE_MISSION_TRAINS" member="World.DeleteMissionTrains">
+删全部脚本火车。
+
+```text
+06D9 DELETE_MISSION_TRAINS
+```
+
+```lua
+deleteMissionTrains()
+```
+
+```js
+World.deleteMissionTrains()
+```
+</Opcode>
+
+## 删全部火车
+
+<Opcode id="06DB" name="DELETE_ALL_TRAINS" member="World.DeleteAllTrains">
+删全部火车（含非脚本）。
+
+```text
+06DB DELETE_ALL_TRAINS
+```
+
+```lua
+deleteAllTrains()
+```
+
+```js
+World.deleteAllTrains()
+```
+</Opcode>
+
+## 涂鸦完成百分比
+
+<Opcode id="0702" name="GET_PERCENTAGE_TAGGED_IN_AREA" member="World.GetPercentageTaggedInArea">
+区域内已喷涂鸦百分比。
+
+```text
+0702 GET_PERCENTAGE_TAGGED_IN_AREA
+in: leftBottomX, leftBottomY, rightTopX, rightTopY
+out: percent
+```
+
+```lua
+local percent = getPercentageTaggedInArea(leftBottomX, leftBottomY, rightTopX, rightTopY)
+```
+
+```js
+World.getPercentageTaggedInArea(leftBottomX, leftBottomY, rightTopX, rightTopY)
+```
+</Opcode>
+
+## 设涂鸦状态
+
+<Opcode id="0703" name="SET_TAG_STATUS_IN_AREA" member="World.SetTagStatusInArea">
+设置区域内涂鸦完成度。
+
+```text
+0703 SET_TAG_STATUS_IN_AREA
+in: leftBottomX, leftBottomY, rightTopX, rightTopY, percent
+```
+
+```lua
+setTagStatusInArea(leftBottomX, leftBottomY, rightTopX, rightTopY, percent)
+```
+
+```js
+World.setTagStatusInArea(leftBottomX, leftBottomY, rightTopX, rightTopY, percent)
+```
+</Opcode>
+
+## 最近物体是否损坏
+
+<Opcode id="0716" name="IS_CLOSEST_OBJECT_OF_TYPE_SMASHED_OR_DAMAGED" member="World.IsClosestObjectOfTypeSmashedOrDamaged">
+用在 if：最近匹配物体是否砸碎/损坏。
+
+```text
+0716 IS_CLOSEST_OBJECT_OF_TYPE_SMASHED_OR_DAMAGED
+in: x, y, z, radius, modelId, smashed, damaged
+```
+
+```lua
+isClosestObjectOfTypeSmashedOrDamaged(x, y, z, radius, modelId, smashed, damaged)
+```
+
+```js
+World.isClosestObjectOfTypeSmashedOrDamaged(x, y, z, radius, modelId, smashed, damaged)
+```
+</Opcode>
+
+## 倾斜 2D 是否有火
+
+<Opcode id="072D" name="IS_FLAME_IN_ANGLED_AREA_2D" member="World.IsFlameInAngledArea2D">
+用在 if：倾斜 2D 区是否有火焰粒子。
+
+```text
+072D IS_FLAME_IN_ANGLED_AREA_2D
+in: leftBottomX, leftBottomY, rightTopX, rightTopY, angle, drawSphere
+```
+
+```lua
+isFlameInAngledArea2D(leftBottomX, leftBottomY, rightTopX, rightTopY, angle, drawSphere)
+```
+
+```js
+World.isFlameInAngledArea2D(leftBottomX, leftBottomY, rightTopX, rightTopY, angle, drawSphere)
+```
+</Opcode>
+
+## 倾斜 3D 是否有火
+
+<Opcode id="072E" name="IS_FLAME_IN_ANGLED_AREA_3D" member="World.IsFlameInAngledArea3D">
+用在 if：倾斜 3D 区是否有火。
+
+```text
+072E IS_FLAME_IN_ANGLED_AREA_3D
+in: leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, angle, drawSphere
+```
+
+```lua
+isFlameInAngledArea3D(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, angle, drawSphere)
+```
+
+```js
+World.isFlameInAngledArea3D(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, angle, drawSphere)
+```
+</Opcode>
+
+## 球内随机车
+
+<Opcode id="073E" name="GET_RANDOM_CAR_IN_SPHERE_NO_SAVE" member="World.GetRandomCarInSphereNoSave">
+球内随机车（可限型号）。
+
+```text
+073E GET_RANDOM_CAR_IN_SPHERE_NO_SAVE
+in: x, y, z, radius, model
+out: handle
+```
+
+```lua
+local handle = getRandomCarInSphereNoSave(x, y, z, radius, model)
+```
+
+```js
+World.getRandomCarInSphereNoSave(x, y, z, radius, model)
+```
+</Opcode>
+
+## 球内随机行人
+
+<Opcode id="073F" name="GET_RANDOM_CHAR_IN_SPHERE" member="World.GetRandomCharInSphere">
+球内随机行人（平民/帮/罪犯过滤）。
+
+```text
+073F GET_RANDOM_CHAR_IN_SPHERE
+in: x, y, z, radius, civilian, gang, criminal
+out: handle
+```
+
+```lua
+local handle = getRandomCharInSphere(x, y, z, radius, civilian, gang, criminal)
+```
+
+```js
+World.getRandomCharInSphere(x, y, z, radius, civilian, gang, criminal)
+```
+</Opcode>
+
+## 区内火点数
+
+<Opcode id="0786" name="GET_NUMBER_OF_FIRES_IN_AREA" member="World.GetNumberOfFiresInArea">
+3D 区内火点数。
+
+```text
+0786 GET_NUMBER_OF_FIRES_IN_AREA
+in: leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ
+out: numFires
+```
+
+```lua
+local numFires = getNumberOfFiresInArea(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+
+```js
+World.getNumberOfFiresInArea(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+</Opcode>
+
+## 最近涂鸦位置
+
+<Opcode id="07A6" name="GET_NEAREST_TAG_POSITION" member="World.GetNearestTagPosition">
+最近涂鸦位置。
+
+```text
+07A6 GET_NEAREST_TAG_POSITION
+in: xCoord, yCoord, zCoord
+out: x, y, z
+```
+
+```lua
+local x, y, z = getNearestTagPosition(xCoord, yCoord, zCoord)
+```
+
+```js
+World.getNearestTagPosition(xCoord, yCoord, zCoord)
+```
+</Opcode>
+
+## 清油渍
+
+<Opcode id="07DF" name="REMOVE_OIL_PUDDLES_IN_AREA" member="World.RemoveOilPuddlesInArea">
+清 2D 区内油渍。
+
+```text
+07DF REMOVE_OIL_PUDDLES_IN_AREA
+in: leftBottomX, leftBottomY, rightTopX, rightTopY
+```
+
+```lua
+removeOilPuddlesInArea(leftBottomX, leftBottomY, rightTopX, rightTopY)
+```
+
+```js
+World.removeOilPuddlesInArea(leftBottomX, leftBottomY, rightTopX, rightTopY)
+```
+</Opcode>
+
+## 坐标所属城市
+
+<Opcode id="07EF" name="GET_CITY_FROM_COORDS" member="World.GetCityFromCoords">
+坐标所属城市/关卡。
+
+```text
+07EF GET_CITY_FROM_COORDS
+in: x, y, z
+out: level
+```
+
+```lua
+local level = getCityFromCoords(x, y, z)
+```
+
+```js
+World.getCityFromCoords(x, y, z)
+```
+</Opcode>
+
+## 物体是否被砸
+
+<Opcode id="07F0" name="HAS_OBJECT_OF_TYPE_BEEN_SMASHED" member="World.HasObjectOfTypeBeenSmashed">
+用在 if：半径内该模型物体是否被砸。
+
+```text
+07F0 HAS_OBJECT_OF_TYPE_BEEN_SMASHED
+in: x, y, z, radius, modelId
+```
+
+```lua
+hasObjectOfTypeBeenSmashed(x, y, z, radius, modelId)
+```
+
+```js
+World.hasObjectOfTypeBeenSmashed(x, y, z, radius, modelId)
+```
+</Opcode>
+
+## 开关室内入口
+
+<Opcode id="07FB" name="SWITCH_ENTRY_EXIT" member="World.SwitchEntryExit">
+按名称开关室内入口标记。
+
+```text
+07FB SWITCH_ENTRY_EXIT
+in: interiorName, state
+```
+
+```lua
+switchEntryExit(interiorName, state)
+```
+
+```js
+World.switchEntryExit(interiorName, state)
+```
+</Opcode>
+
+## 停车节点
+
+<Opcode id="0810" name="GET_PARKING_NODE_IN_AREA" member="World.GetParkingNodeInArea">
+区内最近停车节点坐标。
+
+```text
+0810 GET_PARKING_NODE_IN_AREA
+in: leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ
+out: x, y, z
+```
+
+```lua
+local x, y, z = getParkingNodeInArea(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+
+```js
+World.getParkingNodeInArea(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+</Opcode>
+
+## 飞跃触发器
+
+<Opcode id="0814" name="ADD_STUNT_JUMP" member="World.AddStuntJump">
+飞跃奖励 Unique Jump 触发器。
+
+```text
+0814 ADD_STUNT_JUMP
+in: startX, startY, startZ, startRadiusX, startRadiusY, startRadiusZ, finishX, finishY, finishZ, finishRadiusX, finishRadiusY, finishRadiusZ, cameraX, cameraY, cameraZ, reward
+```
+
+```lua
+addStuntJump(startX, startY, startZ, startRadiusX, startRadiusY, startRadiusZ, finishX, finishY, finishZ, finishRadiusX, finishRadiusY, finishRadiusZ, cameraX, cameraY, cameraZ, reward)
+```
+
+```js
+World.addStuntJump(startX, startY, startZ, startRadiusX, startRadiusY, startRadiusZ, finishX, finishY, finishZ, finishRadiusX, finishRadiusY, finishRadiusZ, cameraX, cameraY, cameraZ, reward)
+```
+</Opcode>
+
+## 台球桌区
+
+<Opcode id="0830" name="SET_POOL_TABLE_COORDS" member="World.SetPoolTableCoords">
+台球桌碰撞区。
+
+```text
+0830 SET_POOL_TABLE_COORDS
+in: leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ
+```
+
+```lua
+setPoolTableCoords(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+
+```js
+World.setPoolTableCoords(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+</Opcode>
+
+## 噪声等级
+
+<Opcode id="0855" name="GET_SOUND_LEVEL_AT_COORDS" member="World.GetSoundLevelAtCoords">
+角色在该点能听到的噪声等级。
+
+```text
+0855 GET_SOUND_LEVEL_AT_COORDS
+in: handle, x, y, z
+out: level
+```
+
+```lua
+local level = getSoundLevelAtCoords(handle, x, y, z)
+```
+
+```js
+World.getSoundLevelAtCoords(handle, x, y, z)
+```
+</Opcode>
+
+## 刷应急车
+
+<Opcode id="085A" name="CREATE_EMERGENCY_SERVICES_CAR" member="World.CreateEmergencyServicesCar">
+最近道路上刷应急服务车。
+
+```text
+085A CREATE_EMERGENCY_SERVICES_CAR
+in: model, x, y, z
+```
+
+```lua
+createEmergencyServicesCar(model, x, y, z)
+```
+
+```js
+World.createEmergencyServicesCar(model, x, y, z)
+```
+</Opcode>
+
+## 最近可偷物体
+
+<Opcode id="0866" name="GET_CLOSEST_STEALABLE_OBJECT" member="World.GetClosestStealableObject">
+最近可偷的入室任务物体。
+
+```text
+0866 GET_CLOSEST_STEALABLE_OBJECT
+in: x, y, z, radius
+out: handle
+```
+
+```lua
+local handle = getClosestStealableObject(x, y, z, radius)
+```
+
+```js
+World.getClosestStealableObject(x, y, z, radius)
+```
+</Opcode>
+
+## 刷鸟群
+
+<Opcode id="0876" name="CREATE_BIRDS" member="World.CreateBirds">
+沿方向飞过的鸟群。
+
+```text
+0876 CREATE_BIRDS
+in: xFrom, yFrom, zFrom, xTo, yTo, zTo, quantity, type
+```
+
+```lua
+createBirds(xFrom, yFrom, zFrom, xTo, yTo, zTo, quantity, type)
+```
+
+```js
+World.createBirds(xFrom, yFrom, zFrom, xTo, yTo, zTo, quantity, type)
+```
+</Opcode>
+
+## 最近物体碰撞
+
+<Opcode id="088D" name="SET_USES_COLLISION_OF_CLOSEST_OBJECT_OF_TYPE" member="World.SetUsesCollisionOfClosestObjectOfType">
+最近匹配物体碰撞开关。
+
+```text
+088D SET_USES_COLLISION_OF_CLOSEST_OBJECT_OF_TYPE
+in: x, y, z, radius, modelId, state
+```
+
+```lua
+setUsesCollisionOfClosestObjectOfType(x, y, z, radius, modelId, state)
+```
+
+```js
+World.setUsesCollisionOfClosestObjectOfType(x, y, z, radius, modelId, state)
+```
+</Opcode>
+
+## 球内买药行人
+
+<Opcode id="089E" name="GET_RANDOM_CHAR_IN_SPHERE_ONLY_DRUGS_BUYERS" member="World.GetRandomCharInSphereOnlyDrugsBuyers">
+球内第一个带「买药」标记的行人。
+
+```text
+089E GET_RANDOM_CHAR_IN_SPHERE_ONLY_DRUGS_BUYERS
+in: x, y, z, radius
+out: handle
+```
+
+```lua
+local handle = getRandomCharInSphereOnlyDrugsBuyers(x, y, z, radius)
+```
+
+```js
+World.getRandomCharInSphereOnlyDrugsBuyers(x, y, z, radius)
+```
+</Opcode>
+
+## 球内行人无脑
+
+<Opcode id="08E5" name="GET_RANDOM_CHAR_IN_SPHERE_NO_BRAIN" member="World.GetRandomCharInSphereNoBrain">
+球内最近行人（无脑/简化）。
+
+```text
+08E5 GET_RANDOM_CHAR_IN_SPHERE_NO_BRAIN
+in: x, y, z, radius
+out: handle
+```
+
+```lua
+local handle = getRandomCharInSphereNoBrain(x, y, z, radius)
+```
+
+```js
+World.getRandomCharInSphereNoBrain(x, y, z, radius)
+```
+</Opcode>
+
+## 禁用全部 enex
+
+<Opcode id="08E7" name="DISABLE_ALL_ENTRY_EXITS" member="World.DisableAllEntryExits">
+禁用全部室内入口标记。
+
+```text
+08E7 DISABLE_ALL_ENTRY_EXITS
+in: state
+```
+
+```lua
+disableAllEntryExits(state)
+```
+
+```js
+World.disableAllEntryExits(state)
+```
+</Opcode>
+
+## 吸引点使用者
+
+<Opcode id="091C" name="GET_USER_OF_CLOSEST_MAP_ATTRACTOR" member="World.GetUserOfClosestMapAttractor">
+最近地图吸引点上的使用者角色。
+
+```text
+091C GET_USER_OF_CLOSEST_MAP_ATTRACTOR
+in: x, y, z, radius, modelId, attractorName
+out: handle
+```
+
+```lua
+local handle = getUserOfClosestMapAttractor(x, y, z, radius, modelId, attractorName)
+```
+
+```js
+World.getUserOfClosestMapAttractor(x, y, z, radius, modelId, attractorName)
+```
+</Opcode>
+
+## 水面高度
+
+<Opcode id="092E" name="GET_WATER_HEIGHT_AT_COORDS" member="World.GetWaterHeightAtCoords">
+2D 坐标处水面高度（可选波浪）。
+
+```text
+092E GET_WATER_HEIGHT_AT_COORDS
+in: x, y, waves
+out: height
+```
+
+```lua
+local height = getWaterHeightAtCoords(x, y, waves)
+```
+
+```js
+World.getWaterHeightAtCoords(x, y, waves)
+```
+</Opcode>
+
+## 抚平水面
+
+<Opcode id="0971" name="SYNC_WATER" member="World.SyncWater">
+抚平水面波浪。
+
+```text
+0971 SYNC_WATER
+```
+
+```lua
+syncWater()
+```
+
+```js
+World.syncWater()
+```
+</Opcode>
+
+## 灭火
+
+<Opcode id="0980" name="EXTINGUISH_FIRE_AT_POINT" member="World.ExtinguishFireAtPoint">
+半径内灭火。
+
+```text
+0980 EXTINGUISH_FIRE_AT_POINT
+in: x, y, z, radius
+```
+
+```lua
+extinguishFireAtPoint(x, y, z, radius)
+```
+
+```js
+World.extinguishFireAtPoint(x, y, z, radius)
+```
+</Opcode>
+
+## 角色与最近物体碰撞
+
+<Opcode id="0985" name="SET_CHAR_USES_COLLISION_CLOSEST_OBJECT_OF_TYPE" member="World.SetCharUsesCollisionClosestObjectOfType">
+目标角色是否与最近匹配物体碰撞。
+
+```text
+0985 SET_CHAR_USES_COLLISION_CLOSEST_OBJECT_OF_TYPE
+in: x, y, z, radius, modelId, state, target
+```
+
+```lua
+setCharUsesCollisionClosestObjectOfType(x, y, z, radius, modelId, state, target)
+```
+
+```js
+World.setCharUsesCollisionClosestObjectOfType(x, y, z, radius, modelId, state, target)
+```
+</Opcode>
+
+## 脚本火可消散
+
+<Opcode id="0986" name="CLEAR_ALL_SCRIPT_FIRE_FLAGS" member="World.ClearAllScriptFireFlags">
+脚本火标记为可消散。
+
+```text
+0986 CLEAR_ALL_SCRIPT_FIRE_FLAGS
+```
+
+```lua
+clearAllScriptFireFlags()
+```
+
+```js
+World.clearAllScriptFireFlags()
+```
+</Opcode>
+
+## 最近 enex 标志
+
+<Opcode id="09B4" name="SET_CLOSEST_ENTRY_EXIT_FLAG" member="World.SetClosestEntryExitFlag">
+按位置找最近 enex 设标志（类 `098E`）。
+
+```text
+09B4 SET_CLOSEST_ENTRY_EXIT_FLAG
+in: x, y, radius, flag, state
+```
+
+```lua
+setClosestEntryExitFlag(x, y, radius, flag, state)
+```
+
+```js
+World.setClosestEntryExitFlag(x, y, radius, flag, state)
+```
+</Opcode>
+
+## 倾斜区随机车
+
+<Opcode id="09C0" name="GET_RANDOM_CAR_OF_TYPE_IN_ANGLED_AREA_NO_SAVE" member="World.GetRandomCarOfTypeInAngledAreaNoSave">
+倾斜 2D 区内随机匹配车型。
+
+```text
+09C0 GET_RANDOM_CAR_OF_TYPE_IN_ANGLED_AREA_NO_SAVE
+in: leftBottomX, leftBottomY, rightTopX, rightTopY, angle, modelId
+out: vehicle
+```
+
+```lua
+local vehicle = getRandomCarOfTypeInAngledAreaNoSave(leftBottomX, leftBottomY, rightTopX, rightTopY, angle, modelId)
+```
+
+```js
+World.getRandomCarOfTypeInAngledAreaNoSave(leftBottomX, leftBottomY, rightTopX, rightTopY, angle, modelId)
+```
+</Opcode>
+
+## 区内是否有警车
+
+<Opcode id="09C3" name="IS_COP_VEHICLE_IN_AREA_3D_NO_SAVE" member="World.IsCopVehicleInArea3DNoSave">
+用在 if：3D 区是否有警用车。
+
+```text
+09C3 IS_COP_VEHICLE_IN_AREA_3D_NO_SAVE
+in: leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ
+```
+
+```lua
+isCopVehicleInArea3DNoSave(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+
+```js
+World.isCopVehicleInArea3DNoSave(leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ)
+```
+</Opcode>
+
+## 是否有钱堆
+
+<Opcode id="09DA" name="IS_MONEY_PICKUP_AT_COORDS" member="World.IsMoneyPickupAtCoords">
+用在 if：坐标附近是否有钱堆拾取。
+
+```text
+09DA IS_MONEY_PICKUP_AT_COORDS
+in: x, y, z
+```
+
+```lua
+isMoneyPickupAtCoords(x, y, z)
+```
+
+```js
+World.isMoneyPickupAtCoords(x, y, z)
+```
+</Opcode>
+
+## 偏移盒内行人
+
+<Opcode id="0A3E" name="GET_RANDOM_CHAR_IN_AREA_OFFSET_NO_SAVE" member="World.GetRandomCharInAreaOffsetNoSave">
+偏移盒内第一个行人。
+
+```text
+0A3E GET_RANDOM_CHAR_IN_AREA_OFFSET_NO_SAVE
+in: x, y, z, radiusX, radiusY, radiusZ
+out: handle
+```
+
+```lua
+local handle = getRandomCharInAreaOffsetNoSave(x, y, z, radiusX, radiusY, radiusZ)
+```
+
+```js
+World.getRandomCharInAreaOffsetNoSave(x, y, z, radiusX, radiusY, radiusZ)
+```
+</Opcode>
+
+## 轨道阻力倍率
+
+<Opcode id="0A45" name="SET_RAILTRACK_RESISTANCE_MULT" member="World.SetRailtrackResistanceMult">
+全轨道路面阻力/减速倍率。
+
+```text
+0A45 SET_RAILTRACK_RESISTANCE_MULT
+in: mult
+```
+
+```lua
+setRailtrackResistanceMult(mult)
+```
+
+```js
+World.setRailtrackResistanceMult(mult)
+```
+</Opcode>

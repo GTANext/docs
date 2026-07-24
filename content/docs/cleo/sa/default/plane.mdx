@@ -1,0 +1,180 @@
+---
+title: 飞机 Plane
+description: 飞机飞向 / 攻击 / 起落架
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 9 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 飞向坐标
+
+<Opcode id="04D2" name="PLANE_GOTO_COORDS" member="Plane.GotoCoords">
+飞机飞向坐标（高度夹在 min/max 之间）。
+
+```text
+04D2 PLANE_GOTO_COORDS
+in: self, x, y, z, minAltitude, maxAltitude
+```
+
+```lua
+planeGotoCoords(self, x, y, z, minAltitude, maxAltitude)
+```
+
+```js
+Plane.gotoCoords(self, x, y, z, minAltitude, maxAltitude)
+```
+</Opcode>
+
+## 攻击玩家
+
+<Opcode id="070E" name="PLANE_ATTACK_PLAYER" member="Plane.AttackPlayer">
+任务改成攻击玩家。
+
+```text
+070E PLANE_ATTACK_PLAYER
+in: self, handle, radius
+```
+
+```lua
+planeAttackPlayer(self, handle, radius)
+```
+
+```js
+Plane.attackPlayer(self, handle, radius)
+```
+</Opcode>
+
+## 按朝向飞
+
+<Opcode id="070F" name="PLANE_FLY_IN_DIRECTION" member="Plane.FlyInDirection">
+按朝向飞行，高度限幅。
+
+```text
+070F PLANE_FLY_IN_DIRECTION
+in: self, heading, minAltitude, maxAltitude
+```
+
+```lua
+planeFlyInDirection(self, heading, minAltitude, maxAltitude)
+```
+
+```js
+Plane.flyInDirection(self, heading, minAltitude, maxAltitude)
+```
+</Opcode>
+
+## 跟随实体
+
+<Opcode id="0710" name="PLANE_FOLLOW_ENTITY" member="Plane.FollowEntity">
+跟随角色或载具，保持高度。
+
+```text
+0710 PLANE_FOLLOW_ENTITY
+in: self, char, vehicle, altitude
+```
+
+```lua
+planeFollowEntity(self, char, vehicle, altitude)
+```
+
+```js
+Plane.followEntity(self, char, vehicle, altitude)
+```
+</Opcode>
+
+## 油门
+
+<Opcode id="0742" name="SET_PLANE_THROTTLE" member="Plane.SetThrottle">
+设油门。
+
+```text
+0742 SET_PLANE_THROTTLE
+in: self, throttle
+```
+
+```lua
+setPlaneThrottle(self, throttle)
+```
+
+```js
+Plane.setThrottle(self, throttle)
+```
+</Opcode>
+
+## 空中起飞
+
+<Opcode id="0745" name="PLANE_STARTS_IN_AIR" member="Plane.StartsInAir">
+空中起飞：给满动力，可直接在空中飞。
+
+```text
+0745 PLANE_STARTS_IN_AIR
+in: self
+```
+
+```lua
+planeStartsInAir(self)
+```
+
+```js
+Plane.startsInAir(self)
+```
+</Opcode>
+
+## 空战攻击
+
+<Opcode id="08A2" name="PLANE_ATTACK_PLAYER_USING_DOG_FIGHT" member="Plane.AttackPlayerUsingDogFight">
+空战式攻击玩家，并维持最低高度。
+
+```text
+08A2 PLANE_ATTACK_PLAYER_USING_DOG_FIGHT
+in: self, player, altitude
+```
+
+```lua
+planeAttackPlayerUsingDogFight(self, player, altitude)
+```
+
+```js
+Plane.attackPlayerUsingDogFight(self, player, altitude)
+```
+</Opcode>
+
+## 起落架
+
+<Opcode id="08E6" name="SET_PLANE_UNDERCARRIAGE_UP" member="Plane.SetUndercarriageUp">
+起落架收起 / 放下。
+
+```text
+08E6 SET_PLANE_UNDERCARRIAGE_UP
+in: self, state
+```
+
+```lua
+setPlaneUndercarriageUp(self, state)
+```
+
+```js
+Plane.setUndercarriageUp(self, state)
+```
+</Opcode>
+
+## 起落架位置
+
+<Opcode id="091F" name="GET_PLANE_UNDERCARRIAGE_POSITION" member="Plane.GetUndercarriagePosition">
+取起落架位置 / 状态。
+
+```text
+091F GET_PLANE_UNDERCARRIAGE_POSITION
+in: self
+out: position
+```
+
+```lua
+local position = getPlaneUndercarriagePosition(self)
+```
+
+```js
+const position = Plane.getUndercarriagePosition(self)
+```
+</Opcode>

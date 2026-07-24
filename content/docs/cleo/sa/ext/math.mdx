@@ -1,0 +1,264 @@
+---
+title: 数学 Math
+description: 位标志、随机挑选与浮点四则
+---
+
+`sa` · 扩展 `math` · 需对应 CLEO 扩展
+
+位标志、随机挑选、浮点四则。
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 测位
+
+<Opcode id="2700" name="IS_BIT_SET" member="Math.IsBitSet">
+整数第 `bitIndex` 位（0–31）是否为 1。用在 `if` 里。
+
+```text
+2700 IS_BIT_SET
+in: number, bitIndex
+```
+
+```lua
+if isBitSet(flags, 3) then
+end
+```
+
+```js
+if (Math.isBitSet(number, bitIndex)) {
+}
+```
+</Opcode>
+
+## 置位
+
+<Opcode id="2701" name="SET_BIT" member="Math.SetBit">
+把变量某位置 1。
+
+```text
+2701 SET_BIT
+in: number, bitIndex
+```
+
+```lua
+setBit(flags, 3)
+```
+
+```js
+Math.setBit(number, bitIndex)
+```
+</Opcode>
+
+## 清位
+
+<Opcode id="2702" name="CLEAR_BIT" member="Math.ClearBit">
+把变量某位清 0。
+
+```text
+2702 CLEAR_BIT
+in: number, bitIndex
+```
+
+```lua
+clearBit(flags, 3)
+```
+
+```js
+Math.clearBit(number, bitIndex)
+```
+</Opcode>
+
+## 设/清位
+
+<Opcode id="2703" name="TOGGLE_BIT" member="Math.ToggleBit">
+按 `state` 设 / 清某位。
+
+```text
+2703 TOGGLE_BIT
+in: number, bitIndex, state
+```
+
+```lua
+toggleBit(flags, 3, true)
+```
+
+```js
+Math.toggleBit(number, bitIndex, state)
+```
+</Opcode>
+
+## 真值判断
+
+<Opcode id="2704" name="IS_TRUTHY" member="Math.IsTruthy">
+值是否“真”（非 0 / 非空串）。用在 `if` 里。
+
+```text
+2704 IS_TRUTHY
+in: value
+```
+
+```lua
+if isTruthy(v) then
+end
+```
+
+```js
+if (Math.isTruthy(value)) {
+}
+```
+</Opcode>
+
+## 随机挑整数
+
+<Opcode id="2705" name="PICK_RANDOM_INT" member="Math.RandomPick">
+从参数列表里随机挑一个整数。
+
+```text
+2705 PICK_RANDOM_INT
+in: values...
+out: result
+```
+
+```lua
+local r = pickRandomInt(1, 2, 3, 4)
+```
+
+```js
+const result = Math.randomPick(...values)
+```
+</Opcode>
+
+## 随机挑浮点
+
+<Opcode id="2706" name="PICK_RANDOM_FLOAT">
+
+```text
+2706 PICK_RANDOM_FLOAT
+in: values...
+out: result
+```
+
+```lua
+local r = pickRandomFloat(0.5, 1.0, 1.5)
+```
+
+```js
+const result = native("PICK_RANDOM_FLOAT", ...values)
+```
+</Opcode>
+
+## 随机挑字符串
+
+<Opcode id="2707" name="PICK_RANDOM_TEXT">
+
+```text
+2707 PICK_RANDOM_TEXT
+in: values...
+out: result
+```
+
+```lua
+local r = pickRandomText("a", "b", "c")
+```
+
+```js
+const result = native("PICK_RANDOM_TEXT", ...values)
+```
+</Opcode>
+
+## 百分比概率
+
+<Opcode id="2708" name="RANDOM_CHANCE" member="Math.RandomChance">
+以 `percent`%（0–100）概率为真。用在 `if` 里。
+
+```text
+2708 RANDOM_CHANCE
+in: percent
+```
+
+```lua
+if randomChance(25.0) then
+end
+```
+
+```js
+if (Math.randomChance(percent)) {
+}
+```
+</Opcode>
+
+## 浮点加
+
+<Opcode id="2709" name="FLOAT_ADD">
+
+```text
+2709 FLOAT_ADD
+in: a, b
+out: result
+```
+
+```lua
+local r = floatAdd(a, b)
+```
+
+```js
+const result = native("FLOAT_ADD", a, b)
+```
+</Opcode>
+
+## 浮点减
+
+<Opcode id="270A" name="FLOAT_SUB">
+
+```text
+270A FLOAT_SUB
+in: a, b
+out: result
+```
+
+```lua
+local r = floatSub(a, b)
+```
+
+```js
+const result = native("FLOAT_SUB", a, b)
+```
+</Opcode>
+
+## 浮点乘
+
+<Opcode id="270B" name="FLOAT_MUL">
+
+```text
+270B FLOAT_MUL
+in: a, b
+out: result
+```
+
+```lua
+local r = floatMul(a, b)
+```
+
+```js
+const result = native("FLOAT_MUL", a, b)
+```
+</Opcode>
+
+## 浮点除
+
+<Opcode id="270C" name="FLOAT_DIV">
+
+```text
+270C FLOAT_DIV
+in: a, b
+out: result
+```
+
+```lua
+local r = floatDiv(a, b)
+```
+
+```js
+const result = native("FLOAT_DIV", a, b)
+```
+</Opcode>

@@ -1,0 +1,236 @@
+---
+title: 时钟 Clock / Weather
+description: 本地时间、游戏时钟与天气
+---
+
+`sa` · 扩展 `CLEO+` · 需 CLEO + CLEO+
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 本机时间
+
+<Opcode id="0D2D" name="GET_LOCAL_TIME" member="Clock.GetLocalTime">
+本机本地时间全字段。
+
+```text
+0D2D GET_LOCAL_TIME
+out: year, month, weekDay, day, hour, minute, second, millisecond
+```
+
+```lua
+local y, mo, wd, d, h, mi, s, ms = getLocalTime()
+```
+
+```js
+const { year, month, weekDay, day, hour, minute, second, millisecond } = Clock.getLocalTime()
+```
+</Opcode>
+
+## 当前天气
+
+<Opcode id="0D59" name="GET_CURRENT_WEATHER" member="Weather.GetCurrent">
+当前正在混合**自**的天气类型。
+
+```text
+0D59 GET_CURRENT_WEATHER
+out: type
+```
+
+```lua
+local w = getCurrentWeather()
+```
+
+```js
+const type = Weather.getCurrent()
+```
+</Opcode>
+
+## 下一天气
+
+<Opcode id="0E04" name="GET_NEXT_WEATHER" member="Weather.GetNext">
+正在混合**到**的天气类型。
+
+```text
+0E04 GET_NEXT_WEATHER
+out: type
+```
+
+```lua
+local n = getNextWeather()
+```
+
+```js
+const type = Weather.getNext()
+```
+</Opcode>
+
+## 设下一天气
+
+<Opcode id="0E05" name="SET_NEXT_WEATHER" member="Weather.SetNext">
+设即将混入的天气。
+
+```text
+0E05 SET_NEXT_WEATHER
+in: type
+```
+
+```lua
+setNextWeather(weatherType)
+```
+
+```js
+Weather.setNext(type)
+```
+</Opcode>
+
+## 雨强
+
+<Opcode id="0E06" name="GET_RAIN_INTENSITY" member="Weather.GetRainIntensity">
+雨强 0.0–1.0。
+
+```text
+0E06 GET_RAIN_INTENSITY
+out: intensity
+```
+
+```lua
+local r = getRainIntensity()
+```
+
+```js
+const intensity = Weather.getRainIntensity()
+```
+</Opcode>
+
+## 设雨强
+
+<Opcode id="0E07" name="SET_RAIN_INTENSITY" member="Weather.SetRainIntensity">
+设雨强 0.0–1.0。
+
+```text
+0E07 SET_RAIN_INTENSITY
+in: intensity
+```
+
+```lua
+setRainIntensity(0.5)
+```
+
+```js
+Weather.setRainIntensity(intensity)
+```
+</Opcode>
+
+## 当前小时
+
+<Opcode id="0E40" name="GET_CURRENT_HOUR" member="Clock.GetCurrentHour">
+游戏时钟当前小时。
+
+```text
+0E40 GET_CURRENT_HOUR
+out: hour
+```
+
+```lua
+local h = getCurrentHour()
+```
+
+```js
+const hour = Clock.getCurrentHour()
+```
+</Opcode>
+
+## 当前分钟
+
+<Opcode id="0E41" name="GET_CURRENT_MINUTE" member="Clock.GetCurrentMinute">
+游戏时钟当前分钟。
+
+```text
+0E41 GET_CURRENT_MINUTE
+out: minute
+```
+
+```lua
+local m = getCurrentMinute()
+```
+
+```js
+const minute = Clock.getCurrentMinute()
+```
+</Opcode>
+
+## 昼夜平衡
+
+<Opcode id="0E6C" name="GET_DAY_NIGHT_BALANCE" member="Weather.GetDayNightBalance">
+夜视 / 昼夜滤镜强度。
+
+```text
+0E6C GET_DAY_NIGHT_BALANCE
+out: intensity
+```
+
+```lua
+local bal = getDayNightBalance()
+```
+
+```js
+const intensity = Weather.getDayNightBalance()
+```
+</Opcode>
+
+## 水下滤镜
+
+<Opcode id="0E6D" name="GET_UNDERWATERNESS" member="Weather.GetUnderwaterness">
+水下滤镜强度。
+
+```text
+0E6D GET_UNDERWATERNESS
+out: intensity
+```
+
+```lua
+local u = getUnderwaterness()
+```
+
+```js
+const intensity = Weather.getUnderwaterness()
+```
+</Opcode>
+
+## 强制天气
+
+<Opcode id="0EB0" name="GET_FORCED_WEATHER" member="Weather.GetForced">
+强制天气类型。
+
+```text
+0EB0 GET_FORCED_WEATHER
+out: weather
+```
+
+```lua
+local w = getForcedWeather()
+```
+
+```js
+const weather = Weather.getForced()
+```
+</Opcode>
+
+## 推进时间
+
+<Opcode id="0EBB" name="PASS_TIME" member="Clock.PassTime">
+推进时钟 / 日历 / 环境时间（分钟）。
+
+```text
+0EBB PASS_TIME
+in: minutes
+```
+
+```lua
+passTime(60)
+```
+
+```js
+Clock.passTime(minutes)
+```
+</Opcode>

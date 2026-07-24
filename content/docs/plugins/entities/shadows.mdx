@@ -1,0 +1,97 @@
+---
+title: 阴影 CShadows
+description: 地面影、车灯影与永久影
+---
+
+`CShadows.h`
+
+地面影、车灯影、永久影。绘制相关，注意调用时机。
+
+## 存待绘影子
+
+<Api name="StoreShadowToBeRendered">
+两套重载（贴图 / 纹理类型）。
+
+```cpp
+static void StoreShadowToBeRendered(unsigned char type, RwTexture* texture, CVector const* posn,
+    float topX, float topY, float rightX, float rightY, short intensity, unsigned char red, unsigned char green, unsigned char blue,
+    float zDistance, bool drawOnWater, float scale, CRealTimeShadow* realTimeShadow, bool drawOnBuildings);
+static void StoreShadowToBeRendered(unsigned char shadowTextureType, CVector const* posn,
+    float frontX, float frontY, float sideX, float sideY, short intensity, unsigned char red, unsigned char green, unsigned char blue);
+```
+
+```cpp
+// CShadows::StoreShadowToBeRendered(...);
+```
+</Api>
+
+## 静态 / 永久影
+
+<Api name="StoreStaticShadow / AddPermanentShadow">
+
+```cpp
+static bool StoreStaticShadow(unsigned int id, unsigned char type, RwTexture* texture, CVector* posn,
+    float frontX, float frontY, float sideX, float sideY, short intensity, unsigned char red, unsigned char green, unsigned char blue,
+    float zDistane, float scale, float drawDistance, bool temporaryShadow, float upDistance);
+static void AddPermanentShadow(unsigned char type, RwTexture* texture, CVector* posn,
+    float topX, float topY, float rightX, float rightY, short intensity, unsigned char red, unsigned char greeb, unsigned char blue,
+    float drawDistance, unsigned int time, float upDistance);
+static void UpdateStaticShadows();
+static void UpdatePermanentShadows();
+```
+
+```cpp
+// id 用于更新同一永久/静态影
+```
+</Api>
+
+## 实体影
+
+<Api name="StoreShadowForVehicle / StoreShadowForPedObject">
+
+```cpp
+static void StoreShadowForVehicle(CVehicle* vehicle, VEH_SHD_TYPE vehShadowType);
+static void StoreShadowForPedObject(CEntity* ped, float displacementX, float displacementY, float frontX, float frontY, float sideX, float sideY);
+static void StoreCarLightShadow(CVehicle* vehicle, int id, RwTexture* texture, CVector* posn,
+    float frontX, float frontY, float sideX, float sideY, unsigned char red, unsigned char green, unsigned char blue, float maxViewAngle);
+static void StoreRealTimeShadow(CPhysical* physical, float displacementX, float displacementY, float frontX, float frontY, float sideX, float sideY);
+```
+
+```cpp
+// 游戏渲染路径会调；自定义实体可仿
+```
+</Api>
+
+## 指示标影子
+
+<Api name="RenderIndicatorShadow">
+任务标记类投影。
+
+```cpp
+static void RenderIndicatorShadow(unsigned int id, unsigned char shadowType, RwTexture* texture, CVector* posn,
+    float frontX, float frontY, float sideX, float sideY, short intensity);
+```
+</Api>
+
+## 清理与油渍
+
+<Api name="TidyUpShadows / RemoveOilInArea">
+
+```cpp
+static void TidyUpShadows();
+static void RemoveOilInArea(float x1, float y1, float x2, float y2);
+static void GunShotSetsOilOnFire(CVector const* shotOrigin, CVector const* shotTarget);
+```
+</Api>
+
+## 全局缓冲
+
+<Api name="asShadowsStored / aStaticShadows / aPermanentShadows">
+
+```cpp
+static CRegisteredShadow* asShadowsStored;
+static CStaticShadow* aStaticShadows;
+static CPermanentShadow* aPermanentShadows;
+// MAX_STORED_SHADOWS 等 extern
+```
+</Api>

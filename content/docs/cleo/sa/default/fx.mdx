@@ -1,0 +1,217 @@
+---
+title: 特效 Fx
+description: 爆炸 / 光晕 / 粒子
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 11 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 阴影
+
+<Opcode id="016F" name="DRAW_SHADOW" member="Fx.DrawShadow">
+本帧画阴影。
+
+```text
+016F DRAW_SHADOW
+in: textureType, x, y, z, angle, length, intensity, r, g, b
+```
+
+```lua
+drawShadow(textureType, x, y, z, angle, length, intensity, r, g, b)
+```
+
+```js
+Fx.drawShadow(textureType, x, y, z, angle, length, intensity, r, g, b)
+```
+</Opcode>
+
+## 爆炸
+
+<Opcode id="020C" name="ADD_EXPLOSION" member="Fx.AddExplosion">
+在点上生成爆炸。
+
+```text
+020C ADD_EXPLOSION
+in: x, y, z, type
+```
+
+```lua
+addExplosion(x, y, z, type)
+```
+
+```js
+Fx.addExplosion(x, y, z, type)
+```
+</Opcode>
+
+## 光晕
+
+<Opcode id="024F" name="DRAW_CORONA" member="Fx.DrawCorona">
+在坐标画带淡入淡出的光晕。
+
+```text
+024F DRAW_CORONA
+in: x, y, z, size, coronaType, flareType, r, g, b
+```
+
+```lua
+drawCorona(x, y, z, size, coronaType, flareType, r, g, b)
+```
+
+```js
+Fx.drawCorona(x, y, z, size, coronaType, flareType, r, g, b)
+```
+</Opcode>
+
+## 武器店光晕
+
+<Opcode id="04D5" name="DRAW_WEAPONSHOP_CORONA" member="Fx.DrawWeaponshopCorona">
+低绘制距离的武器店式光晕。
+
+```text
+04D5 DRAW_WEAPONSHOP_CORONA
+in: x, y, z, size, coronaType, flareType, r, g, b
+```
+
+```lua
+drawWeaponshopCorona(x, y, z, size, coronaType, flareType, r, g, b)
+```
+
+```js
+Fx.drawWeaponshopCorona(x, y, z, size, coronaType, flareType, r, g, b)
+```
+</Opcode>
+
+## 静音爆炸
+
+<Opcode id="0565" name="ADD_EXPLOSION_NO_SOUND" member="Fx.AddExplosionNoSound">
+静音爆炸。
+
+```text
+0565 ADD_EXPLOSION_NO_SOUND
+in: x, y, z, type
+```
+
+```lua
+addExplosionNoSound(x, y, z, type)
+```
+
+```js
+Fx.addExplosionNoSound(x, y, z, type)
+```
+</Opcode>
+
+## 枪口闪光
+
+<Opcode id="058A" name="ADD_BIG_GUN_FLASH" member="Fx.AddBigGunFlash">
+枪口闪光粒子（从点到点）。
+
+```text
+058A ADD_BIG_GUN_FLASH
+in: fromX, fromY, fromZ, toX, toY, toZ
+```
+
+```lua
+addBigGunFlash(fromX, fromY, fromZ, toX, toY, toZ)
+```
+
+```js
+Fx.addBigGunFlash(fromX, fromY, fromZ, toX, toY, toZ)
+```
+</Opcode>
+
+## 火花
+
+<Opcode id="08EB" name="ADD_SPARKS" member="Fx.AddSparks">
+单次火花喷发。
+
+```text
+08EB ADD_SPARKS
+in: x, y, z, velocityX, velocityY, velocityZ, density
+```
+
+```lua
+addSparks(x, y, z, velocityX, velocityY, velocityZ, density)
+```
+
+```js
+Fx.addSparks(x, y, z, velocityX, velocityY, velocityZ, density)
+```
+</Opcode>
+
+## 带震爆炸
+
+<Opcode id="0948" name="ADD_EXPLOSION_VARIABLE_SHAKE" member="Fx.AddExplosionVariableShake">
+爆炸并指定屏幕震动强度。
+
+```text
+0948 ADD_EXPLOSION_VARIABLE_SHAKE
+in: x, y, z, type, shake
+```
+
+```lua
+addExplosionVariableShake(x, y, z, type, shake)
+```
+
+```js
+Fx.addExplosionVariableShake(x, y, z, type, shake)
+```
+</Opcode>
+
+## 烟雾粒子
+
+<Opcode id="095C" name="ADD_SMOKE_PARTICLE" member="Fx.AddSmokeParticle">
+生成烟雾粒子。
+
+```text
+095C ADD_SMOKE_PARTICLE
+in: x, y, z, velocityX, velocityY, velocityZ, red, green, blue, alpha, size, lastFactor
+```
+
+```lua
+addSmokeParticle(x, y, z, velocityX, velocityY, velocityZ, red, green, blue, alpha, size, lastFactor)
+```
+
+```js
+Fx.addSmokeParticle(x, y, z, velocityX, velocityY, velocityZ, red, green, blue, alpha, size, lastFactor)
+```
+</Opcode>
+
+## 喷血
+
+<Opcode id="09B8" name="ADD_BLOOD" member="Fx.AddBlood">
+喷血与地面血迹。
+
+```text
+09B8 ADD_BLOOD
+in: x, y, z, velocityX, velocityY, velocityZ, density, handle
+```
+
+```lua
+addBlood(x, y, z, velocityX, velocityY, velocityZ, density, handle)
+```
+
+```js
+Fx.addBlood(x, y, z, velocityX, velocityY, velocityZ, density, handle)
+```
+</Opcode>
+
+## 有色光
+
+<Opcode id="09E5" name="DRAW_LIGHT_WITH_RANGE" member="Fx.DrawLightWithRange">
+在点周围画有色光（半径）。
+
+```text
+09E5 DRAW_LIGHT_WITH_RANGE
+in: x, y, z, red, green, blue, radius
+```
+
+```lua
+drawLightWithRange(x, y, z, red, green, blue, radius)
+```
+
+```js
+Fx.drawLightWithRange(x, y, z, red, green, blue, radius)
+```
+</Opcode>

@@ -1,0 +1,304 @@
+---
+title: 文件 File / Fs
+description: 文件读写与目录
+---
+
+`vc` · 扩展 `CLEO` · 需 CLEO
+
+文件读写、目录。
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 设工作目录
+
+<Opcode id="0A99" name="SET_CURRENT_DIRECTORY" member="Fs.SetCurrentDirectory">
+设工作目录：`0`/`1` 预置，或字符串路径。
+
+```text
+0A99 SET_CURRENT_DIRECTORY
+in: path
+```
+
+```lua
+setCurrentDirectory(0)
+```
+
+```js
+Fs.setCurrentDirectory(path)
+```
+</Opcode>
+
+## 打开文件
+
+<Opcode id="0A9A" name="OPEN_FILE" member="File.Open">
+按模式打开文件。成功条件为真，返回句柄。
+
+```text
+0A9A OPEN_FILE
+in: filePathName, mode
+out: handle
+```
+
+```lua
+local f = openFile("cleo/data.txt", "rb")
+if f then
+end
+```
+
+```js
+const handle = File.open(filePathName, mode)
+```
+</Opcode>
+
+## 关闭文件
+
+<Opcode id="0A9B" name="CLOSE_FILE" member="File.Close">
+关闭文件。
+
+```text
+0A9B CLOSE_FILE
+in: self
+```
+
+```lua
+closeFile(f)
+```
+
+```js
+File.close(self)
+```
+</Opcode>
+
+## 文件大小
+
+<Opcode id="0A9C" name="GET_FILE_SIZE" member="File.GetSize">
+已打开文件字节大小。
+
+```text
+0A9C GET_FILE_SIZE
+in: self
+out: size
+```
+
+```lua
+local size = getFileSize(f)
+```
+
+```js
+const size = File.getSize(self)
+```
+</Opcode>
+
+## 读文件
+
+<Opcode id="0A9D" name="READ_FROM_FILE" member="File.Read">
+从文件读 `size` 字节。
+
+```text
+0A9D READ_FROM_FILE
+in: self, size
+out: destination
+```
+
+```lua
+local data = readFromFile(f, 4)
+```
+
+```js
+const destination = File.read(self, size)
+```
+</Opcode>
+
+## 写文件
+
+<Opcode id="0A9E" name="WRITE_TO_FILE" member="File.Write">
+写 `size` 字节到文件。
+
+```text
+0A9E WRITE_TO_FILE
+in: self, size, source
+```
+
+```lua
+writeToFile(f, 4, data)
+```
+
+```js
+File.write(self, size, source)
+```
+</Opcode>
+
+## 文件是否存在
+
+<Opcode id="0AAB" name="DOES_FILE_EXIST" member="Fs.DoesFileExist">
+路径是否存在文件。条件命令。
+
+```text
+0AAB DOES_FILE_EXIST
+in: path
+```
+
+```lua
+if doesFileExist("cleo/cfg.ini") then
+end
+```
+
+```js
+if (Fs.doesFileExist(path)) {}
+```
+</Opcode>
+
+## 文件指针移动
+
+<Opcode id="0AD5" name="FILE_SEEK" member="File.Seek">
+移动文件指针。条件表示是否成功。
+
+```text
+0AD5 FILE_SEEK
+in: self, offset, origin
+```
+
+```lua
+fileSeek(f, 0, 0)
+```
+
+```js
+File.seek(self, offset, origin)
+```
+</Opcode>
+
+## 是否到文件尾
+
+<Opcode id="0AD6" name="IS_END_OF_FILE_REACHED" member="File.IsEndReached">
+是否读到 EOF 或出错。条件命令。
+
+```text
+0AD6 IS_END_OF_FILE_REACHED
+in: self
+```
+
+```lua
+if isEndOfFileReached(f) then
+end
+```
+
+```js
+if (File.isEndReached(self)) {}
+```
+</Opcode>
+
+## 读字符串
+
+<Opcode id="0AD7" name="READ_STRING_FROM_FILE" member="File.ReadString">
+读一行文本（最多 maxLength-1），以 `\0` 结尾。
+
+```text
+0AD7 READ_STRING_FROM_FILE
+in: self, storeTo, maxLength
+```
+
+```lua
+readStringFromFile(f, buf, 128)
+```
+
+```js
+File.readString(self, storeTo, maxLength)
+```
+</Opcode>
+
+## 写字符串
+
+<Opcode id="0AD8" name="WRITE_STRING_TO_FILE" member="File.WriteString">
+写 C 字符串（不含结尾 `\0`）。
+
+```text
+0AD8 WRITE_STRING_TO_FILE
+in: self, source
+```
+
+```lua
+writeStringToFile(f, "line\n")
+```
+
+```js
+File.writeString(self, source)
+```
+</Opcode>
+
+## 格式化写文件
+
+<Opcode id="0AD9" name="WRITE_FORMATTED_STRING_TO_FILE" member="File.WriteFormattedString">
+fprintf 风格写文件。
+
+```text
+0AD9 WRITE_FORMATTED_STRING_TO_FILE
+in: self, format, args...
+```
+
+```lua
+writeFormattedStringToFile(f, "x=%d", 1)
+```
+
+```js
+File.writeFormattedString(self, format, ...args)
+```
+</Opcode>
+
+## 扫描文件
+
+<Opcode id="0ADA" name="SCAN_FILE" member="File.Scan">
+fscanf 从文件抽数据。
+
+```text
+0ADA SCAN_FILE
+in: self, format
+out: nValues, values...
+```
+
+```lua
+local n, a, b = scanFile(f, "%d %d")
+```
+
+```js
+const [nValues, ...values] = File.scan(self, format)
+```
+</Opcode>
+
+## 目录是否存在
+
+<Opcode id="0AE4" name="DOES_DIRECTORY_EXIST" member="Fs.DoesDirectoryExist">
+目录是否存在。条件命令。
+
+```text
+0AE4 DOES_DIRECTORY_EXIST
+in: path
+```
+
+```lua
+if doesDirectoryExist("cleo") then
+end
+```
+
+```js
+if (Fs.doesDirectoryExist(path)) {}
+```
+</Opcode>
+
+## 创建目录
+
+<Opcode id="0AE5" name="CREATE_DIRECTORY" member="Fs.CreateDirectory">
+创建目录。条件表示是否成功。
+
+```text
+0AE5 CREATE_DIRECTORY
+in: path
+```
+
+```lua
+createDirectory("cleo/out")
+```
+
+```js
+Fs.createDirectory(path)
+```
+</Opcode>

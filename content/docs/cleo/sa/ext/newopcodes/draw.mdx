@@ -1,0 +1,335 @@
+---
+title: 碰撞绘制 Col / Draw / Txd
+description: ColPoint、shape 绘制、TXD、字符串
+---
+
+`sa` · 扩展 `NewOpcodes` · 需 CLEO + NewOpcodes
+
+射线 ColPoint、2D shape、TXD、串操作。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## ColPoint
+
+<Opcode id="0D3A" name="GET_COLLISION_BETWEEN_POINTS">
+两点射线检测，可滤建筑/车/人/物等。
+
+```text
+0D3A GET_COLLISION_BETWEEN_POINTS
+in: fromX..toZ, buildings, vehicles, peds, objects, dummies, seeThroughCheck, cameraIgnoreCheck, shotThroughCheck, entityToIgnore
+out: colPoint, outX, outY, outZ, entity
+```
+
+```lua
+local col, x, y, z, ent = getCollisionBetweenPoints(
+  x1, y1, z1, x2, y2, z2,
+  true, true, true, true, true, false, false, false, 0
+)
+```
+
+```js
+const { colPoint, outX, outY, outZ, entity } = native(
+  0x0D3A,
+  fromX, fromY, fromZ, toX, toY, toZ,
+  buildings, vehicles, peds, objects, dummies,
+  seeThroughCheck, cameraIgnoreCheck, shotThroughCheck, entityToIgnore
+)
+```
+</Opcode>
+
+<Opcode id="0D3B" name="GET_COL_DATA_NORMAL_VECTOR">
+从 ColPoint 取法线。
+
+```text
+0D3B GET_COL_DATA_NORMAL_VECTOR
+in: colPoint
+out: x, y, z
+```
+
+```lua
+local nx, ny, nz = getColDataNormalVector(col)
+```
+
+```js
+const { x, y, z } = native(0x0D3B, colPoint)
+```
+</Opcode>
+
+<Opcode id="0D3C" name="GET_COL_DATA_SURFACE">
+取表面类型。
+
+```text
+0D3C GET_COL_DATA_SURFACE
+in: colpoint
+out: surface
+```
+
+```lua
+local surf = getColDataSurface(col)
+```
+
+```js
+const surface = native(0x0D3C, colpoint)
+```
+</Opcode>
+
+<Opcode id="0D3D" name="GET_COL_DATA_LIGHTING">
+取光照打包值。
+
+```text
+0D3D GET_COL_DATA_LIGHTING
+in: colPoint
+out: lighting
+```
+
+```lua
+local light = getColDataLighting(col)
+```
+
+```js
+const lighting = native(0x0D3D, colPoint)
+```
+</Opcode>
+
+<Opcode id="0D3E" name="GET_COL_DATA_DEPTH">
+取 depth。
+
+```text
+0D3E GET_COL_DATA_DEPTH
+in: colPoint
+out: depth
+```
+
+```lua
+local d = getColDataDepth(col)
+```
+
+```js
+const depth = native(0x0D3E, colPoint)
+```
+</Opcode>
+
+## Shape 绘制
+
+<Opcode id="0D40" name="DRAW_SHAPE">
+画 2D 多边形（图元类型、贴图、顶点缓冲、混合）。
+
+```text
+0D40 DRAW_SHAPE
+in: type, texture, numVerts, pVerts, vertexAlpha, srcBlend, dstBlend, unused
+```
+
+```lua
+drawShape(type, tex, n, verts, 1, src, dst, 0)
+```
+
+```js
+native(0x0D40, type, texture, numVerts, pVerts, vertexAlpha, srcBlend, dstBlend, unused)
+```
+</Opcode>
+
+<Opcode id="0D41" name="SETUP_SHAPE_VERTEX">
+配置 shape 某个顶点（位置/RHW/色/UV/翻转）。
+
+```text
+0D41 SETUP_SHAPE_VERTEX
+in: shape, vertex, x, y, z, rhw, r, g, b, a, u, v, invertX, invertY
+```
+
+```lua
+setupShapeVertex(shape, i, x, y, 0.0, 1.0, 255, 255, 255, 255, 0.0, 0.0, false, false)
+```
+
+```js
+native(0x0D41, shape, vertex, x, y, z, rhw, r, g, b, a, u, v, invertX, invertY)
+```
+</Opcode>
+
+<Opcode id="0D45" name="ROTATE_SHAPE_VERTICES">
+绕轴点旋转 shape 顶点。
+
+```text
+0D45 ROTATE_SHAPE_VERTICES
+in: shape, numVerts, x, y, angle
+```
+
+```lua
+rotateShapeVertices(shape, n, cx, cy, 15.0)
+```
+
+```js
+native(0x0D45, shape, numVerts, x, y, angle)
+```
+</Opcode>
+
+## TXD / 模型
+
+<Opcode id="0D42" name="LOAD_TXD">
+从文件加载 TXD 并注册名。用在 `if` 里。
+
+```text
+0D42 LOAD_TXD
+in: txd, path
+```
+
+```lua
+if loadTxd("mytxd", "cleo/ui.txd") then
+end
+```
+
+```js
+if (native(0x0D42, txd, path)) {
+}
+```
+</Opcode>
+
+<Opcode id="0D43" name="GET_TXD_ID">
+取已注册 TXD 槽 id。
+
+```text
+0D43 GET_TXD_ID
+in: txd
+out: id
+```
+
+```lua
+local id = getTxdId("mytxd")
+```
+
+```js
+const id = native(0x0D43, txd)
+```
+</Opcode>
+
+<Opcode id="0D44" name="FIND_TEXTURE_IN_TXD_WITH_NAME">
+在命名字典里按贴图名找指针。用在 `if` 里。
+
+```text
+0D44 FIND_TEXTURE_IN_TXD_WITH_NAME
+in: texture, dictionary
+out: texture
+```
+
+```lua
+local tex = findTextureInTxdWithName("icon", "mytxd")
+```
+
+```js
+if (native(0x0D44, texture, dictionary)) {
+}
+```
+</Opcode>
+
+<Opcode id="0D46" name="FIND_TEXTURE_IN_TXD_WITH_ID">
+在槽 id 字典里找贴图。用在 `if` 里。
+
+```text
+0D46 FIND_TEXTURE_IN_TXD_WITH_ID
+in: texture, dictionary
+out: texture
+```
+
+```lua
+local tex = findTextureInTxdWithId("icon", txdId)
+```
+
+```js
+if (native(0x0D46, texture, dictionary)) {
+}
+```
+</Opcode>
+
+<Opcode id="0D47" name="GET_MODEL_TXD_ID">
+模型使用的 TXD 槽。用在 `if` 里。
+
+```text
+0D47 GET_MODEL_TXD_ID
+in: model
+out: txdId
+```
+
+```lua
+local id = getModelTxdId(modelId)
+```
+
+```js
+if (native(0x0D47, model)) {
+}
+```
+</Opcode>
+
+<Opcode id="0D48" name="GET_MODEL_CRC">
+模型 CRC32 key。用在 `if` 里。
+
+```text
+0D48 GET_MODEL_CRC
+in: model
+out: crc32Key
+```
+
+```lua
+local crc = getModelCrc(modelId)
+```
+
+```js
+if (native(0x0D48, model)) {
+}
+```
+</Opcode>
+
+## 字符串
+
+<Opcode id="0D49" name="STRING_CMP">
+比较两串；相等条件真。用在 `if` 里。
+
+```text
+0D49 STRING_CMP
+in: strA, strB
+out: result
+```
+
+```lua
+if stringCmp(a, b) then
+end
+```
+
+```js
+if (native(0x0D49, strA, strB)) {
+}
+```
+</Opcode>
+
+<Opcode id="0D4A" name="STRING_CAT">
+把 `append` 接到 `string` 缓冲。
+
+```text
+0D4A STRING_CAT
+in: string, append
+```
+
+```lua
+stringCat(buf, "_v2")
+```
+
+```js
+native(0x0D4A, string, append)
+```
+</Opcode>
+
+<Opcode id="0D4B" name="STRING_STR">
+找子串，返回指针或失败。用在 `if` 里。
+
+```text
+0D4B STRING_STR
+in: string, substring
+out: result
+```
+
+```lua
+if stringStr(hay, "mod") then
+end
+```
+
+```js
+if (native(0x0D4B, string, substring)) {
+}
+```
+</Opcode>

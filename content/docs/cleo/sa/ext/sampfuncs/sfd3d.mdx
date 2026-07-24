@@ -1,0 +1,78 @@
+---
+title: D3D SfD3D
+description: 线框矩形多边形绘制
+---
+
+`sa` · 扩展 `SAMPFUNCS` · 仅 SA-MP；需 SAMPFUNCS
+
+共 4 条。调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 绘制
+
+<Opcode id="0B68" name="SF_D3D_DRAW_LINE" member="SfD3D.DrawLine">
+在两个窗口屏幕坐标之间画线。
+
+```text
+0B68 SF_D3D_DRAW_LINE
+in: fromCoordX, fromCoordY, toCoordX, toCoordY, tickness, color
+```
+
+```lua
+sfD3dDrawLine(fromCoordX, fromCoordY, toCoordX, toCoordY, tickness, color)
+```
+
+```js
+SfD3D.DrawLine(fromCoordX, fromCoordY, toCoordX, toCoordY, tickness, color)
+```
+</Opcode>
+
+<Opcode id="0B69" name="SF_D3D_DRAW_BORDERLESS_BOX" member="SfD3D.DrawBorderlessBox">
+在指定坐标绘制无边框矩形。
+
+```text
+0B69 SF_D3D_DRAW_BORDERLESS_BOX
+in: coordX, coordY, width, height, color
+```
+
+```lua
+sfD3dDrawBorderlessBox(coordX, coordY, width, height, color)
+```
+
+```js
+SfD3D.DrawBorderlessBox(coordX, coordY, width, height, color)
+```
+</Opcode>
+
+<Opcode id="0B6A" name="SF_D3D_DRAW_BORDERED_BOX" member="SfD3D.DrawBorderedBox">
+在指定坐标绘制带边框矩形。
+
+```text
+0B6A SF_D3D_DRAW_BORDERED_BOX
+in: coordX, coordY, width, height, color, borderSize, borderColor
+```
+
+```lua
+sfD3dDrawBorderedBox(coordX, coordY, width, height, color, borderSize, borderColor)
+```
+
+```js
+SfD3D.DrawBorderedBox(coordX, coordY, width, height, color, borderSize, borderColor)
+```
+</Opcode>
+
+<Opcode id="0B70" name="SF_D3D_DRAW_POLYGON" member="SfD3D.DrawPolygon">
+按参数绘制多边形。
+
+```text
+0B70 SF_D3D_DRAW_POLYGON
+in: coordX, coordY, width, height, cornerCount, heading, color
+```
+
+```lua
+sfD3dDrawPolygon(coordX, coordY, width, height, cornerCount, heading, color)
+```
+
+```js
+SfD3D.DrawPolygon(coordX, coordY, width, height, cornerCount, heading, color)
+```
+</Opcode>

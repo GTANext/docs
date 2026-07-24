@@ -1,0 +1,39 @@
+---
+title: 插件开发 skill
+description: ASI / plugin-sdk 侧硬约束与文档路由
+---
+
+对应 skill 文件：`gtamodx/plugins-dev.md`。
+
+写 **ASI / `plugin::` / Events / Patch / Pattern / 实体类** 时先读本页再写代码。
+
+## 文档落点
+
+| 主题 | 文档 |
+|---|---|
+| Call / Method / VMT | [PluginBase](/docs/plugins/plugin-base) |
+| 生命周期 | [Events](/docs/plugins/events) |
+| 内存修改 | [Patch](/docs/plugins/patch) |
+| 特征码 | [Pattern](/docs/plugins/pattern) |
+| C++ 调 SCM | [Command](/docs/plugins/commands) |
+| 扩展与工具 | [extensions](/docs/plugins/extensions) · [utils](/docs/plugins/utils) |
+| 附加数据 | [Extender](/docs/plugins/extender) |
+| 实体 API | [entities](/docs/plugins/entities) |
+| 组合示例 | [recipes](/docs/plugins/recipes) |
+
+## 硬规则
+
+- 签名以文档与本地头文件为准，不臆造方法 / 事件名 / 地址
+- CLEO Lua/Redux **不能**当可编译 C++ 用
+- 本站是 **精选**，不是完整 plugin-sdk 树；长尾看本地头
+
+## 示例形态
+
+```cpp
+#include "plugin.h"
+using namespace plugin;
+
+// Events / Call / Patch 等见对应文档页
+```
+
+跨到 opcode 语义时对照 [CLEO](/docs/cleo)，调用侧仍用 `plugin::Command`。

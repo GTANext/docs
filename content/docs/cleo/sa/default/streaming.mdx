@@ -1,0 +1,712 @@
+---
+title: 流式 Streaming
+description: 模型 / 动画 / IPL / 场景流式加载
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 37 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 加载特殊角色
+
+<Opcode id="023C" name="LOAD_SPECIAL_CHARACTER" member="Streaming.LoadSpecialCharacter">
+特殊角色模型装进指定槽。
+
+```text
+023C LOAD_SPECIAL_CHARACTER
+in: slotId, modelName
+```
+
+```lua
+loadSpecialCharacter(slotId, modelName)
+```
+
+```js
+Streaming.loadSpecialCharacter(slotId, modelName)
+```
+</Opcode>
+
+## 特殊角色是否就绪
+
+<Opcode id="023D" name="HAS_SPECIAL_CHARACTER_LOADED" member="Streaming.HasSpecialCharacterLoaded">
+用在 if：`023C` 槽是否已可创建。
+
+```text
+023D HAS_SPECIAL_CHARACTER_LOADED
+in: slotId
+```
+
+```lua
+hasSpecialCharacterLoaded(slotId)
+```
+
+```js
+Streaming.hasSpecialCharacterLoaded(slotId)
+```
+</Opcode>
+
+## 请求模型
+
+<Opcode id="0247" name="REQUEST_MODEL" member="Streaming.RequestModel">
+请求加载模型。
+
+```text
+0247 REQUEST_MODEL
+in: modelId
+```
+
+```lua
+requestModel(modelId)
+```
+
+```js
+Streaming.requestModel(modelId)
+```
+</Opcode>
+
+## 模型是否就绪
+
+<Opcode id="0248" name="HAS_MODEL_LOADED" member="Streaming.HasModelLoaded">
+用在 if：模型是否可创建。
+
+```text
+0248 HAS_MODEL_LOADED
+in: modelId
+```
+
+```lua
+hasModelLoaded(modelId)
+```
+
+```js
+Streaming.hasModelLoaded(modelId)
+```
+</Opcode>
+
+## 模型可卸载
+
+<Opcode id="0249" name="MARK_MODEL_AS_NO_LONGER_NEEDED" member="Streaming.MarkModelAsNoLongerNeeded">
+标记模型可卸载，腾内存。
+
+```text
+0249 MARK_MODEL_AS_NO_LONGER_NEEDED
+in: modelId
+```
+
+```lua
+markModelAsNoLongerNeeded(modelId)
+```
+
+```js
+Streaming.markModelAsNoLongerNeeded(modelId)
+```
+</Opcode>
+
+## 卸载特殊角色
+
+<Opcode id="0296" name="UNLOAD_SPECIAL_CHARACTER" member="Streaming.UnloadSpecialCharacter">
+释放 `023C` 特殊角色槽。
+
+```text
+0296 UNLOAD_SPECIAL_CHARACTER
+in: slotId
+```
+
+```lua
+unloadSpecialCharacter(slotId)
+```
+
+```js
+Streaming.unloadSpecialCharacter(slotId)
+```
+</Opcode>
+
+## 立即载完模型
+
+<Opcode id="038B" name="LOAD_ALL_MODELS_NOW" member="Streaming.LoadAllModelsNow">
+同步把已请求模型（`0247`/`0353`）立刻载完。
+
+```text
+038B LOAD_ALL_MODELS_NOW
+```
+
+```lua
+loadAllModelsNow()
+```
+
+```js
+Streaming.loadAllModelsNow()
+```
+</Opcode>
+
+## 开关流式加载
+
+<Opcode id="03AF" name="SWITCH_STREAMING" member="Streaming.Switch">
+开关流式加载（行人/车/地图等）。
+
+```text
+03AF SWITCH_STREAMING
+in: state
+```
+
+```lua
+switchStreaming(state)
+```
+
+```js
+Streaming.switch(state)
+```
+</Opcode>
+
+## 预载场景
+
+<Opcode id="03CB" name="LOAD_SCENE" member="Streaming.LoadScene">
+像玩家站在该点一样预载场景，去掉远景 LOD。
+
+```text
+03CB LOAD_SCENE
+in: x, y, z
+```
+
+```lua
+loadScene(x, y, z)
+```
+
+```js
+Streaming.loadScene(x, y, z)
+```
+</Opcode>
+
+## 模型是否可用
+
+<Opcode id="0488" name="IS_MODEL_AVAILABLE" member="Streaming.IsModelAvailable">
+用在 if：模型在已加载资源里是否可用。
+
+```text
+0488 IS_MODEL_AVAILABLE
+in: modelId
+```
+
+```lua
+isModelAvailable(modelId)
+```
+
+```js
+Streaming.isModelAvailable(modelId)
+```
+</Opcode>
+
+## 设置可见区域
+
+<Opcode id="04BB" name="SET_AREA_VISIBLE" member="Streaming.SetAreaVisible">
+当前室内区域 ID（可见 interior）。
+
+```text
+04BB SET_AREA_VISIBLE
+in: areaId
+```
+
+```lua
+setAreaVisible(areaId)
+```
+
+```js
+Streaming.setAreaVisible(areaId)
+```
+</Opcode>
+
+## 请求碰撞
+
+<Opcode id="04E4" name="REQUEST_COLLISION" member="Streaming.RequestCollision">
+请求该坐标附近碰撞重载。
+
+```text
+04E4 REQUEST_COLLISION
+in: x, y
+```
+
+```lua
+requestCollision(x, y)
+```
+
+```js
+Streaming.requestCollision(x, y)
+```
+</Opcode>
+
+## 请求动画包
+
+<Opcode id="04ED" name="REQUEST_ANIMATION" member="Streaming.RequestAnimation">
+请求加载 IFP 动画包。
+
+```text
+04ED REQUEST_ANIMATION
+in: animationFile
+```
+
+```lua
+requestAnimation(animationFile)
+```
+
+```js
+Streaming.requestAnimation(animationFile)
+```
+</Opcode>
+
+## 动画是否就绪
+
+<Opcode id="04EE" name="HAS_ANIMATION_LOADED" member="Streaming.HasAnimationLoaded">
+用在 if：IFP 是否已加载。
+
+```text
+04EE HAS_ANIMATION_LOADED
+in: animationFile
+```
+
+```lua
+hasAnimationLoaded(animationFile)
+```
+
+```js
+Streaming.hasAnimationLoaded(animationFile)
+```
+</Opcode>
+
+## 释放动画包
+
+<Opcode id="04EF" name="REMOVE_ANIMATION" member="Streaming.RemoveAnimation">
+释放 IFP，腾内存。
+
+```text
+04EF REMOVE_ANIMATION
+in: animationFile
+```
+
+```lua
+removeAnimation(animationFile)
+```
+
+```js
+Streaming.removeAnimation(animationFile)
+```
+</Opcode>
+
+## 任务火车可清理
+
+<Opcode id="06DA" name="MARK_MISSION_TRAINS_AS_NO_LONGER_NEEDED" member="Streaming.MarkMissionTrainsAsNoLongerNeeded">
+任务火车交还给游戏，可被清理。
+
+```text
+06DA MARK_MISSION_TRAINS_AS_NO_LONGER_NEEDED
+```
+
+```lua
+markMissionTrainsAsNoLongerNeeded()
+```
+
+```js
+Streaming.markMissionTrainsAsNoLongerNeeded()
+```
+</Opcode>
+
+## 改装件槽位
+
+<Opcode id="06E6" name="GET_VEHICLE_MOD_TYPE" member="Streaming.GetVehicleModType">
+改装件模型对应哪个升级槽。
+
+```text
+06E6 GET_VEHICLE_MOD_TYPE
+in: modelId
+out: slotId
+```
+
+```lua
+local slotId = getVehicleModType(modelId)
+```
+
+```js
+Streaming.getVehicleModType(modelId)
+```
+</Opcode>
+
+## 请求改装件
+
+<Opcode id="06E9" name="REQUEST_VEHICLE_MOD" member="Streaming.RequestVehicleMod">
+加载改装件模型及相关依赖。
+
+```text
+06E9 REQUEST_VEHICLE_MOD
+in: modelId
+```
+
+```lua
+requestVehicleMod(modelId)
+```
+
+```js
+Streaming.requestVehicleMod(modelId)
+```
+</Opcode>
+
+## 改装件是否就绪
+
+<Opcode id="06EA" name="HAS_VEHICLE_MOD_LOADED" member="Streaming.HasVehicleModLoaded">
+用在 if：改装件模型是否已加载。
+
+```text
+06EA HAS_VEHICLE_MOD_LOADED
+in: modelId
+```
+
+```lua
+hasVehicleModLoaded(modelId)
+```
+
+```js
+Streaming.hasVehicleModLoaded(modelId)
+```
+</Opcode>
+
+## 改装件可卸载
+
+<Opcode id="06EB" name="MARK_VEHICLE_MOD_AS_NO_LONGER_NEEDED" member="Streaming.MarkVehicleModAsNoLongerNeeded">
+改装件模型可卸载。
+
+```text
+06EB MARK_VEHICLE_MOD_AS_NO_LONGER_NEEDED
+in: modelId
+```
+
+```lua
+markVehicleModAsNoLongerNeeded(modelId)
+```
+
+```js
+Streaming.markVehicleModAsNoLongerNeeded(modelId)
+```
+</Opcode>
+
+## 下辆车车牌样式
+
+<Opcode id="0771" name="CUSTOM_PLATE_DESIGN_FOR_NEXT_CAR" member="Streaming.CustomPlateDesignForNextCar">
+下一辆该模型车的车牌城镇样式（贴图）。
+
+```text
+0771 CUSTOM_PLATE_DESIGN_FOR_NEXT_CAR
+in: modelId, design
+```
+
+```lua
+customPlateDesignForNextCar(modelId, design)
+```
+
+```js
+Streaming.customPlateDesignForNextCar(modelId, design)
+```
+</Opcode>
+
+## 请求 IPL
+
+<Opcode id="0776" name="REQUEST_IPL" member="Streaming.RequestIpl">
+请求加载 IPL。
+
+```text
+0776 REQUEST_IPL
+in: iplName
+```
+
+```lua
+requestIpl(iplName)
+```
+
+```js
+Streaming.requestIpl(iplName)
+```
+</Opcode>
+
+## 卸载 IPL
+
+<Opcode id="0777" name="REMOVE_IPL" member="Streaming.RemoveIpl">
+卸载 IPL。
+
+```text
+0777 REMOVE_IPL
+in: iplName
+```
+
+```lua
+removeIpl(iplName)
+```
+
+```js
+Streaming.removeIpl(iplName)
+```
+</Opcode>
+
+## 静默卸 IPL
+
+<Opcode id="0778" name="REMOVE_IPL_DISCREETLY" member="Streaming.RemoveIplDiscreetly">
+静默卸 IPL（少闪断）。
+
+```text
+0778 REMOVE_IPL_DISCREETLY
+in: iplName
+```
+
+```lua
+removeIplDiscreetly(iplName)
+```
+
+```js
+Streaming.removeIplDiscreetly(iplName)
+```
+</Opcode>
+
+## 取可见区域
+
+<Opcode id="077E" name="GET_AREA_VISIBLE" member="Streaming.GetAreaVisible">
+当前 interior / 区域 ID。
+
+```text
+077E GET_AREA_VISIBLE
+out: areaId
+```
+
+```lua
+local areaId = getAreaVisible()
+```
+
+```js
+Streaming.getAreaVisible()
+```
+</Opcode>
+
+## 请求车辆录像
+
+<Opcode id="07C0" name="REQUEST_CAR_RECORDING" member="Streaming.RequestCarRecording">
+加载车辆录像路径。
+
+```text
+07C0 REQUEST_CAR_RECORDING
+in: pathId
+```
+
+```lua
+requestCarRecording(pathId)
+```
+
+```js
+Streaming.requestCarRecording(pathId)
+```
+</Opcode>
+
+## 车辆录像是否就绪
+
+<Opcode id="07C1" name="HAS_CAR_RECORDING_BEEN_LOADED" member="Streaming.HasCarRecordingBeenLoaded">
+用在 if：车辆录像是否载完。
+
+```text
+07C1 HAS_CAR_RECORDING_BEEN_LOADED
+in: pathId
+```
+
+```lua
+hasCarRecordingBeenLoaded(pathId)
+```
+
+```js
+Streaming.hasCarRecordingBeenLoaded(pathId)
+```
+</Opcode>
+
+## 模型是否在镜像
+
+<Opcode id="07DE" name="IS_MODEL_IN_CDIMAGE" member="Streaming.IsModelInCdimage">
+用在 if：CD 镜像里是否有该模型文件。
+
+```text
+07DE IS_MODEL_IN_CDIMAGE
+in: modelId
+```
+
+```lua
+isModelInCdimage(modelId)
+```
+
+```js
+Streaming.isModelInCdimage(modelId)
+```
+</Opcode>
+
+## 模型包围盒
+
+<Opcode id="07E4" name="GET_MODEL_DIMENSIONS" member="Streaming.GetModelDimensions">
+模型包围盒两角（左下后 / 右上前）。
+
+```text
+07E4 GET_MODEL_DIMENSIONS
+in: modelId
+out: leftBottomBackX, leftBottomBackY, leftBottomBackZ, rightTopFrontX, rightTopFrontY, rightTopFrontZ
+```
+
+```lua
+local leftBottomBackX, leftBottomBackY, leftBottomBackZ, rightTopFrontX, rightTopFrontY, rightTopFrontZ = getModelDimensions(modelId)
+```
+
+```js
+Streaming.getModelDimensions(modelId)
+```
+</Opcode>
+
+## 是否船模型
+
+<Opcode id="081E" name="IS_THIS_MODEL_A_BOAT" member="Streaming.IsThisModelABoat">
+用在 if：是否船模型。
+
+```text
+081E IS_THIS_MODEL_A_BOAT
+in: modelId
+```
+
+```lua
+isThisModelABoat(modelId)
+```
+
+```js
+Streaming.isThisModelABoat(modelId)
+```
+</Opcode>
+
+## 是否飞机模型
+
+<Opcode id="081F" name="IS_THIS_MODEL_A_PLANE" member="Streaming.IsThisModelAPlane">
+用在 if：是否飞机模型。
+
+```text
+081F IS_THIS_MODEL_A_PLANE
+in: modelId
+```
+
+```lua
+isThisModelAPlane(modelId)
+```
+
+```js
+Streaming.isThisModelAPlane(modelId)
+```
+</Opcode>
+
+## 是否直升机模型
+
+<Opcode id="0820" name="IS_THIS_MODEL_A_HELI" member="Streaming.IsThisModelAHeli">
+用在 if：是否直升机模型。
+
+```text
+0820 IS_THIS_MODEL_A_HELI
+in: modelId
+```
+
+```lua
+isThisModelAHeli(modelId)
+```
+
+```js
+Streaming.isThisModelAHeli(modelId)
+```
+</Opcode>
+
+## 卸载车辆录像
+
+<Opcode id="0873" name="REMOVE_CAR_RECORDING" member="Streaming.RemoveCarRecording">
+卸载车辆录像。
+
+```text
+0873 REMOVE_CAR_RECORDING
+in: pathId
+```
+
+```lua
+removeCarRecording(pathId)
+```
+
+```js
+Streaming.removeCarRecording(pathId)
+```
+</Opcode>
+
+## 模型绑定动画
+
+<Opcode id="08E8" name="ATTACH_ANIMS_TO_MODEL" member="Streaming.AttachAnimsToModel">
+指定行人模型一并加载某动画包。
+
+```text
+08E8 ATTACH_ANIMS_TO_MODEL
+in: pedModelId, animationFile
+```
+
+```lua
+attachAnimsToModel(pedModelId, animationFile)
+```
+
+```js
+Streaming.attachAnimsToModel(pedModelId, animationFile)
+```
+</Opcode>
+
+## 内存随机车型
+
+<Opcode id="09B2" name="GET_RANDOM_CAR_MODEL_IN_MEMORY" member="Streaming.GetRandomCarModelInMemory">
+从已在内存的车型里随机取一个（可限普通车）。
+
+```text
+09B2 GET_RANDOM_CAR_MODEL_IN_MEMORY
+in: normalOnly
+out: modelId, class
+```
+
+```lua
+local modelId, class = getRandomCarModelInMemory(normalOnly)
+```
+
+```js
+Streaming.getRandomCarModelInMemory(normalOnly)
+```
+</Opcode>
+
+## 是否汽车模型
+
+<Opcode id="0A01" name="IS_THIS_MODEL_A_CAR" member="Streaming.IsThisModelACar">
+用在 if：是否有效汽车模型。
+
+```text
+0A01 IS_THIS_MODEL_A_CAR
+in: modelId
+```
+
+```lua
+isThisModelACar(modelId)
+```
+
+```js
+Streaming.isThisModelACar(modelId)
+```
+</Opcode>
+
+## 朝向预载场景
+
+<Opcode id="0A0B" name="LOAD_SCENE_IN_DIRECTION" member="Streaming.LoadSceneInDirection">
+按坐标与朝向预载场景。
+
+```text
+0A0B LOAD_SCENE_IN_DIRECTION
+in: x, y, z, heading
+```
+
+```lua
+loadSceneInDirection(x, y, z, heading)
+```
+
+```js
+Streaming.loadSceneInDirection(x, y, z, heading)
+```
+</Opcode>

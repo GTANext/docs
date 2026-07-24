@@ -1,0 +1,85 @@
+---
+title: 屏幕坐标 screen
+description: 设计坐标与分辨率换算
+---
+
+`Screen.h` · `plugin::screen`
+
+把设计分辨率上的坐标换算到当前屏幕分辨率。
+
+## 设计坐标换算
+
+<Api name="GetCoord 族">
+
+```cpp
+static float GetCoord(float a);
+static float GetCoordLeft(float a);
+static float GetCoordRight(float a);
+static float GetCoordTop(float a);
+static float GetCoordBottom(float a);
+static float GetCoordCenterLeft(float a);
+static float GetCoordCenterRight(float a);
+static float GetCoordCenterUp(float a);
+static float GetCoordCenterDown(float a);
+```
+
+```cpp
+float x = plugin::screen::GetCoordLeft(20.0f);
+float y = plugin::screen::GetCoordTop(20.0f);
+```
+</Api>
+
+## 倍率与设计基准
+
+<Api name="GetMultiplier / SetBaseResolution">
+
+```cpp
+static float GetMultiplier(float a);
+static void SetBaseResolution(float res);
+static float GetBaseResolution();
+```
+
+```cpp
+plugin::screen::SetBaseResolution(1080.0f);
+float scale = plugin::screen::GetMultiplier(1.0f);
+```
+</Api>
+
+## 当前分辨率
+
+<Api name="GetScreenWidth / Height / Center / Max">
+
+```cpp
+static float GetScreenWidth();
+static float GetScreenHeight();
+static float GetScreenCenterX();
+static float GetScreenCenterY();
+static float GetScreenMaxX();
+static float GetScreenMaxY();
+```
+
+```cpp
+float w = plugin::screen::GetScreenWidth();
+float h = plugin::screen::GetScreenHeight();
+```
+</Api>
+
+## 屏幕坐标宏
+
+```cpp
+SCREEN_COORD(a)
+SCREEN_COORD_LEFT(a) // RIGHT TOP BOTTOM
+SCREEN_WIDTH SCREEN_HEIGHT
+SCREEN_RECT(l, t, r, b)
+```
+
+```cpp
+#include "extensions/Screen.h"
+
+plugin::Events::drawingEvent += [] {
+    float x = SCREEN_COORD_LEFT(20.0f);
+    CRect rect = SCREEN_RECT(10.0f, 10.0f, 200.0f, 80.0f);
+    (void)x;
+    (void)rect;
+};
+```

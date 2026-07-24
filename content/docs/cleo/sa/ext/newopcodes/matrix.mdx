@@ -1,0 +1,514 @@
+---
+title: 矩阵 Matrix / Quat / Vector
+description: 矩阵、四元数、向量与圆相交
+---
+
+`sa` · 扩展 `NewOpcodes` · 需 CLEO + NewOpcodes
+
+矩阵 / 四元数 / 向量运算。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 矩阵乘与旋转
+
+<Opcode id="0D00" name="MULTIPLY_MATRICES" member="Matrix.Multiply">
+两矩阵相乘：`result = matrixA * matrixB`。
+
+```text
+0D00 MULTIPLY_MATRICES
+in: matrixA, matrixB
+out: handle
+```
+
+```lua
+local m = multiplyMatrices(a, b)
+```
+
+```js
+const handle = Matrix.multiply(matrixA, matrixB)
+```
+</Opcode>
+
+<Opcode id="0D01" name="ROTATE_MATRIX_ON_AXIS" member="Matrix.RotateOnAxis">
+绕轴旋转矩阵（角度度，`combineOp` 为 Rw 组合方式）。
+
+```text
+0D01 ROTATE_MATRIX_ON_AXIS
+in: self, axisX, axisY, axisZ, angle, combineOp
+```
+
+```lua
+rotateMatrixOnAxis(mat, 0.0, 0.0, 1.0, 45.0, combineOp)
+```
+
+```js
+Matrix.rotateOnAxis(self, axisX, axisY, axisZ, angle, combineOp)
+```
+</Opcode>
+
+## 欧拉角读
+
+<Opcode id="0D02" name="GET_MATRIX_X_ANGLE" member="Matrix.GetXAngle">
+取矩阵 X（right）欧拉角（度）。
+
+```text
+0D02 GET_MATRIX_X_ANGLE
+in: self
+out: xAngle
+```
+
+```lua
+local x = getMatrixXAngle(mat)
+```
+
+```js
+const xAngle = Matrix.getXAngle(self)
+```
+</Opcode>
+
+<Opcode id="0D03" name="GET_MATRIX_Y_ANGLE" member="Matrix.GetYAngle">
+取 Y（up）欧拉角（度）。
+
+```text
+0D03 GET_MATRIX_Y_ANGLE
+in: self
+out: yAngle
+```
+
+```lua
+local y = getMatrixYAngle(mat)
+```
+
+```js
+const yAngle = Matrix.getYAngle(self)
+```
+</Opcode>
+
+<Opcode id="0D04" name="GET_MATRIX_Z_ANGLE" member="Matrix.GetZAngle">
+取 Z（at）欧拉角（度）。
+
+```text
+0D04 GET_MATRIX_Z_ANGLE
+in: self
+out: zAngle
+```
+
+```lua
+local z = getMatrixZAngle(mat)
+```
+
+```js
+const zAngle = Matrix.getZAngle(self)
+```
+</Opcode>
+
+## 位置 / 偏移
+
+<Opcode id="0D05" name="SET_MATRIX_POSITION" member="Matrix.SetPosition">
+只改平移分量。
+
+```text
+0D05 SET_MATRIX_POSITION
+in: self, x, y, z
+```
+
+```lua
+setMatrixPosition(mat, x, y, z)
+```
+
+```js
+Matrix.setPosition(self, x, y, z)
+```
+</Opcode>
+
+<Opcode id="0D06" name="GET_MATRIX_POSITION">
+取平移分量。
+
+```text
+0D06 GET_MATRIX_POSITION
+in: matrix
+out: x, y, z
+```
+
+```lua
+local x, y, z = getMatrixPosition(mat)
+```
+
+```js
+const { x, y, z } = native(0x0D06, matrix)
+```
+</Opcode>
+
+<Opcode id="0D07" name="GET_COORDS_OFFSETS_RELATIVE_TO_MATRIX">
+世界坐标 → 相对矩阵的局部坐标（逆变换）。
+
+```text
+0D07 GET_COORDS_OFFSETS_RELATIVE_TO_MATRIX
+in: x, y, z, matrix
+out: x, y, z
+```
+
+```lua
+local lx, ly, lz = getCoordsOffsetsRelativeToMatrix(x, y, z, mat)
+```
+
+```js
+const { x: ox, y: oy, z: oz } = native(0x0D07, x, y, z, matrix)
+```
+</Opcode>
+
+<Opcode id="0D08" name="SET_MATRIX_ROTATION" member="Matrix.Rotate">
+用欧拉角设旋转，保留位置。
+
+```text
+0D08 SET_MATRIX_ROTATION
+in: self, x, y, z
+```
+
+```lua
+setMatrixRotation(mat, pitch, yaw, roll)
+```
+
+```js
+Matrix.rotate(self, x, y, z)
+```
+</Opcode>
+
+<Opcode id="0D09" name="COPY_MATRIX" member="Matrix.Copy">
+深拷贝 16 个元素。
+
+```text
+0D09 COPY_MATRIX
+in: self, destination
+```
+
+```lua
+copyMatrix(src, dst)
+```
+
+```js
+Matrix.copy(self, destination)
+```
+</Opcode>
+
+<Opcode id="0D0A" name="GET_OFFSET_FROM_MATRIX_IN_WORLD_COORDS" member="Matrix.GetOffset">
+局部偏移 → 世界坐标。
+
+```text
+0D0A GET_OFFSET_FROM_MATRIX_IN_WORLD_COORDS
+in: self, x, y, z
+out: x, y, z
+```
+
+```lua
+local wx, wy, wz = getOffsetFromMatrixInWorldCoords(mat, 0.0, 1.0, 0.0)
+```
+
+```js
+const { x, y, z } = Matrix.getOffset(self, x, y, z)
+```
+</Opcode>
+
+## 单轴旋转
+
+<Opcode id="0D13" name="SET_MATRIX_X_ROTATION">
+只设 X 旋转角（度）。
+
+```text
+0D13 SET_MATRIX_X_ROTATION
+in: matrix, angle
+```
+
+```lua
+setMatrixXRotation(mat, 10.0)
+```
+
+```js
+native(0x0D13, matrix, angle)
+```
+</Opcode>
+
+<Opcode id="0D14" name="SET_MATRIX_Y_ROTATION">
+只设 Y 旋转角。
+
+```text
+0D14 SET_MATRIX_Y_ROTATION
+in: matrix, angle
+```
+
+```lua
+setMatrixYRotation(mat, 10.0)
+```
+
+```js
+native(0x0D14, matrix, angle)
+```
+</Opcode>
+
+<Opcode id="0D15" name="SET_MATRIX_Z_ROTATION">
+只设 Z 旋转角。
+
+```text
+0D15 SET_MATRIX_Z_ROTATION
+in: matrix, angle
+```
+
+```lua
+setMatrixZRotation(mat, 90.0)
+```
+
+```js
+native(0x0D15, matrix, angle)
+```
+</Opcode>
+
+## 四元数
+
+<Opcode id="0D16" name="SET_MATRIX_ROTATION_FROM_QUAT">
+用四元数写矩阵旋转。
+
+```text
+0D16 SET_MATRIX_ROTATION_FROM_QUAT
+in: matrix, quat
+```
+
+```lua
+setMatrixRotationFromQuat(mat, quat)
+```
+
+```js
+native(0x0D16, matrix, quat)
+```
+</Opcode>
+
+<Opcode id="0D17" name="SET_QUAT_FROM_MATRIX">
+矩阵旋转 → 四元数。
+
+```text
+0D17 SET_QUAT_FROM_MATRIX
+in: matrix, quat
+```
+
+```lua
+setQuatFromMatrix(mat, quat)
+```
+
+```js
+native(0x0D17, matrix, quat)
+```
+</Opcode>
+
+<Opcode id="0D18" name="ROTATE_QUAT_ON_AXIS">
+四元数绕轴转。
+
+```text
+0D18 ROTATE_QUAT_ON_AXIS
+in: quat, x, y, z, angle, combineOp
+```
+
+```lua
+rotateQuatOnAxis(quat, 0.0, 1.0, 0.0, 30.0, combineOp)
+```
+
+```js
+native(0x0D18, quat, x, y, z, angle, combineOp)
+```
+</Opcode>
+
+<Opcode id="0D19" name="GET_NORMALISED_QUAT">
+单位化四元数。
+
+```text
+0D19 GET_NORMALISED_QUAT
+in: quat
+out: quat
+```
+
+```lua
+local q = getNormalisedQuat(quat)
+```
+
+```js
+const quatOut = native(0x0D19, quat)
+```
+</Opcode>
+
+<Opcode id="0D1A" name="MULTIPLY_QUATS">
+四元数相乘。
+
+```text
+0D1A MULTIPLY_QUATS
+in: quat1, quat2
+out: quat
+```
+
+```lua
+local q = multiplyQuats(q1, q2)
+```
+
+```js
+const quat = native(0x0D1A, quat1, quat2)
+```
+</Opcode>
+
+## 向量 / 插值
+
+<Opcode id="0D1C" name="NORMALISE_VECTOR">
+3D 向量单位化（原地）。
+
+```text
+0D1C NORMALISE_VECTOR
+in: vector
+```
+
+```lua
+normaliseVector(vec)
+```
+
+```js
+native(0x0D1C, vector)
+```
+</Opcode>
+
+<Opcode id="0D1D" name="INTERPOLATE_MATRIX">
+两矩阵旋转 slerp 到 `slerp`（经四元数）。
+
+```text
+0D1D INTERPOLATE_MATRIX
+in: slerp, matrix1, matrix2, t
+```
+
+```lua
+interpolateMatrix(out, m1, m2, 0.5)
+```
+
+```js
+native(0x0D1D, slerp, matrix1, matrix2, t)
+```
+</Opcode>
+
+<Opcode id="0D1E" name="QUAT_SLERP">
+四元数 slerp，`t` 插值因子。
+
+```text
+0D1E QUAT_SLERP
+in: quatSlerp, fromQuat, toQuat, t
+```
+
+```lua
+quatSlerp(out, from, to, 0.5)
+```
+
+```js
+native(0x0D1E, quatSlerp, fromQuat, toQuat, t)
+```
+</Opcode>
+
+## 初始化 / 拆分量
+
+<Opcode id="0D24" name="INITIALISE_QUAT">
+用轴+角（度）初始化四元数。
+
+```text
+0D24 INITIALISE_QUAT
+in: quat, x, y, z, angle
+```
+
+```lua
+initialiseQuat(quat, 0.0, 0.0, 1.0, 45.0)
+```
+
+```js
+native(0x0D24, quat, x, y, z, angle)
+```
+</Opcode>
+
+<Opcode id="0D25" name="INITIALISE_MATRIX">
+逐元素写满矩阵 16 槽。
+
+```text
+0D25 INITIALISE_MATRIX
+in: matrix, a..p
+```
+
+```lua
+initialiseMatrix(mat, ...)
+```
+
+```js
+native(0x0D25, matrix, ...elements)
+```
+</Opcode>
+
+<Opcode id="0D26" name="INITIALISE_VECTOR">
+用 xyz 初始化向量。
+
+```text
+0D26 INITIALISE_VECTOR
+in: vector, x, y, z
+```
+
+```lua
+initialiseVector(vec, 1.0, 0.0, 0.0)
+```
+
+```js
+native(0x0D26, vector, x, y, z)
+```
+</Opcode>
+
+<Opcode id="0D28" name="GET_VECTOR_ELEMENTS">
+拆向量 xyz。
+
+```text
+0D28 GET_VECTOR_ELEMENTS
+in: vector
+out: x, y, z
+```
+
+```lua
+local x, y, z = getVectorElements(vec)
+```
+
+```js
+const { x, y, z } = native(0x0D28, vector)
+```
+</Opcode>
+
+<Opcode id="0D29" name="GET_QUAT_ELEMENTS">
+拆四元数分量（实现为 xyz+angle 语义以 JSON 为准）。
+
+```text
+0D29 GET_QUAT_ELEMENTS
+in: quat
+out: x, y, z, angle
+```
+
+```lua
+local x, y, z, a = getQuatElements(quat)
+```
+
+```js
+const { x, y, z, angle } = native(0x0D29, quat)
+```
+</Opcode>
+
+## 圆相交
+
+<Opcode id="0D3F" name="FIND_INTERSECTION_BETWEEN_CIRCLES">
+两圆相交求点；相交才真。用在 `if` 里。
+
+```text
+0D3F FIND_INTERSECTION_BETWEEN_CIRCLES
+in: x1, y1, r1, x2, y2, r2
+out: p1X, p1Y, p2X, p2Y
+```
+
+```lua
+if findIntersectionBetweenCircles(x1, y1, r1, x2, y2, r2) then
+end
+```
+
+```js
+if (native(0x0D3F, x1, y1, r1, x2, y2, r2)) {
+}
+```
+</Opcode>

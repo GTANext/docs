@@ -1,0 +1,52 @@
+---
+title: 按键 KeyCheck
+description: 边沿检测与延迟连发
+---
+
+`KeyCheck.h` · **全局类**，不在 `plugin::` 命名空间。
+
+## 每帧刷新
+
+<Api name="Update">
+在逻辑帧里先调用，刷新当前 / 上一帧键状态。
+
+```cpp
+static void Update();
+```
+
+```cpp
+KeyCheck::Update();
+```
+</Api>
+
+## 检测按键
+
+<Api name="Check / CheckJustDown / CheckJustUp / CheckWithDelay">
+- `Check`：当前是否按住  
+- `CheckJustDown` / `CheckJustUp`：边沿  
+- `CheckWithDelay`：按住连发（毫秒）
+
+仅需「是否按下」且不要边沿时，可用 `plugin::KeyPressed`（见 [杂项工具](/docs/plugins/utils/other)）。
+
+```cpp
+static bool Check(unsigned int key);
+static bool CheckJustDown(unsigned int key);
+static bool CheckJustUp(unsigned int key);
+static bool CheckWithDelay(unsigned int key, unsigned int time); // III/VC/SA
+```
+
+```cpp
+#include "extensions/KeyCheck.h"
+
+plugin::Events::processScriptsEvent += [] {
+    KeyCheck::Update();
+    if (KeyCheck::CheckJustDown(VK_F7)) {
+        CPed* ped = FindPlayerPed();
+        if (!ped) {
+            return;
+        }
+        ped->m_fHealth = ped->m_fMaxHealth;
+    }
+};
+```
+</Api>

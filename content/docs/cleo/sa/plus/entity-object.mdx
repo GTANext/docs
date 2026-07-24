@@ -1,0 +1,269 @@
+---
+title: 物体实体 Entity Object
+description: 物体透明度、扩展变量与 renderObject
+---
+
+`sa` · 扩展 `CLEO+` · 需 CLEO + CLEO+
+
+物体相关。入口见 [entity](/docs/cleo/sa/plus/entity)。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 透明度
+
+<Opcode id="0D11" name="SET_OBJECT_MODEL_ALPHA" member="Object.SetModelAlpha">
+设物体模型透明度 0–255。
+
+```text
+0D11 SET_OBJECT_MODEL_ALPHA
+in: self, alpha
+```
+
+```lua
+setObjectModelAlpha(obj, 255)
+```
+
+```js
+Object.setModelAlpha(self, alpha)
+```
+</Opcode>
+
+## 创建 / 脚本控制
+
+<Opcode id="0E01" name="CREATE_OBJECT_NO_SAVE" member="Object.CreateNoSave">
+在坐标创建不进存档的物体；可选偏移/贴地。
+
+```text
+0E01 CREATE_OBJECT_NO_SAVE
+in: modelId, x, y, z, useOffset, useGround
+out: handle
+```
+
+```lua
+local obj = createObjectNoSave(modelId, x, y, z, false, true)
+```
+
+```js
+const handle = Object.createNoSave(modelId, x, y, z, useOffset, useGround)
+```
+</Opcode>
+
+<Opcode id="0E0C" name="IS_OBJECT_SCRIPT_CONTROLLED" member="Object.IsScriptControlled">
+物体是否脚本控制。用在 `if` 里。
+
+```text
+0E0C IS_OBJECT_SCRIPT_CONTROLLED
+in: self
+```
+
+```lua
+if isObjectScriptControlled(obj) then
+end
+```
+
+```js
+if (Object.isScriptControlled(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0E0D" name="MARK_OBJECT_AS_NEEDED" member="Object.MarkAsNeeded">
+标记物体为脚本控制。
+
+```text
+0E0D MARK_OBJECT_AS_NEEDED
+in: self
+```
+
+```lua
+markObjectAsNeeded(obj)
+```
+
+```js
+Object.markAsNeeded(self)
+```
+</Opcode>
+
+## 扩展变量
+
+<Opcode id="0E1A" name="INIT_EXTENDED_OBJECT_VARS" member="Object.InitExtendedVars">
+给物体挂扩展变量。用在 `if` 里。
+
+```text
+0E1A INIT_EXTENDED_OBJECT_VARS
+in: self, identifier, totalVars
+```
+
+```lua
+initExtendedObjectVars(obj, "AUTO", 2)
+```
+
+```js
+Object.initExtendedVars(self, identifier, totalVars)
+```
+</Opcode>
+
+<Opcode id="0E1B" name="SET_EXTENDED_OBJECT_VAR" member="Object.SetExtendedVar">
+写物体扩展变量。用在 `if` 里。
+
+```text
+0E1B SET_EXTENDED_OBJECT_VAR
+in: self, identifier, varNumber, value
+```
+
+```lua
+setExtendedObjectVar(obj, "AUTO", 0, 1)
+```
+
+```js
+Object.setExtendedVar(self, identifier, varNumber, value)
+```
+</Opcode>
+
+<Opcode id="0E1C" name="GET_EXTENDED_OBJECT_VAR" member="Object.GetExtendedVar">
+读物体扩展变量。用在 `if` 里。
+
+```text
+0E1C GET_EXTENDED_OBJECT_VAR
+in: self, identifier, varNumber
+out: value
+```
+
+```lua
+local v = getExtendedObjectVar(obj, "AUTO", 0)
+```
+
+```js
+const value = Object.getExtendedVar(self, identifier, varNumber)
+```
+</Opcode>
+
+## 物理 / 伤害
+
+<Opcode id="0E71" name="GET_OBJECT_CENTRE_OF_MASS_TO_BASE_OF_MODEL" member="Object.GetDistanceFromCenterOfMassToBaseOfModel">
+取模型质心到底座的距离。
+
+```text
+0E71 GET_OBJECT_CENTRE_OF_MASS_TO_BASE_OF_MODEL
+in: self
+out: distance
+```
+
+```lua
+local d = getObjectCentreOfMassToBaseOfModel(obj)
+```
+
+```js
+const distance = Object.getDistanceFromCenterOfMassToBaseOfModel(self)
+```
+</Opcode>
+
+<Opcode id="0E94" name="IS_OBJECT_REALLY_IN_AIR" member="Object.IsReallyInAir">
+物体是否未贴实心且未淹没。用在 `if` 里。
+
+```text
+0E94 IS_OBJECT_REALLY_IN_AIR
+in: self
+```
+
+```lua
+if isObjectReallyInAir(obj) then
+end
+```
+
+```js
+if (Object.isReallyInAir(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0E95" name="SIMULATE_OBJECT_DAMAGE" member="Object.SimulateDamage">
+对物体模拟指定伤害与武器类型。
+
+```text
+0E95 SIMULATE_OBJECT_DAMAGE
+in: self, damage, weaponType
+```
+
+```lua
+simulateObjectDamage(obj, 50.0, weaponType)
+```
+
+```js
+Object.simulateDamage(self, damage, weaponType)
+```
+</Opcode>
+
+<Opcode id="0EAE" name="GET_OBJECT_PROOFS" member="Object.GetProofs">
+取物体伤害抗性。
+
+```text
+0EAE GET_OBJECT_PROOFS
+in: self
+out: bullet, fire, explosion, collision, melee
+```
+
+```lua
+local b, f, e, c, m = getObjectProofs(obj)
+```
+
+```js
+const { bullet, fire, explosion, collision, melee } = Object.getProofs(self)
+```
+</Opcode>
+
+<Opcode id="0ECA" name="GET_OBJECT_RANDOM_SEED" member="Object.GetRandomSeed">
+取物体 randomSeed。
+
+```text
+0ECA GET_OBJECT_RANDOM_SEED
+in: self
+out: randomSeed
+```
+
+```lua
+local seed = getObjectRandomSeed(obj)
+```
+
+```js
+const randomSeed = Object.getRandomSeed(self)
+```
+</Opcode>
+
+## 挂 renderObject
+
+<Opcode id="0F03" name="CREATE_RENDER_OBJECT_TO_OBJECT" member="Object.CreateRenderObjectToObject">
+在物体上挂 renderObject（普通 modelId）。
+
+```text
+0F03 CREATE_RENDER_OBJECT_TO_OBJECT
+in: self, modelId, x, y, z, rx, ry, rz
+out: renderobject
+```
+
+```lua
+local ro = createRenderObjectToObject(obj, modelId, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+```
+
+```js
+const renderobject = Object.createRenderObjectToObject(self, modelId, x, y, z, rx, ry, rz)
+```
+</Opcode>
+
+<Opcode id="0F04" name="CREATE_RENDER_OBJECT_TO_OBJECT_FROM_SPECIAL" member="Object.CreateRenderObjectToObjectFromSpecial">
+在物体上挂 specialModel 的 renderObject。
+
+```text
+0F04 CREATE_RENDER_OBJECT_TO_OBJECT_FROM_SPECIAL
+in: self, specialModel, x, y, z, rx, ry, rz
+out: renderobject
+```
+
+```lua
+local ro = createRenderObjectToObjectFromSpecial(obj, specialModel, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+```
+
+```js
+const renderobject = Object.createRenderObjectToObjectFromSpecial(
+  self, specialModel, x, y, z, rx, ry, rz
+)
+```
+</Opcode>

@@ -1,0 +1,110 @@
+---
+title: 拾取物 CPickups
+description: 生成删除拾取物与撒钱
+---
+
+`CPickups.h`
+
+逻辑帧创建 / 删除；handle 跨帧存 int。
+
+## 生成拾取物
+
+<Api name="GenerateNewOne / GenerateNewOne_WeaponType">
+返回 handle。
+
+```cpp
+static int GenerateNewOne(CVector coors, unsigned int modelId, unsigned char pickupType,
+    unsigned int ammo, unsigned int moneyPerDay, bool isEmpty, char* message);
+static int GenerateNewOne_WeaponType(CVector coors, eWeaponType weaponType, unsigned char pickupType,
+    unsigned int ammo, bool isEmpty, char* message);
+```
+
+```cpp
+int h = CPickups::GenerateNewOne(pos, modelId, pickupType, 0, 0, false, nullptr);
+```
+</Api>
+
+## 删除拾取物
+
+<Api name="RemovePickUp / RemovePickUpsInArea">
+
+```cpp
+static void RemovePickUp(int pickupHandle);
+static void RemovePickUpsInArea(float cornerA_x, float cornerA_y, float cornerA_z,
+    float cornerB_x, float cornerB_y, float cornerB_z);
+static void RemoveMissionPickUps();
+static void RemoveUnnecessaryPickups(CVector const& posn, float radius);
+```
+
+```cpp
+CPickups::RemovePickUp(h);
+```
+</Api>
+
+## 是否被捡起
+
+<Api name="IsPickUpPickedUp / GetActualPickupIndex">
+
+```cpp
+static bool IsPickUpPickedUp(int pickupHandle);
+static int GetActualPickupIndex(int pickupIndex);
+static int GetUniquePickupIndex(int pickupIndex);
+```
+
+```cpp
+if (CPickups::IsPickUpPickedUp(h)) {
+}
+```
+</Api>
+
+## 区域检测
+
+<Api name="TestForPickupsInBubble">
+
+```cpp
+static bool TestForPickupsInBubble(CVector posn, float radius);
+```
+
+```cpp
+if (CPickups::TestForPickupsInBubble(pos, 5.0f)) {
+}
+```
+</Api>
+
+## 武器模型对照
+
+<Api name="ModelForWeapon">
+
+```cpp
+static int ModelForWeapon(eWeaponType weaponType);
+// WeaponForModel 等同文件
+```
+
+```cpp
+int mid = CPickups::ModelForWeapon(WEAPONTYPE_M4);
+```
+</Api>
+
+## 撒钱
+
+<Api name="CreateSomeMoney">
+
+```cpp
+static void CreateSomeMoney(CVector coors, int amount);
+```
+
+```cpp
+CPickups::CreateSomeMoney(pos, 500);
+```
+</Api>
+
+## 全局数组
+
+<Api name="aPickUps / MAX_NUM_PICKUPS">
+直接扫表要小心生命周期。
+
+```cpp
+static CPickup* aPickUps;
+// MAX_NUM_PICKUPS（620）
+```
+</Api>

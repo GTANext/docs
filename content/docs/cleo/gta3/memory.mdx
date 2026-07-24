@@ -1,0 +1,420 @@
+---
+title: 内存 Memory
+description: 内存读写、句柄指针与原生调用
+---
+
+`gta3` · 扩展 `CLEO` · 需 CLEO
+
+与 VC/SA 同名；经典 `05DF`–`05EC` 等为别名。示例地址用 III。
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 写内存
+
+<Opcode id="0A8C" name="WRITE_MEMORY" member="Memory.Write">
+按 1/2/4 字节往地址写；`vp` 要改内存保护时再开。
+
+```text
+0A8C WRITE_MEMORY
+in: address, size, value, vp
+// 经典别名 05DF
+```
+
+```lua
+writeMemory(0x8F2C68, 4, 1, true)
+```
+
+```js
+Memory.write(address, size, value, vp)
+```
+</Opcode>
+
+## 读内存
+
+<Opcode id="0A8D" name="READ_MEMORY" member="Memory.Read">
+从地址按宽度读。
+
+```text
+0A8D READ_MEMORY
+in: address, size, vp
+out: result
+// 经典别名 05E0
+```
+
+```lua
+local v = readMemory(0x8F2C68, 4, false)
+```
+
+```js
+const result = Memory.read(address, size, vp)
+```
+</Opcode>
+
+## 调函数
+
+<Opcode id="0AA5" name="CALL_FUNCTION" member="Memory.CallFunction">
+调原生函数。`pop=0` stdcall；`pop=numArgs` cdecl。
+
+```text
+0AA5 CALL_FUNCTION
+in: address, numArgs, pop, args...
+// 经典别名 05E1
+```
+
+```lua
+callFunction(fn, 1, 1, arg0)
+```
+
+```js
+Memory.callFunction(address, numArgs, pop, ...args)
+```
+</Opcode>
+
+## 调方法
+
+<Opcode id="0AA6" name="CALL_METHOD" member="Memory.CallMethod">
+thiscall。`pop` 固定 0。
+
+```text
+0AA6 CALL_METHOD
+in: address, struct, numArgs, pop, args...
+// 经典别名 05E3
+```
+
+```lua
+callMethod(fn, thisPtr, 0, 0)
+```
+
+```js
+Memory.callMethod(address, struct, numArgs, pop, ...args)
+```
+</Opcode>
+
+## 调函数取返回值
+
+<Opcode id="0AA7" name="CALL_FUNCTION_RETURN" member="Memory.CallFunctionReturn">
+同 `0AA5` 并取返回值。经典别名 `05E2`。
+
+```text
+0AA7 CALL_FUNCTION_RETURN
+in: address, numArgs, pop, args...
+out: funcRet
+// 经典别名 05E2
+```
+
+```lua
+local ret = callFunctionReturn(fn, 0, 0)
+```
+
+```js
+const funcRet = Memory.callFunctionReturn(address, numArgs, pop, ...args)
+```
+</Opcode>
+
+## 调方法取返回值
+
+<Opcode id="0AA8" name="CALL_METHOD_RETURN" member="Memory.CallMethodReturn">
+同 `0AA6` 并取返回值。经典别名 `05E4`。
+
+```text
+0AA8 CALL_METHOD_RETURN
+in: address, struct, numArgs, pop, args...
+out: funcRet
+// 经典别名 05E4
+```
+
+```lua
+local ret = callMethodReturn(fn, thisPtr, 0, 0)
+```
+
+```js
+const funcRet = Memory.callMethodReturn(address, struct, numArgs, pop, ...args)
+```
+</Opcode>
+
+## ped 句柄转指针
+
+<Opcode id="0A96" name="GET_PED_POINTER" member="Memory.GetPedPointer">
+角色句柄 → 地址。经典别名 `05E6`。
+
+```text
+0A96 GET_PED_POINTER
+in: char
+out: address
+// 经典别名 05E6
+```
+
+```lua
+local pedPtr = getPedPointer(playerActor)
+```
+
+```js
+const address = Memory.getPedPointer(char)
+```
+</Opcode>
+
+## 载具句柄转指针
+
+<Opcode id="0A97" name="GET_VEHICLE_POINTER" member="Memory.GetVehiclePointer">
+载具句柄 → 地址。经典别名 `05E7`。
+
+```text
+0A97 GET_VEHICLE_POINTER
+in: handle
+out: address
+// 经典别名 05E7
+```
+
+```lua
+local carPtr = getVehiclePointer(car)
+```
+
+```js
+const address = Memory.getVehiclePointer(handle)
+```
+</Opcode>
+
+## 物体句柄转指针
+
+<Opcode id="0A98" name="GET_OBJECT_POINTER" member="Memory.GetObjectPointer">
+物体句柄 → 地址。经典别名 `05E8`。
+
+```text
+0A98 GET_OBJECT_POINTER
+in: object
+out: address
+// 经典别名 05E8
+```
+
+```lua
+local objPtr = getObjectPointer(obj)
+```
+
+```js
+const address = Memory.getObjectPointer(object)
+```
+</Opcode>
+
+## 当前脚本结构体
+
+<Opcode id="0A9F" name="GET_THIS_SCRIPT_STRUCT" member="Memory.GetThisScriptStruct">
+当前脚本结构体。经典别名 `05EC`。
+
+```text
+0A9F GET_THIS_SCRIPT_STRUCT
+out: address
+// 经典别名 05EC
+```
+
+```lua
+local script = getThisScriptStruct()
+```
+
+```js
+const address = Memory.getThisScriptStruct()
+```
+</Opcode>
+
+## 按名取脚本结构体
+
+<Opcode id="0AAA" name="GET_SCRIPT_STRUCT_NAMED" member="Memory.GetScriptStructNamed">
+按名找脚本结构体。经典别名 `05ED`。
+
+```text
+0AAA GET_SCRIPT_STRUCT_NAMED
+in: scriptName
+out: address
+// 经典别名 05ED
+```
+
+```lua
+local main = getScriptStructNamed("MAIN")
+```
+
+```js
+const address = Memory.getScriptStructNamed(scriptName)
+```
+</Opcode>
+
+## 标签指针
+
+<Opcode id="0AC6" name="GET_LABEL_POINTER" member="Memory.GetLabelPointer">
+标签绝对地址。经典别名 `05F7`。
+
+```text
+0AC6 GET_LABEL_POINTER
+in: label
+out: address
+// 经典别名 05F7
+```
+
+```lua
+local addr = getLabelPointer(myFunc)
+```
+
+```js
+const address = Memory.getLabelPointer(label)
+```
+</Opcode>
+
+## 变量指针
+
+<Opcode id="0AC7" name="GET_VAR_POINTER" member="Memory.GetVarPointer">
+变量指针。经典别名 `05F8`。
+
+```text
+0AC7 GET_VAR_POINTER
+in: var
+out: address
+// 经典别名 05F8
+```
+
+```lua
+local p = getVarPointer(someVar)
+```
+
+```js
+const address = Memory.getVarPointer(var)
+```
+</Opcode>
+
+## 分配内存
+
+<Opcode id="0AC8" name="ALLOCATE_MEMORY" member="Memory.Allocate">
+分配内存。
+
+```text
+0AC8 ALLOCATE_MEMORY
+in: size
+out: address
+```
+
+```lua
+local buf = allocateMemory(256)
+```
+
+```js
+const address = Memory.allocate(size)
+```
+</Opcode>
+
+## 释放内存
+
+<Opcode id="0AC9" name="FREE_MEMORY" member="Memory.Free">
+释放 `0AC8` 内存。
+
+```text
+0AC9 FREE_MEMORY
+in: address
+```
+
+```lua
+freeMemory(buf)
+```
+
+```js
+Memory.free(address)
+```
+</Opcode>
+
+## 弹出浮点返回值
+
+<Opcode id="0AE9" name="POP_FLOAT" member="Memory.PopFloat">
+取浮点返回值。经典别名 `05F2`。
+
+```text
+0AE9 POP_FLOAT
+out: number
+// 经典别名 05F2
+```
+
+```lua
+local f = popFloat()
+```
+
+```js
+const number = Memory.popFloat()
+```
+</Opcode>
+
+## ped 指针转句柄
+
+<Opcode id="0AEA" name="GET_PED_REF" member="Memory.GetPedRef">
+ped 地址 → 句柄。经典别名 `05E9`。
+
+```text
+0AEA GET_PED_REF
+in: address
+out: handle
+// 经典别名 05E9
+```
+
+```lua
+local h = getPedRef(pedPtr)
+```
+
+```js
+const handle = Memory.getPedRef(address)
+```
+</Opcode>
+
+## 载具指针转句柄
+
+<Opcode id="0AEB" name="GET_VEHICLE_REF" member="Memory.GetVehicleRef">
+载具地址 → 句柄。经典别名 `05EA`。
+
+```text
+0AEB GET_VEHICLE_REF
+in: address
+out: handle
+// 经典别名 05EA
+```
+
+```lua
+local h = getVehicleRef(carPtr)
+```
+
+```js
+const handle = Memory.getVehicleRef(address)
+```
+</Opcode>
+
+## 物体指针转句柄
+
+<Opcode id="0AEC" name="GET_OBJECT_REF" member="Memory.GetObjectRef">
+物体地址 → 句柄。经典别名 `05EB`。
+
+```text
+0AEC GET_OBJECT_REF
+in: address
+out: handle
+// 经典别名 05EB
+```
+
+```lua
+local h = getObjectRef(objPtr)
+```
+
+```js
+const handle = Memory.getObjectRef(address)
+```
+</Opcode>
+
+## 设内存偏移
+
+<Opcode id="0606" name="SET_MEMORY_OFFSET" member="Memory.SetOffset">
+算 `address1` 相对 `address2` 的偏移，写回 `address1`。`vp` 要改保护时再开。
+
+```text
+0606 SET_MEMORY_OFFSET
+in: address1, address2, vp
+```
+
+```lua
+setMemoryOffset(dst, base, true)
+```
+
+```js
+Memory.setOffset(address1, address2, vp)
+```
+</Opcode>

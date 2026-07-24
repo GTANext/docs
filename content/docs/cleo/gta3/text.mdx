@@ -1,0 +1,295 @@
+---
+title: 文本 Text
+description: 屏幕字与 GXT
+---
+
+`gta3` · 扩展 `CLEO` · 需 CLEO
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 显示字符串
+
+<Opcode id="0608" name="DISPLAY_TEXT_STRING" member="Text.DisplayString">
+在屏幕坐标画字符串（本帧绘制类）。
+
+```text
+0608 DISPLAY_TEXT_STRING
+in: screenX, screenY, text
+```
+
+```lua
+displayTextString(100.0, 50.0, "hi")
+```
+
+```js
+Text.displayString(screenX, screenY, text)
+```
+</Opcode>
+
+## 格式化显示字
+
+<Opcode id="0609" name="DISPLAY_TEXT_FORMATTED" member="Text.DisplayFormatted">
+屏幕坐标 + 格式化参数画字。
+
+```text
+0609 DISPLAY_TEXT_FORMATTED
+in: screenX, screenY, text, args...
+```
+
+```lua
+displayTextFormatted(100.0, 50.0, "hp %d", 100)
+```
+
+```js
+Text.displayFormatted(screenX, screenY, text, ...args)
+```
+</Opcode>
+
+## 帮助字符串
+
+<Opcode id="0ACA" name="PRINT_HELP_STRING" member="Text.PrintHelpString">
+黑框帮助字。
+
+```text
+0ACA PRINT_HELP_STRING
+in: text
+```
+
+```lua
+printHelpString("hello")
+```
+
+```js
+Text.printHelpString(text)
+```
+</Opcode>
+
+## 大字字符串
+
+<Opcode id="0ACB" name="PRINT_BIG_STRING" member="Text.PrintBigString">
+大字。
+
+```text
+0ACB PRINT_BIG_STRING
+in: text, time, style
+```
+
+```lua
+printBigString("OK", 5000, 1)
+```
+
+```js
+Text.printBigString(text, time, style)
+```
+</Opcode>
+
+## 字幕字符串
+
+<Opcode id="0ACC" name="PRINT_STRING" member="Text.PrintString">
+字幕队列。
+
+```text
+0ACC PRINT_STRING
+in: text, time
+```
+
+```lua
+printString("msg", 2000)
+```
+
+```js
+Text.printString(text, time)
+```
+</Opcode>
+
+## 立刻显示字
+
+<Opcode id="0ACD" name="PRINT_STRING_NOW" member="Text.PrintStringNow">
+立刻显示。
+
+```text
+0ACD PRINT_STRING_NOW
+in: text, time
+```
+
+```lua
+printStringNow("now", 1000)
+```
+
+```js
+Text.printStringNow(text, time)
+```
+</Opcode>
+
+## 格式化帮助
+
+<Opcode id="0ACE" name="PRINT_HELP_FORMATTED" member="Text.PrintHelpFormatted">
+帮助 + printf。
+
+```text
+0ACE PRINT_HELP_FORMATTED
+in: text, args...
+```
+
+```lua
+printHelpFormatted("%d", 1)
+```
+
+```js
+Text.printHelpFormatted(text, ...args)
+```
+</Opcode>
+
+## 格式化大字
+
+<Opcode id="0ACF" name="PRINT_BIG_FORMATTED" member="Text.PrintBigFormatted">
+大字 + 格式化。
+
+```text
+0ACF PRINT_BIG_FORMATTED
+in: format, time, style, args...
+```
+
+```lua
+printBigFormatted("%d", 3000, 1, 9)
+```
+
+```js
+Text.printBigFormatted(format, time, style, ...args)
+```
+</Opcode>
+
+## 格式化字幕
+
+<Opcode id="0AD0" name="PRINT_FORMATTED" member="Text.PrintFormatted">
+格式化进队列。
+
+```text
+0AD0 PRINT_FORMATTED
+in: format, time, args...
+```
+
+```lua
+printFormatted("%d", 1500, 1)
+```
+
+```js
+Text.printFormatted(format, time, ...args)
+```
+</Opcode>
+
+## 立刻格式化字
+
+<Opcode id="0AD1" name="PRINT_FORMATTED_NOW" member="Text.PrintFormattedNow">
+格式化立刻显示。
+
+```text
+0AD1 PRINT_FORMATTED_NOW
+in: format, time, args...
+```
+
+```lua
+printFormattedNow("%d", 1000, 2)
+```
+
+```js
+Text.printFormattedNow(format, time, ...args)
+```
+</Opcode>
+
+## 格式化到缓冲
+
+<Opcode id="0AD3" name="STRING_FORMAT" member="Text.StringFormat">
+写格式化串到缓冲。
+
+```text
+0AD3 STRING_FORMAT
+in: result, format, args...
+```
+
+```lua
+stringFormat(buf, "%d", 7)
+```
+
+```js
+Text.stringFormat(result, format, ...args)
+```
+</Opcode>
+
+## 扫描字符串
+
+<Opcode id="0AD4" name="SCAN_STRING" member="Text.ScanString">
+sscanf。
+
+```text
+0AD4 SCAN_STRING
+in: string, format
+out: nValues, values...
+```
+
+```lua
+local n, a = scanString("1", "%d")
+```
+
+```js
+const [nValues, ...values] = Text.scanString(string, format)
+```
+</Opcode>
+
+## GXT 键取文本
+
+<Opcode id="0ADE" name="GET_TEXT_LABEL_STRING" member="Text.GetLabelString">
+GXT 键 → 文本。
+
+```text
+0ADE GET_TEXT_LABEL_STRING
+in: key
+out: text
+```
+
+```lua
+local t = getTextLabelString("DUMMY")
+```
+
+```js
+const text = Text.getLabelString(key)
+```
+</Opcode>
+
+## 添加动态 GXT
+
+<Opcode id="0ADF" name="ADD_TEXT_LABEL" member="Text.AddLabel">
+动态 GXT。
+
+```text
+0ADF ADD_TEXT_LABEL
+in: dynamicKey, text
+```
+
+```lua
+addTextLabel("MYKEY", "hi")
+```
+
+```js
+Text.addLabel(dynamicKey, text)
+```
+</Opcode>
+
+## 删除文本键
+
+<Opcode id="0AE0" name="REMOVE_TEXT_LABEL" member="Text.RemoveLabel">
+删 GXT 键。
+
+```text
+0AE0 REMOVE_TEXT_LABEL
+in: key
+```
+
+```lua
+removeTextLabel("MYKEY")
+```
+
+```js
+Text.removeLabel(key)
+```
+</Opcode>

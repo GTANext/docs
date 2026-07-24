@@ -1,0 +1,136 @@
+---
+title: 玩家行人 CPlayerPed
+description: 通缉、小队、冲刺与武器切换
+---
+
+`CPlayerPed.h` · 继承 `CPed`
+
+`FindPlayerPed()` 返回 `CPlayerPed*`。通用 ped API 见 [行人](/docs/plugins/entities/ped)。
+
+## 取通缉
+
+<Api name="GetWanted / SetWantedLevel / CheatWantedLevel">
+
+```cpp
+CWanted* GetWanted(); // inline，经 m_pPlayerData
+int GetWantedLevel();
+void SetWantedLevel(int level);
+void SetWantedLevelNoDrop(int level);
+void CheatWantedLevel(int level);
+void Busted(); // 星清零路径之一
+```
+
+```cpp
+CPlayerPed* pp = FindPlayerPed();
+if (!pp) {
+    return;
+}
+pp->SetWantedLevel(0);
+// 或 pp->GetWanted()->SetWantedLevel(0);
+```
+</Api>
+
+## 取 Pad / PlayerInfo
+
+<Api name="GetPadFromPlayer / GetPlayerInfoForThisPlayerPed">
+
+```cpp
+CPad* GetPadFromPlayer();
+CPlayerInfo* GetPlayerInfoForThisPlayerPed();
+```
+
+```cpp
+CPad* pad = pp->GetPadFromPlayer();
+```
+</Api>
+
+## 武器目标
+
+<Api name="ClearWeaponTarget / FindWeaponLockOnTarget">
+
+```cpp
+void ClearWeaponTarget();
+bool FindWeaponLockOnTarget();
+CPed* m_pPlayerTargettedPed;
+```
+
+```cpp
+pp->ClearWeaponTarget();
+```
+</Api>
+
+## 换武器表现
+
+<Api name="MakeChangesForNewWeapon / ProcessWeaponSwitch">
+
+```cpp
+void MakeChangesForNewWeapon(eWeaponType weaponType);
+void MakeChangesForNewWeapon(int weaponSlot);
+bool DoesPlayerWantNewWeapon(eWeaponType weaponType, bool arg1);
+void ProcessWeaponSwitch(CPad* pad);
+```
+
+```cpp
+pp->MakeChangesForNewWeapon(WEAPONTYPE_M4);
+```
+</Api>
+
+## 冲刺与呼吸
+
+<Api name="ResetSprintEnergy / ResetPlayerBreath">
+
+```cpp
+void ResetSprintEnergy();
+float ControlButtonSprint(eSprintType sprintType);
+void ResetPlayerBreath();
+void HandlePlayerBreath(bool arg0, float arg1);
+```
+
+```cpp
+pp->ResetSprintEnergy();
+pp->ResetPlayerBreath();
+```
+</Api>
+
+## 小队
+
+<Api name="MakeThisPedJoinOurGroup / DisbandPlayerGroup">
+
+```cpp
+void MakeThisPedJoinOurGroup(CPed* ped);
+void DisbandPlayerGroup();
+void TellGroupToStartFollowingPlayer(bool arg0, bool arg1, bool arg2);
+void ForceGroupToAlwaysFollow(bool enable);
+void ForceGroupToNeverFollow(bool enable);
+```
+
+```cpp
+// pp->DisbandPlayerGroup();
+```
+</Api>
+
+## 肾上腺素
+
+<Api name="ClearAdrenaline">
+
+```cpp
+void ClearAdrenaline();
+```
+
+```cpp
+pp->ClearAdrenaline();
+```
+</Api>
+
+## 静态玩家生命周期
+
+<Api name="SetupPlayerPed / RemovePlayerPed">
+极少直接调。
+
+```cpp
+static void SetupPlayerPed(int playerId);
+static void RemovePlayerPed(int playerId);
+static void DeactivatePlayerPed(int playerId);
+static void ReactivatePlayerPed(int playerId);
+```
+</Api>

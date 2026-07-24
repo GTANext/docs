@@ -1,0 +1,1851 @@
+---
+title: 任务 Task
+description: AI 任务 / 移动 / 战斗 / 动画
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 97 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 蹲下
+
+<Opcode id="04EB" name="TASK_TOGGLE_DUCK" member="Task.ToggleDuck">
+蹲下。
+
+```text
+04EB TASK_TOGGLE_DUCK
+in: handle, state
+```
+
+```lua
+taskToggleDuck(handle, state)
+```
+
+```js
+Task.toggleDuck(handle, state)
+```
+</Opcode>
+
+## 停顿
+
+<Opcode id="05B9" name="TASK_PAUSE" member="Task.Pause">
+停顿指定时间。
+
+```text
+05B9 TASK_PAUSE
+in: handle, time
+```
+
+```lua
+taskPause(handle, time)
+```
+
+```js
+Task.pause(handle, time)
+```
+</Opcode>
+
+## 站定
+
+<Opcode id="05BA" name="TASK_STAND_STILL" member="Task.StandStill">
+站定不动。
+
+```text
+05BA TASK_STAND_STILL
+in: handle, time
+```
+
+```lua
+taskStandStill(handle, time)
+```
+
+```js
+Task.standStill(handle, time)
+```
+</Opcode>
+
+## 倒地再起
+
+<Opcode id="05BB" name="TASK_FALL_AND_GET_UP" member="Task.FallAndGetUp">
+倒地并躺指定时间。
+
+```text
+05BB TASK_FALL_AND_GET_UP
+in: handle, fallDown, timeOnGround
+```
+
+```lua
+taskFallAndGetUp(handle, fallDown, timeOnGround)
+```
+
+```js
+Task.fallAndGetUp(handle, fallDown, timeOnGround)
+```
+</Opcode>
+
+## 跳跃
+
+<Opcode id="05BC" name="TASK_JUMP" member="Task.Jump">
+跳跃。
+
+```text
+05BC TASK_JUMP
+in: handle, state
+```
+
+```lua
+taskJump(handle, state)
+```
+
+```js
+Task.jump(handle, state)
+```
+</Opcode>
+
+## 喘气
+
+<Opcode id="05BD" name="TASK_TIRED" member="Task.Tired">
+停下来喘气。
+
+```text
+05BD TASK_TIRED
+in: handle, time
+```
+
+```lua
+taskTired(handle, time)
+```
+
+```js
+Task.tired(handle, time)
+```
+</Opcode>
+
+## 杀死
+
+<Opcode id="05BE" name="TASK_DIE" member="Task.Die">
+杀死角色。
+
+```text
+05BE TASK_DIE
+in: handle
+```
+
+```lua
+taskDie(handle)
+```
+
+```js
+Task.die(handle)
+```
+</Opcode>
+
+## 看向角色
+
+<Opcode id="05BF" name="TASK_LOOK_AT_CHAR" member="Task.LookAtChar">
+看向另一角色。
+
+```text
+05BF TASK_LOOK_AT_CHAR
+in: observer, target, time
+```
+
+```lua
+taskLookAtChar(observer, target, time)
+```
+
+```js
+Task.lookAtChar(observer, target, time)
+```
+</Opcode>
+
+## 看向车辆
+
+<Opcode id="05C0" name="TASK_LOOK_AT_VEHICLE" member="Task.LookAtVehicle">
+看向指定车辆。
+
+```text
+05C0 TASK_LOOK_AT_VEHICLE
+in: char, vehicle, time
+```
+
+```lua
+taskLookAtVehicle(char, vehicle, time)
+```
+
+```js
+Task.lookAtVehicle(char, vehicle, time)
+```
+</Opcode>
+
+## 说台词
+
+<Opcode id="05C1" name="TASK_SAY" member="Task.Say">
+说音频表中的台词。
+
+```text
+05C1 TASK_SAY
+in: handle, phrase
+```
+
+```lua
+taskSay(handle, phrase)
+```
+
+```js
+Task.say(handle, phrase)
+```
+</Opcode>
+
+## 愤怒挥拳
+
+<Opcode id="05C2" name="TASK_SHAKE_FIST" member="Task.ShakeFist">
+愤怒挥拳。
+
+```text
+05C2 TASK_SHAKE_FIST
+in: handle
+```
+
+```lua
+taskShakeFist(handle)
+```
+
+```js
+Task.shakeFist(handle)
+```
+</Opcode>
+
+## 恐惧护脸
+
+<Opcode id="05C3" name="TASK_COWER" member="Task.Cower">
+恐惧后退护脸。
+
+```text
+05C3 TASK_COWER
+in: handle
+```
+
+```lua
+taskCower(handle)
+```
+
+```js
+Task.cower(handle)
+```
+</Opcode>
+
+## 举手
+
+<Opcode id="05C4" name="TASK_HANDS_UP" member="Task.HandsUp">
+举手。
+
+```text
+05C4 TASK_HANDS_UP
+in: handle, time
+```
+
+```lua
+taskHandsUp(handle, time)
+```
+
+```js
+Task.handsUp(handle, time)
+```
+</Opcode>
+
+## 抱头蹲下
+
+<Opcode id="05C5" name="TASK_DUCK" member="Task.Duck">
+抱头蹲下。
+
+```text
+05C5 TASK_DUCK
+in: handle, time
+```
+
+```lua
+taskDuck(handle, time)
+```
+
+```js
+Task.duck(handle, time)
+```
+</Opcode>
+
+## 使用 ATM
+
+<Opcode id="05C7" name="TASK_USE_ATM" member="Task.UseAtm">
+使用 ATM。
+
+```text
+05C7 TASK_USE_ATM
+in: handle
+```
+
+```lua
+taskUseAtm(handle)
+```
+
+```js
+Task.useAtm(handle)
+```
+</Opcode>
+
+## 挠头
+
+<Opcode id="05C8" name="TASK_SCRATCH_HEAD" member="Task.ScratchHead">
+挠头张望。
+
+```text
+05C8 TASK_SCRATCH_HEAD
+in: handle
+```
+
+```lua
+taskScratchHead(handle)
+```
+
+```js
+Task.scratchHead(handle)
+```
+</Opcode>
+
+## 向前张望
+
+<Opcode id="05C9" name="TASK_LOOK_ABOUT" member="Task.LookAbout">
+向前张望。
+
+```text
+05C9 TASK_LOOK_ABOUT
+in: handle, time
+```
+
+```lua
+taskLookAbout(handle, time)
+```
+
+```js
+Task.lookAbout(handle, time)
+```
+</Opcode>
+
+## 上副驾
+
+<Opcode id="05CA" name="TASK_ENTER_CAR_AS_PASSENGER" member="Task.EnterCarAsPassenger">
+走近车并坐指定副驾位。
+
+```text
+05CA TASK_ENTER_CAR_AS_PASSENGER
+in: char, vehicle, time, seat
+```
+
+```lua
+taskEnterCarAsPassenger(char, vehicle, time, seat)
+```
+
+```js
+Task.enterCarAsPassenger(char, vehicle, time, seat)
+```
+</Opcode>
+
+## 上驾驶位
+
+<Opcode id="05CB" name="TASK_ENTER_CAR_AS_DRIVER" member="Task.EnterCarAsDriver">
+走近车并坐驾驶位。
+
+```text
+05CB TASK_ENTER_CAR_AS_DRIVER
+in: char, vehicle, time
+```
+
+```lua
+taskEnterCarAsDriver(char, vehicle, time)
+```
+
+```js
+Task.enterCarAsDriver(char, vehicle, time)
+```
+</Opcode>
+
+## 下车
+
+<Opcode id="05CD" name="TASK_LEAVE_CAR" member="Task.LeaveCar">
+若在车上则下车。
+
+```text
+05CD TASK_LEAVE_CAR
+in: char, vehicle
+```
+
+```lua
+taskLeaveCar(char, vehicle)
+```
+
+```js
+Task.leaveCar(char, vehicle)
+```
+</Opcode>
+
+## 下车逃离
+
+<Opcode id="05CF" name="TASK_LEAVE_CAR_AND_FLEE" member="Task.LeaveCarAndFlee">
+下车后逃到指定点。
+
+```text
+05CF TASK_LEAVE_CAR_AND_FLEE
+in: char, vehicle, x, y, z
+```
+
+```lua
+taskLeaveCarAndFlee(char, vehicle, x, y, z)
+```
+
+```js
+Task.leaveCarAndFlee(char, vehicle, x, y, z)
+```
+</Opcode>
+
+## 驾车去坐标
+
+<Opcode id="05D1" name="TASK_CAR_DRIVE_TO_COORD" member="Task.CarDriveToCoord">
+驾车去坐标。
+
+```text
+05D1 TASK_CAR_DRIVE_TO_COORD
+in: driver, vehicle, x, y, z, speed, driveStyle, modelId, drivingStyle
+```
+
+```lua
+taskCarDriveToCoord(driver, vehicle, x, y, z, speed, driveStyle, modelId, drivingStyle)
+```
+
+```js
+Task.carDriveToCoord(driver, vehicle, x, y, z, speed, driveStyle, modelId, drivingStyle)
+```
+</Opcode>
+
+## 驾车闲逛
+
+<Opcode id="05D2" name="TASK_CAR_DRIVE_WANDER" member="Task.CarDriveWander">
+驾车闲逛。
+
+```text
+05D2 TASK_CAR_DRIVE_WANDER
+in: char, vehicle, speed, drivingMode
+```
+
+```lua
+taskCarDriveWander(char, vehicle, speed, drivingMode)
+```
+
+```js
+Task.carDriveWander(char, vehicle, speed, drivingMode)
+```
+</Opcode>
+
+## 走到坐标
+
+<Opcode id="05D3" name="TASK_GO_STRAIGHT_TO_COORD" member="Task.GoStraightToCoord">
+走到坐标。
+
+```text
+05D3 TASK_GO_STRAIGHT_TO_COORD
+in: handle, x, y, z, speed, time
+```
+
+```lua
+taskGoStraightToCoord(handle, x, y, z, speed, time)
+```
+
+```js
+Task.goStraightToCoord(handle, x, y, z, speed, time)
+```
+</Opcode>
+
+## 转到朝向
+
+<Opcode id="05D4" name="TASK_ACHIEVE_HEADING" member="Task.AchieveHeading">
+转到指定朝向。
+
+```text
+05D4 TASK_ACHIEVE_HEADING
+in: handle, heading
+```
+
+```lua
+taskAchieveHeading(handle, heading)
+```
+
+```js
+Task.achieveHeading(handle, heading)
+```
+</Opcode>
+
+## 沿路径点走
+
+<Opcode id="05D8" name="TASK_FOLLOW_POINT_ROUTE" member="Task.FollowPointRoute">
+沿路径点路线走。
+
+```text
+05D8 TASK_FOLLOW_POINT_ROUTE
+in: handle, speed, mode
+```
+
+```lua
+taskFollowPointRoute(handle, speed, mode)
+```
+
+```js
+Task.followPointRoute(handle, speed, mode)
+```
+</Opcode>
+
+## 接近角色
+
+<Opcode id="05D9" name="TASK_GOTO_CHAR" member="Task.GotoChar">
+半径内从任意方向接近角色。
+
+```text
+05D9 TASK_GOTO_CHAR
+in: walking, target, time, radius
+```
+
+```lua
+taskGotoChar(walking, target, time, radius)
+```
+
+```js
+Task.gotoChar(walking, target, time, radius)
+```
+</Opcode>
+
+## 逃离某点
+
+<Opcode id="05DA" name="TASK_FLEE_POINT" member="Task.FleePoint">
+惊恐逃离某点。
+
+```text
+05DA TASK_FLEE_POINT
+in: handle, x, y, z, radius, time
+```
+
+```lua
+taskFleePoint(handle, x, y, z, radius, time)
+```
+
+```js
+Task.fleePoint(handle, x, y, z, radius, time)
+```
+</Opcode>
+
+## 逃离角色
+
+<Opcode id="05DB" name="TASK_FLEE_CHAR" member="Task.FleeChar">
+逃离另一角色。
+
+```text
+05DB TASK_FLEE_CHAR
+in: handle, threat, radius, time
+```
+
+```lua
+taskFleeChar(handle, threat, radius, time)
+```
+
+```js
+Task.fleeChar(handle, threat, radius, time)
+```
+</Opcode>
+
+## 智能逃离点
+
+<Opcode id="05DC" name="TASK_SMART_FLEE_POINT" member="Task.SmartFleePoint">
+智能逃离坐标。
+
+```text
+05DC TASK_SMART_FLEE_POINT
+in: handle, x, y, z, radius, time
+```
+
+```lua
+taskSmartFleePoint(handle, x, y, z, radius, time)
+```
+
+```js
+Task.smartFleePoint(handle, x, y, z, radius, time)
+```
+</Opcode>
+
+## 智能逃离角色
+
+<Opcode id="05DD" name="TASK_SMART_FLEE_CHAR" member="Task.SmartFleeChar">
+智能逃离另一角色。
+
+```text
+05DD TASK_SMART_FLEE_CHAR
+in: handle, threat, radius, time
+```
+
+```lua
+taskSmartFleeChar(handle, threat, radius, time)
+```
+
+```js
+Task.smartFleeChar(handle, threat, radius, time)
+```
+</Opcode>
+
+## 行人闲逛
+
+<Opcode id="05DE" name="TASK_WANDER_STANDARD" member="Task.WanderStandard">
+沿行人路径闲逛。
+
+```text
+05DE TASK_WANDER_STANDARD
+in: handle
+```
+
+```lua
+taskWanderStandard(handle)
+```
+
+```js
+Task.wanderStandard(handle)
+```
+</Opcode>
+
+## 徒步击杀
+
+<Opcode id="05E2" name="TASK_KILL_CHAR_ON_FOOT" member="Task.KillCharOnFoot">
+徒步攻击另一角色。
+
+```text
+05E2 TASK_KILL_CHAR_ON_FOOT
+in: killer, target
+```
+
+```lua
+taskKillCharOnFoot(killer, target)
+```
+
+```js
+Task.killCharOnFoot(killer, target)
+```
+</Opcode>
+
+## 沿节点走
+
+<Opcode id="05F5" name="TASK_FOLLOW_PATH_NODES_TO_COORD" member="Task.FollowPathNodesToCoord">
+沿节点走到坐标。
+
+```text
+05F5 TASK_FOLLOW_PATH_NODES_TO_COORD
+in: handle, x, y, z, speed, time
+```
+
+```lua
+taskFollowPathNodesToCoord(handle, x, y, z, speed, time)
+```
+
+```js
+Task.followPathNodesToCoord(handle, x, y, z, speed, time)
+```
+</Opcode>
+
+## 任意方式前往
+
+<Opcode id="0603" name="TASK_GO_TO_COORD_ANY_MEANS" member="Task.GoToCoordAnyMeans">
+以任意方式前往坐标。
+
+```text
+0603 TASK_GO_TO_COORD_ANY_MEANS
+in: char, x, y, z, speed, vehicle
+```
+
+```lua
+taskGoToCoordAnyMeans(char, x, y, z, speed, vehicle)
+```
+
+```js
+Task.goToCoordAnyMeans(char, x, y, z, speed, vehicle)
+```
+</Opcode>
+
+## 播放动画
+
+<Opcode id="0605" name="TASK_PLAY_ANIM" member="Task.PlayAnim">
+播放动画。
+
+```text
+0605 TASK_PLAY_ANIM
+in: handle, animationName, animationFile, blendSpeed, loop, lockX, lockY, keepLastFrame, time
+```
+
+```lua
+taskPlayAnim(handle, animationName, animationFile, blendSpeed, loop, lockX, lockY, keepLastFrame, time)
+```
+
+```js
+Task.playAnim(handle, animationName, animationFile, blendSpeed, loop, lockX, lockY, keepLastFrame, time)
+```
+</Opcode>
+
+## 跳车
+
+<Opcode id="0622" name="TASK_LEAVE_CAR_IMMEDIATELY" member="Task.LeaveCarImmediately">
+行驶中跳车。
+
+```text
+0622 TASK_LEAVE_CAR_IMMEDIATELY
+in: char, vehicle
+```
+
+```lua
+taskLeaveCarImmediately(char, vehicle)
+```
+
+```js
+Task.leaveCarImmediately(char, vehicle)
+```
+</Opcode>
+
+## 离开任何车
+
+<Opcode id="0633" name="TASK_LEAVE_ANY_CAR" member="Task.LeaveAnyCar">
+若在车内则下车。
+
+```text
+0633 TASK_LEAVE_ANY_CAR
+in: handle
+```
+
+```lua
+taskLeaveAnyCar(handle)
+```
+
+```js
+Task.leaveAnyCar(handle)
+```
+</Opcode>
+
+## 蹲姿击杀
+
+<Opcode id="0634" name="TASK_KILL_CHAR_ON_FOOT_WHILE_DUCKING" member="Task.KillCharOnFootWhileDucking">
+蹲姿徒步击杀。
+
+```text
+0634 TASK_KILL_CHAR_ON_FOOT_WHILE_DUCKING
+in: char, target, flags, actionDelay, actionChance
+```
+
+```lua
+taskKillCharOnFootWhileDucking(char, target, flags, actionDelay, actionChance)
+```
+
+```js
+Task.killCharOnFootWhileDucking(char, target, flags, actionDelay, actionChance)
+```
+</Opcode>
+
+## 瞄准角色
+
+<Opcode id="0635" name="TASK_AIM_GUN_AT_CHAR" member="Task.AimGunAtChar">
+瞄准另一角色。
+
+```text
+0635 TASK_AIM_GUN_AT_CHAR
+in: char, target, time
+```
+
+```lua
+taskAimGunAtChar(char, target, time)
+```
+
+```js
+Task.aimGunAtChar(char, target, time)
+```
+</Opcode>
+
+## 边走边射
+
+<Opcode id="0637" name="TASK_GO_TO_COORD_WHILE_SHOOTING" member="Task.GoToCoordWhileShooting">
+边走边向目标射击。
+
+```text
+0637 TASK_GO_TO_COORD_WHILE_SHOOTING
+in: char, x, y, z, speed, turnRadius, stopRadius, target
+```
+
+```lua
+taskGoToCoordWhileShooting(char, x, y, z, speed, turnRadius, stopRadius, target)
+```
+
+```js
+Task.goToCoordWhileShooting(char, x, y, z, speed, turnRadius, stopRadius, target)
+```
+</Opcode>
+
+## 留在原地
+
+<Opcode id="0638" name="TASK_STAY_IN_SAME_PLACE" member="Task.StayInSamePlace">
+留在原地。
+
+```text
+0638 TASK_STAY_IN_SAME_PLACE
+in: handle, state
+```
+
+```lua
+taskStayInSamePlace(handle, state)
+```
+
+```js
+Task.stayInSamePlace(handle, state)
+```
+</Opcode>
+
+## 转向面对角色
+
+<Opcode id="0639" name="TASK_TURN_CHAR_TO_FACE_CHAR" member="Task.TurnCharToFaceChar">
+转向面对另一角色。
+
+```text
+0639 TASK_TURN_CHAR_TO_FACE_CHAR
+in: char, target
+```
+
+```lua
+taskTurnCharToFaceChar(char, target)
+```
+
+```js
+Task.turnCharToFaceChar(char, target)
+```
+</Opcode>
+
+## 看向物体
+
+<Opcode id="0655" name="TASK_LOOK_AT_OBJECT" member="Task.LookAtObject">
+看向物体。
+
+```text
+0655 TASK_LOOK_AT_OBJECT
+in: char, object, time
+```
+
+```lua
+taskLookAtObject(char, object, time)
+```
+
+```js
+Task.lookAtObject(char, object, time)
+```
+</Opcode>
+
+## 瞄准坐标
+
+<Opcode id="0667" name="TASK_AIM_GUN_AT_COORD" member="Task.AimGunAtCoord">
+瞄准坐标。
+
+```text
+0667 TASK_AIM_GUN_AT_COORD
+in: handle, x, y, z, time
+```
+
+```lua
+taskAimGunAtCoord(handle, x, y, z, time)
+```
+
+```js
+Task.aimGunAtCoord(handle, x, y, z, time)
+```
+</Opcode>
+
+## 向坐标射击
+
+<Opcode id="0668" name="TASK_SHOOT_AT_COORD" member="Task.ShootAtCoord">
+转身向坐标射击。
+
+```text
+0668 TASK_SHOOT_AT_COORD
+in: handle, x, y, z, time
+```
+
+```lua
+taskShootAtCoord(handle, x, y, z, time)
+```
+
+```js
+Task.shootAtCoord(handle, x, y, z, time)
+```
+</Opcode>
+
+## 攻击车辆
+
+<Opcode id="0672" name="TASK_DESTROY_CAR" member="Task.DestroyCar">
+攻击车辆。
+
+```text
+0672 TASK_DESTROY_CAR
+in: char, vehicle
+```
+
+```lua
+taskDestroyCar(char, vehicle)
+```
+
+```js
+Task.destroyCar(char, vehicle)
+```
+</Opcode>
+
+## 扑倒
+
+<Opcode id="0673" name="TASK_DIVE_AND_GET_UP" member="Task.DiveAndGetUp">
+向指定方向扑倒。
+
+```text
+0673 TASK_DIVE_AND_GET_UP
+in: handle, directionX, directionY, timeOnGround
+```
+
+```lua
+taskDiveAndGetUp(handle, directionX, directionY, timeOnGround)
+```
+
+```js
+Task.diveAndGetUp(handle, directionX, directionY, timeOnGround)
+```
+</Opcode>
+
+## 挪座位
+
+<Opcode id="0676" name="TASK_SHUFFLE_TO_NEXT_CAR_SEAT" member="Task.ShuffleToNextCarSeat">
+挪到右侧座位。
+
+```text
+0676 TASK_SHUFFLE_TO_NEXT_CAR_SEAT
+in: char, vehicle
+```
+
+```lua
+taskShuffleToNextCarSeat(char, vehicle)
+```
+
+```js
+Task.shuffleToNextCarSeat(char, vehicle)
+```
+</Opcode>
+
+## 聊天
+
+<Opcode id="0677" name="TASK_CHAT_WITH_CHAR" member="Task.ChatWithChar">
+与另一角色聊天。
+
+```text
+0677 TASK_CHAT_WITH_CHAR
+in: char, other, leadSpeaker, _p4
+```
+
+```lua
+taskChatWithChar(char, other, leadSpeaker, _p4)
+```
+
+```js
+Task.chatWithChar(char, other, leadSpeaker, _p4)
+```
+</Opcode>
+
+## 威胁扫描
+
+<Opcode id="0688" name="TASK_TOGGLE_PED_THREAT_SCANNER" member="Task.TogglePedThreatScanner">
+开关威胁扫描。
+
+```text
+0688 TASK_TOGGLE_PED_THREAT_SCANNER
+in: handle, onFoot, inCar, duringScriptTask
+```
+
+```lua
+taskTogglePedThreatScanner(handle, onFoot, inCar, duringScriptTask)
+```
+
+```js
+Task.togglePedThreatScanner(handle, onFoot, inCar, duringScriptTask)
+```
+</Opcode>
+
+## 脱离扑倒
+
+<Opcode id="06A5" name="TASK_DIVE_FROM_ATTACHMENT_AND_GET_UP" member="Task.DiveFromAttachmentAndGetUp">
+脱离宿主、扑倒再起身。
+
+```text
+06A5 TASK_DIVE_FROM_ATTACHMENT_AND_GET_UP
+in: handle, timeOnGround
+```
+
+```lua
+taskDiveFromAttachmentAndGetUp(handle, timeOnGround)
+```
+
+```js
+Task.diveFromAttachmentAndGetUp(handle, timeOnGround)
+```
+</Opcode>
+
+## 偏移接近角色
+
+<Opcode id="06A8" name="TASK_GOTO_CHAR_OFFSET" member="Task.GotoCharOffset">
+按半径与角度偏移接近角色。
+
+```text
+06A8 TASK_GOTO_CHAR_OFFSET
+in: char, target, time, radius, heading
+```
+
+```lua
+taskGotoCharOffset(char, target, time, radius, heading)
+```
+
+```js
+Task.gotoCharOffset(char, target, time, radius, heading)
+```
+</Opcode>
+
+## 看向坐标
+
+<Opcode id="06A9" name="TASK_LOOK_AT_COORD" member="Task.LookAtCoord">
+看向坐标。
+
+```text
+06A9 TASK_LOOK_AT_COORD
+in: handle, x, y, z, time
+```
+
+```lua
+taskLookAtCoord(handle, x, y, z, time)
+```
+
+```js
+Task.lookAtCoord(handle, x, y, z, time)
+```
+</Opcode>
+
+## 坐下
+
+<Opcode id="06B0" name="TASK_SIT_DOWN" member="Task.SitDown">
+坐下指定时间。
+
+```text
+06B0 TASK_SIT_DOWN
+in: handle, time
+```
+
+```lua
+taskSitDown(handle, time)
+```
+
+```js
+Task.sitDown(handle, time)
+```
+</Opcode>
+
+## 转向面对坐标
+
+<Opcode id="06BA" name="TASK_TURN_CHAR_TO_FACE_COORD" member="Task.TurnCharToFaceCoord">
+转向面对坐标。
+
+```text
+06BA TASK_TURN_CHAR_TO_FACE_COORD
+in: handle, x, y, z
+```
+
+```lua
+taskTurnCharToFaceCoord(handle, x, y, z)
+```
+
+```js
+Task.turnCharToFaceCoord(handle, x, y, z)
+```
+</Opcode>
+
+## 沿点驾车
+
+<Opcode id="06BB" name="TASK_DRIVE_POINT_ROUTE" member="Task.DrivePointRoute">
+沿点路线驾车。
+
+```text
+06BB TASK_DRIVE_POINT_ROUTE
+in: char, vehicle, speed
+```
+
+```lua
+taskDrivePointRoute(char, vehicle, speed)
+```
+
+```js
+Task.drivePointRoute(char, vehicle, speed)
+```
+</Opcode>
+
+## 边瞄准边走
+
+<Opcode id="06C2" name="TASK_GO_TO_COORD_WHILE_AIMING" member="Task.GoToCoordWhileAiming">
+边瞄准边前往坐标。
+
+```text
+06C2 TASK_GO_TO_COORD_WHILE_AIMING
+in: char, x, y, z, speed, turnRadius, stopRadius, target, xOffset, yOffset, zOffset
+```
+
+```lua
+taskGoToCoordWhileAiming(char, x, y, z, speed, turnRadius, stopRadius, target, xOffset, yOffset, zOffset)
+```
+
+```js
+Task.goToCoordWhileAiming(char, x, y, z, speed, turnRadius, stopRadius, target, xOffset, yOffset, zOffset)
+```
+</Opcode>
+
+## 车内临时动作
+
+<Opcode id="06C7" name="TASK_CAR_TEMP_ACTION" member="Task.CarTempAction">
+AI 驾驶在车内做动作一段时间。
+
+```text
+06C7 TASK_CAR_TEMP_ACTION
+in: char, vehicle, actionId, time
+```
+
+```lua
+taskCarTempAction(char, vehicle, actionId, time)
+```
+
+```js
+Task.carTempAction(char, vehicle, actionId, time)
+```
+</Opcode>
+
+## 车辆任务
+
+<Opcode id="06E1" name="TASK_CAR_MISSION" member="Task.CarMission">
+设车辆当前任务与参数。
+
+```text
+06E1 TASK_CAR_MISSION
+in: char, vehicle, targetVehicle, missionId, cruiseSpeed, drivingStyle
+```
+
+```lua
+taskCarMission(char, vehicle, targetVehicle, missionId, cruiseSpeed, drivingStyle)
+```
+
+```js
+Task.carMission(char, vehicle, targetVehicle, missionId, cruiseSpeed, drivingStyle)
+```
+</Opcode>
+
+## 走向物体
+
+<Opcode id="06E2" name="TASK_GO_TO_OBJECT" member="Task.GoToObject">
+走向物体。
+
+```text
+06E2 TASK_GO_TO_OBJECT
+in: char, object, time, radius
+```
+
+```lua
+taskGoToObject(char, object, time, radius)
+```
+
+```js
+Task.goToObject(char, object, time, radius)
+```
+</Opcode>
+
+## 持枪翻滚
+
+<Opcode id="06E3" name="TASK_WEAPON_ROLL" member="Task.WeaponRoll">
+持枪翻滚。
+
+```text
+06E3 TASK_WEAPON_ROLL
+in: handle, direction
+```
+
+```lua
+taskWeaponRoll(handle, direction)
+```
+
+```js
+Task.weaponRoll(handle, direction)
+```
+</Opcode>
+
+## 逮捕
+
+<Opcode id="06E4" name="TASK_CHAR_ARREST_CHAR" member="Task.CharArrestChar">
+尝试逮捕另一角色。
+
+```text
+06E4 TASK_CHAR_ARREST_CHAR
+in: char, target
+```
+
+```lua
+taskCharArrestChar(char, target)
+```
+
+```js
+Task.charArrestChar(char, target)
+```
+</Opcode>
+
+## 拾起物体
+
+<Opcode id="070A" name="TASK_PICK_UP_OBJECT" member="Task.PickUpObject">
+附着到物体，可选播放动画。
+
+```text
+070A TASK_PICK_UP_OBJECT
+in: char, object, xOffset, yOffset, zOffset, bone, orientation, animationName, animationFile, time
+```
+
+```lua
+taskPickUpObject(char, object, xOffset, yOffset, zOffset, bone, orientation, animationName, animationFile, time)
+```
+
+```js
+Task.pickUpObject(char, object, xOffset, yOffset, zOffset, bone, orientation, animationName, animationFile, time)
+```
+</Opcode>
+
+## 车内射击
+
+<Opcode id="0713" name="TASK_DRIVE_BY" member="Task.DriveBy">
+车内射击任务。
+
+```text
+0713 TASK_DRIVE_BY
+in: handle, targetChar, targetVehicle, x, y, z, radius, type, rightHandCarSeat, fireRate
+```
+
+```lua
+taskDriveBy(handle, targetChar, targetVehicle, x, y, z, radius, type, rightHandCarSeat, fireRate)
+```
+
+```js
+Task.driveBy(handle, targetChar, targetVehicle, x, y, z, radius, type, rightHandCarSeat, fireRate)
+```
+</Opcode>
+
+## 用手机
+
+<Opcode id="0729" name="TASK_USE_MOBILE_PHONE" member="Task.UseMobilePhone">
+掏手机接听并贴耳。
+
+```text
+0729 TASK_USE_MOBILE_PHONE
+in: handle, start
+```
+
+```lua
+taskUseMobilePhone(handle, start)
+```
+
+```js
+Task.useMobilePhone(handle, start)
+```
+</Opcode>
+
+## 瞬移驾驶位
+
+<Opcode id="072A" name="TASK_WARP_CHAR_INTO_CAR_AS_DRIVER" member="Task.WarpCharIntoCarAsDriver">
+瞬移进驾驶位。
+
+```text
+072A TASK_WARP_CHAR_INTO_CAR_AS_DRIVER
+in: char, vehicle
+```
+
+```lua
+taskWarpCharIntoCarAsDriver(char, vehicle)
+```
+
+```js
+Task.warpCharIntoCarAsDriver(char, vehicle)
+```
+</Opcode>
+
+## 瞬移副驾
+
+<Opcode id="072B" name="TASK_WARP_CHAR_INTO_CAR_AS_PASSENGER" member="Task.WarpCharIntoCarAsPassenger">
+瞬移进副驾位。
+
+```text
+072B TASK_WARP_CHAR_INTO_CAR_AS_PASSENGER
+in: char, vehicle, seatId
+```
+
+```lua
+taskWarpCharIntoCarAsPassenger(char, vehicle, seatId)
+```
+
+```js
+Task.warpCharIntoCarAsPassenger(char, vehicle, seatId)
+```
+</Opcode>
+
+## 使用吸引点
+
+<Opcode id="074C" name="TASK_USE_ATTRACTOR" member="Task.UseAttractor">
+使用吸引点。
+
+```text
+074C TASK_USE_ATTRACTOR
+in: char, attractor
+```
+
+```lua
+taskUseAttractor(char, attractor)
+```
+
+```js
+Task.useAttractor(char, attractor)
+```
+</Opcode>
+
+## 向角色射击
+
+<Opcode id="074D" name="TASK_SHOOT_AT_CHAR" member="Task.ShootAtChar">
+向角色射击。
+
+```text
+074D TASK_SHOOT_AT_CHAR
+in: handle, target, time
+```
+
+```lua
+taskShootAtChar(handle, target, time)
+```
+
+```js
+Task.shootAtChar(handle, target, time)
+```
+</Opcode>
+
+## 任意方式逃离
+
+<Opcode id="0751" name="TASK_FLEE_CHAR_ANY_MEANS" member="Task.FleeCharAnyMeans">
+以任意方式逃离角色。
+
+```text
+0751 TASK_FLEE_CHAR_ANY_MEANS
+in: handle, threat, safeDist, time, shoot, shootTime, shootChance, stealCarDist
+```
+
+```lua
+taskFleeCharAnyMeans(handle, threat, safeDist, time, shoot, shootTime, shootChance, stealCarDist)
+```
+
+```js
+Task.fleeCharAnyMeans(handle, threat, safeDist, time, shoot, shootTime, shootChance, stealCarDist)
+```
+</Opcode>
+
+## 设为死亡
+
+<Opcode id="0762" name="TASK_DEAD" member="Task.Dead">
+杀死角色。
+
+```text
+0762 TASK_DEAD
+in: handle
+```
+
+```lua
+taskDead(handle)
+```
+
+```js
+Task.dead(handle)
+```
+</Opcode>
+
+## 走向车辆
+
+<Opcode id="0772" name="TASK_GOTO_CAR" member="Task.GotoCar">
+走向车辆。
+
+```text
+0772 TASK_GOTO_CAR
+in: char, vehicle, time, radius
+```
+
+```lua
+taskGotoCar(char, vehicle, time, radius)
+```
+
+```js
+Task.gotoCar(char, vehicle, time, radius)
+```
+</Opcode>
+
+## 攀爬
+
+<Opcode id="078F" name="TASK_CLIMB" member="Task.Climb">
+跳上并攀爬物体。
+
+```text
+078F TASK_CLIMB
+in: handle, flag
+```
+
+```lua
+taskClimb(handle, flag)
+```
+
+```js
+Task.climb(handle, flag)
+```
+</Opcode>
+
+## 瞄准接近
+
+<Opcode id="07A3" name="TASK_GOTO_CHAR_AIMING" member="Task.GotoCharAiming">
+瞄准接近角色。
+
+```text
+07A3 TASK_GOTO_CHAR_AIMING
+in: handle, target, radiusFrom, radiusTo
+```
+
+```lua
+taskGotoCharAiming(handle, target, radiusFrom, radiusTo)
+```
+
+```js
+Task.gotoCharAiming(handle, target, radiusFrom, radiusTo)
+```
+</Opcode>
+
+## 限时徒步击杀
+
+<Opcode id="07A5" name="TASK_KILL_CHAR_ON_FOOT_TIMED" member="Task.KillCharOnFootTimed">
+攻击指定角色。
+
+```text
+07A5 TASK_KILL_CHAR_ON_FOOT_TIMED
+in: handle, target, time
+```
+
+```lua
+taskKillCharOnFootTimed(handle, target, time)
+```
+
+```js
+Task.killCharOnFootTimed(handle, target, time)
+```
+</Opcode>
+
+## 喷气背包
+
+<Opcode id="07A7" name="TASK_JETPACK" member="Task.Jetpack">
+使用喷气背包。
+
+```text
+07A7 TASK_JETPACK
+in: handle
+```
+
+```lua
+taskJetpack(handle)
+```
+
+```js
+Task.jetpack(handle)
+```
+</Opcode>
+
+## 设决策器
+
+<Opcode id="07BC" name="TASK_SET_CHAR_DECISION_MAKER" member="Task.SetCharDecisionMaker">
+设决策器。
+
+```text
+07BC TASK_SET_CHAR_DECISION_MAKER
+in: char, handleOrTemplate
+```
+
+```lua
+taskSetCharDecisionMaker(char, handleOrTemplate)
+```
+
+```js
+Task.setCharDecisionMaker(char, handleOrTemplate)
+```
+</Opcode>
+
+## 走向并拾起
+
+<Opcode id="07C9" name="TASK_COMPLEX_PICKUP_OBJECT" member="Task.ComplexPickupObject">
+走向并拾起物体。
+
+```text
+07C9 TASK_COMPLEX_PICKUP_OBJECT
+in: char, object
+```
+
+```lua
+taskComplexPickupObject(char, object)
+```
+
+```js
+Task.complexPickupObject(char, object)
+```
+</Opcode>
+
+## 滑移到坐标
+
+<Opcode id="07CD" name="TASK_CHAR_SLIDE_TO_COORD" member="Task.CharSlideToCoord">
+滑移到坐标。
+
+```text
+07CD TASK_CHAR_SLIDE_TO_COORD
+in: handle, x, y, z, angle, slideSpeed
+```
+
+```lua
+taskCharSlideToCoord(handle, x, y, z, angle, slideSpeed)
+```
+
+```js
+Task.charSlideToCoord(handle, x, y, z, angle, slideSpeed)
+```
+</Opcode>
+
+## 游到坐标
+
+<Opcode id="07E1" name="TASK_SWIM_TO_COORD" member="Task.SwimToCoord">
+游到坐标。
+
+```text
+07E1 TASK_SWIM_TO_COORD
+in: handle, x, y, z
+```
+
+```lua
+taskSwimToCoord(handle, x, y, z)
+```
+
+```js
+Task.swimToCoord(handle, x, y, z)
+```
+</Opcode>
+
+## 高级点路线驾驶
+
+<Opcode id="07E7" name="TASK_DRIVE_POINT_ROUTE_ADVANCED" member="Task.DrivePointRouteAdvanced">
+高级点路线驾驶。
+
+```text
+07E7 TASK_DRIVE_POINT_ROUTE_ADVANCED
+in: char, vehicle, speed, driveStyle, modelId, drivingStyle
+```
+
+```lua
+taskDrivePointRouteAdvanced(char, vehicle, speed, driveStyle, modelId, drivingStyle)
+```
+
+```js
+Task.drivePointRouteAdvanced(char, vehicle, speed, driveStyle, modelId, drivingStyle)
+```
+</Opcode>
+
+## 滑移并播动画
+
+<Opcode id="0804" name="TASK_CHAR_SLIDE_TO_COORD_AND_PLAY_ANIM" member="Task.CharSlideToCoordAndPlayAnim">
+走到点、转朝向再播动画。
+
+```text
+0804 TASK_CHAR_SLIDE_TO_COORD_AND_PLAY_ANIM
+in: handle, x, y, z, heading, slideSpeed, animationName, animationFile, blendSpeed, loop, lockX, lockY, keepLastFrame, time
+```
+
+```lua
+taskCharSlideToCoordAndPlayAnim(handle, x, y, z, heading, slideSpeed, animationName, animationFile, blendSpeed, loop, lockX, lockY, keepLastFrame, time)
+```
+
+```js
+Task.charSlideToCoordAndPlayAnim(handle, x, y, z, heading, slideSpeed, animationName, animationFile, blendSpeed, loop, lockX, lockY, keepLastFrame, time)
+```
+</Opcode>
+
+## 不可打断动画
+
+<Opcode id="0812" name="TASK_PLAY_ANIM_NON_INTERRUPTABLE" member="Task.PlayAnimNonInterruptable">
+播动画且不被事件打断（类 0605）。
+
+```text
+0812 TASK_PLAY_ANIM_NON_INTERRUPTABLE
+in: handle, animationName, animationFile, blendSpeed, loop, lockX, lockY, keepLastFrame, time
+```
+
+```lua
+taskPlayAnimNonInterruptable(handle, animationName, animationFile, blendSpeed, loop, lockX, lockY, keepLastFrame, time)
+```
+
+```js
+Task.playAnimNonInterruptable(handle, animationName, animationFile, blendSpeed, loop, lockX, lockY, keepLastFrame, time)
+```
+</Opcode>
+
+## 巡逻路径
+
+<Opcode id="0817" name="TASK_FOLLOW_PATROL_ROUTE" member="Task.FollowPatrolRoute">
+分配巡逻路径。
+
+```text
+0817 TASK_FOLLOW_PATROL_ROUTE
+in: handle, speed, mode
+```
+
+```lua
+taskFollowPatrolRoute(handle, speed, mode)
+```
+
+```js
+Task.followPatrolRoute(handle, speed, mode)
+```
+</Opcode>
+
+## 握手问候
+
+<Opcode id="0823" name="TASK_GREET_PARTNER" member="Task.GreetPartner">
+握手问候。
+
+```text
+0823 TASK_GREET_PARTNER
+in: handle, partner, approachRatio, greetStyle
+```
+
+```lua
+taskGreetPartner(handle, partner, approachRatio, greetStyle)
+```
+
+```js
+Task.greetPartner(handle, partner, approachRatio, greetStyle)
+```
+</Opcode>
+
+## 命名死亡动画
+
+<Opcode id="0829" name="TASK_DIE_NAMED_ANIM" member="Task.DieNamedAnim">
+播动画（类似 0605）。
+
+```text
+0829 TASK_DIE_NAMED_ANIM
+in: handle, animationName, animationFile, blendSpeed, time
+```
+
+```lua
+taskDieNamedAnim(handle, animationName, animationFile, blendSpeed, time)
+```
+
+```js
+Task.dieNamedAnim(handle, animationName, animationFile, blendSpeed, time)
+```
+</Opcode>
+
+## 跟随脚步
+
+<Opcode id="0850" name="TASK_FOLLOW_FOOTSTEPS" member="Task.FollowFootsteps">
+跟随另一角色。
+
+```text
+0850 TASK_FOLLOW_FOOTSTEPS
+in: handle, target
+```
+
+```lua
+taskFollowFootsteps(handle, target)
+```
+
+```js
+Task.followFootsteps(handle, target)
+```
+</Opcode>
+
+## 并肩走
+
+<Opcode id="0859" name="TASK_WALK_ALONGSIDE_CHAR" member="Task.WalkAlongsideChar">
+与指定角色并肩走。
+
+```text
+0859 TASK_WALK_ALONGSIDE_CHAR
+in: handle, target
+```
+
+```lua
+taskWalkAlongsideChar(handle, target)
+```
+
+```js
+Task.walkAlongsideChar(handle, target)
+```
+</Opcode>
+
+## 附近停留
+
+<Opcode id="085B" name="TASK_KINDA_STAY_IN_SAME_PLACE" member="Task.KindaStayInSamePlace">
+留在当前位置附近。
+
+```text
+085B TASK_KINDA_STAY_IN_SAME_PLACE
+in: handle, state
+```
+
+```lua
+taskKindaStayInSamePlace(handle, state)
+```
+
+```js
+Task.kindaStayInSamePlace(handle, state)
+```
+</Opcode>
+
+## 带标志动画
+
+<Opcode id="088A" name="TASK_PLAY_ANIM_WITH_FLAGS" member="Task.PlayAnimWithFlags">
+播放动画。
+
+```text
+088A TASK_PLAY_ANIM_WITH_FLAGS
+in: handle, animationName, animationFile, frameDelta, loop, lockX, lockY, lockF, time, disableForce, disableLockZ
+```
+
+```lua
+taskPlayAnimWithFlags(handle, animationName, animationFile, frameDelta, loop, lockX, lockY, lockF, time, disableForce, disableLockZ)
+```
+
+```js
+Task.playAnimWithFlags(handle, animationName, animationFile, frameDelta, loop, lockX, lockY, lockF, time, disableForce, disableLockZ)
+```
+</Opcode>
+
+## 最近地图吸引点
+
+<Opcode id="08A0" name="TASK_USE_CLOSEST_MAP_ATTRACTOR" member="Task.UseClosestMapAttractor">
+用最近地图吸引点。
+
+```text
+08A0 TASK_USE_CLOSEST_MAP_ATTRACTOR
+in: handle, radius, modelId, fromX, fromY, fromZ, name
+```
+
+```lua
+taskUseClosestMapAttractor(handle, radius, modelId, fromX, fromY, fromZ, name)
+```
+
+```js
+Task.useClosestMapAttractor(handle, radius, modelId, fromX, fromY, fromZ, name)
+```
+</Opcode>
+
+## 忽略武器射程
+
+<Opcode id="099F" name="TASK_SET_IGNORE_WEAPON_RANGE_FLAG" member="Task.SetIgnoreWeaponRangeFlag">
+忽略武器射程标志。
+
+```text
+099F TASK_SET_IGNORE_WEAPON_RANGE_FLAG
+in: handle, state
+```
+
+```lua
+taskSetIgnoreWeaponRangeFlag(handle, state)
+```
+
+```js
+Task.setIgnoreWeaponRangeFlag(handle, state)
+```
+</Opcode>
+
+## 拾第二物体
+
+<Opcode id="09A0" name="TASK_PICK_UP_SECOND_OBJECT" member="Task.PickUpSecondObject">
+拾起第二件物体。
+
+```text
+09A0 TASK_PICK_UP_SECOND_OBJECT
+in: char, object, xOffset, yOffset, zOffset, boneId, orientation, animationName, animationFile, time
+```
+
+```lua
+taskPickUpSecondObject(char, object, xOffset, yOffset, zOffset, boneId, orientation, animationName, animationFile, time)
+```
+
+```js
+Task.pickUpSecondObject(char, object, xOffset, yOffset, zOffset, boneId, orientation, animationName, animationFile, time)
+```
+</Opcode>
+
+## 上半身动画
+
+<Opcode id="0A1A" name="TASK_PLAY_ANIM_SECONDARY" member="Task.PlayAnimSecondary">
+仅上半身动画。
+
+```text
+0A1A TASK_PLAY_ANIM_SECONDARY
+in: handle, animationName, animationFile, blendSpeed, loop, lockX, lockY, keepLastFrame, time
+```
+
+```lua
+taskPlayAnimSecondary(handle, animationName, animationFile, blendSpeed, loop, lockX, lockY, keepLastFrame, time)
+```
+
+```js
+Task.playAnimSecondary(handle, animationName, animationFile, blendSpeed, loop, lockX, lockY, keepLastFrame, time)
+```
+</Opcode>
+
+## 手势
+
+<Opcode id="0A1D" name="TASK_HAND_GESTURE" member="Task.HandGesture">
+面对并做手势。
+
+```text
+0A1D TASK_HAND_GESTURE
+in: handle, target
+```
+
+```lua
+taskHandGesture(handle, target)
+```
+
+```js
+Task.handGesture(handle, target)
+```
+</Opcode>
+
+## 节点走带半径
+
+<Opcode id="0A2E" name="TASK_FOLLOW_PATH_NODES_TO_COORD_WITH_RADIUS" member="Task.FollowPathNodesToCoordWithRadius">
+惊慌跑向坐标。
+
+```text
+0A2E TASK_FOLLOW_PATH_NODES_TO_COORD_WITH_RADIUS
+in: handle, x, y, z, speed, time, radius
+```
+
+```lua
+taskFollowPathNodesToCoordWithRadius(handle, x, y, z, speed, time, radius)
+```
+
+```js
+Task.followPathNodesToCoordWithRadius(handle, x, y, z, speed, time, radius)
+```
+</Opcode>

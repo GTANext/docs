@@ -1,0 +1,15 @@
+{
+  "title": "NewOpcodes",
+  "pages": [
+    "index",
+    "matrix",
+    "entity",
+    "draw",
+    "misc",
+    "fx",
+    "vehicle",
+    "texture",
+    "print",
+    "atomic"
+  ]
+}

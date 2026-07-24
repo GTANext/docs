@@ -1,0 +1,308 @@
+---
+title: 实体 Entity
+description: Char / Car / World / Weapon / Camera
+---
+
+`vc` · 扩展 `CLEO` · 需 CLEO
+
+Char / Car / World / Weapon / Camera 等。
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 载具档位数
+
+<Opcode id="0AB7" name="GET_CAR_NUMBER_OF_GEARS" member="Car.GetNumberOfGears">
+载具档位数。
+
+```text
+0AB7 GET_CAR_NUMBER_OF_GEARS
+in: self
+out: numGear
+```
+
+```lua
+local n = getCarNumberOfGears(car)
+```
+
+```js
+const numGear = Car.getNumberOfGears(self)
+```
+</Opcode>
+
+## 当前档位
+
+<Opcode id="0AB8" name="GET_CAR_CURRENT_GEAR" member="Car.GetCurrentGear">
+当前档位。
+
+```text
+0AB8 GET_CAR_CURRENT_GEAR
+in: self
+out: gear
+```
+
+```lua
+local gear = getCarCurrentGear(car)
+```
+
+```js
+const gear = Car.getCurrentGear(self)
+```
+</Opcode>
+
+## 车灯是否开
+
+<Opcode id="0ABD" name="IS_CAR_LIGHTS_ON" member="Car.IsLightsOn">
+车灯是否开。用在 `if` 里。（VC JSON 名；SA 侧常见警笛名，以本游戏 JSON 为准。）
+
+```text
+0ABD IS_CAR_LIGHTS_ON
+in: self
+```
+
+```lua
+if isCarLightsOn(car) then
+end
+```
+
+```js
+if (Car.isLightsOn(self)) {}
+```
+</Opcode>
+
+## 引擎是否开
+
+<Opcode id="0ABE" name="IS_CAR_ENGINE_ON" member="Car.IsEngineOn">
+引擎是否开。用在 `if` 里。
+
+```text
+0ABE IS_CAR_ENGINE_ON
+in: self
+```
+
+```lua
+if isCarEngineOn(car) then
+end
+```
+
+```js
+if (Car.isEngineOn(self)) {}
+```
+</Opcode>
+
+## 开/关引擎
+
+<Opcode id="0ABF" name="SET_CAR_ENGINE_ON" member="Car.SetEngineOn">
+开/关引擎。
+
+```text
+0ABF SET_CAR_ENGINE_ON
+in: self, state
+```
+
+```lua
+setCarEngineOn(car, true)
+```
+
+```js
+Car.setEngineOn(self, state)
+```
+</Opcode>
+
+## 作弊刷车
+
+<Opcode id="0ADD" name="SPAWN_VEHICLE_BY_CHEATING" member="World.SpawnVehicleByCheating">
+在玩家前方刷一辆指定模型车（无需预加载）。
+
+```text
+0ADD SPAWN_VEHICLE_BY_CHEATING
+in: modelId
+```
+
+```lua
+spawnVehicleByCheating(modelId)
+```
+
+```js
+World.spawnVehicleByCheating(modelId)
+```
+</Opcode>
+
+## 球内随机角色
+
+<Opcode id="0AE1" name="GET_RANDOM_CHAR_IN_SPHERE_NO_SAVE_RECURSIVE" member="World.GetRandomCharInSphereNoSaveRecursive">
+球内递归取角色；`findNext` 继续枚举。用在 `if` 里。经典别名 `05EF`。
+
+```text
+0AE1 GET_RANDOM_CHAR_IN_SPHERE_NO_SAVE_RECURSIVE
+in: x, y, z, radius, findNext, skipDead
+out: handle
+// 经典别名 05EF
+```
+
+```lua
+local ped = getRandomCharInSphereNoSaveRecursive(x, y, z, 20.0, false, true)
+```
+
+```js
+const handle = World.getRandomCharInSphereNoSaveRecursive(x, y, z, radius, findNext, skipDead)
+```
+</Opcode>
+
+## 球内随机载具
+
+<Opcode id="0AE2" name="GET_RANDOM_CAR_IN_SPHERE_NO_SAVE_RECURSIVE" member="World.GetRandomCarInSphereNoSaveRecursive">
+球内递归取载具。经典别名 `05F0`。
+
+```text
+0AE2 GET_RANDOM_CAR_IN_SPHERE_NO_SAVE_RECURSIVE
+in: x, y, z, radius, findNext, skipWrecked
+out: handle
+// 经典别名 05F0
+```
+
+```lua
+local car = getRandomCarInSphereNoSaveRecursive(x, y, z, 30.0, false, true)
+```
+
+```js
+const handle = World.getRandomCarInSphereNoSaveRecursive(x, y, z, radius, findNext, skipWrecked)
+```
+</Opcode>
+
+## 球内随机物体
+
+<Opcode id="0AE3" name="GET_RANDOM_OBJECT_IN_SPHERE_NO_SAVE_RECURSIVE" member="World.GetRandomObjectInSphereNoSaveRecursive">
+球内递归取物体。经典别名 `05F1`。
+
+```text
+0AE3 GET_RANDOM_OBJECT_IN_SPHERE_NO_SAVE_RECURSIVE
+in: x, y, z, radius, findNext
+out: handle
+// 经典别名 05F1
+```
+
+```lua
+local obj = getRandomObjectInSphereNoSaveRecursive(x, y, z, 10.0, false)
+```
+
+```js
+const handle = World.getRandomObjectInSphereNoSaveRecursive(x, y, z, radius, findNext)
+```
+</Opcode>
+
+## 武器类型转模型
+
+<Opcode id="0604" name="GET_WEAPONTYPE_MODEL" member="Weapon.GetModel">
+武器类型 → 模型 id。
+
+```text
+0604 GET_WEAPONTYPE_MODEL
+in: weaponType
+out: modelId
+```
+
+```lua
+local model = getWeapontypeModel(weaponType)
+```
+
+```js
+const modelId = Weapon.getModel(weaponType)
+```
+</Opcode>
+
+## 模型转武器类型
+
+<Opcode id="0605" name="GET_WEAPONTYPE_FOR_MODEL" member="Weapon.GetTypeForModel">
+武器模型 id → 武器类型。
+
+```text
+0605 GET_WEAPONTYPE_FOR_MODEL
+in: modelId
+out: weaponType
+```
+
+```lua
+local w = getWeapontypeForModel(modelId)
+```
+
+```js
+const weaponType = Weapon.getTypeForModel(modelId)
+```
+</Opcode>
+
+## 相机宽屏模式
+
+<Opcode id="0603" name="IS_CAMERA_IN_WIDESCREEN_MODE" member="Camera.IsInWidescreenMode">
+相机是否宽屏模式。用在 `if` 里。
+
+```text
+0603 IS_CAMERA_IN_WIDESCREEN_MODE
+```
+
+```lua
+if isCameraInWidescreenMode() then
+end
+```
+
+```js
+if (Camera.isInWidescreenMode()) {}
+```
+</Opcode>
+
+## 播放动画
+
+<Opcode id="0673" name="PLAY_ANIMATION" member="Char.PlayAnimation">
+角色播放动画组内动作。
+
+```text
+0673 PLAY_ANIMATION
+in: self, groupId, animId, blend
+```
+
+```lua
+playAnimation(ped, groupId, animId, 4.0)
+```
+
+```js
+Char.playAnimation(self, groupId, animId, blend)
+```
+</Opcode>
+
+## 画阴影
+
+<Opcode id="016F" name="DRAW_SHADOW" member="Fx.DrawShadow">
+当前帧画阴影。
+
+```text
+016F DRAW_SHADOW
+in: textureType, x, y, z, angle, size, intensity, r, g, b
+```
+
+```lua
+drawShadow(tex, x, y, z, 0.0, 1.0, 100, 0, 0, 0)
+```
+
+```js
+Fx.drawShadow(textureType, x, y, z, angle, size, intensity, r, g, b)
+```
+</Opcode>
+
+## 载具模型名
+
+<Opcode id="0ADB" name="GET_NAME_OF_VEHICLE_MODEL" member="Streaming.GetNameOfVehicleModel">
+载具模型 → 名字串。
+
+```text
+0ADB GET_NAME_OF_VEHICLE_MODEL
+in: modelId
+out: carName
+```
+
+```lua
+local name = getNameOfVehicleModel(modelId)
+```
+
+```js
+const carName = Streaming.getNameOfVehicleModel(modelId)
+```
+</Opcode>

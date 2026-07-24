@@ -1,0 +1,108 @@
+---
+title: 统计 CStats
+description: 读写统计与进度
+---
+
+`CStats.h` · 枚举 `eStats.h`
+
+逻辑帧改统计。id 以 `eStats` 为准。
+
+## 读统计
+
+<Api name="GetStatValue / GetStatID">
+
+```cpp
+static float GetStatValue(unsigned short stat);
+static char* GetStatID(unsigned short stat);
+static bool GetStatType(unsigned short stat); // true=float 表等，见实现
+```
+
+```cpp
+float v = CStats::GetStatValue(statId);
+```
+</Api>
+
+## 写统计
+
+<Api name="SetStatValue / IncrementStat / DecrementStat">
+
+```cpp
+static void SetStatValue(unsigned short stat, float value);
+static void IncrementStat(unsigned short stat, float value);
+static void DecrementStat(unsigned short stat, float value);
+static void SetNewRecordStat(unsigned short stat, float value);
+```
+
+```cpp
+CStats::SetStatValue(statId, 1000.0f);
+// CStats::IncrementStat(statId, 10.0f);
+```
+</Api>
+
+## 进度与犯罪等级
+
+<Api name="GetPercentageProgress / FindCriminalRatingNumber">
+
+```cpp
+static float GetPercentageProgress();
+static int FindCriminalRatingNumber();
+static char* FindCriminalRatingString();
+```
+
+```cpp
+float pct = CStats::GetPercentageProgress();
+```
+</Api>
+
+## 任务尝试
+
+<Api name="RegisterMissionAttempted / RegisterMissionPassed">
+
+```cpp
+static void RegisterMissionAttempted(unsigned char missionId);
+static void RegisterMissionPassed(unsigned char missionId);
+static char GetTimesMissionAttempted(unsigned char missionId);
+```
+
+```cpp
+// CStats::RegisterMissionPassed(id);
+```
+</Api>
+
+## 脚本更新提示
+
+<Api name="DisplayScriptStatUpdateMessage">
+
+```cpp
+static void DisplayScriptStatUpdateMessage(unsigned char state, unsigned int stat, float value);
+// STAT_UPDATE_INCREASE / STAT_UPDATE_DECREASE
+```
+
+```cpp
+CStats::DisplayScriptStatUpdateMessage(STAT_UPDATE_INCREASE, statId, 1.0f);
+```
+</Api>
+
+## 体能相关更新
+
+<Api name="UpdateStatsWhenSprinting / UpdateStatsWhenDriving">
+游戏内部调用；一般别每帧手搓，除非做自定义训练。
+
+```cpp
+static void UpdateStatsWhenSprinting();
+static void UpdateStatsWhenRunning();
+static void UpdateStatsWhenDriving(CVehicle* vehicle);
+// ... 见 CStats.h
+```
+</Api>
+
+## 原始表
+
+<Api name="StatTypesInt / StatTypesFloat">
+直接扫表要小心上下限与反应逻辑。
+
+```cpp
+static int* StatTypesInt;    // [224]
+static float* StatTypesFloat; // [83]
+```
+</Api>

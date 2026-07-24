@@ -1,0 +1,67 @@
+---
+title: 鼠标 Mouse
+description: 滚轮与灵敏度
+---
+
+`sa` · 扩展 `CLEO+` · 需 CLEO + CLEO+
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 滚轮上
+
+<Opcode id="0E10" name="IS_MOUSE_WHEEL_UP" member="Mouse.IsWheelUp">
+本帧滚轮是否上滚。用在 `if` 里。
+
+```text
+0E10 IS_MOUSE_WHEEL_UP
+```
+
+```lua
+if isMouseWheelUp() then
+end
+```
+
+```js
+if (Mouse.isWheelUp()) {
+}
+```
+</Opcode>
+
+## 滚轮下
+
+<Opcode id="0E11" name="IS_MOUSE_WHEEL_DOWN" member="Mouse.IsWheelDown">
+本帧滚轮是否下滚。用在 `if` 里。
+
+```text
+0E11 IS_MOUSE_WHEEL_DOWN
+```
+
+```lua
+if isMouseWheelDown() then
+end
+```
+
+```js
+if (Mouse.isWheelDown()) {
+}
+```
+</Opcode>
+
+## 灵敏度
+
+<Opcode id="0E23" name="GET_MOUSE_SENSIBILITY" member="Mouse.GetSensibility">
+选项里的鼠标灵敏度。
+
+```text
+0E23 GET_MOUSE_SENSIBILITY
+out: sensibility
+```
+
+```lua
+local s = getMouseSensibility()
+```
+
+```js
+const sensibility = Mouse.getSensibility()
+```
+</Opcode>

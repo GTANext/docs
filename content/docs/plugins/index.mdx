@@ -1,0 +1,261 @@
+---
+title: 综述
+description: plugin-sdk ASI 精选文档入口、覆盖边界与可抄组合示例
+---
+
+plugin-sdk 的 **ASI 高频精选**。对着本地头文件写，本站不替代完整源码树。
+
+单页结构约定：模块说明 → 功能小节 → 说明 + 签名 + 调用。下面提供可直接抄的组合示例；单个 API 见侧栏各页。
+
+<Callout type="warn" title="别混">
+C++ ASI 在本区。CLEO / CLEO+ 的 **opcode 调用**（Lua / Redux，`0A8C` 一类）见 [CLEO](/docs/cleo)。
+</Callout>
+
+## 覆盖范围
+
+| 状态 | 内容 |
+|---|---|
+| **已收录** | 核心 / 扩展 / 工具 / Extender / 实体 / [组合](/docs/plugins/recipes) |
+| **边界** | Task/Event 全家桶、全 `CAE*`、VC/III 游戏类全文、`ScriptCommands` 全枚举 **不扩** |
+| **未收录** | `game_sa` 长尾头；`injector` / `hooking` / `safetyhook` 底层栈 |
+
+仓库：[DK22Pac/plugin-sdk](https://github.com/DK22Pac/plugin-sdk)
+
+```cpp
+#include "plugin.h"
+```
+
+| 宏 | 含义 |
+|---|---|
+| `GTA3` / `GTAVC` / `GTASA` | 当前编译目标游戏 |
+| `BY_GAME(iii, vc, sa)` | 三端各取一值 |
+
+## 导航
+
+<Cards>
+  <Card title="PluginBase / Call" href="/docs/plugins/plugin-base" description="Call · CallDyn · Method · VMT 与选型表" />
+  <Card title="Events" href="/docs/plugins/events" description="生命周期回调（SA 为主）" />
+  <Card title="Patch" href="/docs/plugins/patch" description="内存读写与重定向" />
+  <Card title="Pattern" href="/docs/plugins/pattern" description="特征码定位" />
+  <Card title="Command" href="/docs/plugins/commands" description="C++ 调 SCM 命令" />
+  <Card title="扩展" href="/docs/plugins/extensions" description="路径 / 屏幕 / Config / KeyCheck" />
+  <Card title="工具" href="/docs/plugins/utils" description="精灵 / 音频 / 着色器等" />
+  <Card title="Extender" href="/docs/plugins/extender" description="Ped / Vehicle / Object 附加数据" />
+  <Card title="实体" href="/docs/plugins/entities" description="SA 游戏类 API 综述" />
+  <Card title="组合" href="/docs/plugins/recipes" description="可抄组合示例" />
+</Cards>
+
+## 最小 ASI
+
+全局构造里 **只注册回调**。真正碰游戏对象，放到事件回调内。
+
+```cpp
+#include "plugin.h"
+
+class Minimal {
+public:
+    Minimal() {
+        plugin::Events::initRwEvent += [] {};
+        plugin::Events::processScriptsEvent += [] {};
+        plugin::Events::drawingEvent += [] {};
+    }
+} g_minimal;
+```
+
+## 热键边沿 + 满血
+
+先 `KeyCheck::Update()`，再用 `CheckJustDown` 取边沿；玩家指针务必判空。
+
+```cpp
+#include "plugin.h"
+#include "common.h"
+#include "extensions/KeyCheck.h"
+
+static bool g_god = false;
+
+class Hotkey {
+public:
+    Hotkey() {
+        plugin::Events::processScriptsEvent += [] {
+            KeyCheck::Update();
+            if (KeyCheck::CheckJustDown('G')) {
+                g_god = !g_god;
+            }
+            CPed* ped = FindPlayerPed();
+            if (!ped) {
+                return;
+            }
+            if (g_god) {
+                ped->m_fHealth = ped->m_fMaxHealth;
+            }
+        };
+    }
+} g_hotkey;
+```
+
+## 给武器
+
+在逻辑帧里发武器；模型与枚举以头文件为准。
+
+```cpp
+#include "eWeaponType.h"
+#include "extensions/KeyCheck.h"
+
+plugin::Events::processScriptsEvent += [] {
+    KeyCheck::Update();
+    if (!KeyCheck::CheckJustDown(VK_F6)) {
+        return;
+    }
+    CPed* ped = FindPlayerPed();
+    if (!ped) {
+        return;
+    }
+    ped->GiveWeapon(WEAPONTYPE_M4, 999, true);
+    ped->SetCurrentWeapon(WEAPONTYPE_M4);
+};
+```
+
+## Command 刷车
+
+模型是异步的：`REQUEST` → 每帧 `HAS_MODEL_LOADED` → `CREATE` → `MARK_MODEL_AS_NO_LONGER_NEEDED`。同帧请求再创建通常会挂。
+
+```cpp
+#include "extensions/ScriptCommands.h"
+#include "CWorld.h"
+
+static int g_model = 411;
+static bool g_wait = false;
+
+// 开始：g_wait = true; Command REQUEST_MODEL(g_model)
+// 在 processScriptsEvent 中：
+if (g_wait && plugin::Command<plugin::Commands::HAS_MODEL_LOADED>(g_model)) {
+    CPed* ped = FindPlayerPed();
+    if (ped) {
+        CVector pos = ped->GetPosition();
+        pos.x += 5.0f;
+        pos.z = CWorld::FindGroundZForCoord(pos.x, pos.y) + 1.0f;
+        int car = -1;
+        plugin::Command<plugin::Commands::CREATE_CAR>(g_model, pos.x, pos.y, pos.z, &car);
+        plugin::Command<plugin::Commands::MARK_MODEL_AS_NO_LONGER_NEEDED>(g_model);
+        if (car != -1) {
+            plugin::Command<plugin::Commands::WARP_CHAR_INTO_CAR>(ped, car);
+        }
+    }
+    g_wait = false;
+}
+```
+
+## patch 可逆开关
+
+改数值前用 `GetFloat` 备份；关闭时写回备份，不要写死「原值」。
+
+```cpp
+static float g_old = 0.0f;
+static bool g_saved = false;
+static bool g_on = false;
+
+void set_fast(bool on) {
+    uintptr_t addr = 0x8D2458; // 示例地址，按版本核对
+    if (on) {
+        if (!g_saved) {
+            g_old = plugin::patch::GetFloat(addr);
+            g_saved = true;
+        }
+        plugin::patch::SetFloat(addr, 0.1f);
+    } else if (g_saved) {
+        plugin::patch::SetFloat(addr, g_old);
+    }
+    g_on = on;
+}
+```
+
+## SetRaw 备份还原
+
+改代码字节同样：先 `GetRaw` 进缓冲，关闭时只写回缓冲。
+
+```cpp
+static uint8_t g_backup[5]{};
+static bool g_has = false;
+
+void apply(bool on) {
+    uintptr_t addr = 0x6F8C2A;
+    if (on) {
+        if (!g_has) {
+            plugin::patch::GetRaw(addr, g_backup, 5);
+            g_has = true;
+        }
+        uint8_t nops[5] = {0x90, 0x90, 0x90, 0x90, 0x90};
+        plugin::patch::SetRaw(addr, nops, 5);
+    } else if (g_has) {
+        plugin::patch::SetRaw(addr, g_backup, 5);
+    }
+}
+```
+
+## PedExtendedData
+
+每行人一份附加数据；配合 Extender（后续文档页）。
+
+```cpp
+#include "extender/PedExtender.h"
+
+struct Data {
+    int n;
+    explicit Data(CPed*) : n(0) {}
+};
+plugin::PedExtendedData<Data> g_data;
+
+plugin::Events::processScriptsEvent += [] {
+    CPed* ped = FindPlayerPed();
+    if (!ped) {
+        return;
+    }
+    g_data.Get(ped).n++;
+};
+```
+
+## 贴图与设备丢失
+
+`shutdownRw` / `d3dLost` 释放，`d3dReset` / 合适的 init 再加载。
+
+```cpp
+#include "SpriteLoader.h"
+
+static plugin::SpriteLoader g_spr;
+
+class Ui {
+public:
+    Ui() {
+        auto load = [] {
+            g_spr.LoadAllSpritesFromFolder(PLUGIN_PATH("ui"));
+        };
+        auto clear = [] {
+            g_spr.Clear();
+        };
+        plugin::Events::initRwEvent += load;
+        plugin::Events::shutdownRwEvent += clear;
+        plugin::Events::d3dLostEvent += clear;
+        plugin::Events::d3dResetEvent += load;
+    }
+} g_ui;
+```
+
+## 推荐阅读顺序
+
+<Steps>
+  <Step>
+    本页最小 ASI + 热键示例，确认工程能加载
+  </Step>
+  <Step>
+    [Events](/docs/plugins/events) 弄清回调该挂在哪一帧
+  </Step>
+  <Step>
+    需要调游戏函数时看 [PluginBase / Call](/docs/plugins/plugin-base)
+  </Step>
+  <Step>
+    改内存 / 找地址： [Patch](/docs/plugins/patch)、[Pattern](/docs/plugins/pattern)
+  </Step>
+  <Step>
+    走脚本命令： [Command](/docs/plugins/commands)
+  </Step>
+</Steps>

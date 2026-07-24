@@ -1,0 +1,199 @@
+---
+title: 过场 Cutscene
+description: 过场加载 / 播放 / 偏移
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 10 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 设偏移
+
+<Opcode id="0244" name="SET_CUTSCENE_OFFSET" member="Cutscene.SetOffset">
+设过场偏移原点。
+
+```text
+0244 SET_CUTSCENE_OFFSET
+in: x, y, z
+```
+
+```lua
+setCutsceneOffset(x, y, z)
+```
+
+```js
+Cutscene.setOffset(x, y, z)
+```
+</Opcode>
+
+## 加载
+
+<Opcode id="02E4" name="LOAD_CUTSCENE" member="Cutscene.Load">
+加载指定过场数据。
+
+```text
+02E4 LOAD_CUTSCENE
+in: name
+```
+
+```lua
+loadCutscene(name)
+```
+
+```js
+Cutscene.load(name)
+```
+</Opcode>
+
+## 开始
+
+<Opcode id="02E7" name="START_CUTSCENE" member="Cutscene.Start">
+开始播放已加载过场（`02E4`）。
+
+```text
+02E7 START_CUTSCENE
+```
+
+```lua
+startCutscene()
+```
+
+```js
+Cutscene.start()
+```
+</Opcode>
+
+## 播放时间
+
+<Opcode id="02E8" name="GET_CUTSCENE_TIME" member="Cutscene.GetTime">
+过场开始后经过的毫秒数。
+
+```text
+02E8 GET_CUTSCENE_TIME
+out: time
+```
+
+```lua
+local t = getCutsceneTime()
+```
+
+```js
+const time = Cutscene.getTime()
+```
+</Opcode>
+
+## 是否播完
+
+<Opcode id="02E9" name="HAS_CUTSCENE_FINISHED" member="Cutscene.HasFinished">
+过场是否播完。用在 `if` 里。
+
+```text
+02E9 HAS_CUTSCENE_FINISHED
+```
+
+```lua
+if hasCutsceneFinished() then
+end
+```
+
+```js
+if (Cutscene.hasFinished()) {
+}
+```
+</Opcode>
+
+## 清除
+
+<Opcode id="02EA" name="CLEAR_CUTSCENE" member="Cutscene.Clear">
+结束当前过场并释放内存。
+
+```text
+02EA CLEAR_CUTSCENE
+```
+
+```lua
+clearCutscene()
+```
+
+```js
+Cutscene.clear()
+```
+</Opcode>
+
+## 是否跳过
+
+<Opcode id="056A" name="WAS_CUTSCENE_SKIPPED" member="Cutscene.WasSkipped">
+玩家是否跳过了过场。用在 `if` 里。
+
+```text
+056A WAS_CUTSCENE_SKIPPED
+```
+
+```lua
+if wasCutsceneSkipped() then
+end
+```
+
+```js
+if (Cutscene.wasSkipped()) {
+}
+```
+</Opcode>
+
+## 是否加载完
+
+<Opcode id="06B9" name="HAS_CUTSCENE_LOADED" member="Cutscene.HasLoaded">
+过场数据是否加载完成。用在 `if` 里。
+
+```text
+06B9 HAS_CUTSCENE_LOADED
+```
+
+```lua
+if hasCutsceneLoaded() then
+end
+```
+
+```js
+if (Cutscene.hasLoaded()) {
+}
+```
+</Opcode>
+
+## 取偏移
+
+<Opcode id="08D1" name="GET_CUTSCENE_OFFSET" member="Cutscene.GetOffset">
+取当前已加载过场的偏移。
+
+```text
+08D1 GET_CUTSCENE_OFFSET
+out: xOffset, yOffset, zOffset
+```
+
+```lua
+local x, y, z = getCutsceneOffset()
+```
+
+```js
+const { xOffset, yOffset, zOffset } = Cutscene.getOffset()
+```
+</Opcode>
+
+## 追加到下一过场
+
+<Opcode id="08F0" name="APPEND_TO_NEXT_CUTSCENE" member="Cutscene.AppendToNext">
+把物体名 / 动画名追加到下一过场。
+
+```text
+08F0 APPEND_TO_NEXT_CUTSCENE
+in: objectName, animName
+```
+
+```lua
+appendToNextCutscene(objectName, animName)
+```
+
+```js
+Cutscene.appendToNext(objectName, animName)
+```
+</Opcode>

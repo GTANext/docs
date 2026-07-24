@@ -1,0 +1,66 @@
+---
+title: 音频 Audio
+description: SFX/电台音量与 AudioStream 内部引用
+---
+
+`sa` · 扩展 `CLEO+` · 需 CLEO + CLEO+
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。更完整的流式音频见 [ext/audio](/docs/cleo/sa/ext/audio)。
+
+## SFX 音量
+
+<Opcode id="0E21" name="GET_AUDIO_SFX_VOLUME" member="Audio.GetSfxVolume">
+选项里的 SFX 音量。
+
+```text
+0E21 GET_AUDIO_SFX_VOLUME
+out: volume
+```
+
+```lua
+local v = getAudioSfxVolume()
+```
+
+```js
+const volume = Audio.getSfxVolume()
+```
+</Opcode>
+
+## 电台音量
+
+<Opcode id="0E22" name="GET_AUDIO_RADIO_VOLUME" member="Audio.GetRadioVolume">
+选项里的电台音量。
+
+```text
+0E22 GET_AUDIO_RADIO_VOLUME
+out: volume
+```
+
+```lua
+local v = getAudioRadioVolume()
+```
+
+```js
+const volume = Audio.getRadioVolume()
+```
+</Opcode>
+
+## AudioStream 内部
+
+<Opcode id="0E3B" name="GET_AUDIOSTREAM_INTERNAL" member="AudioStream.GetInternal">
+取 AudioStream 内部引用，给 bass.dll 一类底层调用。
+
+```text
+0E3B GET_AUDIOSTREAM_INTERNAL
+in: self
+out: address
+```
+
+```lua
+local bassRef = getAudiostreamInternal(stream)
+```
+
+```js
+const address = AudioStream.getInternal(self)
+```
+</Opcode>

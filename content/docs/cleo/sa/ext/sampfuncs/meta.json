@@ -1,0 +1,32 @@
+{
+  "title": "SAMPFUNCS",
+  "pages": [
+    "index",
+    "car",
+    "char",
+    "object",
+    "pickup",
+    "sampbitstream",
+    "sampchat",
+    "sampchatinput",
+    "sampclient",
+    "samplocalchatcmd",
+    "sampmyplayer",
+    "sampplayer",
+    "sampraknet",
+    "samptextdraw",
+    "samptextlabel3d",
+    "sf",
+    "sfconsole",
+    "sfd3d",
+    "sfd3dfont",
+    "sfd3dtexture",
+    "sfdownload",
+    "sfdxutdialog",
+    "sfgfunc",
+    "sfgvar",
+    "sfscript",
+    "sftimer",
+    "misc"
+  ]
+}

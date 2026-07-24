@@ -1,0 +1,123 @@
+---
+title: 全局函数 SfGFunc
+description: 自定义全局函数注册与调用
+---
+
+`sa` · 扩展 `SAMPFUNCS` · 仅 SA-MP；需 SAMPFUNCS
+
+共 6 条。调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 注册 / 调用 / 返回
+
+<Opcode id="0C34" name="SF_REGISTER_CUSTOM_GLOBAL_FUNCTION" member="SfGFunc.Register">
+注册自定义全局函数名，供其他脚本用 `SF_CALL_CUSTOM_GLOBAL_FUNCTION` 调用。用在 `if` 里。
+
+```text
+0C34 SF_REGISTER_CUSTOM_GLOBAL_FUNCTION
+in: name, label
+```
+
+```lua
+if sfRegisterCustomGlobalFunction(name, label) then
+end
+```
+
+```js
+if (SfGFunc.Register(name, label)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C35" name="SF_CALL_CUSTOM_GLOBAL_FUNCTION" member="SfGFunc.Call">
+按名称调用已注册的自定义全局函数。用在 `if` 里。
+
+```text
+0C35 SF_CALL_CUSTOM_GLOBAL_FUNCTION
+in: name, numArgs, args
+```
+
+```lua
+if sfCallCustomGlobalFunction(name, numArgs, args) then
+end
+```
+
+```js
+if (SfGFunc.Call(name, numArgs, args)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C36" name="SF_CUSTOM_GLOBAL_FUNCTION_RETURN" member="SfGFunc.Return">
+从自定义全局函数返回到调用后下一条指令，可附带返回值。用在 `if` 里。
+
+```text
+0C36 SF_CUSTOM_GLOBAL_FUNCTION_RETURN
+in: numRet, retParams
+```
+
+```lua
+if sfCustomGlobalFunctionReturn(numRet, retParams) then
+end
+```
+
+```js
+if (SfGFunc.Return(numRet, retParams)) {
+}
+```
+</Opcode>
+
+## 查询 / 注销
+
+<Opcode id="0C37" name="SF_IS_CUSTOM_GLOBAL_FUNCTION_REGISTERED" member="SfGFunc.IsRegistered">
+若指定名称已注册为自定义全局函数则为真。
+
+```text
+0C37 SF_IS_CUSTOM_GLOBAL_FUNCTION_REGISTERED
+in: name
+```
+
+```lua
+if sfIsCustomGlobalFunctionRegistered(name) then
+end
+```
+
+```js
+if (SfGFunc.IsRegistered(name)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C38" name="SF_CUSTOM_GLOBAL_FUNCTION_GET_ORIGIN" member="SfGFunc.GetOrigin">
+返回指定名称自定义全局函数的来源信息。
+
+```text
+0C38 SF_CUSTOM_GLOBAL_FUNCTION_GET_ORIGIN
+in: name
+out: hostThreadAddress, functionAddress
+```
+
+```lua
+local hostThreadAddress, functionAddress = sfCustomGlobalFunctionGetOrigin(name)
+```
+
+```js
+const { hostThreadAddress, functionAddress } = SfGFunc.GetOrigin(name)
+```
+</Opcode>
+
+<Opcode id="0C39" name="SF_UNREGISTER_CUSTOM_GLOBAL_FUNCTION" member="SfGFunc.Unregister">
+注销已注册的自定义全局函数，名称可再注册。
+
+```text
+0C39 SF_UNREGISTER_CUSTOM_GLOBAL_FUNCTION
+in: name
+```
+
+```lua
+sfUnregisterCustomGlobalFunction(name)
+```
+
+```js
+SfGFunc.Unregister(name)
+```
+</Opcode>

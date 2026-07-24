@@ -1,0 +1,61 @@
+---
+title: 综述
+description: 脚本侧 opcode 调用文档入口
+---
+
+脚本侧 **opcode 调用** 文档。
+
+源数据：[sanny-builder-library](https://github.com/sannybuilder/library)（`sa.json` / docs / snippets）。
+
+OP · CLEO Lua · CLEO Redux **同源** SBL Script 表，不是外站另一套 API。
+
+<Callout type="warn" title="与插件的边界">
+这里是 **opcode**（Lua / Redux / OP 文本）。C++ 的 `plugin::Command` 见 [插件 · Command](/docs/plugins/commands)。
+</Callout>
+
+## 本站覆盖
+
+| 状态 | 内容 |
+|---|---|
+| **语法** | [OP / Lua](/docs/cleo/syntax) · [Redux](/docs/cleo/syntax-redux) |
+| **已齐 · SA** | CLEO 类型页 · [default](/docs/cleo/sa/default)（含 misc 879）· [CLEO+](/docs/cleo/sa/plus) · [扩展](/docs/cleo/sa/ext) |
+| **已齐 · VC / III** | [VC](/docs/cleo/vc) · [GTA III](/docs/cleo/gta3) |
+| **未收录** | `native.json` Code 全文 |
+| **别混** | C++ ASI 在 [插件](/docs/plugins) |
+
+完整表仍以 [library.sannybuilder.com](https://library.sannybuilder.com/#/sa) 为准。
+
+## 怎么读
+
+```
+装 CLEO（+ 需要时 CLEO+ / 扩展）
+  → 写 .lua 或 Redux 脚本
+  → 调本站按表列出的 op
+```
+
+| 页 | 内容 |
+|---|---|
+| [语法 · OP / Lua](/docs/cleo/syntax) | 三种形态、Lua 约定 |
+| [语法 · Redux](/docs/cleo/syntax-redux) | JS 调用、`enums.js`、native 边界 |
+| [SA · Memory](/docs/cleo/sa/memory) | 读写内存、指针、调用原生 |
+| [SA · default](/docs/cleo/sa/default) | SCM 原生按 class |
+| [SA · CLEO+](/docs/cleo/sa/plus) | CLEO+ 扩展 |
+| [SA · 其它扩展](/docs/cleo/sa/ext) | NewOpcodes / SAMPFUNCS / imgui… |
+| [VC](/docs/cleo/vc) | Vice City CLEO 类型页 |
+| [GTA III](/docs/cleo/gta3) | III CLEO 类型页 |
+
+## 分工
+
+```
+plugins/  → ASI + plugin-sdk
+cleo/     → opcode（OP + Lua + Redux 调用形态）
+```
+
+## 导航
+
+<Cards>
+  <Card title="OP / Lua 语法" href="/docs/cleo/syntax" description="三种形态与 Lua 约定" />
+  <Card title="Redux 语法" href="/docs/cleo/syntax-redux" description="Class.member / native" />
+  <Card title="Memory" href="/docs/cleo/sa/memory" description="读写内存与原生调用" />
+  <Card title="插件" href="/docs/plugins" description="C++ ASI 侧" />
+</Cards>

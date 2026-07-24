@@ -1,0 +1,100 @@
+---
+title: 时段光 CTimeCycle
+description: 时段光照、雾与额外色
+---
+
+`CTimeCycle.h`
+
+时段光照、雾、远裁、天空色。改当前色要懂插值，否则闪。
+
+## 当前颜色集
+
+<Api name="m_CurrentColours">
+当前插值结果。读环境光 / 天空常用。
+
+```cpp
+static CColourSet& m_CurrentColours;
+```
+
+```cpp
+// 字段名见 CColourSet；如 ambient / sky 等
+```
+</Api>
+
+## 读环境光
+
+<Api name="GetAmbientRed / Green / Blue">
+
+```cpp
+static float GetAmbientRed();
+static float GetAmbientGreen();
+static float GetAmbientBlue();
+static float GetAmbientRed_Obj();
+static float GetAmbientGreen_Obj();
+static float GetAmbientBlue_Obj();
+```
+
+```cpp
+float ar = CTimeCycle::GetAmbientRed();
+```
+</Api>
+
+## 额外色
+
+<Api name="StartExtraColour / StopExtraColour">
+室内 / 特殊场景染色。
+
+```cpp
+static void StartExtraColour(int colour, bool bNoExtraColorInterior);
+static void StopExtraColour(bool bNoExtraColorInterior);
+static int& m_ExtraColour;
+static unsigned int& m_bExtraColourOn;
+```
+
+```cpp
+// CTimeCycle::StartExtraColour(id, false);
+// CTimeCycle::StopExtraColour(false);
+```
+</Api>
+
+## 太阳方向
+
+<Api name="m_VectorToSun / m_vecDirnLightToSun">
+影子方向相关。
+
+```cpp
+static CVector* m_VectorToSun; // [16]
+static RwV3d& m_vecDirnLightToSun;
+```
+
+```cpp
+// CVector sun = CTimeCycle::m_VectorToSun[CTimeCycle::m_CurrentStoredValue];
+```
+</Api>
+
+## 盒区域
+
+<Api name="AddOne / FindTimeCycleBox">
+区域覆盖远裁 / 额外色。
+
+```cpp
+static void AddOne(CBox& box, short farclip, int extracolor, float strength, float falloff, float lodDistMult);
+static void FindTimeCycleBox(CVector pos, CTimeCycleBox** outbox, float* interpolation, bool bCheckLod, bool bCheckFar, CTimeCycleBox* exclude);
+static CTimeCycleBox* m_aBoxes;
+static unsigned int& m_NumBoxes;
+```
+</Api>
+
+## 表数据
+
+<Api name="m_nAmbientRed / m_fFarClip">
+按天气 × 小时表。直接改表影响全局，务必备份。
+
+```cpp
+static unsigned char* m_nAmbientRed;
+static unsigned char* m_nSkyTopRed;
+static signed short* m_fFarClip;
+static signed short* m_fFogStart;
+// 同结构多通道见头文件
+```
+</Api>

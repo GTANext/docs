@@ -1,0 +1,105 @@
+---
+title: 火焰 CFireManager
+description: 点灭火与脚本火
+---
+
+`CFireManager.h` · 全局 `gFireManager`
+
+逻辑帧点 / 灭火。最多 `MAX_NUM_FIRES`（60）。
+
+## 全局管理器
+
+<Api name="gFireManager / m_aFires">
+
+```cpp
+extern CFireManager& gFireManager;
+// CFire m_aFires[60];
+```
+
+```cpp
+#include "CFireManager.h"
+// 用 gFireManager
+```
+</Api>
+
+## 坐标起火
+
+<Api name="StartFire（坐标）">
+`time` 持续时间相关；`numGenerations` 蔓延代数。
+
+```cpp
+CFire* StartFire(CVector point, float size, unsigned char arg2, CEntity* creator,
+    unsigned int time, signed char numGenerations, unsigned char arg6);
+```
+
+```cpp
+CVector p = FindPlayerCoors();
+CFire* f = gFireManager.StartFire(p, 0.8f, 0, nullptr, 7000, 0, 0);
+```
+</Api>
+
+## 实体着火
+
+<Api name="StartFire（实体）">
+挂在 ped / 车 / 物体上。
+
+```cpp
+CFire* StartFire(CEntity* target, CEntity* creator, float size, unsigned char arg3,
+    unsigned int time, signed char numGenerations);
+```
+
+```cpp
+CPed* ped = FindPlayerPed();
+if (ped) {
+    gFireManager.StartFire(ped, nullptr, 0.8f, 0, 7000, 0);
+}
+```
+</Api>
+
+## 脚本火
+
+<Api name="StartScriptFire / RemoveScriptFire">
+
+```cpp
+int StartScriptFire(CVector const& point, CEntity* target, float arg2, unsigned char arg3,
+    signed char numGenerations, int size);
+void RemoveScriptFire(short fireIndex);
+bool IsScriptFireExtinguished(short fireIndex);
+void RemoveAllScriptFires();
+```
+
+```cpp
+int id = gFireManager.StartScriptFire(p, nullptr, 0.0f, 0, 0, 1);
+// gFireManager.RemoveScriptFire(id);
+```
+</Api>
+
+## 区域灭火
+
+<Api name="ExtinguishPoint / ExtinguishPointWithWater">
+
+```cpp
+void ExtinguishPoint(CVector point, float range);
+bool ExtinguishPointWithWater(CVector point, float range, float fireSizeMp);
+```
+
+```cpp
+gFireManager.ExtinguishPoint(p, 20.0f);
+```
+</Api>
+
+## 查附近火
+
+<Api name="FindNearestFire / GetNumFiresInRange">
+
+```cpp
+CFire* FindNearestFire(CVector const& position, bool notBeingExtinguished, bool notScript);
+unsigned int GetNumFiresInRange(CVector* point, float range);
+unsigned int GetNumFiresInArea(float cornerA_x, float cornerA_y, float cornerA_z,
+    float cornerB_x, float cornerB_y, float cornerB_z);
+```
+
+```cpp
+CFire* near = gFireManager.FindNearestFire(p, true, false);
+```
+</Api>

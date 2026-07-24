@@ -1,0 +1,142 @@
+---
+title: 载具生成 CarGenerator
+description: 停车生成器
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 7 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 创建
+
+<Opcode id="014B" name="CREATE_CAR_GENERATOR" member="CarGenerator.Create">
+创建停车生成器（`modelId` -1 用本地 popcycle 随机车）。
+
+```text
+014B CREATE_CAR_GENERATOR
+in: x, y, z, heading, modelId, primaryColor, secondaryColor, forceSpawn, alarmChance, doorLockChance, minDelay, maxDelay
+out: handle
+```
+
+```lua
+local handle = createCarGenerator(x, y, z, heading, modelId, primaryColor, secondaryColor, forceSpawn, alarmChance, doorLockChance, minDelay, maxDelay)
+```
+
+```js
+const handle = CarGenerator.create(x, y, z, heading, modelId, primaryColor, secondaryColor, forceSpawn, alarmChance, doorLockChance, minDelay, maxDelay)
+```
+</Opcode>
+
+## 开关次数
+
+<Opcode id="014C" name="SWITCH_CAR_GENERATOR" member="CarGenerator.Switch">
+生成次数（101 = 无限）。
+
+```text
+014C SWITCH_CAR_GENERATOR
+in: self, amount
+```
+
+```lua
+switchCarGenerator(self, amount)
+```
+
+```js
+CarGenerator.switch(self, amount)
+```
+</Opcode>
+
+## 禁用车模
+
+<Opcode id="0732" name="SUPPRESS_CAR_MODEL" member="CarGenerator.SuppressCarModel">
+禁止该车模被停车生成器刷出。
+
+```text
+0732 SUPPRESS_CAR_MODEL
+in: model
+```
+
+```lua
+suppressCarModel(model)
+```
+
+```js
+CarGenerator.suppressCarModel(model)
+```
+</Opcode>
+
+## 允许车模
+
+<Opcode id="0733" name="DONT_SUPPRESS_CAR_MODEL" member="CarGenerator.DontSuppressCarModel">
+允许该车模再被生成器刷出。
+
+```text
+0733 DONT_SUPPRESS_CAR_MODEL
+in: modelId
+```
+
+```lua
+dontSuppressCarModel(modelId)
+```
+
+```js
+CarGenerator.dontSuppressCarModel(modelId)
+```
+</Opcode>
+
+## 清空禁用
+
+<Opcode id="0734" name="DONT_SUPPRESS_ANY_CAR_MODELS" member="CarGenerator.DontSuppressAnyCarModels">
+清空生成器禁用车模列表。
+
+```text
+0734 DONT_SUPPRESS_ANY_CAR_MODELS
+```
+
+```lua
+dontSuppressAnyCarModels()
+```
+
+```js
+CarGenerator.dontSuppressAnyCarModels()
+```
+</Opcode>
+
+## 带车牌创建
+
+<Opcode id="09E2" name="CREATE_CAR_GENERATOR_WITH_PLATE" member="CarGenerator.CreateWithPlate">
+带车牌的停车生成器（`modelId` -1 随机）。
+
+```text
+09E2 CREATE_CAR_GENERATOR_WITH_PLATE
+in: x, y, z, heading, modelId, primaryColor, secondaryColor, forceSpawn, alarmChance, doorLockChance, minDelay, maxDelay, plateName
+out: handle
+```
+
+```lua
+local handle = createCarGeneratorWithPlate(x, y, z, heading, modelId, primaryColor, secondaryColor, forceSpawn, alarmChance, doorLockChance, minDelay, maxDelay, plateName)
+```
+
+```js
+const handle = CarGenerator.createWithPlate(x, y, z, heading, modelId, primaryColor, secondaryColor, forceSpawn, alarmChance, doorLockChance, minDelay, maxDelay, plateName)
+```
+</Opcode>
+
+## 已拥有标记
+
+<Opcode id="0A17" name="SET_HAS_BEEN_OWNED_FOR_CAR_GENERATOR" member="CarGenerator.SetHasBeenOwned">
+从该生成器上车是否不因附近警察立刻通缉。
+
+```text
+0A17 SET_HAS_BEEN_OWNED_FOR_CAR_GENERATOR
+in: self, state
+```
+
+```lua
+setHasBeenOwnedForCarGenerator(self, state)
+```
+
+```js
+CarGenerator.setHasBeenOwned(self, state)
+```
+</Opcode>

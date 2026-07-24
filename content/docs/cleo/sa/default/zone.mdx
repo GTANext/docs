@@ -1,0 +1,316 @@
+---
+title: 区域 Zone
+description: 区域人口 / 帮派
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 16 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 区随机角色
+
+<Opcode id="02DD" name="GET_RANDOM_CHAR_IN_ZONE" member="Zone.GetRandomChar">
+在区内按 ped 类型过滤取随机角色。
+
+```text
+02DD GET_RANDOM_CHAR_IN_ZONE
+in: zone, civilian, gang, criminalOrProstitute
+out: handle
+```
+
+```lua
+local handle = getRandomCharInZone(zone, civilian, gang, criminalOrProstitute)
+```
+
+```js
+const handle = Zone.getRandomChar(zone, civilian, gang, criminalOrProstitute)
+```
+</Opcode>
+
+## 人口类型
+
+<Opcode id="0767" name="SET_ZONE_POPULATION_TYPE" member="Zone.SetPopulationType">
+设区人口类型（对照 popcycle.dat）。
+
+```text
+0767 SET_ZONE_POPULATION_TYPE
+in: zone, type
+```
+
+```lua
+setZonePopulationType(zone, type)
+```
+
+```js
+Zone.setPopulationType(zone, type)
+```
+</Opcode>
+
+## 毒贩强度
+
+<Opcode id="076A" name="SET_ZONE_DEALER_STRENGTH" member="Zone.SetDealerStrength">
+设区内毒贩数量强度。
+
+```text
+076A SET_ZONE_DEALER_STRENGTH
+in: zone, strength
+```
+
+```lua
+setZoneDealerStrength(zone, strength)
+```
+
+```js
+Zone.setDealerStrength(zone, strength)
+```
+</Opcode>
+
+## 取毒贩密度
+
+<Opcode id="076B" name="GET_ZONE_DEALER_STRENGTH" member="Zone.GetDealerStrength">
+取区毒贩密度。
+
+```text
+076B GET_ZONE_DEALER_STRENGTH
+in: zone
+out: density
+```
+
+```lua
+local density = getZoneDealerStrength(zone)
+```
+
+```js
+const density = Zone.getDealerStrength(zone)
+```
+</Opcode>
+
+## 帮派强度
+
+<Opcode id="076C" name="SET_ZONE_GANG_STRENGTH" member="Zone.SetGangStrength">
+设区帮派成员密度。
+
+```text
+076C SET_ZONE_GANG_STRENGTH
+in: zoneId, gangId, density
+```
+
+```lua
+setZoneGangStrength(zoneId, gangId, density)
+```
+
+```js
+Zone.setGangStrength(zoneId, gangId, density)
+```
+</Opcode>
+
+## 取帮派密度
+
+<Opcode id="076D" name="GET_ZONE_GANG_STRENGTH" member="Zone.GetGangStrength">
+取区帮派密度。
+
+```text
+076D GET_ZONE_GANG_STRENGTH
+in: zone, gangId
+out: density
+```
+
+```lua
+local density = getZoneGangStrength(zone, gangId)
+```
+
+```js
+const density = Zone.getGangStrength(zone, gangId)
+```
+</Opcode>
+
+## 区 GXT
+
+<Opcode id="0843" name="GET_NAME_OF_ZONE" member="Zone.GetTextKey">
+坐标所在区的 GXT 键。
+
+```text
+0843 GET_NAME_OF_ZONE
+in: x, y, z
+out: key
+```
+
+```lua
+local key = getNameOfZone(x, y, z)
+```
+
+```js
+const key = Zone.getTextKey(x, y, z)
+```
+</Opcode>
+
+## 人口种族
+
+<Opcode id="0874" name="SET_ZONE_POPULATION_RACE" member="Zone.SetPopulationRace">
+设区人口种族组成。
+
+```text
+0874 SET_ZONE_POPULATION_RACE
+in: zone, races
+```
+
+```lua
+setZonePopulationRace(zone, races)
+```
+
+```js
+Zone.setPopulationRace(zone, races)
+```
+</Opcode>
+
+## 帮派战争训练区
+
+<Opcode id="08B3" name="SET_ZONE_FOR_GANG_WARS_TRAINING" member="Zone.SetForGangWarsTraining">
+仅该区可触发帮派战争（训练用）。
+
+```text
+08B3 SET_ZONE_FOR_GANG_WARS_TRAINING
+in: zone
+```
+
+```lua
+setZoneForGangWarsTraining(zone)
+```
+
+```js
+Zone.setForGangWarsTraining(zone)
+```
+</Opcode>
+
+## 重置人口设置
+
+<Opcode id="08CA" name="INIT_ZONE_POPULATION_SETTINGS" member="Zone.InitPopulationSettings">
+重置区信息改动。
+
+```text
+08CA INIT_ZONE_POPULATION_SETTINGS
+```
+
+```lua
+initZonePopulationSettings()
+```
+
+```js
+Zone.initPopulationSettings()
+```
+</Opcode>
+
+## 当前人口类型
+
+<Opcode id="08D3" name="GET_CURRENT_POPULATION_ZONE_TYPE" member="Zone.GetCurrentPopulationZoneType">
+玩家当前区的人口类型。
+
+```text
+08D3 GET_CURRENT_POPULATION_ZONE_TYPE
+out: type
+```
+
+```lua
+local type = getCurrentPopulationZoneType()
+```
+
+```js
+const type = Zone.getCurrentPopulationZoneType()
+```
+</Opcode>
+
+## info 区名
+
+<Opcode id="08F1" name="GET_NAME_OF_INFO_ZONE" member="Zone.GetName">
+坐标所在 info 区名称。
+
+```text
+08F1 GET_NAME_OF_INFO_ZONE
+in: x, y, z
+out: name
+```
+
+```lua
+local name = getNameOfInfoZone(x, y, z)
+```
+
+```js
+const name = Zone.getName(x, y, z)
+```
+</Opcode>
+
+## 触发帮派战争
+
+<Opcode id="090C" name="SET_SPECIFIC_ZONE_TO_TRIGGER_GANG_WAR" member="Zone.SetTriggerGangWar">
+指定区可触发帮派战争。
+
+```text
+090C SET_SPECIFIC_ZONE_TO_TRIGGER_GANG_WAR
+in: zone
+```
+
+```lua
+setSpecificZoneToTriggerGangWar(zone)
+```
+
+```js
+Zone.setTriggerGangWar(zone)
+```
+</Opcode>
+
+## 区域音频
+
+<Opcode id="0917" name="SWITCH_AUDIO_ZONE" member="Zone.SwitchAudio">
+开关 IPL 定义的区域音频。
+
+```text
+0917 SWITCH_AUDIO_ZONE
+in: zone, state
+```
+
+```lua
+switchAudioZone(zone, state)
+```
+
+```js
+Zone.switchAudio(zone, state)
+```
+</Opcode>
+
+## 禁止警察
+
+<Opcode id="09B7" name="SET_ZONE_NO_COPS" member="Zone.SetNoCops">
+区是否禁止刷警察。
+
+```text
+09B7 SET_ZONE_NO_COPS
+in: zone, state
+```
+
+```lua
+setZoneNoCops(zone, state)
+```
+
+```js
+Zone.setNoCops(zone, state)
+```
+</Opcode>
+
+## 军事禁区
+
+<Opcode id="0A24" name="SET_DISABLE_MILITARY_ZONES" member="Zone.SetDisableMilitaryZones">
+军事禁区是否强制通缉（关 / 开相关逻辑）。
+
+```text
+0A24 SET_DISABLE_MILITARY_ZONES
+in: state
+```
+
+```lua
+setDisableMilitaryZones(state)
+```
+
+```js
+Zone.setDisableMilitaryZones(state)
+```
+</Opcode>

@@ -1,0 +1,30 @@
+---
+title: 动态库 DynamicLibrary
+description: 取已加载 DLL 句柄
+---
+
+`sa` · 扩展 `CLEO+` · 需 CLEO + CLEO+
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 取已加载库
+
+<Opcode id="0EFE" name="GET_LOADED_LIBRARY" member="DynamicLibrary.GetLoadedLibrary">
+取已加载 DLL 地址 / 句柄。用在 `if` 里。
+
+```text
+0EFE GET_LOADED_LIBRARY
+in: fileName
+out: handle
+```
+
+```lua
+local dll = getLoadedLibrary("bass.dll")
+if dll then
+end
+```
+
+```js
+const handle = DynamicLibrary.getLoadedLibrary(fileName)
+```
+</Opcode>

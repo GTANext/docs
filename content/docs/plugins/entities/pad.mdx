@@ -1,0 +1,78 @@
+---
+title: 输入 CPad
+description: 手柄与输入状态
+---
+
+`CPad.h`
+
+逻辑帧读输入；自定义热键更常用 [KeyCheck](/docs/plugins/extensions/keycheck)。
+
+## 取手柄对象
+
+<Api name="GetPad / UpdatePads">
+
+```cpp
+static CPad* GetPad(int padNumber);
+static void UpdatePads();
+```
+
+```cpp
+CPad* pad = CPad::GetPad(0);
+if (!pad) {
+    return;
+}
+```
+</Api>
+
+## 当前控制状态
+
+<Api name="NewState / OldState">
+`CControllerState` 摇杆与按键。
+
+```cpp
+// CPad 成员（见头文件）
+CControllerState NewState;
+CControllerState OldState;
+// LeftStickX/Y, ButtonCross, ButtonCircle, ...
+```
+
+```cpp
+short lx = pad->NewState.LeftStickX;
+short fire = pad->NewState.ButtonCircle;
+```
+</Api>
+
+## 鼠标状态
+
+<Api name="CMouseControllerState">
+
+```cpp
+// 见 CPad 鼠标相关成员
+// unsigned char lmb, rmb, wheelUp, wheelDown; float x, y;
+```
+
+```cpp
+// 以头文件成员名为准
+```
+</Api>
+
+## 清鼠标历史
+
+<Api name="ClearMouseHistory">
+
+```cpp
+static void ClearMouseHistory();
+```
+
+```cpp
+CPad::ClearMouseHistory();
+```
+</Api>
+
+## 与 KeyCheck 分工
+
+| 场景 | 用 |
+|---|---|
+| 虚拟键边沿（菜单） | `KeyCheck` |
+| 游戏内摇杆 / 手柄 | `CPad` |
+| 仅当前是否按下 | `plugin::KeyPressed` |

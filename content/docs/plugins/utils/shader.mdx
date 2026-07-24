@@ -1,0 +1,105 @@
+---
+title: 着色器 Shader
+description: SA 着色器（继承 DynamicResource）
+---
+
+`extensions/Shader.h` · **仅 SA** · 继承 `DynamicResource`
+
+## 加载与开关
+
+构造时可直接指定 hlsl / fxc。设备丢失时走 DynamicResource 生命周期。
+
+```cpp
+Shader(std::string const& Filename, bool bDebug = false);
+void Load();
+void Unload();
+void Enable();
+void Disable();
+void EnablePSForRwImRender();
+void DisablePSForRwImRender();
+```
+
+```cpp
+#ifdef GTASA
+#include "extensions/Shader.h"
+
+static plugin::Shader g_shader(PLUGIN_PATH("fx\\simple.hlsl"));
+
+g_shader.Enable();
+// ...
+g_shader.Disable();
+#endif
+```
+
+## 绑定纹理
+
+绑到寄存器 `idx`。
+
+```cpp
+void PackTexture(RxD3D9InstanceData* mesh, unsigned int idx);
+void PackTexture(RpMaterial* material, unsigned int idx);
+void PackTexture(RwTexture* texture, unsigned int idx);
+void SetMeshTexture(RxD3D9InstanceData* mesh, unsigned int idx);
+void SetMaterialTexture(RpMaterial* material, unsigned int idx);
+void SetTexture(RwTexture* texture, unsigned int idx);
+```
+
+```cpp
+g_shader.PackTexture(tex, 0);
+```
+
+## 塞常量参数
+
+结构体注意 **16 字节对齐** 与补零。
+
+```cpp
+template <class T>
+bool PackPSParameters(T& parameters, unsigned int offset = 0);
+
+template <class T>
+bool PackVSParameters(T& parameters, unsigned int offset = 0);
+```
+
+```cpp
+struct Ps {
+    float color[4];
+} ps{};
+g_shader.PackPSParameters(ps);
+```
+
+## 源码与二进制
+
+构造内会 `Load`。可另存为 fxc。
+
+```cpp
+bool LoadFromSource(std::ifstream& file, bool bDebug);
+bool LoadFromBinary(std::ifstream& file);
+void Load();
+bool SaveToBinary();
+bool SaveToBinary(std::string const& Filename);
+bool WriteToBinaryFile(std::ofstream& file);
+static char* CompileShaderFromString(char const* str, char const* Entrypoint, char const* Version, bool bDebug);
+```
+
+```cpp
+g_shader.SaveToBinary(PLUGIN_PATH("fx\\simple.fxc"));
+```
+
+## 矩阵与画矩形
+
+```cpp
+static void GetWorldViewProj(
+    RpAtomic* atomic,
+    D3DMATRIX* world,
+    D3DMATRIX* view,
+    D3DMATRIX* proj,
+    D3DMATRIX* wvp);
+
+static void DrawRect(float left, float top, float right, float bottom);
+```
+
+```cpp
+D3DMATRIX world{}, view{}, proj{}, wvp{};
+plugin::Shader::GetWorldViewProj(atomic, &world, &view, &proj, &wvp);
+plugin::Shader::DrawRect(0.0f, 0.0f, 1.0f, 1.0f);
+```

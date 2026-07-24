@@ -1,0 +1,857 @@
+---
+title: 网络 SampRaknet
+description: RPC/Packet 发送、Hook 与强制同步
+---
+
+`sa` · 扩展 `SAMPFUNCS` · 仅 SA-MP；需 SAMPFUNCS
+
+共 49 条。向服务器发 RPC/Packet、RakNet Hook、强制同步。调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## RPC 发送
+
+<Opcode id="0AF9" name="SAMP_SEND_CHAT_MESSAGE" member="SampRaknet.SendRpcChat">
+向服务器发送含消息或命令的 `SampRpc.Chat`。
+
+```text
+0AF9 SAMP_SEND_CHAT_MESSAGE
+in: format, args
+```
+
+```lua
+sampSendChatMessage(format, args)
+```
+
+```js
+SampRaknet.SendRpcChat(format, args)
+```
+</Opcode>
+
+<Opcode id="0AFB" name="SAMP_SEND_REQUEST_CLASS" member="SampRaknet.SendRpcRequestClass">
+向服务器发送 `SampRpc.RequestClass`。
+
+```text
+0AFB SAMP_SEND_REQUEST_CLASS
+in: classId
+```
+
+```lua
+sampSendRequestClass(classId)
+```
+
+```js
+SampRaknet.SendRpcRequestClass(classId)
+```
+</Opcode>
+
+<Opcode id="0AFC" name="SAMP_SEND_SCM_EVENT" member="SampRaknet.SendRpcScmEvent">
+向服务器发送关于车辆改装的 `SampRpc.ScmEvent`。
+
+```text
+0AFC SAMP_SEND_SCM_EVENT
+in: carId, type, param1, param2
+```
+
+```lua
+sampSendScmEvent(carId, type, param1, param2)
+```
+
+```js
+SampRaknet.SendRpcScmEvent(carId, type, param1, param2)
+```
+</Opcode>
+
+<Opcode id="0AFE" name="SAMP_SEND_DEATH_BY_PLAYER" member="SampRaknet.SendRpcDeath">
+向服务器发送 `SampRpc.Death`，本地角色不必真死。
+
+```text
+0AFE SAMP_SEND_DEATH_BY_PLAYER
+in: playerId, weaponId
+```
+
+```lua
+sampSendDeathByPlayer(playerId, weaponId)
+```
+
+```js
+SampRaknet.SendRpcDeath(playerId, weaponId)
+```
+</Opcode>
+
+<Opcode id="0B28" name="SAMP_SEND_DISCONNECTED" member="SampRaknet.SendRpcDisconnected">
+向服务器发送 `SampRpc.ScrServerQuit`，客户端不必真断线。
+
+```text
+0B28 SAMP_SEND_DISCONNECTED
+in: id
+```
+
+```lua
+sampSendDisconnected(id)
+```
+
+```js
+SampRaknet.SendRpcDisconnected(id)
+```
+</Opcode>
+
+<Opcode id="0B30" name="SAMP_SEND_ENTER_CAR" member="SampRaknet.SendRpcEnterCar">
+向服务器发送 `SampRpc.EnterCar`。
+
+```text
+0B30 SAMP_SEND_ENTER_CAR
+in: carId, isPassenger
+```
+
+```lua
+sampSendEnterCar(carId, isPassenger)
+```
+
+```js
+SampRaknet.SendRpcEnterCar(carId, isPassenger)
+```
+</Opcode>
+
+<Opcode id="0B31" name="SAMP_SEND_EXIT_CAR" member="SampRaknet.SendRpcExitCar">
+向服务器发送 `SampRpc.ExitCar`。
+
+```text
+0B31 SAMP_SEND_EXIT_CAR
+in: carId
+```
+
+```lua
+sampSendExitCar(carId)
+```
+
+```js
+SampRaknet.SendRpcExitCar(carId)
+```
+</Opcode>
+
+<Opcode id="0B32" name="SAMP_SEND_SPAWN" member="SampRaknet.SendRpcSpawn">
+向服务器发送 `SampRpc.Spawn`，本地角色不必真重生。
+
+```text
+0B32 SAMP_SEND_SPAWN
+```
+
+```lua
+sampSendSpawn()
+```
+
+```js
+SampRaknet.SendRpcSpawn()
+```
+</Opcode>
+
+<Opcode id="0B33" name="SAMP_SEND_DAMAGE_CAR" member="SampRaknet.SendRpcDamageCar">
+向服务器发送 `SampRpc.DamageCar`。
+
+```text
+0B33 SAMP_SEND_DAMAGE_CAR
+in: carId, bodyFlags, doorFlags, lightFlags, wheelFlags
+```
+
+```lua
+sampSendDamageCar(carId, bodyFlags, doorFlags, lightFlags, wheelFlags)
+```
+
+```js
+SampRaknet.SendRpcDamageCar(carId, bodyFlags, doorFlags, lightFlags, wheelFlags)
+```
+</Opcode>
+
+<Opcode id="0B38" name="SAMP_CONNECT" member="SampRaknet.Connect">
+按给定信息连接 SA-MP 服务器。
+
+```text
+0B38 SAMP_CONNECT
+in: serverIp, port
+```
+
+```lua
+sampConnect(serverIp, port)
+```
+
+```js
+SampRaknet.Connect(serverIp, port)
+```
+</Opcode>
+
+<Opcode id="0BBF" name="SAMP_SEND_RCON_COMMAND" member="SampRaknet.SendRpcRconCmd">
+向服务器发送 RCON 命令。
+
+```text
+0BBF SAMP_SEND_RCON_COMMAND
+in: command
+```
+
+```lua
+sampSendRconCommand(command)
+```
+
+```js
+SampRaknet.SendRpcRconCmd(command)
+```
+</Opcode>
+
+## Packet 同步发送
+
+<Opcode id="0BC0" name="SAMP_SEND_ONFOOT_DATA" member="SampRaknet.SendPktOnFootData">
+向服务器发送含 `stOnFootData` 的 `SampPacket.OnFootSync`。
+
+```text
+0BC0 SAMP_SEND_ONFOOT_DATA
+in: payloadPointer
+```
+
+```lua
+sampSendOnfootData(payloadPointer)
+```
+
+```js
+SampRaknet.SendPktOnFootData(payloadPointer)
+```
+</Opcode>
+
+<Opcode id="0BC1" name="SAMP_SEND_DRIVING_DATA" member="SampRaknet.SendPktDrivingData">
+向服务器发送含 `stInCarData` 的 `SampPacket.DrivingSync`。
+
+```text
+0BC1 SAMP_SEND_DRIVING_DATA
+in: payloadPointer
+```
+
+```lua
+sampSendDrivingData(payloadPointer)
+```
+
+```js
+SampRaknet.SendPktDrivingData(payloadPointer)
+```
+</Opcode>
+
+<Opcode id="0BC2" name="SAMP_SEND_PASSENGER_DATA" member="SampRaknet.SendPktPassengerData">
+向服务器发送含 `stPassengerData` 的 `SampPacket.PassengerSync`。
+
+```text
+0BC2 SAMP_SEND_PASSENGER_DATA
+in: payloadPointer
+```
+
+```lua
+sampSendPassengerData(payloadPointer)
+```
+
+```js
+SampRaknet.SendPktPassengerData(payloadPointer)
+```
+</Opcode>
+
+<Opcode id="0BC3" name="SAMP_SEND_AIM_DATA" member="SampRaknet.SendPktAimData">
+向服务器发送含 `stAimData` 的 `SampPacket.AimSync`。
+
+```text
+0BC3 SAMP_SEND_AIM_DATA
+in: payloadPointer
+```
+
+```lua
+sampSendAimData(payloadPointer)
+```
+
+```js
+SampRaknet.SendPktAimData(payloadPointer)
+```
+</Opcode>
+
+<Opcode id="0BC4" name="SAMP_SEND_BULLET_DATA" member="SampRaknet.SendPktBulletData">
+向服务器发送含 `stBulletData` 的 `SampPacket.BulletSync`。
+
+```text
+0BC4 SAMP_SEND_BULLET_DATA
+in: payloadPointer
+```
+
+```lua
+sampSendBulletData(payloadPointer)
+```
+
+```js
+SampRaknet.SendPktBulletData(payloadPointer)
+```
+</Opcode>
+
+<Opcode id="0BC5" name="SAMP_SEND_TRAILER_DATA" member="SampRaknet.SendPktTrailerData">
+向服务器发送含 `stTrailerData` 的 `SampPacket.TrailerSync`。
+
+```text
+0BC5 SAMP_SEND_TRAILER_DATA
+in: payloadPointer
+```
+
+```lua
+sampSendTrailerData(payloadPointer)
+```
+
+```js
+SampRaknet.SendPktTrailerData(payloadPointer)
+```
+</Opcode>
+
+<Opcode id="0BC6" name="SAMP_SEND_UNOCCUPIEDCAR_DATA" member="SampRaknet.SendPktUnoccupiedCarData">
+向服务器发送含 `stUnoccupiedData` 的 `SampPacket.UnoccupiedCarSync`。
+
+```text
+0BC6 SAMP_SEND_UNOCCUPIEDCAR_DATA
+in: payloadPointer
+```
+
+```lua
+sampSendUnoccupiedcarData(payloadPointer)
+```
+
+```js
+SampRaknet.SendPktUnoccupiedCarData(payloadPointer)
+```
+</Opcode>
+
+<Opcode id="0BC7" name="SAMP_SEND_SPECTATOR_DATA" member="SampRaknet.SendPktSpectatorData">
+向服务器发送含 `stSpectatorData` 的 `SampPacket.SpectatorSync`。
+
+```text
+0BC7 SAMP_SEND_SPECTATOR_DATA
+in: payloadPointer
+```
+
+```lua
+sampSendSpectatorData(payloadPointer)
+```
+
+```js
+SampRaknet.SendPktSpectatorData(payloadPointer)
+```
+</Opcode>
+
+## 交互 RPC
+
+<Opcode id="0BC8" name="SAMP_SEND_CLICK_PLAYER" member="SampRaknet.SendRpcClickPlayer">
+向服务器发送关于双击玩家的 `SampRpc.ClickPlayer`（例如计分板）。
+
+```text
+0BC8 SAMP_SEND_CLICK_PLAYER
+in: playerId, clickSourceId
+```
+
+```lua
+sampSendClickPlayer(playerId, clickSourceId)
+```
+
+```js
+SampRaknet.SendRpcClickPlayer(playerId, clickSourceId)
+```
+</Opcode>
+
+<Opcode id="0BC9" name="SAMP_SEND_DIALOG_RESPONSE" member="SampRaknet.SendRpcDialogResponse">
+向服务器发送 `SampRpc.DialogResponse`。
+
+```text
+0BC9 SAMP_SEND_DIALOG_RESPONSE
+in: dialogId, whichButton, itemId, inputText
+```
+
+```lua
+sampSendDialogResponse(dialogId, whichButton, itemId, inputText)
+```
+
+```js
+SampRaknet.SendRpcDialogResponse(dialogId, whichButton, itemId, inputText)
+```
+</Opcode>
+
+<Opcode id="0BCA" name="SAMP_SEND_CLICK_TEXTDRAW" member="SampRaknet.SendRpcClickTextDraw">
+向服务器发送 `SampRpc.ClickTextDraw`。
+
+```text
+0BCA SAMP_SEND_CLICK_TEXTDRAW
+in: textDrawId
+```
+
+```lua
+sampSendClickTextdraw(textDrawId)
+```
+
+```js
+SampRaknet.SendRpcClickTextDraw(textDrawId)
+```
+</Opcode>
+
+<Opcode id="0BCB" name="SAMP_SEND_GIVE_DAMAGE" member="SampRaknet.SendRpcGiveDamage">
+向服务器发送 `SampRpc.GiveTakeDamage`（对其他玩家造成伤害）。
+
+```text
+0BCB SAMP_SEND_GIVE_DAMAGE
+in: playerId, floatDamage, weapon, bodyPart
+```
+
+```lua
+sampSendGiveDamage(playerId, floatDamage, weapon, bodyPart)
+```
+
+```js
+SampRaknet.SendRpcGiveDamage(playerId, floatDamage, weapon, bodyPart)
+```
+</Opcode>
+
+<Opcode id="0BCC" name="SAMP_SEND_TAKE_DAMAGE" member="SampRaknet.SendRpcTakeDamage">
+向服务器发送 `SampRpc.GiveTakeDamage`（受到其他玩家伤害）。
+
+```text
+0BCC SAMP_SEND_TAKE_DAMAGE
+in: playerId, floatDamage, weapon, bodyPart
+```
+
+```lua
+sampSendTakeDamage(playerId, floatDamage, weapon, bodyPart)
+```
+
+```js
+SampRaknet.SendRpcTakeDamage(playerId, floatDamage, weapon, bodyPart)
+```
+</Opcode>
+
+<Opcode id="0BCD" name="SAMP_SEND_EDIT_OBJECT" member="SampRaknet.SendRpcEditObject">
+向服务器发送 `SampRpc.EditObject`（编辑模式下改动物体）。
+
+```text
+0BCD SAMP_SEND_EDIT_OBJECT
+in: isLocalObject, id, response, coordX, coordY, coordZ, pitch, roll, yaw
+```
+
+```lua
+sampSendEditObject(isLocalObject, id, response, coordX, coordY, coordZ, pitch, roll, yaw)
+```
+
+```js
+SampRaknet.SendRpcEditObject(isLocalObject, id, response, coordX, coordY, coordZ, pitch, roll, yaw)
+```
+</Opcode>
+
+<Opcode id="0BCE" name="SAMP_SEND_EDIT_ATTACHED_OBJECT" member="SampRaknet.SendRpcEditAttachedObject">
+向服务器发送 `SampRpc.EditAttachedObject`（编辑模式下改动附着物）。
+
+```text
+0BCE SAMP_SEND_EDIT_ATTACHED_OBJECT
+in: response, index, model, pedBone, offsetX, offsetY, offsetZ, pitch, roll, yaw, scaleX, scaleY, scaleZ
+```
+
+```lua
+sampSendEditAttachedObject(response, index, model, pedBone, offsetX, offsetY, offsetZ, pitch, roll, yaw, scaleX, scaleY, scaleZ)
+```
+
+```js
+SampRaknet.SendRpcEditAttachedObject(response, index, model, pedBone, offsetX, offsetY, offsetZ, pitch, roll, yaw, scaleX, scaleY, scaleZ)
+```
+</Opcode>
+
+<Opcode id="0BCF" name="SAMP_SEND_REQUEST_INTERIOR_CHANGE" member="SampRaknet.SendRpcRequestInteriorChange">
+发送 `SampRpc.RequestInteriorChange`。
+
+```text
+0BCF SAMP_SEND_REQUEST_INTERIOR_CHANGE
+in: id
+```
+
+```lua
+sampSendRequestInteriorChange(id)
+```
+
+```js
+SampRaknet.SendRpcRequestInteriorChange(id)
+```
+</Opcode>
+
+<Opcode id="0BD0" name="SAMP_SEND_REQUEST_SPAWN" member="SampRaknet.SendRpcRequestSpawn">
+发送 `SampRpc.RequestSpawn`。
+
+```text
+0BD0 SAMP_SEND_REQUEST_SPAWN
+```
+
+```lua
+sampSendRequestSpawn()
+```
+
+```js
+SampRaknet.SendRpcRequestSpawn()
+```
+</Opcode>
+
+<Opcode id="0BD1" name="SAMP_SEND_PICKED_UP_PICKUP" member="SampRaknet.SendRpcPickedupPickup">
+发送 `SampRpc.PickedUpPickup` 以拾取 pickup。
+
+```text
+0BD1 SAMP_SEND_PICKED_UP_PICKUP
+in: id
+```
+
+```lua
+sampSendPickedUpPickup(id)
+```
+
+```js
+SampRaknet.SendRpcPickedupPickup(id)
+```
+</Opcode>
+
+<Opcode id="0BD2" name="SAMP_SEND_MENU_SELECT_ROW" member="SampRaknet.SendRpcMenuSelectRow">
+发送 `SampRpc.MenuSelect`（在 GTA:SA 菜单中选中一项）。
+
+```text
+0BD2 SAMP_SEND_MENU_SELECT_ROW
+in: elementId
+```
+
+```lua
+sampSendMenuSelectRow(elementId)
+```
+
+```js
+SampRaknet.SendRpcMenuSelectRow(elementId)
+```
+</Opcode>
+
+<Opcode id="0BD3" name="SAMP_SEND_QUIT_MENU" member="SampRaknet.SendRpcQuitMenu">
+发送 `SampRpc.MenuQuit` 告知服务器已退出菜单（GTA:SA 菜单）。
+
+```text
+0BD3 SAMP_SEND_QUIT_MENU
+```
+
+```lua
+sampSendQuitMenu()
+```
+
+```js
+SampRaknet.SendRpcQuitMenu()
+```
+</Opcode>
+
+<Opcode id="0BD4" name="SAMP_SEND_CAR_DESTROYED" member="SampRaknet.SendRpcCarDestroyed">
+发送 `SampRpc.CarDestroyed`（车辆被毁：爆炸或沉水）。
+
+```text
+0BD4 SAMP_SEND_CAR_DESTROYED
+in: id
+```
+
+```lua
+sampSendCarDestroyed(id)
+```
+
+```js
+SampRaknet.SendRpcCarDestroyed(id)
+```
+</Opcode>
+
+## Hook
+
+<Opcode id="0BE0" name="SAMP_RAKNET_HOOK_RETURN" member="SampRaknet.Return">
+把控制流交还 RakNet，并决定当前拦截的数据是否继续由 RakNet 处理。
+
+```text
+0BE0 SAMP_RAKNET_HOOK_RETURN
+in: processData
+```
+
+```lua
+sampRaknetHookReturn(processData)
+```
+
+```js
+SampRaknet.Return(processData)
+```
+</Opcode>
+
+<Opcode id="0BE1" name="SAMP_RAKNET_HOOK_OUTCOMING_RPC" member="SampRaknet.HookRpcOut">
+把所有出站 RPC 重定向到指定回调，发送前再处理。用在 `if` 里。
+
+```text
+0BE1 SAMP_RAKNET_HOOK_OUTCOMING_RPC
+in: callback
+```
+
+```lua
+if sampRaknetHookOutcomingRpc(callback) then
+end
+```
+
+```js
+if (SampRaknet.HookRpcOut(callback)) {
+}
+```
+</Opcode>
+
+<Opcode id="0BE2" name="SAMP_RAKNET_HOOK_OUTCOMING_PACKET" member="SampRaknet.HookPacketOut">
+把所有出站 Packet 重定向到指定回调，发送前再处理。用在 `if` 里。
+
+```text
+0BE2 SAMP_RAKNET_HOOK_OUTCOMING_PACKET
+in: callback
+```
+
+```lua
+if sampRaknetHookOutcomingPacket(callback) then
+end
+```
+
+```js
+if (SampRaknet.HookPacketOut(callback)) {
+}
+```
+</Opcode>
+
+<Opcode id="0BE3" name="SAMP_RAKNET_HOOK_INCOMING_RPC" member="SampRaknet.HookRpcIn">
+把所有入站 RPC 重定向到指定回调，本地接受前再处理。用在 `if` 里。
+
+```text
+0BE3 SAMP_RAKNET_HOOK_INCOMING_RPC
+in: callback
+```
+
+```lua
+if sampRaknetHookIncomingRpc(callback) then
+end
+```
+
+```js
+if (SampRaknet.HookRpcIn(callback)) {
+}
+```
+</Opcode>
+
+<Opcode id="0BE4" name="SAMP_RAKNET_HOOK_INCOMING_PACKET" member="SampRaknet.HookPacketIn">
+把所有入站 Packet 重定向到指定回调，本地接受前再处理。用在 `if` 里。
+
+```text
+0BE4 SAMP_RAKNET_HOOK_INCOMING_PACKET
+in: callback
+```
+
+```lua
+if sampRaknetHookIncomingPacket(callback) then
+end
+```
+
+```js
+if (SampRaknet.HookPacketIn(callback)) {
+}
+```
+</Opcode>
+
+<Opcode id="0BE5" name="SAMP_RAKNET_HOOK_GET_PARAM" member="SampRaknet.GetHookParam">
+返回当前执行中回调的 hook 参数值。
+
+```text
+0BE5 SAMP_RAKNET_HOOK_GET_PARAM
+in: type
+out: value
+```
+
+```lua
+local value = sampRaknetHookGetParam(type)
+```
+
+```js
+const value = SampRaknet.GetHookParam(type)
+```
+</Opcode>
+
+<Opcode id="0BE6" name="SAMP_RAKNET_SET_HOOK_PARAM" member="SampRaknet.SetHookParam">
+设置当前执行中回调的 hook 参数值。用在 `if` 里。
+
+```text
+0BE6 SAMP_RAKNET_SET_HOOK_PARAM
+in: type, value
+```
+
+```lua
+if sampRaknetSetHookParam(type, value) then
+end
+```
+
+```js
+if (SampRaknet.SetHookParam(type, value)) {
+}
+```
+</Opcode>
+
+<Opcode id="0BF8" name="SAMP_RAKNET_GET_RPC_NAME" member="SampRaknet.GetRpcName">
+返回 RPC ID 名称的指针。
+
+```text
+0BF8 SAMP_RAKNET_GET_RPC_NAME
+in: id
+out: name
+```
+
+```lua
+local name = sampRaknetGetRpcName(id)
+```
+
+```js
+const name = SampRaknet.GetRpcName(id)
+```
+</Opcode>
+
+<Opcode id="0BF9" name="SAMP_RAKNET_GET_PACKET_NAME" member="SampRaknet.GetPacketName">
+返回 Packet ID 名称的指针。
+
+```text
+0BF9 SAMP_RAKNET_GET_PACKET_NAME
+in: id
+out: name
+```
+
+```lua
+local name = sampRaknetGetPacketName(id)
+```
+
+```js
+const name = SampRaknet.GetPacketName(id)
+```
+</Opcode>
+
+## 强制同步
+
+<Opcode id="0C81" name="SAMP_FORCE_DRIVING_SYNC" member="SampRaknet.ForceDrivingSync">
+向服务器发送关于本地角色驾驶指定 ID 车辆的 `SampPacket.DrivingSync`。
+
+```text
+0C81 SAMP_FORCE_DRIVING_SYNC
+in: id
+```
+
+```lua
+sampForceDrivingSync(id)
+```
+
+```js
+SampRaknet.ForceDrivingSync(id)
+```
+</Opcode>
+
+<Opcode id="0C82" name="SAMP_FORCE_UNOCCUPIED_SYNC" member="SampRaknet.ForceUnnocupiedSync">
+向服务器发送关于 `carId` 车辆 `seatId` 座位空闲的 `SampPacket.UnoccupiedCarSync`。
+
+```text
+0C82 SAMP_FORCE_UNOCCUPIED_SYNC
+in: carId, seatId
+```
+
+```lua
+sampForceUnoccupiedSync(carId, seatId)
+```
+
+```js
+SampRaknet.ForceUnnocupiedSync(carId, seatId)
+```
+</Opcode>
+
+<Opcode id="0C83" name="SAMP_FORCE_ONFOOT_SYNC" member="SampRaknet.ForceOnfootSync">
+向服务器发送关于本地角色步行状态的 `SampPacket.OnFootSync`。
+
+```text
+0C83 SAMP_FORCE_ONFOOT_SYNC
+```
+
+```lua
+sampForceOnfootSync()
+```
+
+```js
+SampRaknet.ForceOnfootSync()
+```
+</Opcode>
+
+<Opcode id="0C84" name="SAMP_FORCE_AIM_SYNC" member="SampRaknet.ForceAimSync">
+向服务器发送含当前瞄准数据的 `SampPacket.AimSync`。
+
+```text
+0C84 SAMP_FORCE_AIM_SYNC
+```
+
+```lua
+sampForceAimSync()
+```
+
+```js
+SampRaknet.ForceAimSync()
+```
+</Opcode>
+
+<Opcode id="0C85" name="SAMP_FORCE_TRAILER_SYNC" member="SampRaknet.ForceTrailerSync">
+向服务器发送关于指定 ID 拖车挂到本地玩家的 `SampPacket.TrailerSync`。
+
+```text
+0C85 SAMP_FORCE_TRAILER_SYNC
+in: id
+```
+
+```lua
+sampForceTrailerSync(id)
+```
+
+```js
+SampRaknet.ForceTrailerSync(id)
+```
+</Opcode>
+
+<Opcode id="0C86" name="SAMP_FORCE_PASSENGER_SYNC" member="SampRaknet.ForcePassengerSync">
+向服务器发送关于本地角色坐在 `carId` 车辆 `seatId` 的 `SampPacket.PassengerSync`。
+
+```text
+0C86 SAMP_FORCE_PASSENGER_SYNC
+in: carId, seatId
+```
+
+```lua
+sampForcePassengerSync(carId, seatId)
+```
+
+```js
+SampRaknet.ForcePassengerSync(carId, seatId)
+```
+</Opcode>
+
+<Opcode id="0C87" name="SAMP_FORCE_STATS_SYNC" member="SampRaknet.ForceStatsSync">
+向服务器发送含当前金钱与醉酒度的 `SampPacket.StatsUpdate`。
+
+```text
+0C87 SAMP_FORCE_STATS_SYNC
+```
+
+```lua
+sampForceStatsSync()
+```
+
+```js
+SampRaknet.ForceStatsSync()
+```
+</Opcode>
+
+<Opcode id="0C88" name="SAMP_FORCE_WEAPONS_SYNC" member="SampRaknet.ForceWeaponsSync">
+向服务器发送含本地角色当前武器的 `SampPacket.WeaponsUpdate`。
+
+```text
+0C88 SAMP_FORCE_WEAPONS_SYNC
+```
+
+```lua
+sampForceWeaponsSync()
+```
+
+```js
+SampRaknet.ForceWeaponsSync()
+```
+</Opcode>

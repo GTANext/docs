@@ -1,0 +1,243 @@
+---
+title: 界面 Hud
+description: 本地 onscreen 计时器计数器与 HUD 可见性
+---
+
+`sa` · 扩展 `CLEO+` · 需 CLEO + CLEO+
+
+本地 onscreen 计时器/计数器（不走全局存档那套）。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 本地计时
+
+<Opcode id="0E4E" name="DISPLAY_ONSCREEN_TIMER_LOCAL" member="Hud.DisplayTimerLocal">
+创建倒计时或正计时 onscreen 计时器。
+
+```text
+0E4E DISPLAY_ONSCREEN_TIMER_LOCAL
+in: timer, direction
+```
+
+```lua
+displayOnscreenTimerLocal(timerVar, direction)
+```
+
+```js
+Hud.displayTimerLocal(timer, direction)
+```
+</Opcode>
+
+<Opcode id="0E4F" name="DISPLAY_ONSCREEN_TIMER_WITH_STRING_LOCAL" member="Hud.DisplayTimerWithStringLocal">
+带 GXT 文案的本地计时器。
+
+```text
+0E4F DISPLAY_ONSCREEN_TIMER_WITH_STRING_LOCAL
+in: timer, direction, text
+```
+
+```lua
+displayOnscreenTimerWithStringLocal(timerVar, direction, "TIME")
+```
+
+```js
+Hud.displayTimerWithStringLocal(timer, direction, text)
+```
+</Opcode>
+
+## 本地计数
+
+<Opcode id="0E50" name="DISPLAY_ONSCREEN_COUNTER_LOCAL" member="Hud.DisplayCounterLocal">
+本地 onscreen 计数：数字或进度条。
+
+```text
+0E50 DISPLAY_ONSCREEN_COUNTER_LOCAL
+in: timer, display
+```
+
+```lua
+displayOnscreenCounterLocal(counterVar, display)
+```
+
+```js
+Hud.displayCounterLocal(timer, display)
+```
+</Opcode>
+
+<Opcode id="0E51" name="DISPLAY_ONSCREEN_COUNTER_WITH_STRING_LOCAL" member="Hud.DisplayCounterWithStringLocal">
+带文案的本地计数。
+
+```text
+0E51 DISPLAY_ONSCREEN_COUNTER_WITH_STRING_LOCAL
+in: counter, display, text
+```
+
+```lua
+displayOnscreenCounterWithStringLocal(counterVar, display, "SCORE")
+```
+
+```js
+Hud.displayCounterWithStringLocal(counter, display, text)
+```
+</Opcode>
+
+## 双计数
+
+<Opcode id="0E52" name="DISPLAY_TWO_ONSCREEN_COUNTERS_LOCAL" member="Hud.DisplayTwoCountersLocal">
+两个计数用斜杠分隔显示。
+
+```text
+0E52 DISPLAY_TWO_ONSCREEN_COUNTERS_LOCAL
+in: leftCounter, rightCounter
+```
+
+```lua
+displayTwoOnscreenCountersLocal(leftVar, rightVar)
+```
+
+```js
+Hud.displayTwoCountersLocal(leftCounter, rightCounter)
+```
+</Opcode>
+
+<Opcode id="0E53" name="DISPLAY_TWO_ONSCREEN_COUNTERS_WITH_STRING_LOCAL" member="Hud.DisplayTwoCountersWithStringLocal">
+双计数 + 文案。
+
+```text
+0E53 DISPLAY_TWO_ONSCREEN_COUNTERS_WITH_STRING_LOCAL
+in: leftCounter, rightCounter, text
+```
+
+```lua
+displayTwoOnscreenCountersWithStringLocal(leftVar, rightVar, "PAIR")
+```
+
+```js
+Hud.displayTwoCountersWithStringLocal(leftCounter, rightCounter, text)
+```
+</Opcode>
+
+## 清除
+
+<Opcode id="0E54" name="CLEAR_ONSCREEN_TIMER_LOCAL" member="Hud.ClearTimerLocal">
+去掉本地计时器。
+
+```text
+0E54 CLEAR_ONSCREEN_TIMER_LOCAL
+in: timer
+```
+
+```lua
+clearOnscreenTimerLocal(timerVar)
+```
+
+```js
+Hud.clearTimerLocal(timer)
+```
+</Opcode>
+
+<Opcode id="0E55" name="CLEAR_ONSCREEN_COUNTER_LOCAL" member="Hud.ClearCounterLocal">
+去掉本地计数。
+
+```text
+0E55 CLEAR_ONSCREEN_COUNTER_LOCAL
+in: counter
+```
+
+```lua
+clearOnscreenCounterLocal(counterVar)
+```
+
+```js
+Hud.clearCounterLocal(counter)
+```
+</Opcode>
+
+## 显示样式
+
+<Opcode id="0E56" name="SET_ONSCREEN_COUNTER_FLASH_WHEN_FIRST_DISPLAYED_LOCAL" member="Hud.SetCounterFlashWhenFirstDisplayedLocal">
+本地计数首次显示时是否闪。
+
+```text
+0E56 SET_ONSCREEN_COUNTER_FLASH_WHEN_FIRST_DISPLAYED_LOCAL
+in: counter, state
+```
+
+```lua
+setOnscreenCounterFlashWhenFirstDisplayedLocal(counterVar, true)
+```
+
+```js
+Hud.setCounterFlashWhenFirstDisplayedLocal(counter, state)
+```
+</Opcode>
+
+<Opcode id="0E57" name="SET_TIMER_BEEP_COUNTDOWN_TIME_LOCAL" member="Hud.SetTimerBeepCountdownTimeLocal">
+倒计时剩 `timeInSec` 秒时开始滴答声。
+
+```text
+0E57 SET_TIMER_BEEP_COUNTDOWN_TIME_LOCAL
+in: timer, timeInSec
+```
+
+```lua
+setTimerBeepCountdownTimeLocal(timerVar, 10)
+```
+
+```js
+Hud.setTimerBeepCountdownTimeLocal(timer, timeInSec)
+```
+</Opcode>
+
+<Opcode id="0E58" name="SET_ONSCREEN_COUNTER_COLOUR_LOCAL" member="Hud.SetCounterColorLocal">
+本地计数颜色。
+
+```text
+0E58 SET_ONSCREEN_COUNTER_COLOUR_LOCAL
+in: counter, color
+```
+
+```lua
+setOnscreenCounterColourLocal(counterVar, color)
+```
+
+```js
+Hud.setCounterColorLocal(counter, color)
+```
+</Opcode>
+
+## 可见性
+
+<Opcode id="0EB8" name="IS_RADAR_VISIBLE" member="Hud.IsRadarVisible">
+雷达是否显示。用在 `if` 里。
+
+```text
+0EB8 IS_RADAR_VISIBLE
+```
+
+```lua
+if isRadarVisible() then
+end
+```
+
+```js
+if (Hud.isRadarVisible()) {
+}
+```
+</Opcode>
+
+<Opcode id="0EB9" name="IS_HUD_VISIBLE" member="Hud.IsVisible">
+HUD 是否显示。用在 `if` 里。
+
+```text
+0EB9 IS_HUD_VISIBLE
+```
+
+```lua
+if isHudVisible() then
+end
+```
+
+```js
+if (Hud.isVisible()) {
+}
+```
+</Opcode>

@@ -1,0 +1,399 @@
+---
+title: 脚本 Script
+description: 脚本变量、自定义脚本与生命周期事件
+---
+
+`sa` · 扩展 `CLEO+` · 需 CLEO + CLEO+
+
+`SET_SCRIPT_EVENT_*` 的 `add=true` 注册、`false` 注销；`label` 为回调入口。事件里用 `RETURN_SCRIPT_EVENT` 返回。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 脚本变量
+
+<Opcode id="0D2E" name="SET_SCRIPT_VAR">
+写指定脚本结构体内变量下标。
+
+```text
+0D2E SET_SCRIPT_VAR
+in: scriptPointer, varIndex, value
+```
+
+```lua
+setScriptVar(scriptPtr, 0, 42)
+```
+
+```js
+native("SET_SCRIPT_VAR", scriptPointer, varIndex, value)
+```
+</Opcode>
+
+<Opcode id="0D2F" name="GET_SCRIPT_VAR">
+读脚本结构体内变量。
+
+```text
+0D2F GET_SCRIPT_VAR
+in: scriptPointer, varIndex
+out: result
+```
+
+```lua
+local v = getScriptVar(scriptPtr, 0)
+```
+
+```js
+const result = native("GET_SCRIPT_VAR", scriptPointer, varIndex)
+```
+</Opcode>
+
+## 自定义脚本 / 返回
+
+<Opcode id="0E6F" name="STREAM_CUSTOM_SCRIPT_FROM_LABEL">
+从 label 启动自定义脚本，可带参数。
+
+```text
+0E6F STREAM_CUSTOM_SCRIPT_FROM_LABEL
+in: label, params
+```
+
+```lua
+streamCustomScriptFromLabel(label, ...)
+```
+
+```js
+native("STREAM_CUSTOM_SCRIPT_FROM_LABEL", label, params)
+```
+</Opcode>
+
+<Opcode id="0ED0" name="RETURN_SCRIPT_EVENT">
+从脚本事件回调返回。
+
+```text
+0ED0 RETURN_SCRIPT_EVENT
+```
+
+```lua
+returnScriptEvent()
+```
+
+```js
+native("RETURN_SCRIPT_EVENT")
+```
+</Opcode>
+
+<Opcode id="0F0A" name="RETURN_TIMES">
+连续 `return` 多层 gosub（层数 `numReturns`）。
+
+```text
+0F0A RETURN_TIMES
+in: numReturns
+```
+
+```lua
+returnTimes(2)
+```
+
+```js
+native("RETURN_TIMES", numReturns)
+```
+</Opcode>
+
+## 存档 / 菜单
+
+<Opcode id="0ED1" name="SET_SCRIPT_EVENT_SAVE_CONFIRMATION">
+存档确认前触发；可取 `saveSlot`。
+
+```text
+0ED1 SET_SCRIPT_EVENT_SAVE_CONFIRMATION
+in: add, label, saveSlot
+```
+
+```lua
+setScriptEventSaveConfirmation(true, label, saveSlotVar)
+```
+
+```js
+native("SET_SCRIPT_EVENT_SAVE_CONFIRMATION", add, label, saveSlot)
+```
+</Opcode>
+
+<Opcode id="0ED8" name="SET_SCRIPT_EVENT_ON_MENU">
+暂停菜单期间或刚暂停时；`justPaused` 输出是否刚暂停。
+
+```text
+0ED8 SET_SCRIPT_EVENT_ON_MENU
+in: add, label, justPaused
+```
+
+```lua
+setScriptEventOnMenu(true, label, justPausedVar)
+```
+
+```js
+native("SET_SCRIPT_EVENT_ON_MENU", add, label, justPaused)
+```
+</Opcode>
+
+## 实体创建 / 删除
+
+<Opcode id="0ED2" name="SET_SCRIPT_EVENT_CHAR_DELETE">
+角色删除后触发。
+
+```text
+0ED2 SET_SCRIPT_EVENT_CHAR_DELETE
+in: add, label, char
+```
+
+```lua
+setScriptEventCharDelete(true, label, charVar)
+```
+
+```js
+native("SET_SCRIPT_EVENT_CHAR_DELETE", add, label, char)
+```
+</Opcode>
+
+<Opcode id="0ED3" name="SET_SCRIPT_EVENT_CHAR_CREATE">
+角色创建后触发。
+
+```text
+0ED3 SET_SCRIPT_EVENT_CHAR_CREATE
+in: add, label, char
+```
+
+```lua
+setScriptEventCharCreate(true, label, charVar)
+```
+
+```js
+native("SET_SCRIPT_EVENT_CHAR_CREATE", add, label, char)
+```
+</Opcode>
+
+<Opcode id="0ED4" name="SET_SCRIPT_EVENT_CAR_DELETE">
+载具删除前触发。
+
+```text
+0ED4 SET_SCRIPT_EVENT_CAR_DELETE
+in: add, label, car
+```
+
+```lua
+setScriptEventCarDelete(true, label, carVar)
+```
+
+```js
+native("SET_SCRIPT_EVENT_CAR_DELETE", add, label, car)
+```
+</Opcode>
+
+<Opcode id="0ED5" name="SET_SCRIPT_EVENT_CAR_CREATE">
+载具创建后触发。
+
+```text
+0ED5 SET_SCRIPT_EVENT_CAR_CREATE
+in: add, label, car
+```
+
+```lua
+setScriptEventCarCreate(true, label, carVar)
+```
+
+```js
+native("SET_SCRIPT_EVENT_CAR_CREATE", add, label, car)
+```
+</Opcode>
+
+<Opcode id="0ED6" name="SET_SCRIPT_EVENT_OBJECT_DELETE">
+物体删除前触发。
+
+```text
+0ED6 SET_SCRIPT_EVENT_OBJECT_DELETE
+in: add, label, object
+```
+
+```lua
+setScriptEventObjectDelete(true, label, objVar)
+```
+
+```js
+native("SET_SCRIPT_EVENT_OBJECT_DELETE", add, label, object)
+```
+</Opcode>
+
+<Opcode id="0ED7" name="SET_SCRIPT_EVENT_OBJECT_CREATE">
+物体创建后触发。
+
+```text
+0ED7 SET_SCRIPT_EVENT_OBJECT_CREATE
+in: add, label, object
+```
+
+```lua
+setScriptEventObjectCreate(true, label, objVar)
+```
+
+```js
+native("SET_SCRIPT_EVENT_OBJECT_CREATE", add, label, object)
+```
+</Opcode>
+
+## 每帧 process
+
+<Opcode id="0EDA" name="SET_SCRIPT_EVENT_CHAR_PROCESS">
+每个角色每帧一次。
+
+```text
+0EDA SET_SCRIPT_EVENT_CHAR_PROCESS
+in: add, label, char
+```
+
+```lua
+setScriptEventCharProcess(true, label, charVar)
+```
+
+```js
+native("SET_SCRIPT_EVENT_CHAR_PROCESS", add, label, char)
+```
+</Opcode>
+
+<Opcode id="0EDB" name="SET_SCRIPT_EVENT_CAR_PROCESS">
+每个载具每帧一次。
+
+```text
+0EDB SET_SCRIPT_EVENT_CAR_PROCESS
+in: add, label, car
+```
+
+```lua
+setScriptEventCarProcess(true, label, carVar)
+```
+
+```js
+native("SET_SCRIPT_EVENT_CAR_PROCESS", add, label, car)
+```
+</Opcode>
+
+<Opcode id="0EDC" name="SET_SCRIPT_EVENT_OBJECT_PROCESS">
+每个物体每帧一次（可能慢）。
+
+```text
+0EDC SET_SCRIPT_EVENT_OBJECT_PROCESS
+in: add, label, object
+```
+
+```lua
+setScriptEventObjectProcess(true, label, objVar)
+```
+
+```js
+native("SET_SCRIPT_EVENT_OBJECT_PROCESS", add, label, object)
+```
+</Opcode>
+
+<Opcode id="0EDD" name="SET_SCRIPT_EVENT_BUILDING_PROCESS">
+每个 Building/Entity 每帧一次。极慢，慎用。
+
+```text
+0EDD SET_SCRIPT_EVENT_BUILDING_PROCESS
+in: add, label, entityPtr
+```
+
+```lua
+setScriptEventBuildingProcess(true, label, ptrVar)
+```
+
+```js
+native("SET_SCRIPT_EVENT_BUILDING_PROCESS", add, label, entityPtr)
+```
+</Opcode>
+
+## 伤害 / 子弹
+
+<Opcode id="0EDE" name="SET_SCRIPT_EVENT_CHAR_DAMAGE">
+角色受伤时；伤害细节用 `0EB5`。
+
+```text
+0EDE SET_SCRIPT_EVENT_CHAR_DAMAGE
+in: add, label, char
+```
+
+```lua
+setScriptEventCharDamage(true, label, charVar)
+```
+
+```js
+native("SET_SCRIPT_EVENT_CHAR_DAMAGE", add, label, char)
+```
+</Opcode>
+
+<Opcode id="0EDF" name="SET_SCRIPT_EVENT_CAR_WEAPON_DAMAGE">
+载具被武器打伤；细节用 `0EB6`。
+
+```text
+0EDF SET_SCRIPT_EVENT_CAR_WEAPON_DAMAGE
+in: add, label, car
+```
+
+```lua
+setScriptEventCarWeaponDamage(true, label, carVar)
+```
+
+```js
+native("SET_SCRIPT_EVENT_CAR_WEAPON_DAMAGE", add, label, car)
+```
+</Opcode>
+
+<Opcode id="0EE0" name="SET_SCRIPT_EVENT_BULLET_IMPACT">
+子弹命中；owner/victim 可能无效。
+
+```text
+0EE0 SET_SCRIPT_EVENT_BULLET_IMPACT
+in: add, label, ownerPtr, victimPtr, weaponType, colPoint
+```
+
+```lua
+setScriptEventBulletImpact(true, label, ownerVar, victimVar, weapVar, colVar)
+```
+
+```js
+native(
+  "SET_SCRIPT_EVENT_BULLET_IMPACT",
+  add, label, ownerPtr, victimPtr, weaponType, colPoint
+)
+```
+</Opcode>
+
+## 主循环
+
+<Opcode id="0F0B" name="SET_SCRIPT_EVENT_BEFORE_GAME_PROCESS">
+游戏主循环 process 前触发。`add` 注册/注销。
+
+```text
+0F0B SET_SCRIPT_EVENT_BEFORE_GAME_PROCESS
+in: add, label
+```
+
+```lua
+setScriptEventBeforeGameProcess(true, label)
+```
+
+```js
+native("SET_SCRIPT_EVENT_BEFORE_GAME_PROCESS", add, label)
+```
+</Opcode>
+
+<Opcode id="0F0C" name="SET_SCRIPT_EVENT_AFTER_GAME_PROCESS">
+游戏主循环 process 后触发。
+
+```text
+0F0C SET_SCRIPT_EVENT_AFTER_GAME_PROCESS
+in: add, label
+```
+
+```lua
+setScriptEventAfterGameProcess(true, label)
+```
+
+```js
+native("SET_SCRIPT_EVENT_AFTER_GAME_PROCESS", add, label)
+```
+</Opcode>

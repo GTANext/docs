@@ -1,0 +1,49 @@
+---
+title: 其它扩展
+description: 除 CLEO / CLEO+ / default 外的 SA 扩展入口
+---
+
+SBL `sa.json` 里 **除 CLEO / CLEO+ / default** 以外的扩展。
+
+调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。在线表：[library.sannybuilder.com](https://library.sannybuilder.com/#/sa)。
+
+## 覆盖
+
+| 状态 | 内容 |
+|---|---|
+| **本目录** | 小扩展 + NewOpcodes + imgui + SAMPFUNCS |
+| **已另录** | [CLEO 类型页](/docs/cleo/sa/memory) · [CLEO+](/docs/cleo/sa/plus) |
+| **未做** | `native.json` Code 全文 |
+
+## 扩展清单
+
+| 扩展 | 入口 | 约条数 | 装载 |
+|---|---|---:|---|
+| NewOpcodes | [newopcodes/](/docs/cleo/sa/ext/newopcodes) | ~128 | CLEO + NewOpcodes |
+| imgui | [imgui/](/docs/cleo/sa/ext/imgui) | 87 | CLEO + ImGui 插件 |
+| SAMPFUNCS | [sampfuncs/](/docs/cleo/sa/ext/sampfuncs) | 382 | **仅 SA-MP** + SAMPFUNCS |
+| audio | [audio](/docs/cleo/sa/ext/audio) | 26 | 对应扩展 |
+| bitwise | [bitwise](/docs/cleo/sa/ext/bitwise) | 15 | 对应扩展 |
+| clipboard | [clipboard](/docs/cleo/sa/ext/clipboard) | 2 | 对应扩展 |
+| debug | [debug](/docs/cleo/sa/ext/debug) | 6 | 对应扩展 |
+| file | [file](/docs/cleo/sa/ext/file) | 12 | 对应扩展 |
+| ini | [ini](/docs/cleo/sa/ext/ini) | 8 | 对应扩展 |
+| input | [input](/docs/cleo/sa/ext/input) | 7 | 对应扩展 |
+| math | [math](/docs/cleo/sa/ext/math) | 13 | 对应扩展 |
+| memory | [memory](/docs/cleo/sa/ext/memory) | 8 | 对应扩展 |
+| text | [text](/docs/cleo/sa/ext/text) | 10 | 对应扩展 |
+| Sphere | [sphere](/docs/cleo/sa/ext/sphere) | 1 | 对应扩展 |
+
+## 说明
+
+- 模板：功能中文 H2 + `<Opcode>` + OP / Lua / Redux
+- **不**再跑生成器；旧 `docs/_tools` 仅作对照素材
+- 不改 SBL 上游
+
+<Cards>
+  <Card title="bitwise" href="/docs/cleo/sa/ext/bitwise" description="位运算" />
+  <Card title="ini" href="/docs/cleo/sa/ext/ini" description="IniFile" />
+  <Card title="input" href="/docs/cleo/sa/ext/input" description="键边沿与模拟" />
+  <Card title="debug" href="/docs/cleo/sa/ext/debug" description="断点与日志" />
+  <Card title="SAMPFUNCS" href="/docs/cleo/sa/ext/sampfuncs" description="SA-MP 扩展表" />
+</Cards>

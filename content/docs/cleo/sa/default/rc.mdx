@@ -1,0 +1,122 @@
+---
+title: 遥控 Rc
+description: 遥控车
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 6 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 给遥控模型
+
+<Opcode id="046E" name="GIVE_REMOTE_CONTROLLED_MODEL_TO_PLAYER" member="Rc.GiveModelToPlayer">
+给玩家遥控车模型并接管。
+
+```text
+046E GIVE_REMOTE_CONTROLLED_MODEL_TO_PLAYER
+in: handle, x, y, z, angle, modelId
+```
+
+```lua
+giveRemoteControlledModelToPlayer(handle, x, y, z, angle, modelId)
+```
+
+```js
+Rc.giveModelToPlayer(handle, x, y, z, angle, modelId)
+```
+</Opcode>
+
+## 取遥控车
+
+<Opcode id="0484" name="GET_REMOTE_CONTROLLED_CAR" member="Rc.GetCar">
+取玩家当前遥控车（另见 `00D9` / `03C0` / `0811`）。
+
+```text
+0484 GET_REMOTE_CONTROLLED_CAR
+in: player
+out: car
+```
+
+```lua
+local car = getRemoteControlledCar(player)
+```
+
+```js
+const car = Rc.getCar(player)
+```
+</Opcode>
+
+## 允许引爆
+
+<Opcode id="048A" name="SET_ENABLE_RC_DETONATE" member="Rc.SetEnableDetonate">
+是否允许遥控车引爆。
+
+```text
+048A SET_ENABLE_RC_DETONATE
+in: state
+```
+
+```lua
+setEnableRcDetonate(state)
+```
+
+```js
+Rc.setEnableDetonate(state)
+```
+</Opcode>
+
+## 碰撞引爆
+
+<Opcode id="04D6" name="SET_ENABLE_RC_DETONATE_ON_CONTACT" member="Rc.SetEnableDetonateOnContact">
+遥控小车撞上四轮车轮是否自爆。
+
+```text
+04D6 SET_ENABLE_RC_DETONATE_ON_CONTACT
+in: state
+```
+
+```lua
+setEnableRcDetonateOnContact(state)
+```
+
+```js
+Rc.setEnableDetonateOnContact(state)
+```
+</Opcode>
+
+## 退出遥控
+
+<Opcode id="04DB" name="REMOVE_RC_BUGGY" member="Rc.RemoveBuggy">
+退出遥控模式。
+
+```text
+04DB REMOVE_RC_BUGGY
+```
+
+```lua
+removeRcBuggy()
+```
+
+```js
+Rc.removeBuggy()
+```
+</Opcode>
+
+## 接管车辆
+
+<Opcode id="0715" name="TAKE_REMOTE_CONTROL_OF_CAR" member="Rc.TakeCar">
+让指定玩家接管某车为遥控。
+
+```text
+0715 TAKE_REMOTE_CONTROL_OF_CAR
+in: player, vehicle
+```
+
+```lua
+takeRemoteControlOfCar(player, vehicle)
+```
+
+```js
+Rc.takeCar(player, vehicle)
+```
+</Opcode>

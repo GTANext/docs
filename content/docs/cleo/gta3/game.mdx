@@ -1,0 +1,183 @@
+---
+title: 游戏 Game / Pad
+description: 版本、键鼠手柄与天气
+---
+
+`gta3` · 扩展 `CLEO` · 需 CLEO
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 是否 PC 版
+
+<Opcode id="0485" name="IS_PC_VERSION" member="Game.IsPcVersion">
+是否 PC 版。用在 `if` 里（扩展表收录）。
+
+```text
+0485 IS_PC_VERSION
+```
+
+```lua
+if isPcVersion() then
+end
+```
+
+```js
+if (Game.isPcVersion()) {}
+```
+</Opcode>
+
+## 是否澳大利亚版
+
+<Opcode id="059A" name="IS_AUSTRALIAN_GAME" member="Game.IsAustralian">
+是否澳大利亚发行版。用在 `if` 里。
+
+```text
+059A IS_AUSTRALIAN_GAME
+```
+
+```lua
+if isAustralianGame() then
+end
+```
+
+```js
+if (Game.isAustralian()) {}
+```
+</Opcode>
+
+## 取游戏版本
+
+<Opcode id="05E5" name="GET_GAME_VERSION" member="Game.GetVersion">
+取版本 id。
+
+```text
+05E5 GET_GAME_VERSION
+out: versionId
+```
+
+```lua
+local ver = getGameVersion()
+```
+
+```js
+const versionId = Game.getVersion()
+```
+</Opcode>
+
+## 是否原版
+
+<Opcode id="0AA9" name="IS_GAME_VERSION_ORIGINAL" member="Game.IsVersionOriginal">
+是否原版 1.0。用在 `if` 里。
+
+```text
+0AA9 IS_GAME_VERSION_ORIGINAL
+```
+
+```lua
+if isGameVersionOriginal() then
+end
+```
+
+```js
+if (Game.isVersionOriginal()) {}
+```
+</Opcode>
+
+## 键是否按下
+
+<Opcode id="0AB0" name="IS_KEY_PRESSED" member="Pad.IsKeyPressed">
+键是否按下。经典别名 `05EE`。
+
+```text
+0AB0 IS_KEY_PRESSED
+in: keyCode
+// 经典别名 05EE
+```
+
+```lua
+if isKeyPressed(0x20) then
+end
+```
+
+```js
+if (Pad.isKeyPressed(keyCode)) {}
+```
+</Opcode>
+
+## 测试作弊串
+
+<Opcode id="0ADC" name="TEST_CHEAT" member="Pad.TestCheat">
+是否输入了指定作弊串。
+
+```text
+0ADC TEST_CHEAT
+in: input
+```
+
+```lua
+if testCheat("GUNSGUNS") then
+end
+```
+
+```js
+if (Pad.testCheat(input)) {}
+```
+</Opcode>
+
+## 手柄键灵敏度
+
+<Opcode id="0601" name="IS_BUTTON_PRESSED_WITH_SENSITIVITY" member="Pad.IsButtonPressedWithSensitivity">
+手柄键是否按到指定灵敏度。用在 `if` 里。
+
+```text
+0601 IS_BUTTON_PRESSED_WITH_SENSITIVITY
+in: buttonId, sensitivity
+```
+
+```lua
+if isButtonPressedWithSensitivity(button, 200) then
+end
+```
+
+```js
+if (Pad.isButtonPressedWithSensitivity(buttonId, sensitivity)) {}
+```
+</Opcode>
+
+## 模拟手柄键
+
+<Opcode id="0602" name="EMULATE_BUTTON_PRESS_WITH_SENSITIVITY" member="Pad.EmulateButtonPressWithSensitivity">
+模拟按下手柄键到指定灵敏度。
+
+```text
+0602 EMULATE_BUTTON_PRESS_WITH_SENSITIVITY
+in: buttonId, sensitivity
+```
+
+```lua
+emulateButtonPressWithSensitivity(button, 255)
+```
+
+```js
+Pad.emulateButtonPressWithSensitivity(buttonId, sensitivity)
+```
+</Opcode>
+
+## 当前天气
+
+<Opcode id="0607" name="GET_CURRENT_WEATHER" member="Weather.GetCurrent">
+取当前天气 id。
+
+```text
+0607 GET_CURRENT_WEATHER
+out: weatherType
+```
+
+```lua
+local w = getCurrentWeather()
+```
+
+```js
+const weatherType = Weather.getCurrent()
+```
+</Opcode>

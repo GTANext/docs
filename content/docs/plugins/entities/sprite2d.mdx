@@ -1,0 +1,107 @@
+---
+title: 精灵 CSprite2d
+description: 2D 贴图矩形与进度条
+---
+
+`CSprite2d.h`
+
+2D 贴图矩形。画在 `drawingEvent`；先 `CTxdStore::SetCurrentTxd` 再 `SetTexture`。
+
+## 设贴图
+
+<Api name="SetTexture / Delete">
+
+```cpp
+void SetTexture(char* name);
+void SetTexture(char* name, char* maskName);
+void Delete();
+RwTexture* m_pTexture;
+```
+
+```cpp
+static CSprite2d g_icon;
+
+// initRw 或 Reset 后：
+// CTxdStore::SetCurrentTxd(slot);
+g_icon.SetTexture("icon");
+```
+</Api>
+
+## 画精灵
+
+<Api name="Draw">
+多种重载：xywh、`CRect`、四角 UV、四角色。
+
+```cpp
+void Draw(float x, float y, float width, float height, CRGBA const& color);
+void Draw(CRect const& posn, CRGBA const& color);
+void Draw(CRect const& posn, CRGBA const& color, float u1, float v1, float u2, float v2, float u3, float v3, float u4, float v4);
+void Draw(CRect const& posn, CRGBA const& color1, CRGBA const& color2, CRGBA const& color3, CRGBA const& color4);
+```
+
+```cpp
+plugin::Events::drawingEvent += [] {
+    CRGBA white(255, 255, 255, 255);
+    g_icon.Draw(100.0f, 100.0f, 64.0f, 64.0f, white);
+};
+```
+</Api>
+
+## 纯色矩形
+
+<Api name="DrawRect / DrawRectXLU">
+
+```cpp
+static void DrawRect(CRect const& posn, CRGBA const& color);
+static void DrawRect(CRect const& posn, CRGBA const& color1, CRGBA const& color2, CRGBA const& color3, CRGBA const& color4);
+static void DrawRectXLU(CRect const& posn, CRGBA const& color1, CRGBA const& color2, CRGBA const& color3, CRGBA const& color4);
+static void DrawAnyRect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, CRGBA const& color1, CRGBA const& color2, CRGBA const& color3, CRGBA const& color4);
+```
+
+```cpp
+CSprite2d::DrawRect(CRect(10.0f, 10.0f, 200.0f, 40.0f), CRGBA(0, 0, 0, 160));
+```
+</Api>
+
+## 进度条
+
+<Api name="DrawBarChart">
+`progress` 0..100。
+
+```cpp
+static void DrawBarChart(float x, float y, unsigned short width, unsigned char height, float progress,
+    signed char progressAdd, unsigned char drawPercentage, unsigned char drawBlackBorder, CRGBA color, CRGBA addColor);
+```
+
+```cpp
+CSprite2d::DrawBarChart(20.0f, 20.0f, 100, 10, 75.0f, 0, 0, 1, CRGBA(0, 200, 0, 255), CRGBA(0, 0, 0, 0));
+```
+</Api>
+
+## 渲染状态
+
+<Api name="SetRenderState / DrawTxRect">
+部分静态 Draw 需先设。
+
+```cpp
+void SetRenderState();
+static void DrawTxRect(CRect const& posn, CRGBA const& color);
+```
+
+```cpp
+g_icon.SetRenderState();
+CSprite2d::DrawTxRect(rect, color);
+```
+</Api>
+
+## 寻址模式
+
+<Api name="SetAddressing / SetAddressingUV">
+
+```cpp
+void SetAddressing(RwTextureAddressMode modeUV);
+void SetAddressingUV(RwTextureAddressMode modeU, RwTextureAddressMode modeV);
+```
+</Api>
+
+坐标换算用 [Screen](/docs/plugins/extensions/screen)。批量资源可用 [SpriteLoader](/docs/plugins/utils/image-sprite)。

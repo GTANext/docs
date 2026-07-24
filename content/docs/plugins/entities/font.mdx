@@ -1,0 +1,120 @@
+---
+title: 字体 CFont
+description: 游戏内置字绘制与测宽
+---
+
+`CFont.h`
+
+游戏内置字。画在 `drawingEvent`。更省事可用 [gamefont 扩展](/docs/plugins/extensions/font)。
+
+## 缩放与颜色
+
+<Api name="SetScale / SetColor / SetAlphaFade">
+
+```cpp
+static void SetScale(float w, float h);
+static void SetColor(CRGBA color);
+static void SetAlphaFade(float alpha);
+```
+
+```cpp
+CFont::SetScale(0.5f, 1.0f);
+CFont::SetColor(CRGBA(255, 255, 255, 255));
+```
+</Api>
+
+## 字体样式与对齐
+
+<Api name="SetFontStyle / SetOrientation / SetJustify">
+
+```cpp
+static void SetFontStyle(short style);
+static void SetOrientation(eFontAlignment alignment);
+static void SetJustify(bool on);
+static void SetCentreSize(float value);
+static void SetWrapx(float value);
+static void SetProportional(bool on);
+```
+
+```cpp
+// CFont::SetFontStyle(1);
+// CFont::SetOrientation(ALIGN_CENTER); // 以枚举为准
+```
+</Api>
+
+## 阴影与描边
+
+<Api name="SetDropColor / SetDropShadowPosition / SetEdge">
+
+```cpp
+static void SetDropColor(CRGBA color);
+static void SetDropShadowPosition(short value);
+static void SetEdge(short value);
+```
+
+```cpp
+CFont::SetDropShadowPosition(1);
+CFont::SetDropColor(CRGBA(0, 0, 0, 255));
+```
+</Api>
+
+## 背景
+
+<Api name="SetBackground / SetBackgroundColor">
+
+```cpp
+static void SetBackground(bool enable, bool includeWrap);
+static void SetBackgroundColor(CRGBA color);
+```
+
+```cpp
+CFont::SetBackground(true, false);
+```
+</Api>
+
+## 打印字符串
+
+<Api name="PrintString / PrintStringFromBottom">
+
+```cpp
+static void PrintString(float x, float y, const char* text);
+static void PrintStringFromBottom(float x, float y, const char* text);
+static void PrintChar(float x, float y, char character);
+```
+
+```cpp
+plugin::Events::drawingEvent += [] {
+    CFont::SetScale(0.4f, 0.8f);
+    CFont::SetColor(CRGBA(255, 255, 255, 255));
+    CFont::PrintString(50.0f, 50.0f, "hello");
+};
+```
+</Api>
+
+## 测宽与矩形
+
+<Api name="GetStringWidth / GetTextRect">
+
+```cpp
+static float GetStringWidth(const char* string, bool spaces, bool scriptValues = false);
+static void GetTextRect(CRect* rect, float x, float y, const char* text);
+```
+
+```cpp
+float w = CFont::GetStringWidth("hello", true);
+```
+</Api>
+
+## 缓冲
+
+<Api name="InitPerFrame / RenderFontBuffer">
+一般引擎已调；自管缓冲时才碰。
+
+```cpp
+static void InitPerFrame();
+static void RenderFontBuffer();
+static void DrawFonts();
+```
+</Api>
+
+屏幕坐标用 [Screen](/docs/plugins/extensions/screen)。

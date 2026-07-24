@@ -1,0 +1,138 @@
+---
+title: 3D标签 SampTextLabel3D
+description: 模拟 SA-MP 3D 文本
+---
+
+`sa` · 扩展 `SAMPFUNCS` · 仅 SA-MP；需 SAMPFUNCS
+
+共 6 条。调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 创建 / 删除
+
+<Opcode id="0B44" name="SAMP_CREATE_3D_TEXT" member="SampTextLabel3D.Create">
+按给定参数创建模拟的 SA-MP 3D 文本。
+
+```text
+0B44 SAMP_CREATE_3D_TEXT
+in: text, color, coordX, coordY, coordZ, visibilityRadius, showBehindWalls, attachedPlayerId, attachedCarId
+out: handle
+```
+
+```lua
+local handle = sampCreate3dText(
+  text, color, coordX, coordY, coordZ,
+  visibilityRadius, showBehindWalls, attachedPlayerId, attachedCarId
+)
+```
+
+```js
+const handle = SampTextLabel3D.Create(
+  text, color, coordX, coordY, coordZ,
+  visibilityRadius, showBehindWalls, attachedPlayerId, attachedCarId
+)
+```
+</Opcode>
+
+<Opcode id="0B45" name="SAMP_DELETE_3D_TEXT" member="SampTextLabel3D.Delete">
+按 ID 销毁 3D 文本。用在 `if` 里。
+
+```text
+0B45 SAMP_DELETE_3D_TEXT
+in: self
+```
+
+```lua
+if sampDelete3dText(self) then
+end
+```
+
+```js
+if (SampTextLabel3D.delete(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0B46" name="SAMP_DOES_3D_TEXT_EXIST" member="SampTextLabel3D.DoesExist">
+若指定 3D 文本存在则为真。
+
+```text
+0B46 SAMP_DOES_3D_TEXT_EXIST
+in: self
+```
+
+```lua
+if sampDoes3dTextExist(self) then
+end
+```
+
+```js
+if (SampTextLabel3D.doesExist(self)) {
+}
+```
+</Opcode>
+
+## 指定 ID / 参数
+
+<Opcode id="0C45" name="SAMP_CREATE_3D_TEXT_WITH_ID" member="SampTextLabel3D.CreateWithId">
+用指定 ID 创建/覆盖 3D 文本。
+
+```text
+0C45 SAMP_CREATE_3D_TEXT_WITH_ID
+in: idAsHandle, text, color, coordX, coordY, coordZ, visibilityRadius, showBehindWalls, attachedPlayerId, attachedCarId
+```
+
+```lua
+sampCreate3dTextWithId(
+  idAsHandle, text, color, coordX, coordY, coordZ,
+  visibilityRadius, showBehindWalls, attachedPlayerId, attachedCarId
+)
+```
+
+```js
+SampTextLabel3D.CreateWithId(
+  idAsHandle, text, color, coordX, coordY, coordZ,
+  visibilityRadius, showBehindWalls, attachedPlayerId, attachedCarId
+)
+```
+</Opcode>
+
+<Opcode id="0C46" name="SAMP_GET_3D_TEXT_PARAMS" member="SampTextLabel3D.GetParams">
+按 ID 返回 SampTextLabel3D 的全部信息。
+
+```text
+0C46 SAMP_GET_3D_TEXT_PARAMS
+in: self
+out: text, color, coordX, coordY, coordZ, visibilityRadius, showBehindWalls, attachedPlayerId, attachedCarId
+```
+
+```lua
+local text, color, coordX, coordY, coordZ, visibilityRadius, showBehindWalls, attachedPlayerId, attachedCarId =
+  sampGet3dTextParams(self)
+```
+
+```js
+const {
+  text, color, coordX, coordY, coordZ,
+  visibilityRadius, showBehindWalls, attachedPlayerId, attachedCarId
+} = SampTextLabel3D.getParams(self)
+```
+</Opcode>
+
+<Opcode id="0C47" name="SAMP_SET_3D_TEXT" member="SampTextLabel3D.SetText">
+设置 3D 文本的新文字。用在 `if` 里。
+
+```text
+0C47 SAMP_SET_3D_TEXT
+in: self, text
+```
+
+```lua
+if sampSet3dText(self, text) then
+end
+```
+
+```js
+if (SampTextLabel3D.setText(self, text)) {
+}
+```
+</Opcode>

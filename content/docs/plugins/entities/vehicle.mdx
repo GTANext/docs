@@ -1,0 +1,179 @@
+---
+title: 载具 CVehicle
+description: 修车、司机乘客、部件与姿态
+---
+
+`CVehicle.h`
+
+逻辑帧改状态。先 `FindPlayerVehicle` 判空。
+
+## 修复车辆
+
+<Api name="Fix / m_fHealth">
+车血约 1000 满，0 炸。逻辑帧。
+
+```cpp
+void Fix();
+float m_fHealth;
+```
+
+```cpp
+CVehicle* veh = FindPlayerVehicle();
+if (!veh) {
+    return;
+}
+veh->Fix();
+veh->m_fHealth = 1000.0f;
+```
+</Api>
+
+## 司机乘客与车色
+
+<Api name="m_pDriver / m_apPassengers / m_nPrimaryColor">
+
+```cpp
+CPed* m_pDriver;
+CPed* m_apPassengers[8];
+unsigned char m_nPrimaryColor;
+void SetDriver(CPed* driver);
+bool AddPassenger(CPed* passenger);
+bool AddPassenger(CPed* passenger, unsigned char seatNumber);
+void RemovePassenger(CPed* passenger);
+bool IsDriver(CPed* ped);
+bool IsPassenger(CPed* ped);
+```
+
+```cpp
+if (veh->m_pDriver) {
+    // ...
+}
+veh->m_nPrimaryColor = 1;
+```
+</Api>
+
+## 炸车与灭火
+
+<Api name="BlowUpCar / ExtinguishCarFire">
+`damager` 可 null。
+
+```cpp
+void BlowUpCar(CEntity* damager, bool bHideExplosion);
+void ExtinguishCarFire();
+```
+
+```cpp
+veh->BlowUpCar(nullptr, false);
+// veh->ExtinguishCarFire();
+```
+</Api>
+
+## 贴图与升级件
+
+<Api name="SetRemap / AddVehicleUpgrade">
+
+```cpp
+void SetRemap(int remapIndex);
+void SetRemapTexDictionary(int txdId);
+void AddVehicleUpgrade(int modelId);
+int GetRemapIndex();
+```
+
+```cpp
+veh->AddVehicleUpgrade(upgradeModelId);
+```
+</Api>
+
+## 是否可上车
+
+<Api name="CanPedEnterCar / CanPedOpenLocks">
+
+```cpp
+bool CanPedEnterCar();
+bool CanPedOpenLocks(CPed* ped);
+bool CanPedStepOutCar(bool arg0);
+bool CanPedJumpOutCar(CPed* ped);
+```
+
+```cpp
+if (veh->CanPedEnterCar()) {
+}
+```
+</Api>
+
+## 引擎灯光锁
+
+<Api name="bEngineOn / bLightsOn / bIsLocked">
+
+```cpp
+// CVehicle bitfields
+// bool bEngineOn; bool bLightsOn; bool bIsLocked; ...
+```
+
+```cpp
+veh->bEngineOn = true;
+veh->bLightsOn = true;
+veh->bIsLocked = false;
+```
+</Api>
+
+## 门与部件
+
+<Api name="OpenDoor / IsDoorReady / GetComponentWorldPosition">
+
+```cpp
+void OpenDoor(CPed* ped, int componentId, eDoors door, float doorOpenRatio, bool playSound);
+bool IsDoorReady(eDoors door);
+bool IsDoorFullyOpen(eDoors door);
+bool IsDoorClosed(eDoors door);
+bool IsDoorMissing(eDoors door);
+void GetComponentWorldPosition(int componentId, CVector& posnOut);
+bool IsComponentPresent(int componentId);
+```
+
+```cpp
+// eDoors 见头文件
+// veh->OpenDoor(ped, componentId, door, 1.0f, true);
+```
+</Api>
+
+## 车身姿态
+
+<Api name="IsUpsideDown / IsOnItsSide / IsLawEnforcementVehicle">
+
+```cpp
+bool IsUpsideDown();
+bool IsOnItsSide();
+bool IsLawEnforcementVehicle();
+int GetVehicleAppearance();
+```
+
+```cpp
+if (veh->IsUpsideDown()) {
+}
+```
+</Api>
+
+## 轮胎损坏
+
+<Api name="BurstTyre">
+
+```cpp
+bool BurstTyre(unsigned char tyreComponentId, bool bPhysicalEffect);
+```
+
+```cpp
+// veh->BurstTyre(tyreId, true);
+```
+</Api>
+
+## 在车上每帧逻辑
+
+```cpp
+plugin::Events::processScriptsEvent += [] {
+    CVehicle* veh = FindPlayerVehicle();
+    if (!veh) {
+        return;
+    }
+    veh->m_fHealth = 1000.0f;
+};
+```

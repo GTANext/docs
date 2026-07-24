@@ -1,0 +1,94 @@
+---
+title: 雷达 CRadar
+description: Blip 创建、外观与清除
+---
+
+`CRadar.h`
+
+Blip 句柄跨帧要自己存；清标用 `ClearBlip`。
+
+## 坐标 Blip
+
+<Api name="SetCoordBlip / SetShortRangeCoordBlip">
+
+```cpp
+static int SetCoordBlip(eBlipType type, CVector posn, unsigned int arg2, eBlipDisplay blipDisplay, char* scriptName);
+static int SetShortRangeCoordBlip(eBlipType type, CVector posn, unsigned int arg2, eBlipDisplay blipDisplay, char* scriptName);
+```
+
+```cpp
+int blip = CRadar::SetCoordBlip(BLIP_COORD, pos, 0, BLIP_DISPLAY_BOTH, nullptr);
+```
+</Api>
+
+## 实体 Blip
+
+<Api name="SetEntityBlip / ClearBlipForEntity">
+
+```cpp
+static int SetEntityBlip(eBlipType type, int entityHandle, unsigned int arg2, eBlipDisplay blipDisplay);
+static void ClearBlipForEntity(eBlipType blipType, int entityHandle);
+```
+
+```cpp
+// int handle = CPools::GetPedRef(ped);
+// int blip = CRadar::SetEntityBlip(BLIP_CHAR, handle, 0, BLIP_DISPLAY_BOTH);
+```
+</Api>
+
+## 改 Blip 外观
+
+<Api name="ChangeBlipColour / SetBlipSprite / ChangeBlipScale">
+
+```cpp
+static void ChangeBlipColour(int blipIndex, unsigned int color);
+static void ChangeBlipScale(int blipIndex, int size);
+static void ChangeBlipDisplay(int blipIndex, eBlipDisplay blipDisplay);
+static void SetBlipSprite(int blipIndex, int spriteId);
+static void SetBlipFriendly(int blipIndex, unsigned char friendly);
+```
+
+```cpp
+CRadar::ChangeBlipColour(blip, BLIP_COLOUR_YELLOW);
+CRadar::SetBlipSprite(blip, RADAR_SPRITE_WAYPOINT); // 以枚举为准
+```
+</Api>
+
+## 清除 Blip
+
+<Api name="ClearBlip / ClearActualBlip">
+
+```cpp
+static void ClearBlip(int blipIndex);
+static void ClearActualBlip(int blipArrId);
+```
+
+```cpp
+CRadar::ClearBlip(blip);
+```
+</Api>
+
+## 雷达画区域
+
+<Api name="DrawAreaOnRadar">
+绘制帧 / 雷达钩子里用。
+
+```cpp
+static void DrawAreaOnRadar(CRect const& rect, CRGBA const& color, bool inMenu);
+```
+
+```cpp
+// CRadar::DrawAreaOnRadar(rect, color, false);
+```
+</Api>
+
+## 常用枚举
+
+<Api name="eBlipType / eBlipDisplay / eBlipColour">
+见 `CRadar.h`。
+
+```cpp
+// BLIP_COORD, BLIP_CHAR, BLIP_CAR, BLIP_OBJECT, BLIP_PICKUP ...
+// BLIP_DISPLAY_BOTH, BLIP_DISPLAY_BLIP_ONLY ...
+```
+</Api>

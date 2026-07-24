@@ -1,0 +1,246 @@
+---
+title: 流式 Streaming
+description: 优先模型、特殊角色、池清理与 specialModel
+---
+
+`sa` · 扩展 `CLEO+` · 需 CLEO + CLEO+
+
+模型请求 / 特殊角色 / 池清理。`0E7F` 见 [game](/docs/cleo/sa/plus/game)（`GET_MODEL_TYPE`）。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 优先模型
+
+<Opcode id="0E98" name="REQUEST_PRIORITY_MODEL" member="Streaming.RequestPriorityModel">
+请求优先加载模型。
+
+```text
+0E98 REQUEST_PRIORITY_MODEL
+in: modelId
+```
+
+```lua
+requestPriorityModel(modelId)
+```
+
+```js
+Streaming.requestPriorityModel(modelId)
+```
+</Opcode>
+
+<Opcode id="0E99" name="LOAD_ALL_PRIORITY_MODELS_NOW" member="Streaming.LoadAllPriorityModelsNow">
+立刻加载所有优先模型（语义类似 `LOAD_ALL_MODELS_NOW`）。
+
+```text
+0E99 LOAD_ALL_PRIORITY_MODELS_NOW
+```
+
+```lua
+loadAllPriorityModelsNow()
+```
+
+```js
+Streaming.loadAllPriorityModelsNow()
+```
+</Opcode>
+
+## 特殊角色 id
+
+<Opcode id="0E9A" name="LOAD_SPECIAL_CHARACTER_FOR_ID" member="Streaming.LoadSpecialCharacterForId">
+按 id 加载特殊角色名。
+
+```text
+0E9A LOAD_SPECIAL_CHARACTER_FOR_ID
+in: id, name
+```
+
+```lua
+loadSpecialCharacterForId(1, "special")
+```
+
+```js
+Streaming.loadSpecialCharacterForId(id, name)
+```
+</Opcode>
+
+<Opcode id="0E9B" name="UNLOAD_SPECIAL_CHARACTER_FROM_ID" member="Streaming.UnloadSpecialCharacterFromId">
+按 id 卸载特殊角色。
+
+```text
+0E9B UNLOAD_SPECIAL_CHARACTER_FROM_ID
+in: id
+```
+
+```lua
+unloadSpecialCharacterFromId(1)
+```
+
+```js
+Streaming.unloadSpecialCharacterFromId(id)
+```
+</Opcode>
+
+## 按名查模型
+
+<Opcode id="0E9C" name="GET_MODEL_BY_NAME" member="Streaming.GetModelByName">
+名字 → modelId。用在 `if` 里。
+
+```text
+0E9C GET_MODEL_BY_NAME
+in: name
+out: modelId
+```
+
+```lua
+local mid = getModelByName("infernus")
+```
+
+```js
+const modelId = Streaming.getModelByName(name)
+```
+</Opcode>
+
+<Opcode id="0E9D" name="IS_MODEL_AVAILABLE_BY_NAME" member="Streaming.IsModelAvailableByName">
+名字是否可作为有效特殊角色模型。用在 `if` 里。
+
+```text
+0E9D IS_MODEL_AVAILABLE_BY_NAME
+in: name
+```
+
+```lua
+if isModelAvailableByName("special") then
+end
+```
+
+```js
+if (Streaming.isModelAvailableByName(name)) {
+}
+```
+</Opcode>
+
+## 空闲 id / 清理
+
+<Opcode id="0E9E" name="GET_MODEL_DOESNT_EXIST_IN_RANGE">
+在 `[start, end]` 区间找一个尚未占用的 modelId。
+
+```text
+0E9E GET_MODEL_DOESNT_EXIST_IN_RANGE
+in: start, end
+out: modelId
+```
+
+```lua
+local freeId = getModelDoesntExistInRange(startId, endId)
+```
+
+```js
+const modelId = native("GET_MODEL_DOESNT_EXIST_IN_RANGE", start, end)
+```
+</Opcode>
+
+<Opcode id="0E9F" name="REMOVE_ALL_UNUSED_MODELS" member="Streaming.RemoveAllUnusedModels">
+清掉未使用模型。
+
+```text
+0E9F REMOVE_ALL_UNUSED_MODELS
+```
+
+```lua
+removeAllUnusedModels()
+```
+
+```js
+Streaming.removeAllUnusedModels()
+```
+</Opcode>
+
+<Opcode id="0EA3" name="REMOVE_MODEL_IF_UNUSED" member="Streaming.RemoveModelIfUnused">
+指定模型未用则从内存卸掉。
+
+```text
+0EA3 REMOVE_MODEL_IF_UNUSED
+in: modelId
+```
+
+```lua
+removeModelIfUnused(modelId)
+```
+
+```js
+Streaming.removeModelIfUnused(modelId)
+```
+</Opcode>
+
+## modelInfo
+
+<Opcode id="0EF8" name="GET_MODEL_INFO" member="Streaming.GetModelInfo">
+modelId → modelInfo 地址。用在 `if` 里。
+
+```text
+0EF8 GET_MODEL_INFO
+in: modelId
+out: modelInfo
+```
+
+```lua
+local info = getModelInfo(modelId)
+```
+
+```js
+const modelInfo = Streaming.getModelInfo(modelId)
+```
+</Opcode>
+
+## specialModel
+
+<Opcode id="0F00" name="LOAD_SPECIAL_MODEL" member="Streaming.LoadSpecialModel">
+按 dff/txd 名加载 specialModel。用在 `if` 里。
+
+```text
+0F00 LOAD_SPECIAL_MODEL
+in: dff, txd
+out: specialModel
+```
+
+```lua
+local sm = loadSpecialModel("model", "txdname")
+```
+
+```js
+const specialModel = Streaming.loadSpecialModel(dff, txd)
+```
+</Opcode>
+
+<Opcode id="0F01" name="REMOVE_SPECIAL_MODEL" member="Streaming.RemoveSpecialModel">
+卸载 specialModel。
+
+```text
+0F01 REMOVE_SPECIAL_MODEL
+in: specialModel
+```
+
+```lua
+removeSpecialModel(sm)
+```
+
+```js
+Streaming.removeSpecialModel(specialModel)
+```
+</Opcode>
+
+<Opcode id="0F05" name="GET_SPECIAL_MODEL_DATA" member="Streaming.GetSpecialModelData">
+取 specialModel 的 clump / atomic / txd 下标。
+
+```text
+0F05 GET_SPECIAL_MODEL_DATA
+in: specialModel
+out: clump, atomic, txdIndex
+```
+
+```lua
+local clump, atomic, txdIndex = getSpecialModelData(sm)
+```
+
+```js
+const { clump, atomic, txdIndex } = Streaming.getSpecialModelData(specialModel)
+```
+</Opcode>

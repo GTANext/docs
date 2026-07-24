@@ -1,0 +1,214 @@
+---
+title: 文本 Text
+description: 串比较、屏上格式化与 FXT
+---
+
+`sa` · 扩展 `text` · 需对应 CLEO 扩展
+
+串判空 / 比较、屏上格式化字、FXT 动态键。共 10 条（`2600`…`2609`）。
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 是否空串
+
+<Opcode id="2600" name="IS_TEXT_EMPTY" member="Text.IsEmpty">
+用在 `if` 里。
+
+```text
+2600 IS_TEXT_EMPTY
+in: string
+```
+
+```lua
+if isTextEmpty(s) then
+end
+```
+
+```js
+if (Text.isEmpty(string)) {
+}
+```
+</Opcode>
+
+## 是否相等
+
+<Opcode id="2601" name="IS_TEXT_EQUAL" member="Text.IsEqual">
+`ignoreCase` 忽略大小写。用在 `if` 里。
+
+```text
+2601 IS_TEXT_EQUAL
+in: text, another, ignoreCase
+```
+
+```lua
+if isTextEqual(a, b, true) then
+end
+```
+
+```js
+if (Text.isEqual(text, another, ignoreCase)) {
+}
+```
+</Opcode>
+
+## 是否包含
+
+<Opcode id="2602" name="IS_TEXT_IN_TEXT" member="Text.Contains">
+用在 `if` 里。
+
+```text
+2602 IS_TEXT_IN_TEXT
+in: text, subText, ignoreCase
+```
+
+```lua
+if isTextInText(hay, "mod", true) then
+end
+```
+
+```js
+if (Text.contains(text, subText, ignoreCase)) {
+}
+```
+</Opcode>
+
+## 是否前缀
+
+<Opcode id="2603" name="IS_TEXT_PREFIX" member="Text.StartsWith">
+用在 `if` 里。
+
+```text
+2603 IS_TEXT_PREFIX
+in: text, prefix, ignoreCase
+```
+
+```lua
+if isTextPrefix(s, "cleo/", true) then
+end
+```
+
+```js
+if (Text.startsWith(text, prefix, ignoreCase)) {
+}
+```
+</Opcode>
+
+## 是否后缀
+
+<Opcode id="2604" name="IS_TEXT_SUFFIX" member="Text.EndsWith">
+用在 `if` 里。
+
+```text
+2604 IS_TEXT_SUFFIX
+in: text, suffix, ignoreCase
+```
+
+```lua
+if isTextSuffix(s, ".lua", true) then
+end
+```
+
+```js
+if (Text.endsWith(text, suffix, ignoreCase)) {
+}
+```
+</Opcode>
+
+## 屏上格式化字
+
+<Opcode id="2605" name="DISPLAY_TEXT_FORMATTED" member="Text.DisplayFormatted">
+按格式串拼参，再画到屏幕位置（类比 `033E`）。
+
+```text
+2605 DISPLAY_TEXT_FORMATTED
+in: offsetLeft, offsetTop, format, args...
+```
+
+```lua
+displayTextFormatted(100.0, 50.0, "hp %d", 100)
+```
+
+```js
+Text.displayFormatted(offsetLeft, offsetTop, format, ...args)
+```
+</Opcode>
+
+## 加载 FXT
+
+<Opcode id="2606" name="LOAD_FXT" member="Text.LoadFxt">
+从 FXT 加载自定义文本条目。用在 `if` 里。
+
+```text
+2606 LOAD_FXT
+in: filepath
+```
+
+```lua
+if loadFxt("cleo/my.fxt") then
+end
+```
+
+```js
+if (Text.loadFxt(filepath)) {
+}
+```
+</Opcode>
+
+## 卸载 FXT
+
+<Opcode id="2607" name="UNLOAD_FXT" member="Text.UnloadFxt">
+用在 `if` 里。
+
+```text
+2607 UNLOAD_FXT
+in: filepath
+```
+
+```lua
+if unloadFxt("cleo/my.fxt") then
+end
+```
+
+```js
+if (Text.unloadFxt(filepath)) {
+}
+```
+</Opcode>
+
+## 串长度
+
+<Opcode id="2608" name="GET_TEXT_LENGTH" member="Text.GetLength">
+
+```text
+2608 GET_TEXT_LENGTH
+in: text
+out: length
+```
+
+```lua
+local n = getTextLength(s)
+```
+
+```js
+const length = Text.getLength(text)
+```
+</Opcode>
+
+## 动态 GXT 键
+
+<Opcode id="2609" name="ADD_TEXT_LABEL_FORMATTED" member="Text.AddLabelFormatted">
+按格式写入 / 更新动态 GXT 键；若同键已在 FXT 里定义则不动。
+
+```text
+2609 ADD_TEXT_LABEL_FORMATTED
+in: dynamicKey, format, args...
+```
+
+```lua
+addTextLabelFormatted("MYKEY", "score %d", 42)
+```
+
+```js
+Text.addLabelFormatted(dynamicKey, format, ...args)
+```
+</Opcode>

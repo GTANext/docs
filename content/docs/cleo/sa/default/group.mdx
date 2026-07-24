@@ -1,0 +1,241 @@
+---
+title: 小组 Group
+description: 角色组
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 12 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 创建
+
+<Opcode id="062F" name="CREATE_GROUP" member="Group.Create">
+创建角色组（可统一指挥多名角色）。
+
+```text
+062F CREATE_GROUP
+in: defaultTaskAllocator
+out: handle
+```
+
+```lua
+local handle = createGroup(defaultTaskAllocator)
+```
+
+```js
+const handle = Group.create(defaultTaskAllocator)
+```
+</Opcode>
+
+## 设组长
+
+<Opcode id="0630" name="SET_GROUP_LEADER" member="Group.SetLeader">
+设组长。
+
+```text
+0630 SET_GROUP_LEADER
+in: self, handle
+```
+
+```lua
+setGroupLeader(self, handle)
+```
+
+```js
+Group.setLeader(self, handle)
+```
+</Opcode>
+
+## 加组员
+
+<Opcode id="0631" name="SET_GROUP_MEMBER" member="Group.SetMember">
+加人作组员。
+
+```text
+0631 SET_GROUP_MEMBER
+in: self, handle
+```
+
+```lua
+setGroupMember(self, handle)
+```
+
+```js
+Group.setMember(self, handle)
+```
+</Opcode>
+
+## 释放
+
+<Opcode id="0632" name="REMOVE_GROUP" member="Group.Remove">
+释放组。
+
+```text
+0632 REMOVE_GROUP
+in: self
+```
+
+```lua
+removeGroup(self)
+```
+
+```js
+Group.remove(self)
+```
+</Opcode>
+
+## 决策器
+
+<Opcode id="06AD" name="SET_GROUP_DECISION_MAKER" member="Group.SetDecisionMaker">
+设组决策器。
+
+```text
+06AD SET_GROUP_DECISION_MAKER
+in: self, handleOrTemplate
+```
+
+```lua
+setGroupDecisionMaker(self, handleOrTemplate)
+```
+
+```js
+Group.setDecisionMaker(self, handleOrTemplate)
+```
+</Opcode>
+
+## 分离距离
+
+<Opcode id="06F0" name="SET_GROUP_SEPARATION_RANGE" member="Group.SetSeparationRange">
+组员离组长多远会被踢出组。
+
+```text
+06F0 SET_GROUP_SEPARATION_RANGE
+in: self, range
+```
+
+```lua
+setGroupSeparationRange(self, range)
+```
+
+```js
+Group.setSeparationRange(self, range)
+```
+</Opcode>
+
+## 默认任务分配
+
+<Opcode id="07B3" name="SET_GROUP_DEFAULT_TASK_ALLOCATOR" member="Group.SetDefaultTaskAllocator">
+设默认任务分配器。
+
+```text
+07B3 SET_GROUP_DEFAULT_TASK_ALLOCATOR
+in: self, defaultTaskAllocator
+```
+
+```lua
+setGroupDefaultTaskAllocator(self, defaultTaskAllocator)
+```
+
+```js
+Group.setDefaultTaskAllocator(self, defaultTaskAllocator)
+```
+</Opcode>
+
+## 组规模
+
+<Opcode id="07F6" name="GET_GROUP_SIZE" member="Group.GetSize">
+取组长数与组员数。
+
+```text
+07F6 GET_GROUP_SIZE
+in: self
+out: numLeaders, numMembers
+```
+
+```lua
+local numLeaders, numMembers = getGroupSize(self)
+```
+
+```js
+const { numLeaders, numMembers } = Group.getSize(self)
+```
+</Opcode>
+
+## 是否存在
+
+<Opcode id="07FD" name="DOES_GROUP_EXIST" member="Group.DoesExist">
+handle 是否有效组。用在 `if` 里。
+
+```text
+07FD DOES_GROUP_EXIST
+in: handle
+```
+
+```lua
+if doesGroupExist(handle) then
+end
+```
+
+```js
+if (Group.doesExist(handle)) {
+}
+```
+</Opcode>
+
+## 组序列
+
+<Opcode id="087D" name="SET_GROUP_SEQUENCE" member="Group.SetSequence">
+组员默认任务序列。
+
+```text
+087D SET_GROUP_SEQUENCE
+in: self, sequence
+```
+
+```lua
+setGroupSequence(self, sequence)
+```
+
+```js
+Group.setSequence(self, sequence)
+```
+</Opcode>
+
+## 取组员
+
+<Opcode id="092B" name="GET_GROUP_MEMBER" member="Group.GetMember">
+取第 n 个组员。
+
+```text
+092B GET_GROUP_MEMBER
+in: self, slotId
+out: handle
+```
+
+```lua
+local handle = getGroupMember(self, slotId)
+```
+
+```js
+const handle = Group.getMember(self, slotId)
+```
+</Opcode>
+
+## 跟随上车
+
+<Opcode id="0940" name="SET_GROUP_FOLLOW_STATUS" member="Group.SetFollowStatus">
+组长上车时组员是否跟着上。
+
+```text
+0940 SET_GROUP_FOLLOW_STATUS
+in: self, state
+```
+
+```lua
+setGroupFollowStatus(self, state)
+```
+
+```js
+Group.setFollowStatus(self, state)
+```
+</Opcode>

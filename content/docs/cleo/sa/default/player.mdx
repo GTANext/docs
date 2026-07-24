@@ -1,0 +1,1268 @@
+---
+title: 玩家 Player
+description: 玩家金钱 / 通缉 / 操控 / 服装
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 66 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 创建玩家
+
+<Opcode id="0053" name="CREATE_PLAYER" member="Player.Create">
+在指定坐标创建玩家。
+
+```text
+0053 CREATE_PLAYER
+in: playerIndex, x, y, z
+out: handle
+```
+
+```lua
+local handle = createPlayer(playerIndex, x, y, z)
+```
+
+```js
+Player.create(playerIndex, x, y, z)
+```
+</Opcode>
+
+## 加钱
+
+<Opcode id="0109" name="ADD_SCORE" member="Player.AddScore">
+增加玩家金钱。
+
+```text
+0109 ADD_SCORE
+in: self, money
+```
+
+```lua
+addScore(self, money)
+```
+
+```js
+Player.addScore(self, money)
+```
+</Opcode>
+
+## 钱是否更多
+
+<Opcode id="010A" name="IS_SCORE_GREATER" member="Player.IsScoreGreater">
+用在 if：金钱是否超过指定值。
+
+```text
+010A IS_SCORE_GREATER
+in: self, money
+```
+
+```lua
+isScoreGreater(self, money)
+```
+
+```js
+Player.isScoreGreater(self, money)
+```
+</Opcode>
+
+## 取金钱
+
+<Opcode id="010B" name="STORE_SCORE" member="Player.StoreScore">
+取玩家金钱。
+
+```text
+010B STORE_SCORE
+in: self
+out: money
+```
+
+```lua
+local money = storeScore(self)
+```
+
+```js
+Player.storeScore(self)
+```
+</Opcode>
+
+## 设通缉
+
+<Opcode id="010D" name="ALTER_WANTED_LEVEL" member="Player.AlterWantedLevel">
+设置通缉等级。
+
+```text
+010D ALTER_WANTED_LEVEL
+in: self, wantedLevel
+```
+
+```lua
+alterWantedLevel(self, wantedLevel)
+```
+
+```js
+Player.alterWantedLevel(self, wantedLevel)
+```
+</Opcode>
+
+## 通缉只升不降
+
+<Opcode id="010E" name="ALTER_WANTED_LEVEL_NO_DROP" member="Player.AlterWantedLevelNoDrop">
+仅当新等级更高时设置通缉。
+
+```text
+010E ALTER_WANTED_LEVEL_NO_DROP
+in: self, wantedLevel
+```
+
+```lua
+alterWantedLevelNoDrop(self, wantedLevel)
+```
+
+```js
+Player.alterWantedLevelNoDrop(self, wantedLevel)
+```
+</Opcode>
+
+## 通缉是否更高
+
+<Opcode id="010F" name="IS_WANTED_LEVEL_GREATER" member="Player.IsWantedLevelGreater">
+用在 if：通缉是否超过指定值。
+
+```text
+010F IS_WANTED_LEVEL_GREATER
+in: self, wantedLevel
+```
+
+```lua
+isWantedLevelGreater(self, wantedLevel)
+```
+
+```js
+Player.isWantedLevelGreater(self, wantedLevel)
+```
+</Opcode>
+
+## 清通缉
+
+<Opcode id="0110" name="CLEAR_WANTED_LEVEL" member="Player.ClearWantedLevel">
+清除通缉。
+
+```text
+0110 CLEAR_WANTED_LEVEL
+in: self
+```
+
+```lua
+clearWantedLevel(self)
+```
+
+```js
+Player.clearWantedLevel(self)
+```
+</Opcode>
+
+## 是否死亡
+
+<Opcode id="0117" name="IS_PLAYER_DEAD" member="Player.IsDead">
+用在 if：玩家是否死亡（Wasted）。
+
+```text
+0117 IS_PLAYER_DEAD
+in: self
+```
+
+```lua
+isPlayerDead(self)
+```
+
+```js
+Player.isDead(self)
+```
+</Opcode>
+
+## 是否按喇叭
+
+<Opcode id="0122" name="IS_PLAYER_PRESSING_HORN" member="Player.IsPressingHorn">
+用在 if：是否在车里按喇叭。
+
+```text
+0122 IS_PLAYER_PRESSING_HORN
+in: self
+```
+
+```lua
+isPlayerPressingHorn(self)
+```
+
+```js
+Player.isPressingHorn(self)
+```
+</Opcode>
+
+## 开关操控
+
+<Opcode id="01B4" name="SET_PLAYER_CONTROL" member="Player.SetControl">
+开关玩家操控。
+
+```text
+01B4 SET_PLAYER_CONTROL
+in: self, state
+```
+
+```lua
+setPlayerControl(self, state)
+```
+
+```js
+Player.setControl(self, state)
+```
+</Opcode>
+
+## 取通缉等级
+
+<Opcode id="01C0" name="STORE_WANTED_LEVEL" member="Player.StoreWantedLevel">
+取当前通缉等级。
+
+```text
+01C0 STORE_WANTED_LEVEL
+in: self
+out: wantedLevel
+```
+
+```lua
+local wantedLevel = storeWantedLevel(self)
+```
+
+```js
+Player.storeWantedLevel(self)
+```
+</Opcode>
+
+## 取角色句柄
+
+<Opcode id="01F5" name="GET_PLAYER_CHAR" member="Player.GetChar">
+取玩家对应角色句柄。
+
+```text
+01F5 GET_PLAYER_CHAR
+in: self
+out: handle
+```
+
+```lua
+local handle = getPlayerChar(self)
+```
+
+```js
+Player.getChar(self)
+```
+</Opcode>
+
+## 玩家车刹车
+
+<Opcode id="0221" name="APPLY_BRAKES_TO_PLAYERS_CAR" member="Player.ApplyBrakesToCar">
+给玩家的车刹车。
+
+```text
+0221 APPLY_BRAKES_TO_PLAYERS_CAR
+in: self, state
+```
+
+```lua
+applyBrakesToPlayersCar(self, state)
+```
+
+```js
+Player.applyBrakesToCar(self, state)
+```
+</Opcode>
+
+## 是否遥控模式
+
+<Opcode id="0241" name="IS_PLAYER_IN_REMOTE_MODE" member="Player.IsInRemoteMode">
+用在 if：是否遥控车模式。
+
+```text
+0241 IS_PLAYER_IN_REMOTE_MODE
+in: self
+```
+
+```lua
+isPlayerInRemoteMode(self)
+```
+
+```js
+Player.isInRemoteMode(self)
+```
+</Opcode>
+
+## 是否在玩
+
+<Opcode id="0256" name="IS_PLAYER_PLAYING" member="Player.IsPlaying">
+用在 if：存活且未被捕。
+
+```text
+0256 IS_PLAYER_PLAYING
+in: self
+```
+
+```lua
+isPlayerPlaying(self)
+```
+
+```js
+Player.isPlaying(self)
+```
+</Opcode>
+
+## 重置击毁计数
+
+<Opcode id="0297" name="RESET_NUM_OF_MODELS_KILLED_BY_PLAYER" member="Player.ResetNumOfModelsKilled">
+重置「击毁某模型」计数。
+
+```text
+0297 RESET_NUM_OF_MODELS_KILLED_BY_PLAYER
+in: self
+```
+
+```lua
+resetNumOfModelsKilledByPlayer(self)
+```
+
+```js
+Player.resetNumOfModelsKilled(self)
+```
+</Opcode>
+
+## 取击毁次数
+
+<Opcode id="0298" name="GET_NUM_OF_MODELS_KILLED_BY_PLAYER" member="Player.GetNumOfModelsKilled">
+取击毁指定模型次数。
+
+```text
+0298 GET_NUM_OF_MODELS_KILLED_BY_PLAYER
+in: self, modelId
+out: amount
+```
+
+```lua
+local amount = getNumOfModelsKilledByPlayer(self, modelId)
+```
+
+```js
+Player.getNumOfModelsKilled(self, modelId)
+```
+</Opcode>
+
+## 永不疲劳
+
+<Opcode id="0330" name="SET_PLAYER_NEVER_GETS_TIRED" member="Player.SetNeverGetsTired">
+是否永不疲劳狂奔。
+
+```text
+0330 SET_PLAYER_NEVER_GETS_TIRED
+in: self, state
+```
+
+```lua
+setPlayerNeverGetsTired(self, state)
+```
+
+```js
+Player.setNeverGetsTired(self, state)
+```
+</Opcode>
+
+## 快速换弹
+
+<Opcode id="0331" name="SET_PLAYER_FAST_RELOAD" member="Player.SetFastReload">
+是否 4 倍换弹。
+
+```text
+0331 SET_PLAYER_FAST_RELOAD
+in: self, state
+```
+
+```lua
+setPlayerFastReload(self, state)
+```
+
+```js
+Player.setFastReload(self, state)
+```
+</Opcode>
+
+## 能否开任务
+
+<Opcode id="03EE" name="CAN_PLAYER_START_MISSION" member="Player.CanStartMission">
+用在 if：是否可开任务（可移动）。
+
+```text
+03EE CAN_PLAYER_START_MISSION
+in: self
+```
+
+```lua
+canPlayerStartMission(self)
+```
+
+```js
+Player.canStartMission(self)
+```
+</Opcode>
+
+## 过场安全位
+
+<Opcode id="03EF" name="MAKE_PLAYER_SAFE_FOR_CUTSCENE" member="Player.MakeSafeForCutscene">
+过场前把玩家放到安全位置。
+
+```text
+03EF MAKE_PLAYER_SAFE_FOR_CUTSCENE
+in: self
+```
+
+```lua
+makePlayerSafeForCutscene(self)
+```
+
+```js
+Player.makeSafeForCutscene(self)
+```
+</Opcode>
+
+## 白给医疗
+
+<Opcode id="0414" name="SET_FREE_HEALTH_CARE" member="Player.SetFreeHealthCare">
+白给医疗：浪费一次是否免扣钱。
+
+```text
+0414 SET_FREE_HEALTH_CARE
+in: self, state
+```
+
+```lua
+setFreeHealthCare(self, state)
+```
+
+```js
+Player.setFreeHealthCare(self, state)
+```
+</Opcode>
+
+## 是否瞄准角色
+
+<Opcode id="0457" name="IS_PLAYER_TARGETTING_CHAR" member="Player.IsTargetingChar">
+用在 if：是否瞄准指定角色。
+
+```text
+0457 IS_PLAYER_TARGETTING_CHAR
+in: self, handle
+```
+
+```lua
+isPlayerTargettingChar(self, handle)
+```
+
+```js
+Player.isTargetingChar(self, handle)
+```
+</Opcode>
+
+## 是否瞄准物体
+
+<Opcode id="0458" name="IS_PLAYER_TARGETTING_OBJECT" member="Player.IsTargetingObject">
+用在 if：是否瞄准指定物体。
+
+```text
+0458 IS_PLAYER_TARGETTING_OBJECT
+in: self, handle
+```
+
+```lua
+isPlayerTargettingObject(self, handle)
+```
+
+```js
+Player.isTargetingObject(self, handle)
+```
+</Opcode>
+
+## 设置情绪
+
+<Opcode id="04E3" name="SET_PLAYER_MOOD" member="Player.SetMood">
+设置情绪，影响台词。
+
+```text
+04E3 SET_PLAYER_MOOD
+in: self, mood, time
+```
+
+```lua
+setPlayerMood(self, mood, time)
+```
+
+```js
+Player.setMood(self, mood, time)
+```
+</Opcode>
+
+## 翘轮统计
+
+<Opcode id="04FC" name="GET_WHEELIE_STATS" member="Player.GetWheelieStats">
+最近一次翘前轮/翘后轮统计。
+
+```text
+04FC GET_WHEELIE_STATS
+in: self
+out: twoWheelsTime, twoWheelsDistance, wheelieTime, wheelieDistance, stoppieTime, stoppieDistance
+```
+
+```lua
+local twoWheelsTime, twoWheelsDistance, wheelieTime, wheelieDistance, stoppieTime, stoppieDistance = getWheelieStats(self)
+```
+
+```js
+Player.getWheelieStats(self)
+```
+</Opcode>
+
+## 是否穿某装
+
+<Opcode id="0500" name="IS_PLAYER_WEARING" member="Player.IsWearing">
+用在 if：部位是否穿指定模型（0784/087B）。
+
+```text
+0500 IS_PLAYER_WEARING
+in: self, bodyPart, modelName
+```
+
+```lua
+isPlayerWearing(self, bodyPart, modelName)
+```
+
+```js
+Player.isWearing(self, bodyPart, modelName)
+```
+</Opcode>
+
+## 允许车内射击
+
+<Opcode id="0501" name="SET_PLAYER_CAN_DO_DRIVE_BY" member="Player.SetCanDoDriveBy">
+是否允许车内射击。
+
+```text
+0501 SET_PLAYER_CAN_DO_DRIVE_BY
+in: self, state
+```
+
+```lua
+setPlayerCanDoDriveBy(self, state)
+```
+
+```js
+Player.setCanDoDriveBy(self, state)
+```
+</Opcode>
+
+## 醉酒强度
+
+<Opcode id="052C" name="SET_PLAYER_DRUNKENNESS" member="Player.SetDrunkenness">
+醉酒镜头晃动强度。
+
+```text
+052C SET_PLAYER_DRUNKENNESS
+in: self, intensity
+```
+
+```lua
+setPlayerDrunkenness(self, intensity)
+```
+
+```js
+Player.setDrunkenness(self, intensity)
+```
+</Opcode>
+
+## 防火
+
+<Opcode id="055D" name="MAKE_PLAYER_FIRE_PROOF" member="Player.MakeFireProof">
+是否防火。
+
+```text
+055D MAKE_PLAYER_FIRE_PROOF
+in: self, state
+```
+
+```lua
+makePlayerFireProof(self, state)
+```
+
+```js
+Player.makeFireProof(self, state)
+```
+</Opcode>
+
+## 提高最大生命
+
+<Opcode id="055E" name="INCREASE_PLAYER_MAX_HEALTH" member="Player.IncreaseMaxHealth">
+提高最大生命并回满。
+
+```text
+055E INCREASE_PLAYER_MAX_HEALTH
+in: self, value
+```
+
+```lua
+increasePlayerMaxHealth(self, value)
+```
+
+```js
+Player.increaseMaxHealth(self, value)
+```
+</Opcode>
+
+## 提高最大护甲
+
+<Opcode id="055F" name="INCREASE_PLAYER_MAX_ARMOUR" member="Player.IncreaseMaxArmor">
+提高最大护甲并回满。
+
+```text
+055F INCREASE_PLAYER_MAX_ARMOUR
+in: self, value
+```
+
+```lua
+increasePlayerMaxArmour(self, value)
+```
+
+```js
+Player.increaseMaxArmor(self, value)
+```
+</Opcode>
+
+## 确保车内弹药
+
+<Opcode id="0563" name="ENSURE_PLAYER_HAS_DRIVE_BY_WEAPON" member="Player.EnsureHasDriveByWeapon">
+确保车内射击弹药量。
+
+```text
+0563 ENSURE_PLAYER_HAS_DRIVE_BY_WEAPON
+in: self, ammo
+```
+
+```lua
+ensurePlayerHasDriveByWeapon(self, ammo)
+```
+
+```js
+Player.ensureHasDriveByWeapon(self, ammo)
+```
+</Opcode>
+
+## 是否在 info zone
+
+<Opcode id="0583" name="IS_PLAYER_IN_INFO_ZONE" member="Player.IsInInfoZone">
+用在 if：是否在指定 info zone。
+
+```text
+0583 IS_PLAYER_IN_INFO_ZONE
+in: self, infoZone
+```
+
+```lua
+isPlayerInInfoZone(self, infoZone)
+```
+
+```js
+Player.isInInfoZone(self, infoZone)
+```
+</Opcode>
+
+## 是否瞄准任何
+
+<Opcode id="068C" name="IS_PLAYER_TARGETTING_ANYTHING" member="Player.IsTargetingAnything">
+用在 if：是否自动瞄准人或物。
+
+```text
+068C IS_PLAYER_TARGETTING_ANYTHING
+in: self
+```
+
+```lua
+isPlayerTargettingAnything(self)
+```
+
+```js
+Player.isTargetingAnything(self)
+```
+</Opcode>
+
+## 禁用冲刺
+
+<Opcode id="06AF" name="DISABLE_PLAYER_SPRINT" member="Player.DisableSprint">
+禁用冲刺。
+
+```text
+06AF DISABLE_PLAYER_SPRINT
+in: self, state
+```
+
+```lua
+disablePlayerSprint(self, state)
+```
+
+```js
+Player.disableSprint(self, state)
+```
+</Opcode>
+
+## 删除玩家
+
+<Opcode id="06DF" name="DELETE_PLAYER" member="Player.Delete">
+删除玩家。
+
+```text
+06DF DELETE_PLAYER
+in: self
+```
+
+```lua
+deletePlayer(self)
+```
+
+```js
+Player.delete(self)
+```
+</Opcode>
+
+## 重建模型
+
+<Opcode id="070D" name="BUILD_PLAYER_MODEL" member="Player.BuildModel">
+重建玩家模型并应用贴图。
+
+```text
+070D BUILD_PLAYER_MODEL
+in: self
+```
+
+```lua
+buildPlayerModel(self)
+```
+
+```js
+Player.buildModel(self)
+```
+</Opcode>
+
+## 给服装哈希
+
+<Opcode id="0784" name="GIVE_PLAYER_CLOTHES" member="Player.GiveClothes">
+给服装（纹理/模型哈希 + 部位）。
+
+```text
+0784 GIVE_PLAYER_CLOTHES
+in: self, textureHash, modelHash, bodyPart
+```
+
+```lua
+givePlayerClothes(self, textureHash, modelHash, bodyPart)
+```
+
+```js
+Player.giveClothes(self, textureHash, modelHash, bodyPart)
+```
+</Opcode>
+
+## 暂存服装
+
+<Opcode id="0793" name="STORE_CLOTHES_STATE" member="Player.StoreClothesState">
+暂存当前服装（0794 恢复）。
+
+```text
+0793 STORE_CLOTHES_STATE
+```
+
+```lua
+storeClothesState()
+```
+
+```js
+Player.storeClothesState()
+```
+</Opcode>
+
+## 恢复服装
+
+<Opcode id="0794" name="RESTORE_CLOTHES_STATE" member="Player.RestoreClothesState">
+恢复 0793 暂存的服装。
+
+```text
+0794 RESTORE_CLOTHES_STATE
+```
+
+```lua
+restoreClothesState()
+```
+
+```js
+Player.restoreClothesState()
+```
+</Opcode>
+
+## 取玩家组
+
+<Opcode id="07AF" name="GET_PLAYER_GROUP" member="Player.GetGroup">
+取玩家小组句柄。
+
+```text
+07AF GET_PLAYER_GROUP
+in: self
+out: handle
+```
+
+```lua
+local handle = getPlayerGroup(self)
+```
+
+```js
+Player.getGroup(self)
+```
+</Opcode>
+
+## 组招募开关
+
+<Opcode id="07B4" name="SET_PLAYER_GROUP_RECRUITMENT" member="Player.SetGroupRecruitment">
+是否可招募进组。
+
+```text
+07B4 SET_PLAYER_GROUP_RECRUITMENT
+in: self, state
+```
+
+```lua
+setPlayerGroupRecruitment(self, state)
+```
+
+```js
+Player.setGroupRecruitment(self, state)
+```
+</Opcode>
+
+## 是否翘前轮
+
+<Opcode id="07F1" name="IS_PLAYER_PERFORMING_WHEELIE" member="Player.IsPerformingWheelie">
+用在 if：是否在翘前轮。
+
+```text
+07F1 IS_PLAYER_PERFORMING_WHEELIE
+in: self
+```
+
+```lua
+isPlayerPerformingWheelie(self)
+```
+
+```js
+Player.isPerformingWheelie(self)
+```
+</Opcode>
+
+## 是否翘后轮停
+
+<Opcode id="07F2" name="IS_PLAYER_PERFORMING_STOPPIE" member="Player.IsPerformingStoppie">
+用在 if：是否在翘后轮停。
+
+```text
+07F2 IS_PLAYER_PERFORMING_STOPPIE
+in: self
+```
+
+```lua
+isPlayerPerformingStoppie(self)
+```
+
+```js
+Player.isPerformingStoppie(self)
+```
+</Opcode>
+
+## 击杀行人数
+
+<Opcode id="0806" name="GET_TOTAL_NUMBER_OF_PEDS_KILLED_BY_PLAYER" member="Player.GetTotalNumberOfPedsKilled">
+自上次重置（0297）起击杀行人数。
+
+```text
+0806 GET_TOTAL_NUMBER_OF_PEDS_KILLED_BY_PLAYER
+in: self
+out: numPeds
+```
+
+```lua
+local numPeds = getTotalNumberOfPedsKilledByPlayer(self)
+```
+
+```js
+Player.getTotalNumberOfPedsKilled(self)
+```
+</Opcode>
+
+## 所在城市
+
+<Opcode id="0842" name="GET_CITY_PLAYER_IS_IN" member="Player.GetCityIsIn">
+玩家当前所在城市。
+
+```text
+0842 GET_CITY_PLAYER_IS_IN
+in: self
+out: level
+```
+
+```lua
+local level = getCityPlayerIsIn(self)
+```
+
+```js
+Player.getCityIsIn(self)
+```
+</Opcode>
+
+## 附着朝向
+
+<Opcode id="0858" name="SET_HEADING_FOR_ATTACHED_PLAYER" member="Player.SetHeadingForAttached">
+附着到物体/车时的视角朝向。
+
+```text
+0858 SET_HEADING_FOR_ATTACHED_PLAYER
+in: self, heading, headingRange
+```
+
+```lua
+setHeadingForAttachedPlayer(self, heading, headingRange)
+```
+
+```js
+Player.setHeadingForAttached(self, heading, headingRange)
+```
+</Opcode>
+
+## 附着朝向是否到位
+
+<Opcode id="0861" name="IS_ATTACHED_PLAYER_HEADING_ACHIEVED" member="Player.IsAttachedHeadingAchieved">
+用在 if：0858 朝向是否到位。
+
+```text
+0861 IS_ATTACHED_PLAYER_HEADING_ACHIEVED
+in: self
+```
+
+```lua
+isAttachedPlayerHeadingAchieved(self)
+```
+
+```js
+Player.isAttachedHeadingAchieved(self)
+```
+</Opcode>
+
+## 店外给服装
+
+<Opcode id="087B" name="GIVE_PLAYER_CLOTHES_OUTSIDE_SHOP" member="Player.GiveClothesOutsideShop">
+店外设置服装（名字符串）。
+
+```text
+087B GIVE_PLAYER_CLOTHES_OUTSIDE_SHOP
+in: self, textureName, modelName, bodyPart
+```
+
+```lua
+givePlayerClothesOutsideShop(self, textureName, modelName, bodyPart)
+```
+
+```js
+Player.giveClothesOutsideShop(self, textureName, modelName, bodyPart)
+```
+</Opcode>
+
+## 隐藏帮派成员
+
+<Opcode id="08F5" name="MAKE_PLAYER_GANG_DISAPPEAR" member="Player.MakeGangDisappear">
+隐藏玩家帮派成员。
+
+```text
+08F5 MAKE_PLAYER_GANG_DISAPPEAR
+```
+
+```lua
+makePlayerGangDisappear()
+```
+
+```js
+Player.makeGangDisappear()
+```
+</Opcode>
+
+## 显示帮派成员
+
+<Opcode id="08F6" name="MAKE_PLAYER_GANG_REAPPEAR" member="Player.MakeGangReappear">
+恢复显示玩家帮派成员。
+
+```text
+08F6 MAKE_PLAYER_GANG_REAPPEAR
+```
+
+```lua
+makePlayerGangReappear()
+```
+
+```js
+Player.makeGangReappear()
+```
+</Opcode>
+
+## 取服装哈希
+
+<Opcode id="08F7" name="GET_CLOTHES_ITEM" member="Player.GetClothesItem">
+取部位当前服装哈希。
+
+```text
+08F7 GET_CLOTHES_ITEM
+in: self, bodyPart
+out: textureHash, modelHash
+```
+
+```lua
+local textureHash, modelHash = getClothesItem(self, bodyPart)
+```
+
+```js
+Player.getClothesItem(self, bodyPart)
+```
+</Opcode>
+
+## 取最大护甲
+
+<Opcode id="0945" name="GET_PLAYER_MAX_ARMOUR" member="Player.GetMaxArmor">
+取最大护甲。
+
+```text
+0945 GET_PLAYER_MAX_ARMOUR
+in: self
+out: maxArmour
+```
+
+```lua
+local maxArmour = getPlayerMaxArmour(self)
+```
+
+```js
+Player.getMaxArmor(self)
+```
+</Opcode>
+
+## 切换模型
+
+<Opcode id="09C7" name="SET_PLAYER_MODEL" member="Player.SetModel">
+切换玩家模型。
+
+```text
+09C7 SET_PLAYER_MODEL
+in: self, modelId
+```
+
+```lua
+setPlayerModel(self, modelId)
+```
+
+```js
+Player.setModel(self, modelId)
+```
+</Opcode>
+
+## 强制室内光
+
+<Opcode id="09D7" name="FORCE_INTERIOR_LIGHTING_FOR_PLAYER" member="Player.ForceInteriorLighting">
+强制室内光照。
+
+```text
+09D7 FORCE_INTERIOR_LIGHTING_FOR_PLAYER
+in: self, state
+```
+
+```lua
+forceInteriorLightingForPlayer(self, state)
+```
+
+```js
+Player.forceInteriorLighting(self, state)
+```
+</Opcode>
+
+## 引爆器
+
+<Opcode id="09D9" name="USE_DETONATOR" member="Player.UseDetonator">
+引爆玩家埋的沙林/汽车炸弹。
+
+```text
+09D9 USE_DETONATOR
+```
+
+```lua
+useDetonator()
+```
+
+```js
+Player.useDetonator()
+```
+</Opcode>
+
+## 操控是否开
+
+<Opcode id="09E7" name="IS_PLAYER_CONTROL_ON" member="Player.IsControlOn">
+用在 if：操控是否仍开启（01B4）。
+
+```text
+09E7 IS_PLAYER_CONTROL_ON
+in: self
+```
+
+```lua
+isPlayerControlOn(self)
+```
+
+```js
+Player.isControlOn(self)
+```
+</Opcode>
+
+## 摘护目镜
+
+<Opcode id="09EB" name="PLAYER_TAKE_OFF_GOGGLES" member="Player.TakeOffGoggles">
+摘下护目镜并关夜视/热成像。
+
+```text
+09EB PLAYER_TAKE_OFF_GOGGLES
+in: self, animate
+```
+
+```lua
+playerTakeOffGoggles(self, animate)
+```
+
+```js
+Player.takeOffGoggles(self, animate)
+```
+</Opcode>
+
+## 是否喷气背包
+
+<Opcode id="0A0C" name="IS_PLAYER_USING_JETPACK" member="Player.IsUsingJetpack">
+用在 if：是否在用喷气背包。
+
+```text
+0A0C IS_PLAYER_USING_JETPACK
+in: self
+```
+
+```lua
+isPlayerUsingJetpack(self)
+```
+
+```js
+Player.isUsingJetpack(self)
+```
+</Opcode>
+
+## 组永远跟随
+
+<Opcode id="0A20" name="SET_PLAYER_GROUP_TO_FOLLOW_ALWAYS" member="Player.SetGroupToFollowAlways">
+组永远跟随（禁等待指令等）。
+
+```text
+0A20 SET_PLAYER_GROUP_TO_FOLLOW_ALWAYS
+in: self, state
+```
+
+```lua
+setPlayerGroupToFollowAlways(self, state)
+```
+
+```js
+Player.setGroupToFollowAlways(self, state)
+```
+</Opcode>
+
+## 是否攀爬
+
+<Opcode id="0A29" name="IS_PLAYER_CLIMBING" member="Player.IsClimbing">
+用在 if：是否在攀爬。
+
+```text
+0A29 IS_PLAYER_CLIMBING
+in: self
+```
+
+```lua
+isPlayerClimbing(self)
+```
+
+```js
+Player.isClimbing(self)
+```
+</Opcode>
+
+## 组永不跟随
+
+<Opcode id="0A31" name="SET_PLAYER_GROUP_TO_FOLLOW_NEVER" member="Player.SetGroupToFollowNever">
+组永不跟随（含跟随键）。
+
+```text
+0A31 SET_PLAYER_GROUP_TO_FOLLOW_NEVER
+in: self, state
+```
+
+```lua
+setPlayerGroupToFollowNever(self, state)
+```
+
+```js
+Player.setGroupToFollowNever(self, state)
+```
+</Opcode>
+
+## 上一发建筑模型
+
+<Opcode id="0A3A" name="IS_LAST_BUILDING_MODEL_SHOT_BY_PLAYER" member="Player.IsLastBuildingModelShot">
+用在 if：上一发打中的建筑模型是否匹配。
+
+```text
+0A3A IS_LAST_BUILDING_MODEL_SHOT_BY_PLAYER
+in: self, modelId
+```
+
+```lua
+isLastBuildingModelShotByPlayer(self, modelId)
+```
+
+```js
+Player.isLastBuildingModelShot(self, modelId)
+```
+</Opcode>
+
+## 清建筑射击记录
+
+<Opcode id="0A3B" name="CLEAR_LAST_BUILDING_MODEL_SHOT_BY_PLAYER" member="Player.ClearLastBuildingModelShot">
+清除上一发建筑模型记录。
+
+```text
+0A3B CLEAR_LAST_BUILDING_MODEL_SHOT_BY_PLAYER
+in: self
+```
+
+```lua
+clearLastBuildingModelShotByPlayer(self)
+```
+
+```js
+Player.clearLastBuildingModelShot(self)
+```
+</Opcode>

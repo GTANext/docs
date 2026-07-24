@@ -1,0 +1,66 @@
+---
+title: 球体 Sphere
+description: 调试球 / 静态球
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 3 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 画一帧
+
+<Opcode id="03A1" name="DRAW_SPHERE" member="Sphere.Draw">
+画一帧红色圆柱 / 球标记（调试用）。
+
+```text
+03A1 DRAW_SPHERE
+in: x, y, z, diameter
+```
+
+```lua
+drawSphere(x, y, z, diameter)
+```
+
+```js
+Sphere.draw(x, y, z, diameter)
+```
+</Opcode>
+
+## 添加静态球
+
+<Opcode id="03BC" name="ADD_SPHERE" member="Sphere.Create">
+在坐标放静态球，半径 `radius`。
+
+```text
+03BC ADD_SPHERE
+in: x, y, z, radius
+out: handle
+```
+
+```lua
+local handle = addSphere(x, y, z, radius)
+```
+
+```js
+const handle = Sphere.create(x, y, z, radius)
+```
+</Opcode>
+
+## 移除
+
+<Opcode id="03BD" name="REMOVE_SPHERE" member="Sphere.Remove">
+删掉静态球。
+
+```text
+03BD REMOVE_SPHERE
+in: self
+```
+
+```lua
+removeSphere(self)
+```
+
+```js
+Sphere.remove(self)
+```
+</Opcode>

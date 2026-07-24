@@ -1,0 +1,150 @@
+---
+title: 手柄 Pad
+description: 键边沿与 Pad 控制
+---
+
+`sa` · 扩展 `CLEO+` · 需 CLEO + CLEO+
+
+按键「刚按下」检测（本帧边沿）。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 键刚按下
+
+<Opcode id="0E3D" name="IS_KEY_JUST_PRESSED" member="Pad.IsKeyJustPressed">
+键盘键本帧刚按下（边沿，不是按住）。用在 `if` 里。
+
+```text
+0E3D IS_KEY_JUST_PRESSED
+in: keyCode
+```
+
+```lua
+if isKeyJustPressed(keyCode) then
+end
+```
+
+```js
+if (Pad.isKeyJustPressed(keyCode)) {
+}
+```
+</Opcode>
+
+## 按钮刚按下
+
+<Opcode id="0E3E" name="IS_BUTTON_JUST_PRESSED" member="Pad.IsButtonJustPressed">
+手柄 / Pad 按钮本帧刚按下（边沿）。用在 `if` 里。
+
+```text
+0E3E IS_BUTTON_JUST_PRESSED
+in: pad, buttonId
+```
+
+```lua
+if isButtonJustPressed(pad, buttonId) then
+end
+```
+
+```js
+if (Pad.isButtonJustPressed(pad, buttonId)) {
+}
+```
+</Opcode>
+
+## 瞄准键
+
+<Opcode id="0E67" name="IS_AIM_BUTTON_PRESSED" member="Pad.IsAimButtonPressed">
+瞄准键是否按住。用在 `if` 里。
+
+```text
+0E67 IS_AIM_BUTTON_PRESSED
+in: pad
+```
+
+```lua
+if isAimButtonPressed(pad) then
+end
+```
+
+```js
+if (Pad.isAimButtonPressed(pad)) {
+}
+```
+</Opcode>
+
+## 开关 Pad 控制
+
+<Opcode id="0E68" name="SET_PLAYER_CONTROL_PAD" member="Pad.SetControl">
+开关整块 Pad 控制。
+
+```text
+0E68 SET_PLAYER_CONTROL_PAD
+in: pad, enabled
+```
+
+```lua
+setPlayerControlPad(pad, true)
+```
+
+```js
+Pad.setControl(pad, enabled)
+```
+</Opcode>
+
+## 开关移动输入
+
+<Opcode id="0E69" name="SET_PLAYER_CONTROL_PAD_MOVEMENT" member="Pad.SetMovement">
+只开关移动输入。
+
+```text
+0E69 SET_PLAYER_CONTROL_PAD_MOVEMENT
+in: pad, movement
+```
+
+```lua
+setPlayerControlPadMovement(pad, false)
+```
+
+```js
+Pad.setMovement(pad, movement)
+```
+</Opcode>
+
+## 任一开火键
+
+<Opcode id="0E8D" name="IS_ANY_FIRE_BUTTON_PRESSED" member="Pad.IsAnyFireButtonPressed">
+主 / 副开火键任一按下。用在 `if` 里。
+
+```text
+0E8D IS_ANY_FIRE_BUTTON_PRESSED
+in: pad
+```
+
+```lua
+if isAnyFireButtonPressed(pad) then
+end
+```
+
+```js
+if (Pad.isAnyFireButtonPressed(pad)) {
+}
+```
+</Opcode>
+
+## 未触碰时长
+
+<Opcode id="0F13" name="GET_TIME_NOT_TOUCHING_PAD" member="Pad.GetTimeNotTouching">
+距上次触碰 Pad 的毫秒数。
+
+```text
+0F13 GET_TIME_NOT_TOUCHING_PAD
+in: pad
+out: timeInMs
+```
+
+```lua
+local ms = getTimeNotTouchingPad(pad)
+```
+
+```js
+const timeInMs = Pad.getTimeNotTouching(pad)
+```
+</Opcode>

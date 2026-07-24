@@ -1,0 +1,258 @@
+---
+title: 文件 Fs / File
+description: 文件目录操作与块读写
+---
+
+`sa` · 扩展 `file` · 需对应 CLEO 扩展
+
+文件 / 目录操作与块读写。
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 删文件
+
+<Opcode id="0B00" name="DELETE_FILE" member="Fs.DeleteFile">
+成功才真。用在 `if` 里。
+
+```text
+0B00 DELETE_FILE
+in: path
+```
+
+```lua
+if deleteFile("cleo/tmp.bin") then
+end
+```
+
+```js
+if (Fs.deleteFile(path)) {
+}
+```
+</Opcode>
+
+## 删目录
+
+<Opcode id="0B01" name="DELETE_DIRECTORY" member="Fs.DeleteDirectory">
+`recursive` 是否递归。用在 `if` 里。
+
+```text
+0B01 DELETE_DIRECTORY
+in: path, recursive
+```
+
+```lua
+if deleteDirectory("cleo/cache", true) then
+end
+```
+
+```js
+if (Fs.deleteDirectory(path, recursive)) {
+}
+```
+</Opcode>
+
+## 移动文件
+
+<Opcode id="0B02" name="MOVE_FILE" member="Fs.MoveFile">
+用在 `if` 里。
+
+```text
+0B02 MOVE_FILE
+in: fileName, newFileName
+```
+
+```lua
+if moveFile("a.txt", "b.txt") then
+end
+```
+
+```js
+if (Fs.moveFile(fileName, newFileName)) {
+}
+```
+</Opcode>
+
+## 移动目录
+
+<Opcode id="0B03" name="MOVE_DIRECTORY" member="Fs.MoveDirectory">
+用在 `if` 里。
+
+```text
+0B03 MOVE_DIRECTORY
+in: dirPath, newDirPath
+```
+
+```lua
+if moveDirectory("old", "new") then
+end
+```
+
+```js
+if (Fs.moveDirectory(dirPath, newDirPath)) {
+}
+```
+</Opcode>
+
+## 复制文件
+
+<Opcode id="0B04" name="COPY_FILE" member="Fs.CopyFile">
+用在 `if` 里。
+
+```text
+0B04 COPY_FILE
+in: fileName, newFileName
+```
+
+```lua
+if copyFile("a.ini", "a.bak") then
+end
+```
+
+```js
+if (Fs.copyFile(fileName, newFileName)) {
+}
+```
+</Opcode>
+
+## 复制目录
+
+<Opcode id="0B05" name="COPY_DIRECTORY" member="Fs.CopyDirectory">
+用在 `if` 里。
+
+```text
+0B05 COPY_DIRECTORY
+in: dirPath, newDirPath
+```
+
+```lua
+if copyDirectory("src", "dst") then
+end
+```
+
+```js
+if (Fs.copyDirectory(dirPath, newDirPath)) {
+}
+```
+</Opcode>
+
+## 文件位置
+
+<Opcode id="2300" name="GET_FILE_POSITION" member="File.GetPosition">
+已打开文件当前读写位置。
+
+```text
+2300 GET_FILE_POSITION
+in: self
+out: position
+```
+
+```lua
+local pos = getFilePosition(f)
+```
+
+```js
+const position = File.getPosition(self)
+```
+</Opcode>
+
+## 读块
+
+<Opcode id="2301" name="READ_BLOCK_FROM_FILE" member="File.ReadBlock">
+从文件读 `size` 字节到 `address`。用在 `if` 里。
+
+```text
+2301 READ_BLOCK_FROM_FILE
+in: self, size, address
+```
+
+```lua
+if readBlockFromFile(f, 256, buf) then
+end
+```
+
+```js
+if (File.readBlock(self, size, address)) {
+}
+```
+</Opcode>
+
+## 写块
+
+<Opcode id="2302" name="WRITE_BLOCK_TO_FILE" member="File.WriteBlock">
+从 `address` 写 `size` 字节到文件。用在 `if` 里。
+
+```text
+2302 WRITE_BLOCK_TO_FILE
+in: self, size, address
+```
+
+```lua
+if writeBlockToFile(f, 256, buf) then
+end
+```
+
+```js
+if (File.writeBlock(self, size, address)) {
+}
+```
+</Opcode>
+
+## 解析路径
+
+<Opcode id="2303" name="RESOLVE_FILEPATH" member="Fs.ResolvePath">
+解析成绝对路径（相对 / 虚拟前缀 / 已是绝对均可）。
+
+```text
+2303 RESOLVE_FILEPATH
+in: path
+out: resolved
+```
+
+```lua
+local abs = resolveFilepath("cleo/cfg.ini")
+```
+
+```js
+const resolved = Fs.resolvePath(path)
+```
+</Opcode>
+
+## 脚本文件名
+
+<Opcode id="2304" name="GET_SCRIPT_FILENAME" member="Fs.GetScriptFilename">
+`fullPath` 控制是否完整路径。用在 `if` 里。
+
+```text
+2304 GET_SCRIPT_FILENAME
+in: address, fullPath
+out: filenameOrPath
+```
+
+```lua
+local name = getScriptFilename(scriptPtr, true)
+```
+
+```js
+const filenameOrPath = Fs.getScriptFilename(address, fullPath)
+```
+</Opcode>
+
+## 文件修改时间
+
+<Opcode id="2305" name="GET_FILE_WRITE_TIME" member="Fs.GetFileWriteTime">
+失败条件为假，输出不变。用在 `if` 里。
+
+```text
+2305 GET_FILE_WRITE_TIME
+in: fileName
+out: year, month, day, hour, minute, second, milisecond
+```
+
+```lua
+local y, mo, d, h, mi, s, ms = getFileWriteTime("cleo/cfg.ini")
+```
+
+```js
+const { year, month, day, hour, minute, second, milisecond } = Fs.getFileWriteTime(fileName)
+```
+</Opcode>

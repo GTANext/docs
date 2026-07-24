@@ -1,0 +1,384 @@
+---
+title: 游戏 Game / Mission
+description: 分辨率任务状态作弊与世界查询
+---
+
+`sa` · 扩展 `CLEO+` · 需 CLEO + CLEO+
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 分辨率 / 宽高比
+
+<Opcode id="0E0E" name="GET_CURRENT_RESOLUTION" member="Game.GetCurrentResolution">
+游戏窗口宽高。
+
+```text
+0E0E GET_CURRENT_RESOLUTION
+out: width, height
+```
+
+```lua
+local w, h = getCurrentResolution()
+```
+
+```js
+const { width, height } = Game.getCurrentResolution()
+```
+</Opcode>
+
+<Opcode id="0E0F" name="GET_FIXED_XY_ASPECT_RATIO" member="Hud.GetFixedXyAspectRatio">
+按窗口宽高比校正 x/y，适合 HUD/字缩放。
+
+```text
+0E0F GET_FIXED_XY_ASPECT_RATIO
+in: x, y
+out: x, y
+```
+
+```lua
+local fx, fy = getFixedXyAspectRatio(x, y)
+```
+
+```js
+const { x, y } = Hud.getFixedXyAspectRatio(x, y)
+```
+</Opcode>
+
+## 状态判定
+
+<Opcode id="0E1D" name="IS_ON_MISSION" member="Mission.IsOn">
+玩家是否在任务中（`0180` 那套任务标志非 0）。用在 `if` 里。
+
+```text
+0E1D IS_ON_MISSION
+```
+
+```lua
+if isOnMission() then
+end
+```
+
+```js
+if (Mission.isOn()) {
+}
+```
+</Opcode>
+
+<Opcode id="0E20" name="IS_ON_SAMP" member="Game.IsSamp">
+是否跑在 SA-MP。用在 `if` 里。
+
+```text
+0E20 IS_ON_SAMP
+```
+
+```lua
+if isOnSamp() then
+end
+```
+
+```js
+if (Game.isSamp()) {
+}
+```
+</Opcode>
+
+<Opcode id="0E25" name="IS_ON_CUTSCENE" member="Cutscene.IsOn">
+是否在过场（对应 `02E7` 一类状态）。用在 `if` 里。
+
+```text
+0E25 IS_ON_CUTSCENE
+```
+
+```lua
+if isOnCutscene() then
+end
+```
+
+```js
+if (Cutscene.isOn()) {
+}
+```
+</Opcode>
+
+## 存档 / 开局
+
+<Opcode id="0E2C" name="GET_CURRENT_SAVE_SLOT" member="Game.GetCurrentSaveSlot">
+当前读档槽位；新游戏为 0。
+
+```text
+0E2C GET_CURRENT_SAVE_SLOT
+out: slot
+```
+
+```lua
+local slot = getCurrentSaveSlot()
+```
+
+```js
+const slot = Game.getCurrentSaveSlot()
+```
+</Opcode>
+
+<Opcode id="0E2D" name="IS_GAME_FIRST_START" member="Game.IsFirstStart">
+是否本进程首次开局（未中途重载）。用在 `if` 里。
+
+```text
+0E2D IS_GAME_FIRST_START
+```
+
+```lua
+if isGameFirstStart() then
+end
+```
+
+```js
+if (Game.isFirstStart()) {
+}
+```
+</Opcode>
+
+## 屏幕投影 / 节流
+
+<Opcode id="0E3F" name="CONVERT_3D_TO_SCREEN_2D" member="World.Convert3DToScreen2D">
+世界坐标 → 屏幕 2D 与字号参考尺寸；可夹 near/far clip。点在裁剪外会失败，用在 `if` 里。
+
+```text
+0E3F CONVERT_3D_TO_SCREEN_2D
+in: x, y, z, nearClip, farClip
+out: x, y, sizeX, sizeY
+```
+
+```lua
+local sx, sy, sizeX, sizeY = convert3DToScreen2D(wx, wy, wz, true, true)
+if sx then
+end
+```
+
+```js
+const { x, y, sizeX, sizeY } = World.convert3DToScreen2D(x, y, z, nearClip, farClip)
+```
+</Opcode>
+
+<Opcode id="0E45" name="FRAME_MOD" member="Game.FrameMod">
+每 `mod` 帧为真一次（节流用）。用在 `if` 里。
+
+```text
+0E45 FRAME_MOD
+in: mod
+```
+
+```lua
+if frameMod(4) then
+end
+```
+
+```js
+if (Game.frameMod(mod)) {
+}
+```
+</Opcode>
+
+## 作弊 / 菜单
+
+<Opcode id="0E5D" name="IS_CHEAT_ACTIVE" member="Game.IsCheatActive">
+指定可切换作弊是否开启。用在 `if` 里。
+
+```text
+0E5D IS_CHEAT_ACTIVE
+in: cheat
+```
+
+```lua
+if isCheatActive(cheatId) then
+end
+```
+
+```js
+if (Game.isCheatActive(cheat)) {
+}
+```
+</Opcode>
+
+<Opcode id="0E6E" name="IS_SELECT_MENU_JUST_PRESSED" member="Game.IsSelectMenuJustPressed">
+菜单确认键本帧刚按。用在 `if` 里。
+
+```text
+0E6E IS_SELECT_MENU_JUST_PRESSED
+```
+
+```lua
+if isSelectMenuJustPressed() then
+end
+```
+
+```js
+if (Game.isSelectMenuJustPressed()) {
+}
+```
+</Opcode>
+
+## 模型类型
+
+<Opcode id="0E7F" name="GET_MODEL_TYPE" member="Streaming.GetModelType">
+模型类型（Streaming）。
+
+```text
+0E7F GET_MODEL_TYPE
+in: model
+out: type
+```
+
+```lua
+local t = getModelType(modelId)
+```
+
+```js
+const type = Streaming.getModelType(model)
+```
+</Opcode>
+
+## 双人
+
+<Opcode id="0EA1" name="DISABLE_SECOND_PLAYER" member="Game.DisableSecondPlayer">
+关掉二号玩家；可选恢复镜头。
+
+```text
+0EA1 DISABLE_SECOND_PLAYER
+in: restoreCamera
+```
+
+```lua
+disableSecondPlayer(true)
+```
+
+```js
+Game.disableSecondPlayer(restoreCamera)
+```
+</Opcode>
+
+<Opcode id="0EA2" name="FIX_TWO_PLAYERS_SEPARATED_CARS" member="Game.FixTwoPlayersSeparatedCars">
+启用双人分车相关修复。
+
+```text
+0EA2 FIX_TWO_PLAYERS_SEPARATED_CARS
+```
+
+```lua
+fixTwoPlayersSeparatedCars()
+```
+
+```js
+Game.fixTwoPlayersSeparatedCars()
+```
+</Opcode>
+
+## 过场 / 模型 ped
+
+<Opcode id="0EB7" name="IS_ON_SCRIPTED_CUTSCENE" member="Mission.IsOnScriptedCutscene">
+是否在脚本任务过场（原生宽银幕边框开着）。用在 `if` 里。
+
+```text
+0EB7 IS_ON_SCRIPTED_CUTSCENE
+```
+
+```lua
+if isOnScriptedCutscene() then
+end
+```
+
+```js
+if (Mission.isOnScriptedCutscene()) {
+}
+```
+</Opcode>
+
+<Opcode id="0EBA" name="GET_MODEL_PED_TYPE_AND_STAT">
+角色模型对应 pedType + pedStat。用在 `if` 里。
+
+```text
+0EBA GET_MODEL_PED_TYPE_AND_STAT
+in: modelId
+out: pedType, pedStat
+```
+
+```lua
+local pedType, pedStat = getModelPedTypeAndStat(modelId)
+```
+
+```js
+const { pedType, pedStat } = native("GET_MODEL_PED_TYPE_AND_STAT", modelId)
+```
+</Opcode>
+
+## 距离 / 水面
+
+<Opcode id="0F0F" name="GET_DISTANCE_MULTIPLIER">
+绘制距离与生成距离倍率。
+
+```text
+0F0F GET_DISTANCE_MULTIPLIER
+out: drawing, generating
+```
+
+```lua
+local drawMul, genMul = getDistanceMultiplier()
+```
+
+```js
+const { drawing, generating } = native("GET_DISTANCE_MULTIPLIER")
+```
+</Opcode>
+
+<Opcode id="0F11" name="GET_CLOSEST_WATER_DISTANCE">
+最近水面距离与高度 z。
+
+```text
+0F11 GET_CLOSEST_WATER_DISTANCE
+out: distance, closestZ
+```
+
+```lua
+local dist, wz = getClosestWaterDistance()
+```
+
+```js
+const { distance, closestZ } = native("GET_CLOSEST_WATER_DISTANCE")
+```
+</Opcode>
+
+## 任务标志 / 模型名
+
+<Opcode id="0F16" name="SET_ON_MISSION" member="Game.SetOnMission">
+直接设 OnMission 状态（不绑全局变量）。
+
+```text
+0F16 SET_ON_MISSION
+in: status
+```
+
+```lua
+setOnMission(true)
+```
+
+```js
+Game.setOnMission(status)
+```
+</Opcode>
+
+<Opcode id="0F17" name="GET_MODEL_NAME_POINTER">
+任意 modelId 的名字字符串地址。
+
+```text
+0F17 GET_MODEL_NAME_POINTER
+in: modelId
+out: address
+```
+
+```lua
+local namePtr = getModelNamePointer(modelId)
+```
+
+```js
+const address = native("GET_MODEL_NAME_POINTER", modelId)
+```
+</Opcode>

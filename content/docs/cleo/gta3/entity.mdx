@@ -1,0 +1,427 @@
+---
+title: 实体 Entity
+description: Player / Char / Car / World / Weapon / Camera
+---
+
+`gta3` · 扩展 `CLEO` · 需 CLEO
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 玩家是否在船
+
+<Opcode id="04A8" name="IS_PLAYER_IN_ANY_BOAT" member="Player.IsInAnyBoat">
+玩家是否在船上。用在 `if` 里。
+
+```text
+04A8 IS_PLAYER_IN_ANY_BOAT
+in: self
+```
+
+```lua
+if isPlayerInAnyBoat(player) then
+end
+```
+
+```js
+if (Player.isInAnyBoat(self)) {}
+```
+</Opcode>
+
+## 玩家是否在直升机
+
+<Opcode id="04AA" name="IS_PLAYER_IN_ANY_HELI" member="Player.IsInAnyHeli">
+玩家是否在直升机。用在 `if` 里。
+
+```text
+04AA IS_PLAYER_IN_ANY_HELI
+in: self
+```
+
+```lua
+if isPlayerInAnyHeli(player) then
+end
+```
+
+```js
+if (Player.isInAnyHeli(self)) {}
+```
+</Opcode>
+
+## 物体偏移世界坐标
+
+<Opcode id="04C2" name="GET_OFFSET_FROM_OBJECT_IN_WORLD_COORDS" member="Object.GetOffsetInWorldCoords">
+物体局部偏移 → 世界坐标。
+
+```text
+04C2 GET_OFFSET_FROM_OBJECT_IN_WORLD_COORDS
+in: self, xOffset, yOffset, zOffset
+out: x, y, z
+```
+
+```lua
+local x, y, z = getOffsetFromObjectInWorldCoords(obj, 0.0, 1.0, 0.0)
+```
+
+```js
+const [x, y, z] = Object.getOffsetInWorldCoords(self, xOffset, yOffset, zOffset)
+```
+</Opcode>
+
+## 载具偏移世界坐标
+
+<Opcode id="04C3" name="GET_OFFSET_FROM_CAR_IN_WORLD_COORDS" member="Car.GetOffsetInWorldCoords">
+载具局部偏移 → 世界坐标。
+
+```text
+04C3 GET_OFFSET_FROM_CAR_IN_WORLD_COORDS
+in: self, xOffset, yOffset, zOffset
+out: x, y, z
+```
+
+```lua
+local x, y, z = getOffsetFromCarInWorldCoords(car, 0.0, 2.0, 0.0)
+```
+
+```js
+const [x, y, z] = Car.getOffsetInWorldCoords(self, xOffset, yOffset, zOffset)
+```
+</Opcode>
+
+## 角色偏移世界坐标
+
+<Opcode id="04C4" name="GET_OFFSET_FROM_CHAR_IN_WORLD_COORDS" member="Char.GetOffsetInWorldCoords">
+角色局部偏移 → 世界坐标。
+
+```text
+04C4 GET_OFFSET_FROM_CHAR_IN_WORLD_COORDS
+in: self, xOffset, yOffset, zOffset
+out: x, y, z
+```
+
+```lua
+local x, y, z = getOffsetFromCharInWorldCoords(ped, 0.0, 1.0, 0.0)
+```
+
+```js
+const [x, y, z] = Char.getOffsetInWorldCoords(self, xOffset, yOffset, zOffset)
+```
+</Opcode>
+
+## 载具档位数
+
+<Opcode id="0AB7" name="GET_CAR_NUMBER_OF_GEARS" member="Car.GetNumberOfGears">
+取档位数。
+
+```text
+0AB7 GET_CAR_NUMBER_OF_GEARS
+in: self
+out: numGear
+```
+
+```lua
+local n = getCarNumberOfGears(car)
+```
+
+```js
+const numGear = Car.getNumberOfGears(self)
+```
+</Opcode>
+
+## 当前档位
+
+<Opcode id="0AB8" name="GET_CAR_CURRENT_GEAR" member="Car.GetCurrentGear">
+取当前档。
+
+```text
+0AB8 GET_CAR_CURRENT_GEAR
+in: self
+out: gear
+```
+
+```lua
+local g = getCarCurrentGear(car)
+```
+
+```js
+const gear = Car.getCurrentGear(self)
+```
+</Opcode>
+
+## 车灯是否开
+
+<Opcode id="0ABD" name="IS_CAR_LIGHTS_ON" member="Car.IsLightsOn">
+车灯是否开。用在 `if` 里。
+
+```text
+0ABD IS_CAR_LIGHTS_ON
+in: self
+```
+
+```lua
+if isCarLightsOn(car) then
+end
+```
+
+```js
+if (Car.isLightsOn(self)) {}
+```
+</Opcode>
+
+## 引擎是否开
+
+<Opcode id="0ABE" name="IS_CAR_ENGINE_ON" member="Car.IsEngineOn">
+引擎是否开。用在 `if` 里。
+
+```text
+0ABE IS_CAR_ENGINE_ON
+in: self
+```
+
+```lua
+if isCarEngineOn(car) then
+end
+```
+
+```js
+if (Car.isEngineOn(self)) {}
+```
+</Opcode>
+
+## 开/关引擎
+
+<Opcode id="0ABF" name="SET_CAR_ENGINE_ON" member="Car.SetEngineOn">
+开/关引擎。
+
+```text
+0ABF SET_CAR_ENGINE_ON
+in: self, state
+```
+
+```lua
+setCarEngineOn(car, true)
+```
+
+```js
+Car.setEngineOn(self, state)
+```
+</Opcode>
+
+## 作弊刷车
+
+<Opcode id="0ADD" name="SPAWN_VEHICLE_BY_CHEATING" member="World.SpawnVehicleByCheating">
+在玩家前刷车。
+
+```text
+0ADD SPAWN_VEHICLE_BY_CHEATING
+in: modelId
+```
+
+```lua
+spawnVehicleByCheating(modelId)
+```
+
+```js
+World.spawnVehicleByCheating(modelId)
+```
+</Opcode>
+
+## 球内随机角色
+
+<Opcode id="0AE1" name="GET_RANDOM_CHAR_IN_SPHERE_NO_SAVE_RECURSIVE" member="World.GetRandomCharInSphereNoSaveRecursive">
+球内取角色。经典别名 `05EF`。
+
+```text
+0AE1 GET_RANDOM_CHAR_IN_SPHERE_NO_SAVE_RECURSIVE
+in: x, y, z, radius, findNext, skipDead
+out: handle
+// 经典别名 05EF
+```
+
+```lua
+local ped = getRandomCharInSphereNoSaveRecursive(x, y, z, 20.0, false, true)
+```
+
+```js
+const handle = World.getRandomCharInSphereNoSaveRecursive(x, y, z, radius, findNext, skipDead)
+```
+</Opcode>
+
+## 球内随机载具
+
+<Opcode id="0AE2" name="GET_RANDOM_CAR_IN_SPHERE_NO_SAVE_RECURSIVE" member="World.GetRandomCarInSphereNoSaveRecursive">
+球内取载具。经典别名 `05F0`。
+
+```text
+0AE2 GET_RANDOM_CAR_IN_SPHERE_NO_SAVE_RECURSIVE
+in: x, y, z, radius, findNext, skipWrecked
+out: handle
+// 经典别名 05F0
+```
+
+```lua
+local car = getRandomCarInSphereNoSaveRecursive(x, y, z, 30.0, false, true)
+```
+
+```js
+const handle = World.getRandomCarInSphereNoSaveRecursive(x, y, z, radius, findNext, skipWrecked)
+```
+</Opcode>
+
+## 球内随机物体
+
+<Opcode id="0AE3" name="GET_RANDOM_OBJECT_IN_SPHERE_NO_SAVE_RECURSIVE" member="World.GetRandomObjectInSphereNoSaveRecursive">
+球内取物体。经典别名 `05F1`。
+
+```text
+0AE3 GET_RANDOM_OBJECT_IN_SPHERE_NO_SAVE_RECURSIVE
+in: x, y, z, radius, findNext
+out: handle
+// 经典别名 05F1
+```
+
+```lua
+local obj = getRandomObjectInSphereNoSaveRecursive(x, y, z, 10.0, false)
+```
+
+```js
+const handle = World.getRandomObjectInSphereNoSaveRecursive(x, y, z, radius, findNext)
+```
+</Opcode>
+
+## 载具模型名
+
+<Opcode id="0ADB" name="GET_NAME_OF_VEHICLE_MODEL" member="Streaming.GetNameOfVehicleModel">
+取载具模型名。
+
+```text
+0ADB GET_NAME_OF_VEHICLE_MODEL
+in: modelId
+out: carName
+```
+
+```lua
+local name = getNameOfVehicleModel(modelId)
+```
+
+```js
+const carName = Streaming.getNameOfVehicleModel(modelId)
+```
+</Opcode>
+
+## 玩家是否在飞行载具
+
+<Opcode id="04C9" name="IS_PLAYER_IN_FLYING_VEHICLE" member="Player.IsInFlyingVehicle">
+玩家是否在飞机/直升机上。用在 `if` 里。
+
+```text
+04C9 IS_PLAYER_IN_FLYING_VEHICLE
+in: self
+```
+
+```lua
+if isPlayerInFlyingVehicle(player) then
+end
+```
+
+```js
+if (Player.isInFlyingVehicle(self)) {}
+```
+</Opcode>
+
+## 取角色护甲
+
+<Opcode id="04DD" name="GET_CHAR_ARMOUR" member="Char.GetArmour">
+取角色护甲值。
+
+```text
+04DD GET_CHAR_ARMOUR
+in: self
+out: armour
+```
+
+```lua
+local armour = getCharArmour(ped)
+```
+
+```js
+const armour = Char.getArmour(self)
+```
+</Opcode>
+
+## 武器类型转模型
+
+<Opcode id="0604" name="GET_WEAPONTYPE_MODEL" member="Weapon.GetModel">
+武器类型 → 模型 id。
+
+```text
+0604 GET_WEAPONTYPE_MODEL
+in: weaponType
+out: modelId
+```
+
+```lua
+local model = getWeapontypeModel(weaponType)
+```
+
+```js
+const modelId = Weapon.getModel(weaponType)
+```
+</Opcode>
+
+## 模型转武器类型
+
+<Opcode id="0605" name="GET_WEAPONTYPE_FOR_MODEL" member="Weapon.GetTypeForModel">
+武器模型 id → 武器类型。
+
+```text
+0605 GET_WEAPONTYPE_FOR_MODEL
+in: modelId
+out: weaponType
+```
+
+```lua
+local w = getWeapontypeForModel(modelId)
+```
+
+```js
+const weaponType = Weapon.getTypeForModel(modelId)
+```
+</Opcode>
+
+## 相机宽屏模式
+
+<Opcode id="0603" name="IS_CAMERA_IN_WIDESCREEN_MODE" member="Camera.IsInWidescreenMode">
+相机是否宽屏模式。用在 `if` 里。
+
+```text
+0603 IS_CAMERA_IN_WIDESCREEN_MODE
+```
+
+```lua
+if isCameraInWidescreenMode() then
+end
+```
+
+```js
+if (Camera.isInWidescreenMode()) {}
+```
+</Opcode>
+
+## 播放动画
+
+<Opcode id="0673" name="PLAY_ANIMATION" member="Char.PlayAnimation">
+让角色播动画组里的动作；`blend` 控制过渡。
+
+```text
+0673 PLAY_ANIMATION
+in: self, groupId, animId, blend
+```
+
+```lua
+playAnimation(ped, groupId, animId, 4.0)
+```
+
+```js
+Char.playAnimation(self, groupId, animId, blend)
+```
+</Opcode>

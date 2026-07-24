@@ -1,0 +1,968 @@
+---
+title: 镜头 Camera
+description: 镜头 / 淡入淡出 / 附着
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 51 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 抖镜头
+
+<Opcode id="0003" name="SHAKE_CAM" member="Camera.Shake">
+按强度抖动镜头。
+
+```text
+0003 SHAKE_CAM
+in: intensity
+```
+
+```lua
+shakeCam(intensity)
+```
+
+```js
+Camera.shake(intensity)
+```
+</Opcode>
+
+## 点是否在屏上
+
+<Opcode id="00C2" name="IS_POINT_ON_SCREEN" member="Camera.IsPointOnScreen">
+用在 if：点周围半径是否有任何部分在屏上。
+
+```text
+00C2 IS_POINT_ON_SCREEN
+in: x, y, z, radius
+```
+
+```lua
+isPointOnScreen(x, y, z, radius)
+```
+
+```js
+Camera.isPointOnScreen(x, y, z, radius)
+```
+</Opcode>
+
+## 对准车辆
+
+<Opcode id="0158" name="POINT_CAMERA_AT_CAR" member="Camera.PointAtCar">
+镜头对准/附着指定车辆。
+
+```text
+0158 POINT_CAMERA_AT_CAR
+in: vehicle, mode, switchStyle
+```
+
+```lua
+pointCameraAtCar(vehicle, mode, switchStyle)
+```
+
+```js
+Camera.pointAtCar(vehicle, mode, switchStyle)
+```
+</Opcode>
+
+## 对准角色
+
+<Opcode id="0159" name="POINT_CAMERA_AT_CHAR" member="Camera.PointAtChar">
+镜头对准/附着指定角色。
+
+```text
+0159 POINT_CAMERA_AT_CHAR
+in: char, mode, switchStyle
+```
+
+```lua
+pointCameraAtChar(char, mode, switchStyle)
+```
+
+```js
+Camera.pointAtChar(char, mode, switchStyle)
+```
+</Opcode>
+
+## 恢复镜头
+
+<Opcode id="015A" name="RESTORE_CAMERA" member="Camera.Restore">
+恢复常规镜头。
+
+```text
+015A RESTORE_CAMERA
+```
+
+```lua
+restoreCamera()
+```
+
+```js
+Camera.restore()
+```
+</Opcode>
+
+## 固定机位
+
+<Opcode id="015F" name="SET_FIXED_CAMERA_POSITION" member="Camera.SetFixedPosition">
+固定机位与 up 向量偏移。
+
+```text
+015F SET_FIXED_CAMERA_POSITION
+in: x, y, z, upVecOffsetX, upVecOffsetY, upVecOffsetZ
+```
+
+```lua
+setFixedCameraPosition(x, y, z, upVecOffsetX, upVecOffsetY, upVecOffsetZ)
+```
+
+```js
+Camera.setFixedPosition(x, y, z, upVecOffsetX, upVecOffsetY, upVecOffsetZ)
+```
+</Opcode>
+
+## 看向坐标
+
+<Opcode id="0160" name="POINT_CAMERA_AT_POINT" member="Camera.PointAtPoint">
+镜头看向坐标（配合固定机位等）。
+
+```text
+0160 POINT_CAMERA_AT_POINT
+in: x, y, z, switchStyle
+```
+
+```lua
+pointCameraAtPoint(x, y, z, switchStyle)
+```
+
+```js
+Camera.pointAtPoint(x, y, z, switchStyle)
+```
+</Opcode>
+
+## 淡入淡出颜色
+
+<Opcode id="0169" name="SET_FADING_COLOUR" member="Camera.SetFadingColor">
+淡入淡出颜色 RGB（`016A`）。
+
+```text
+0169 SET_FADING_COLOUR
+in: r, g, b
+```
+
+```lua
+setFadingColour(r, g, b)
+```
+
+```js
+Camera.setFadingColor(r, g, b)
+```
+</Opcode>
+
+## 淡入淡出
+
+<Opcode id="016A" name="DO_FADE" member="Camera.DoFade">
+屏幕淡入/淡出指定时长。
+
+```text
+016A DO_FADE
+in: time, direction
+```
+
+```lua
+doFade(time, direction)
+```
+
+```js
+Camera.doFade(time, direction)
+```
+</Opcode>
+
+## 是否在淡入淡出
+
+<Opcode id="016B" name="GET_FADING_STATUS" member="Camera.GetFadingStatus">
+用在 if：是否正在淡入淡出。
+
+```text
+016B GET_FADING_STATUS
+```
+
+```lua
+getFadingStatus()
+```
+
+```js
+Camera.getFadingStatus()
+```
+</Opcode>
+
+## 硬切恢复
+
+<Opcode id="02EB" name="RESTORE_CAMERA_JUMPCUT" member="Camera.RestoreJumpcut">
+硬切恢复镜头到玩家身后。
+
+```text
+02EB RESTORE_CAMERA_JUMPCUT
+```
+
+```lua
+restoreCameraJumpcut()
+```
+
+```js
+Camera.restoreJumpcut()
+```
+</Opcode>
+
+## 镜头远近
+
+<Opcode id="032A" name="SET_CAMERA_ZOOM" member="Camera.SetZoom">
+镜头相对玩家的远近。
+
+```text
+032A SET_CAMERA_ZOOM
+in: zoom
+```
+
+```lua
+setCameraZoom(zoom)
+```
+
+```js
+Camera.setZoom(zoom)
+```
+</Opcode>
+
+## 镜头到玩家后
+
+<Opcode id="0373" name="SET_CAMERA_BEHIND_PLAYER" member="Camera.SetBehindPlayer">
+镜头放到玩家身后。
+
+```text
+0373 SET_CAMERA_BEHIND_PLAYER
+```
+
+```lua
+setCameraBehindPlayer()
+```
+
+```js
+Camera.setBehindPlayer()
+```
+</Opcode>
+
+## 镜头到玩家前
+
+<Opcode id="03C8" name="SET_CAMERA_IN_FRONT_OF_PLAYER" member="Camera.SetInFrontOfPlayer">
+镜头放到玩家前方并朝向玩家。
+
+```text
+03C8 SET_CAMERA_IN_FRONT_OF_PLAYER
+```
+
+```lua
+setCameraInFrontOfPlayer()
+```
+
+```js
+Camera.setInFrontOfPlayer()
+```
+</Opcode>
+
+## 近裁剪面
+
+<Opcode id="041D" name="SET_NEAR_CLIP" member="Camera.SetNearClip">
+近裁剪面距离。
+
+```text
+041D SET_NEAR_CLIP
+in: distance
+```
+
+```lua
+setNearClip(distance)
+```
+
+```js
+Camera.setNearClip(distance)
+```
+</Opcode>
+
+## 调试镜头坐标
+
+<Opcode id="0454" name="GET_DEBUG_CAMERA_COORDINATES" member="Camera.GetDebugCoordinates">
+调试镜头位置。
+
+```text
+0454 GET_DEBUG_CAMERA_COORDINATES
+out: x, y, z
+```
+
+```lua
+local x, y, z = getDebugCameraCoordinates()
+```
+
+```js
+Camera.getDebugCoordinates()
+```
+</Opcode>
+
+## 插值参数
+
+<Opcode id="0460" name="SET_INTERPOLATION_PARAMETERS" member="Camera.SetInterpolationParameters">
+镜头过渡时长/插值参数。
+
+```text
+0460 SET_INTERPOLATION_PARAMETERS
+in: interpolationToStopMoving, time
+```
+
+```lua
+setInterpolationParameters(interpolationToStopMoving, time)
+```
+
+```js
+Camera.setInterpolationParameters(interpolationToStopMoving, time)
+```
+</Opcode>
+
+## 调试注视点
+
+<Opcode id="0463" name="GET_DEBUG_CAMERA_POINT_AT" member="Camera.GetDebugPointAt">
+调试镜头注视点。
+
+```text
+0463 GET_DEBUG_CAMERA_POINT_AT
+out: x, y, z
+```
+
+```lua
+local x, y, z = getDebugCameraPointAt()
+```
+
+```js
+Camera.getDebugPointAt()
+```
+</Opcode>
+
+## 附着到车
+
+<Opcode id="0679" name="ATTACH_CAMERA_TO_VEHICLE" member="Camera.AttachToVehicle">
+镜头相对车辆偏移附着。
+
+```text
+0679 ATTACH_CAMERA_TO_VEHICLE
+in: handle, xOffset, yOffset, zOffset, xRotation, yRotation, zRotation, tilt, switchStyle
+```
+
+```lua
+attachCameraToVehicle(handle, xOffset, yOffset, zOffset, xRotation, yRotation, zRotation, tilt, switchStyle)
+```
+
+```js
+Camera.attachToVehicle(handle, xOffset, yOffset, zOffset, xRotation, yRotation, zRotation, tilt, switchStyle)
+```
+</Opcode>
+
+## 附着车上并看车
+
+<Opcode id="067A" name="ATTACH_CAMERA_TO_VEHICLE_LOOK_AT_VEHICLE" member="Camera.AttachToVehicleLookAtVehicle">
+附着在车上并看另一辆车。
+
+```text
+067A ATTACH_CAMERA_TO_VEHICLE_LOOK_AT_VEHICLE
+in: handle, xOffset, yOffset, zOffset, vehicle, tilt, switchStyle
+```
+
+```lua
+attachCameraToVehicleLookAtVehicle(handle, xOffset, yOffset, zOffset, vehicle, tilt, switchStyle)
+```
+
+```js
+Camera.attachToVehicleLookAtVehicle(handle, xOffset, yOffset, zOffset, vehicle, tilt, switchStyle)
+```
+</Opcode>
+
+## 附着车上并看人
+
+<Opcode id="067B" name="ATTACH_CAMERA_TO_VEHICLE_LOOK_AT_CHAR" member="Camera.AttachToVehicleLookAtChar">
+附着在车上并看角色。
+
+```text
+067B ATTACH_CAMERA_TO_VEHICLE_LOOK_AT_CHAR
+in: car, xOffset, yOffset, zOffset, char, tilt, switchStyle
+```
+
+```lua
+attachCameraToVehicleLookAtChar(car, xOffset, yOffset, zOffset, char, tilt, switchStyle)
+```
+
+```js
+Camera.attachToVehicleLookAtChar(car, xOffset, yOffset, zOffset, char, tilt, switchStyle)
+```
+</Opcode>
+
+## 附着到人
+
+<Opcode id="067C" name="ATTACH_CAMERA_TO_CHAR" member="Camera.AttachToChar">
+镜头相对角色偏移附着。
+
+```text
+067C ATTACH_CAMERA_TO_CHAR
+in: handle, xOffset, yOffset, zOffset, xRotation, yRotation, zRotation, tilt, switchStyle
+```
+
+```lua
+attachCameraToChar(handle, xOffset, yOffset, zOffset, xRotation, yRotation, zRotation, tilt, switchStyle)
+```
+
+```js
+Camera.attachToChar(handle, xOffset, yOffset, zOffset, xRotation, yRotation, zRotation, tilt, switchStyle)
+```
+</Opcode>
+
+## 附着人上并看车
+
+<Opcode id="067D" name="ATTACH_CAMERA_TO_CHAR_LOOK_AT_VEHICLE" member="Camera.AttachToCharLookAtVehicle">
+附着在角色上并看车辆。
+
+```text
+067D ATTACH_CAMERA_TO_CHAR_LOOK_AT_VEHICLE
+in: char, xOffset, yOffset, zOffset, vehicle, tilt, switchStyle
+```
+
+```lua
+attachCameraToCharLookAtVehicle(char, xOffset, yOffset, zOffset, vehicle, tilt, switchStyle)
+```
+
+```js
+Camera.attachToCharLookAtVehicle(char, xOffset, yOffset, zOffset, vehicle, tilt, switchStyle)
+```
+</Opcode>
+
+## 附着人上并看人
+
+<Opcode id="067E" name="ATTACH_CAMERA_TO_CHAR_LOOK_AT_CHAR" member="Camera.AttachToCharLookAtChar">
+附着在角色上并看另一角色。
+
+```text
+067E ATTACH_CAMERA_TO_CHAR_LOOK_AT_CHAR
+in: handle, xOffset, yOffset, zOffset, char, tilt, switchStyle
+```
+
+```lua
+attachCameraToCharLookAtChar(handle, xOffset, yOffset, zOffset, char, tilt, switchStyle)
+```
+
+```js
+Camera.attachToCharLookAtChar(handle, xOffset, yOffset, zOffset, char, tilt, switchStyle)
+```
+</Opcode>
+
+## 活动镜头坐标
+
+<Opcode id="068D" name="GET_ACTIVE_CAMERA_COORDINATES" member="Camera.GetActiveCoordinates">
+当前活动镜头坐标。
+
+```text
+068D GET_ACTIVE_CAMERA_COORDINATES
+out: x, y, z
+```
+
+```lua
+local x, y, z = getActiveCameraCoordinates()
+```
+
+```js
+Camera.getActiveCoordinates()
+```
+</Opcode>
+
+## 活动注视点
+
+<Opcode id="068E" name="GET_ACTIVE_CAMERA_POINT_AT" member="Camera.GetActivePointAt">
+当前镜头注视点。
+
+```text
+068E GET_ACTIVE_CAMERA_POINT_AT
+out: x, y, z
+```
+
+```lua
+local x, y, z = getActiveCameraPointAt()
+```
+
+```js
+Camera.getActivePointAt()
+```
+</Opcode>
+
+## 双人镜头
+
+<Opcode id="06E0" name="SET_TWO_PLAYER_CAMERA_MODE" member="Camera.SetTwoPlayerMode">
+双人合作镜头模式。
+
+```text
+06E0 SET_TWO_PLAYER_CAMERA_MODE
+in: state
+```
+
+```lua
+setTwoPlayerCameraMode(state)
+```
+
+```js
+Camera.setTwoPlayerMode(state)
+```
+</Opcode>
+
+## 取 FOV
+
+<Opcode id="0801" name="GET_CAMERA_FOV" member="Camera.GetFov">
+视场角 FOV。
+
+```text
+0801 GET_CAMERA_FOV
+out: fov
+```
+
+```lua
+local fov = getCameraFov()
+```
+
+```js
+Camera.getFov()
+```
+</Opcode>
+
+## 车内第一人称
+
+<Opcode id="0822" name="SET_FIRST_PERSON_IN_CAR_CAMERA_MODE" member="Camera.SetFirstPersonInCarMode">
+车内第一人称/保险杠视角。
+
+```text
+0822 SET_FIRST_PERSON_IN_CAR_CAMERA_MODE
+in: state
+```
+
+```lua
+setFirstPersonInCarCameraMode(state)
+```
+
+```js
+Camera.setFirstPersonInCarMode(state)
+```
+</Opcode>
+
+## 镜头撞击
+
+<Opcode id="0834" name="DO_CAMERA_BUMP" member="Camera.DoBump">
+模拟碰撞般的镜头撞击偏移。
+
+```text
+0834 DO_CAMERA_BUMP
+in: xOffset, yOffset
+```
+
+```lua
+doCameraBump(xOffset, yOffset)
+```
+
+```js
+Camera.doBump(xOffset, yOffset)
+```
+</Opcode>
+
+## 注视点插值
+
+<Opcode id="0920" name="CAMERA_SET_VECTOR_TRACK" member="Camera.SetVectorTrack">
+注视点从 A 转到 B（可缓动）。
+
+```text
+0920 CAMERA_SET_VECTOR_TRACK
+in: fromX, fromY, fromZ, toX, toY, toZ, time, ease
+```
+
+```lua
+cameraSetVectorTrack(fromX, fromY, fromZ, toX, toY, toZ, time, ease)
+```
+
+```js
+Camera.setVectorTrack(fromX, fromY, fromZ, toX, toY, toZ, time, ease)
+```
+</Opcode>
+
+## FOV 插值
+
+<Opcode id="0922" name="CAMERA_SET_LERP_FOV" member="Camera.SetLerpFov">
+FOV 在时长内插值。
+
+```text
+0922 CAMERA_SET_LERP_FOV
+in: from, to, time, ease
+```
+
+```lua
+cameraSetLerpFov(from, to, time, ease)
+```
+
+```js
+Camera.setLerpFov(from, to, time, ease)
+```
+</Opcode>
+
+## 压暗画面
+
+<Opcode id="0924" name="SET_DARKNESS_EFFECT" member="Camera.SetDarknessEffect">
+压暗画面（可全黑）。
+
+```text
+0924 SET_DARKNESS_EFFECT
+in: enable, pitchBlack
+```
+
+```lua
+setDarknessEffect(enable, pitchBlack)
+```
+
+```js
+Camera.setDarknessEffect(enable, pitchBlack)
+```
+</Opcode>
+
+## 重置脚本镜头
+
+<Opcode id="0925" name="CAMERA_RESET_NEW_SCRIPTABLES" member="Camera.ResetNewScriptables">
+停掉脚本镜头的推进/插值/抖/缩放等。
+
+```text
+0925 CAMERA_RESET_NEW_SCRIPTABLES
+```
+
+```lua
+cameraResetNewScriptables()
+```
+
+```js
+Camera.resetNewScriptables()
+```
+</Opcode>
+
+## 锁定注视点
+
+<Opcode id="092F" name="CAMERA_PERSIST_TRACK" member="Camera.PersistTrack">
+推进结束后锁定注视点。
+
+```text
+092F CAMERA_PERSIST_TRACK
+in: state
+```
+
+```lua
+cameraPersistTrack(state)
+```
+
+```js
+Camera.persistTrack(state)
+```
+</Opcode>
+
+## 锁定机位
+
+<Opcode id="0930" name="CAMERA_PERSIST_POS" member="Camera.PersistPos">
+锁定机位。
+
+```text
+0930 CAMERA_PERSIST_POS
+in: state
+```
+
+```lua
+cameraPersistPos(state)
+```
+
+```js
+Camera.persistPos(state)
+```
+</Opcode>
+
+## 锁定 FOV
+
+<Opcode id="0931" name="CAMERA_PERSIST_FOV" member="Camera.PersistFov">
+缩放结束后锁定 FOV。
+
+```text
+0931 CAMERA_PERSIST_FOV
+in: state
+```
+
+```lua
+cameraPersistFov(state)
+```
+
+```js
+Camera.persistFov(state)
+```
+</Opcode>
+
+## 机位是否在动
+
+<Opcode id="0933" name="CAMERA_IS_VECTOR_MOVE_RUNNING" member="Camera.IsVectorMoveRunning">
+用在 if：机位是否在移动插值中。
+
+```text
+0933 CAMERA_IS_VECTOR_MOVE_RUNNING
+```
+
+```lua
+cameraIsVectorMoveRunning()
+```
+
+```js
+Camera.isVectorMoveRunning()
+```
+</Opcode>
+
+## 注视是否在转
+
+<Opcode id="0934" name="CAMERA_IS_VECTOR_TRACK_RUNNING" member="Camera.IsVectorTrackRunning">
+用在 if：注视点是否在转动插值中。
+
+```text
+0934 CAMERA_IS_VECTOR_TRACK_RUNNING
+```
+
+```lua
+cameraIsVectorTrackRunning()
+```
+
+```js
+Camera.isVectorTrackRunning()
+```
+</Opcode>
+
+## 机位插值
+
+<Opcode id="0936" name="CAMERA_SET_VECTOR_MOVE" member="Camera.SetVectorMove">
+机位从 A 移到 B。
+
+```text
+0936 CAMERA_SET_VECTOR_MOVE
+in: fromX, fromY, fromZ, toX, toY, toZ, time, ease
+```
+
+```lua
+cameraSetVectorMove(fromX, fromY, fromZ, toX, toY, toZ, time, ease)
+```
+
+```js
+Camera.setVectorMove(fromX, fromY, fromZ, toX, toY, toZ, time, ease)
+```
+</Opcode>
+
+## 电影镜头
+
+<Opcode id="093D" name="SET_CINEMA_CAMERA" member="Camera.SetCinema">
+锁定车辆电影镜头模式。
+
+```text
+093D SET_CINEMA_CAMERA
+in: state
+```
+
+```lua
+setCinemaCamera(state)
+```
+
+```js
+Camera.setCinema(state)
+```
+</Opcode>
+
+## 镜头到角色前
+
+<Opcode id="0944" name="SET_CAMERA_IN_FRONT_OF_CHAR" member="Camera.SetInFrontOfChar">
+镜头放到指定角色前方。
+
+```text
+0944 SET_CAMERA_IN_FRONT_OF_CHAR
+in: handle
+```
+
+```lua
+setCameraInFrontOfChar(handle)
+```
+
+```js
+Camera.setInFrontOfChar(handle)
+```
+</Opcode>
+
+## 简单抖动
+
+<Opcode id="099C" name="CAMERA_SET_SHAKE_SIMULATION_SIMPLE" member="Camera.SetShakeSimulationSimple">
+多种简单抖动模拟。
+
+```text
+099C CAMERA_SET_SHAKE_SIMULATION_SIMPLE
+in: type, timeInMs, intensity
+```
+
+```lua
+cameraSetShakeSimulationSimple(type, timeInMs, intensity)
+```
+
+```js
+Camera.setShakeSimulationSimple(type, timeInMs, intensity)
+```
+</Opcode>
+
+## 车内视角模式
+
+<Opcode id="09AD" name="SET_PLAYER_IN_CAR_CAMERA_MODE" member="Camera.SetPlayerInCarMode">
+切换当前车内视角（等同改视角键）。
+
+```text
+09AD SET_PLAYER_IN_CAR_CAMERA_MODE
+in: mode
+```
+
+```lua
+setPlayerInCarCameraMode(mode)
+```
+
+```js
+Camera.setPlayerInCarMode(mode)
+```
+</Opcode>
+
+## 固定镜头碰撞
+
+<Opcode id="09EC" name="ALLOW_FIXED_CAMERA_COLLISION" member="Camera.AllowFixedCollision">
+车库等处是否允许固定镜头碰撞处理。
+
+```text
+09EC ALLOW_FIXED_CAMERA_COLLISION
+in: state
+```
+
+```lua
+allowFixedCameraCollision(state)
+```
+
+```js
+Camera.allowFixedCollision(state)
+```
+</Opcode>
+
+## 车型镜头微调
+
+<Opcode id="09EF" name="SET_VEHICLE_CAMERA_TWEAK" member="Camera.SetVehicleTweak">
+指定车型默认镜头距离/高度/角。
+
+```text
+09EF SET_VEHICLE_CAMERA_TWEAK
+in: modelId, distance, altitude, angle
+```
+
+```lua
+setVehicleCameraTweak(modelId, distance, altitude, angle)
+```
+
+```js
+Camera.setVehicleTweak(modelId, distance, altitude, angle)
+```
+</Opcode>
+
+## 清车型镜头微调
+
+<Opcode id="09F0" name="RESET_VEHICLE_CAMERA_TWEAK" member="Camera.ResetVehicleTweak">
+清除 `09EF` 的车型镜头微调。
+
+```text
+09F0 RESET_VEHICLE_CAMERA_TWEAK
+```
+
+```lua
+resetVehicleCameraTweak()
+```
+
+```js
+Camera.resetVehicleTweak()
+```
+</Opcode>
+
+## 截图
+
+<Opcode id="0A1E" name="TAKE_PHOTO" member="Camera.TakePhoto">
+无 HUD 截图到 User Files/Gallery。
+
+```text
+0A1E TAKE_PHOTO
+in: _p1
+```
+
+```lua
+takePhoto(_p1)
+```
+
+```js
+Camera.takePhoto(_p1)
+```
+</Opcode>
+
+## 非固定偏移
+
+<Opcode id="0A25" name="SET_CAMERA_POSITION_UNFIXED" member="Camera.SetPositionUnfixed">
+相对目标实体的镜头偏移（非固定机位）。
+
+```text
+0A25 SET_CAMERA_POSITION_UNFIXED
+in: xOffset, yOffset
+```
+
+```lua
+setCameraPositionUnfixed(xOffset, yOffset)
+```
+
+```js
+Camera.setPositionUnfixed(xOffset, yOffset)
+```
+</Opcode>
+
+## 相机射击视角
+
+<Opcode id="0A2F" name="SET_PHOTO_CAMERA_EFFECT" member="Camera.SetPhotoEffect">
+持狙击/相机等时强制第一人称射击视角。
+
+```text
+0A2F SET_PHOTO_CAMERA_EFFECT
+in: state
+```
+
+```lua
+setPhotoCameraEffect(state)
+```
+
+```js
+Camera.setPhotoEffect(state)
+```
+</Opcode>
+
+## 取车内视角
+
+<Opcode id="0A39" name="GET_PLAYER_IN_CAR_CAMERA_MODE" member="Camera.GetPlayerInCarMode">
+当前车辆玩家所选镜头模式。
+
+```text
+0A39 GET_PLAYER_IN_CAR_CAMERA_MODE
+out: mode
+```
+
+```lua
+local mode = getPlayerInCarCameraMode()
+```
+
+```js
+Camera.getPlayerInCarMode()
+```
+</Opcode>

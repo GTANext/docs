@@ -1,0 +1,96 @@
+---
+title: 动画 CAnimManager
+description: 动画块混合与关联
+---
+
+`CAnimManager.h`
+
+动画块与混合。逻辑帧 / 任务侧用；渲染钩子里改要小心。
+
+## 取动画块
+
+<Api name="GetAnimationBlock / GetAnimationBlockIndex">
+
+```cpp
+static CAnimBlock* GetAnimationBlock(char const* name);
+static int GetAnimationBlockIndex(char const* name);
+static int RegisterAnimBlock(char const* name);
+```
+
+```cpp
+CAnimBlock* block = CAnimManager::GetAnimationBlock("ped");
+```
+</Api>
+
+## 取动画层级
+
+<Api name="GetAnimation">
+按名或 hash。
+
+```cpp
+static CAnimBlendHierarchy* GetAnimation(char const* animName, CAnimBlock const* ifp);
+static CAnimBlendHierarchy* GetAnimation(unsigned int hash, CAnimBlock const* ifp);
+```
+
+```cpp
+// auto* hier = CAnimManager::GetAnimation("walk_civi", block);
+```
+</Api>
+
+## 加动画到 clump
+
+<Api name="AddAnimation / BlendAnimation">
+`AssocGroupId` / `AnimationId` 见动画枚举。
+
+```cpp
+static CAnimBlendAssociation* AddAnimation(RpClump* clump, int AssocGroupId, int AnimationId);
+static CAnimBlendAssociation* AddAnimation(RpClump* clump, CAnimBlendHierarchy* pAnimBlendHier, int clumpAssocFlag);
+static CAnimBlendAssociation* BlendAnimation(RpClump* clump, int AssocGroupId, int AnimationId, float clumpAssocBlendData);
+static CAnimBlendAssociation* BlendAnimation(RpClump* clump, CAnimBlendHierarchy* pAnimBlendHier, int flags, float clumpAssocBlendData);
+```
+
+```cpp
+CPed* ped = FindPlayerPed();
+if (ped && ped->m_pRwClump) {
+    // CAnimManager::BlendAnimation(ped->m_pRwClump, group, anim, 4.0f);
+}
+```
+</Api>
+
+## 关联定义
+
+<Api name="CreateAnimAssociation / GetAnimAssociation">
+
+```cpp
+static CAnimBlendAssociation* CreateAnimAssociation(int AssocGroupId, int AnimationId);
+static CAnimBlendStaticAssociation* GetAnimAssociation(int AssocGroupId, int AnimationId);
+```
+</Api>
+
+## 动画块引用
+
+<Api name="AddAnimBlockRef / RemoveAnimBlockRef">
+
+```cpp
+static void AddAnimBlockRef(int index);
+static void RemoveAnimBlockRef(int index);
+static int GetNumRefsToAnimBlock(int index);
+```
+
+```cpp
+// 自定义 ifp 加载后 AddRef，不用 RemoveRef
+```
+</Api>
+
+## 全局表
+
+<Api name="ms_aAnimBlocks / ms_aAnimations">
+
+```cpp
+static CAnimBlock* ms_aAnimBlocks;
+static CAnimBlendHierarchy* ms_aAnimations;
+static int& ms_numAnimBlocks;
+```
+</Api>
+
+加载 ifp 还涉及 `LoadAnimFile` / Streaming；复杂链查头文件与逆向笔记。

@@ -1,0 +1,99 @@
+---
+title: 通缉 CWanted
+description: 通缉等级与犯罪登记
+---
+
+`CWanted.h` · 通常 `FindPlayerWanted()` 取得
+
+逻辑帧改。
+
+## 取通缉对象
+
+<Api name="FindPlayerWanted">
+
+```cpp
+CWanted* FindPlayerWanted(int playerId = -1);
+```
+
+```cpp
+CWanted* w = FindPlayerWanted();
+if (!w) {
+    return;
+}
+```
+</Api>
+
+## 读通缉等级
+
+<Api name="m_nWantedLevel / m_nChaosLevel">
+
+```cpp
+unsigned int m_nWantedLevel;
+unsigned int m_nChaosLevel;
+float m_fMultiplier;
+```
+
+```cpp
+unsigned int stars = w->m_nWantedLevel;
+```
+</Api>
+
+## 设通缉等级
+
+<Api name="SetWantedLevel / CheatWantedLevel">
+
+```cpp
+void SetWantedLevel(int level);
+void SetWantedLevelNoDrop(int level);
+void CheatWantedLevel(int level);
+void ClearWantedLevelAndGoOnParole();
+```
+
+```cpp
+w->SetWantedLevel(0);
+// w->CheatWantedLevel(6);
+```
+</Api>
+
+## 登记犯罪
+
+<Api name="RegisterCrime / RegisterCrime_Immediately">
+
+```cpp
+void RegisterCrime(eCrimeType crimeType, CVector const& posn, unsigned int crimeId, bool bPoliceDontReallyCare);
+void RegisterCrime_Immediately(eCrimeType crimeType, CVector const& posn, unsigned int crimeId, bool bPoliceDontReallyCare);
+void ReportCrimeNow(eCrimeType crimeType, CVector const& posn, bool bPoliceDontReallyCare);
+```
+
+```cpp
+// w->RegisterCrime_Immediately(crime, pos, 0, false);
+```
+</Api>
+
+## 警察后退
+
+<Api name="m_bPoliceBackOff / m_bLeavePlayerAlone">
+
+```cpp
+// bitfields / bool
+// m_bPoliceBackOff, m_bEverybodyBackOff, m_bLeavePlayerAlone
+```
+
+```cpp
+w->m_bPoliceBackOff = true;
+```
+</Api>
+
+## 最大通缉
+
+<Api name="SetMaximumWantedLevel / MaximumWantedLevel">
+
+```cpp
+static void SetMaximumWantedLevel(int level);
+static unsigned int& MaximumWantedLevel;
+```
+
+```cpp
+CWanted::SetMaximumWantedLevel(6);
+```
+</Api>

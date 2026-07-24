@@ -1,0 +1,164 @@
+---
+title: 世界 CWorld
+description: 贴地、射线、区域清理与爆炸
+---
+
+`CWorld.h`
+
+## 贴地高度
+
+<Api name="FindGroundZForCoord / FindRoofZFor3DCoord">
+
+```cpp
+static float FindGroundZForCoord(float x, float y);
+static float FindGroundZFor3DCoord(float x, float y, float z, bool* outResult, CEntity** outEntity);
+static float FindRoofZFor3DCoord(float x, float y, float z, bool* outResult);
+static float FindLowestZForCoord(float x, float y);
+```
+
+```cpp
+CVector pos = FindPlayerCoors();
+pos.z = CWorld::FindGroundZForCoord(pos.x, pos.y) + 1.0f;
+```
+</Api>
+
+## 视线是否畅通
+
+<Api name="GetIsLineOfSightClear">
+
+```cpp
+static bool GetIsLineOfSightClear(
+    CVector const& origin, CVector const& target,
+    bool buildings, bool vehicles, bool peds, bool objects, bool dummies,
+    bool doSeeThroughCheck, bool doCameraIgnoreCheck);
+```
+
+```cpp
+bool clear = CWorld::GetIsLineOfSightClear(
+    a, b, true, true, true, true, true, false, false);
+```
+</Api>
+
+## 射线检测
+
+<Api name="ProcessLineOfSight / ProcessVerticalLine">
+写出碰撞点。
+
+```cpp
+static bool ProcessLineOfSight(... CColPoint& outColPoint, CEntity*& outEntity, ...);
+static bool ProcessVerticalLine(CVector const& origin, float distance, CColPoint& outColPoint, CEntity*& outEntity, ...);
+```
+
+```cpp
+CColPoint cp{};
+CEntity* hit = nullptr;
+CWorld::ProcessVerticalLine(origin, 50.0f, cp, hit, true, true, true, true, true, false, nullptr);
+```
+</Api>
+
+## 半径内找实体
+
+<Api name="FindObjectsInRange">
+计数 + 缓冲。
+
+```cpp
+static void FindObjectsInRange(
+    CVector const& point, float radius, bool b2D,
+    short* outCount, short maxCount, CEntity** outEntities,
+    bool buildings, bool vehicles, bool peds, bool objects, bool dummies);
+```
+
+```cpp
+CEntity* buf[32];
+short n = 0;
+CWorld::FindObjectsInRange(pos, 20.0f, true, &n, 32, buf, false, true, true, false, false);
+```
+</Api>
+
+## 清空区域实体
+
+<Api name="ClearPedsFromArea / ClearCarsFromArea">
+
+```cpp
+static void ClearPedsFromArea(float x1, float y1, float z1, float x2, float y2, float z2);
+static void ClearCarsFromArea(float x1, float y1, float z1, float x2, float y2, float z2);
+```
+
+```cpp
+CWorld::ClearPedsFromArea(x1, y1, z1, x2, y2, z2);
+```
+</Api>
+
+## 爆炸与着火
+
+<Api name="TriggerExplosion / SetWorldOnFire">
+
+```cpp
+static void TriggerExplosion(CVector const& point, float radius, float visibleDistance,
+    CEntity* victim, CEntity* creator, bool processVehicleBombTimer, float damage);
+static void SetWorldOnFire(float x, float y, float z, float radius, CEntity* fireCreator);
+```
+
+```cpp
+CWorld::TriggerExplosion(pos, 10.0f, 50.0f, nullptr, nullptr, false, 100.0f);
+```
+</Api>
+
+## 实体进出世界
+
+<Api name="Add / Remove">
+自己 new 的才需要。
+
+```cpp
+static void Add(CEntity* entity);
+static void Remove(CEntity* entity);
+```
+
+```cpp
+CWorld::Add(entity);
+CWorld::Remove(entity);
+```
+</Api>
+
+## 灭区域车火
+
+<Api name="ExtinguishAllCarFiresInArea / SetAllCarsCanBeDamaged">
+
+```cpp
+static void ExtinguishAllCarFiresInArea(CVector point, float radius);
+static void SetAllCarsCanBeDamaged(bool enable);
+```
+
+```cpp
+CWorld::ExtinguishAllCarFiresInArea(pos, 30.0f);
+```
+</Api>
+
+## 区域清热闹内容
+
+<Api name="ClearExcitingStuffFromArea">
+含可选弹道阴影。
+
+```cpp
+static void ClearExcitingStuffFromArea(CVector const& point, float radius, unsigned char bRemoveProjectilesAndShadows);
+```
+
+```cpp
+CWorld::ClearExcitingStuffFromArea(pos, 50.0f, 1);
+```
+</Api>
+
+## 球测碰撞
+
+<Api name="TestSphereAgainstWorld">
+返回命中实体。
+
+```cpp
+static CEntity* TestSphereAgainstWorld(CVector sphereCenter, float sphereRadius, CEntity* arg2,
+    bool buildings, bool vehicles, bool peds, bool objects, bool dummies, bool doCameraIgnoreCheck);
+```
+
+```cpp
+CEntity* hit = CWorld::TestSphereAgainstWorld(pos, 2.0f, nullptr, true, true, true, true, true, false);
+```
+</Api>

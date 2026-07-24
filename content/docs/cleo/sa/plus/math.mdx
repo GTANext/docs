@@ -1,0 +1,247 @@
+---
+title: 数学 Math
+description: 噪声、缓动、随机与夹值
+---
+
+`sa` · 扩展 `CLEO+` · 需 CLEO + CLEO+
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 1D Perlin
+
+<Opcode id="0E03" name="PERLIN_NOISE" member="Math.PerlinNoise">
+1D Perlin simplex 噪声。
+
+```text
+0E03 PERLIN_NOISE
+in: x
+out: result
+```
+
+```lua
+local n = perlinNoise(t)
+```
+
+```js
+const result = Math.perlinNoise(x)
+```
+</Opcode>
+
+## 缓动
+
+<Opcode id="0E1F" name="EASE" member="Math.Ease">
+把 `k`（0–1）按 mode / way 做缓动，适合动画。
+
+```text
+0E1F EASE
+in: k, mode, way
+out: result
+```
+
+```lua
+local e = ease(0.5, mode, way)
+```
+
+```js
+const result = Math.ease(k, mode, way)
+```
+</Opcode>
+
+## 两点夹角
+
+<Opcode id="0E27" name="GET_ANGLE_FROM_TWO_COORDS" member="Math.GetAngleFromTwoCoords">
+两点平面角。
+
+```text
+0E27 GET_ANGLE_FROM_TWO_COORDS
+in: x1, y1, x2, y2
+out: angle
+```
+
+```lua
+local a = getAngleFromTwoCoords(x1, y1, x2, y2)
+```
+
+```js
+const angle = Math.getAngleFromTwoCoords(x1, y1, x2, y2)
+```
+</Opcode>
+
+## Perlin fBm
+
+<Opcode id="0E29" name="PERLIN_NOISE_FRACTAL" member="Math.PerlinNoiseFractal">
+1D Perlin 的 fBm 叠加。
+
+```text
+0E29 PERLIN_NOISE_FRACTAL
+in: x, octaves, frequency, amplitude, lacunarity, persistence
+out: result
+```
+
+```lua
+local n = perlinNoiseFractal(t, 4, 1.0, 1.0, 2.0, 0.5)
+```
+
+```js
+const result = Math.perlinNoiseFractal(x, octaves, frequency, amplitude, lacunarity, persistence)
+```
+</Opcode>
+
+## 百分比随机
+
+<Opcode id="0E4D" name="RANDOM_PERCENT" member="Math.RandomPercent">
+约 `percent`% 概率为真。用在 `if` 里。
+
+```text
+0E4D RANDOM_PERCENT
+in: percent
+```
+
+```lua
+if randomPercent(25) then
+end
+```
+
+```js
+if (Math.randomPercent(percent)) {
+}
+```
+</Opcode>
+
+## 带种子整数随机
+
+<Opcode id="0EBC" name="GENERATE_RANDOM_INT_IN_RANGE_WITH_SEED" member="Math.GenerateRandomIntInRangeWithSeed">
+`[min, max)`。
+
+```text
+0EBC GENERATE_RANDOM_INT_IN_RANGE_WITH_SEED
+in: seed, min, max
+out: randomInteger
+```
+
+```lua
+local n = generateRandomIntInRangeWithSeed(seed, 0, 100)
+```
+
+```js
+const randomInteger = Math.generateRandomIntInRangeWithSeed(seed, min, max)
+```
+</Opcode>
+
+## 带种子浮点随机
+
+<Opcode id="0EBD" name="GENERATE_RANDOM_FLOAT_IN_RANGE_WITH_SEED" member="Math.GenerateRandomFloatInRangeWithSeed">
+`[min, max)`。
+
+```text
+0EBD GENERATE_RANDOM_FLOAT_IN_RANGE_WITH_SEED
+in: seed, min, max
+out: randomFloat
+```
+
+```lua
+local f = generateRandomFloatInRangeWithSeed(seed, 0.0, 1.0)
+```
+
+```js
+const randomFloat = Math.generateRandomFloatInRangeWithSeed(seed, min, max)
+```
+</Opcode>
+
+## 2D Perlin fBm
+
+<Opcode id="0EF1" name="PERLIN_NOISE_FRACTAL_2D" member="Math.PerlinNoiseFractal2D">
+
+```text
+0EF1 PERLIN_NOISE_FRACTAL_2D
+in: x, y, octaves, frequency, amplitude, lacunarity, persistence
+out: result
+```
+
+```lua
+local n = perlinNoiseFractal2D(x, y, 4, 1.0, 1.0, 2.0, 0.5)
+```
+
+```js
+const result = Math.perlinNoiseFractal2D(x, y, octaves, frequency, amplitude, lacunarity, persistence)
+```
+</Opcode>
+
+## 3D Perlin fBm
+
+<Opcode id="0EF2" name="PERLIN_NOISE_FRACTAL_3D" member="Math.PerlinNoiseFractal3D">
+
+```text
+0EF2 PERLIN_NOISE_FRACTAL_3D
+in: x, y, z, octaves, frequency, amplitude, lacunarity, persistence
+out: result
+```
+
+```lua
+local n = perlinNoiseFractal3D(x, y, z, 4, 1.0, 1.0, 2.0, 0.5)
+```
+
+```js
+const result = Math.perlinNoiseFractal3D(x, y, z, octaves, frequency, amplitude, lacunarity, persistence)
+```
+</Opcode>
+
+## 线性插值
+
+<Opcode id="0EF3" name="LERP">
+`a + (b-a)*t`。
+
+```text
+0EF3 LERP
+in: a, b, t
+out: result
+```
+
+```lua
+local v = lerp(0.0, 1.0, 0.5)
+```
+
+```js
+const result = native("LERP", a, b, t)
+```
+</Opcode>
+
+## 浮点夹值
+
+<Opcode id="0EF4" name="CLAMP_FLOAT" member="Math.ClampFloat">
+浮点夹到 `[min, max]`。
+
+```text
+0EF4 CLAMP_FLOAT
+in: float, min, max
+out: clamped
+```
+
+```lua
+local v = clampFloat(x, 0.0, 1.0)
+```
+
+```js
+const clamped = Math.clampFloat(float, min, max)
+```
+</Opcode>
+
+## 整数夹值
+
+<Opcode id="0EF7" name="CLAMP_INT" member="Math.ClampInt">
+整数夹到 `[min, max]`。
+
+```text
+0EF7 CLAMP_INT
+in: integer, min, max
+out: clamped
+```
+
+```lua
+local v = clampInt(n, 0, 100)
+```
+
+```js
+const clamped = Math.clampInt(integer, min, max)
+```
+</Opcode>

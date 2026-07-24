@@ -1,0 +1,86 @@
+---
+title: 卡死检测 StuckCarCheck
+description: 载具卡住检测
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 4 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 加入检测
+
+<Opcode id="03CC" name="ADD_STUCK_CAR_CHECK" member="StuckCarCheck.Add">
+把车加入「卡住检测」列表。
+
+```text
+03CC ADD_STUCK_CAR_CHECK
+in: vehicle, distance, time
+```
+
+```lua
+addStuckCarCheck(vehicle, distance, time)
+```
+
+```js
+StuckCarCheck.add(vehicle, distance, time)
+```
+</Opcode>
+
+## 移除检测
+
+<Opcode id="03CD" name="REMOVE_STUCK_CAR_CHECK" member="StuckCarCheck.Remove">
+从卡住检测列表移除。
+
+```text
+03CD REMOVE_STUCK_CAR_CHECK
+in: vehicle
+```
+
+```lua
+removeStuckCarCheck(vehicle)
+```
+
+```js
+StuckCarCheck.remove(vehicle)
+```
+</Opcode>
+
+## 是否卡住
+
+<Opcode id="03CE" name="IS_CAR_STUCK" member="StuckCarCheck.IsCarStuck">
+车是否判定卡住。用在 `if` 里。
+
+```text
+03CE IS_CAR_STUCK
+in: vehicle
+```
+
+```lua
+if isCarStuck(vehicle) then
+end
+```
+
+```js
+if (StuckCarCheck.isCarStuck(vehicle)) {
+}
+```
+</Opcode>
+
+## 卡住自动复位
+
+<Opcode id="072F" name="ADD_STUCK_CAR_CHECK_WITH_WARP" member="StuckCarCheck.AddWithWarp">
+卡住 / 翻车 / 落水时尝试自动复位（含路径节点探测）。
+
+```text
+072F ADD_STUCK_CAR_CHECK_WITH_WARP
+in: vehicle, distance, time, stuck, flipped, inWater, numNodesToCheck
+```
+
+```lua
+addStuckCarCheckWithWarp(vehicle, distance, time, stuck, flipped, inWater, numNodesToCheck)
+```
+
+```js
+StuckCarCheck.addWithWarp(vehicle, distance, time, stuck, flipped, inWater, numNodesToCheck)
+```
+</Opcode>

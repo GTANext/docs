@@ -1,0 +1,125 @@
+---
+title: 音频 BassSampleManager
+description: 采样播放（依赖 bass）
+---
+
+`Audio.h` · `BassSampleManager` · 需要链接 bass
+
+## 创建与销毁
+
+构造时 `BASS_Init`；析构释放 sample / stream。
+
+```cpp
+BassSampleManager(uint32_t freq = 44100);
+~BassSampleManager();
+static constexpr int32_t numChannels = 128;
+```
+
+```cpp
+static plugin::BassSampleManager g_audio;
+```
+
+## 音量与静音回调
+
+`Process` 内读取这些回调。可挂到游戏主音量 / 静音。
+
+```cpp
+struct {
+    std::function<bool()> mute;
+    std::function<uint8_t()> masterVolume; // 0..127
+    std::function<bool()> playPause;       // true=可播
+    std::function<bool()> stop;
+} settings;
+```
+
+```cpp
+g_audio.settings.masterVolume = [] {
+    return 100;
+};
+g_audio.settings.mute = [] {
+    return false;
+};
+```
+
+## 加载采样
+
+```cpp
+uint32_t LoadSample(std::string const& file, uint32_t loopStart = 0, int32_t loopEnd = -1);
+void LoadAllSamplesFromFolder(std::string const& path);
+void FeedSample(std::string const& name, void* buffer, uint32_t length);
+uint32_t CreateSample(std::string const& name, uint32_t channels, uint32_t freq);
+```
+
+```cpp
+plugin::Events::initRwEvent += [] {
+    g_audio.LoadAllSamplesFromFolder(PLUGIN_PATH("sfx"));
+};
+```
+
+## 取采样与清空
+
+```cpp
+BassSample* GetSample(std::string const& name);
+BassSample* GetSample(uint32_t sample);
+void ClearSamples();
+```
+
+```cpp
+auto* s = g_audio.GetSample("hit");
+```
+
+## 播放入队
+
+可按名称或 id 入队。
+
+```cpp
+uint32_t AddSampleToQueue(uint8_t vol, uint32_t freq, std::string const& sample, bool loop, CVector const& pos, uint32_t framesToPlay = 8, bool is3d = true);
+uint32_t AddSampleToQueue(uint8_t vol, uint32_t freq, uint32_t sample, bool loop, CVector const& pos, uint32_t framesToPlay = 8, bool is3d = true);
+void AddSampleToQueue(BassQueue const& queue);
+```
+
+```cpp
+CPed* ped = FindPlayerPed();
+if (!ped) {
+    return;
+}
+g_audio.AddSampleToQueue(127, 44100, "hit", false, ped->GetPosition(), 8, true);
+```
+
+## 每帧处理队列
+
+**必须每帧 `Process` 才会出声。**
+
+```cpp
+void Process();
+void ClearQueue();
+uint32_t FindAvailableChannel();
+void StopAllChannels();
+```
+
+```cpp
+plugin::Events::processScriptsEvent += [] {
+    g_audio.Process();
+};
+```
+
+## 通道细调
+
+一般用「入队 + Process」即可。需要细控时：
+
+```cpp
+void StartChannel(uint32_t channel);
+void StopChannel(uint32_t channel);
+void ResetChannel(uint32_t channel);
+bool InitialiseChannel(uint32_t channel, uint32_t sample);
+void SetChannel3D(uint32_t channel, bool on);
+void SetChannel3DPosition(uint32_t channel, float x, float y, float z);
+// … 见头文件：频率、循环、混响、长度等
+```
+
+```cpp
+uint32_t ch = g_audio.FindAvailableChannel();
+if (g_audio.InitialiseChannel(ch, sample_id)) {
+    g_audio.StartChannel(ch);
+}
+```

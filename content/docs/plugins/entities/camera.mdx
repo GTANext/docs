@@ -1,0 +1,162 @@
+---
+title: 镜头 CCamera
+description: 淡入淡出、脚本接管与震动
+---
+
+`CCamera.h` · 全局 `TheCamera`
+
+脚本接管后记得 `Restore` / `RestoreWithJumpCut`。FOV 也看 `CDraw::ms_fFOV`。
+
+## 画面淡入淡出
+
+<Api name="Fade / SetFadeColour / GetScreenFadeStatus">
+
+```cpp
+void Fade(float fadeDuration, short FadeInOutFlag);
+void SetFadeColour(unsigned char Red, unsigned char Green, unsigned char Blue);
+signed int GetScreenFadeStatus();
+bool GetFading();
+int GetFadingDirection();
+```
+
+```cpp
+TheCamera.SetFadeColour(0, 0, 0);
+TheCamera.Fade(1.0f, 0); // flag 以头文件 / 逆向为准
+```
+</Api>
+
+## 脚本接管镜头
+
+<Api name="TakeControl / TakeControlNoEntity">
+
+```cpp
+void TakeControl(CEntity* target, short ModeToGoTo, short TypeOfSwitch, int WhoIsInControlOfTheCamera);
+void TakeControlNoEntity(CVector const* FixedModeVector, short TypeOfSwitch, int WhoIsInControlOfTheCamera);
+void TakeControlAttachToEntity(CEntity* target, CEntity* attached, CVector* AttachedCamOffset, CVector* AttachedCamLookAt, float AttachedCamAngle, short TypeOfSwitch, int WhoIsInControlOfTheCamera);
+void TakeControlWithSpline(short TypeOfSwitch);
+```
+
+```cpp
+TheCamera.TakeControl(ped, mode, type, who);
+```
+</Api>
+
+## 恢复镜头
+
+<Api name="Restore / RestoreWithJumpCut">
+交回游戏默认跟拍。
+
+```cpp
+void Restore();
+void RestoreWithJumpCut();
+```
+
+```cpp
+TheCamera.RestoreWithJumpCut();
+```
+</Api>
+
+## 镜头震动
+
+<Api name="CamShake / AddShakeSimple">
+爆炸、撞击特效常用。
+
+```cpp
+void CamShake(float strength, float x, float y, float z);
+void AddShakeSimple(float duration, int type, float intensity);
+```
+
+```cpp
+CVector p = ped->GetPosition();
+TheCamera.CamShake(0.2f, p.x, p.y, p.z);
+```
+</Api>
+
+## 视场角
+
+<Api name="FindCamFOV / LerpFOV">
+全局绘制 FOV 见 [CDraw](/docs/plugins/entities/draw)。
+
+```cpp
+float FindCamFOV();
+void LerpFOV(float zoomInFactor, float zoomOutFactor, float timelimit, bool bEase);
+```
+
+```cpp
+float fov = TheCamera.FindCamFOV();
+```
+</Api>
+
+## 固定点位镜头
+
+<Api name="SetCamPositionForFixedMode">
+
+```cpp
+void SetCamPositionForFixedMode(CVector const* fixedModeSource, CVector const* fixedModeUpOffset);
+```
+
+```cpp
+CVector src(0.0f, 0.0f, 20.0f);
+CVector up(0.0f, 0.0f, 1.0f);
+TheCamera.SetCamPositionForFixedMode(&src, &up);
+```
+</Api>
+
+## 宽屏与运动模糊
+
+<Api name="SetWideScreenOn / SetMotionBlur">
+
+```cpp
+void SetWideScreenOn();
+void SetWideScreenOff();
+void SetMotionBlur(int Red, int Green, int Blue, int value, int Blurtype);
+void SetMotionBlurAlpha(int Alpha);
+```
+
+```cpp
+TheCamera.SetWideScreenOn();
+```
+</Api>
+
+## 球可见性
+
+<Api name="IsSphereVisible">
+球是否在视锥。
+
+```cpp
+bool IsSphereVisible(CVector const& origin, float radius);
+bool IsSphereVisible(CVector const& origin, float radius, RwMatrixTag* transformMatrix);
+```
+
+```cpp
+if (TheCamera.IsSphereVisible(pos, 2.0f)) {
+}
+```
+</Api>
+
+## 镜头朝向
+
+<Api name="GetLookDirection">
+
+```cpp
+signed int GetLookDirection();
+```
+
+```cpp
+int dir = TheCamera.GetLookDirection();
+```
+</Api>
+
+## 第三人称瞄准向量
+
+<Api name="Find3rdPersonCamTargetVector">
+
+```cpp
+void Find3rdPersonCamTargetVector(float range, CVector source, CVector* pCamera, CVector* pPoint);
+float Find3rdPersonQuickAimPitch();
+```
+
+```cpp
+// TheCamera.Find3rdPersonCamTargetVector(range, source, &cam, &point);
+```
+</Api>

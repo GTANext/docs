@@ -1,0 +1,183 @@
+---
+title: 车库 Garage
+description: 车库开关 / 类型 / 喷漆
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 9 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 任务车库目标车
+
+<Opcode id="021B" name="SET_TARGET_CAR_FOR_MISSION_GARAGE" member="Garage.SetTargetCarForMission">
+任务车库只认指定车。
+
+```text
+021B SET_TARGET_CAR_FOR_MISSION_GARAGE
+in: garageName, vehicle
+```
+
+```lua
+setTargetCarForMissionGarage(garageName, vehicle)
+```
+
+```js
+Garage.setTargetCarForMission(garageName, vehicle)
+```
+</Opcode>
+
+## 激活
+
+<Opcode id="0299" name="ACTIVATE_GARAGE" member="Garage.Activate">
+激活车库。
+
+```text
+0299 ACTIVATE_GARAGE
+in: garageId
+```
+
+```lua
+activateGarage(garageId)
+```
+
+```js
+Garage.activate(garageId)
+```
+</Opcode>
+
+## 停用
+
+<Opcode id="02B9" name="DEACTIVATE_GARAGE" member="Garage.Deactivate">
+停用车库。
+
+```text
+02B9 DEACTIVATE_GARAGE
+in: garageId
+```
+
+```lua
+deactivateGarage(garageId)
+```
+
+```js
+Garage.deactivate(garageId)
+```
+</Opcode>
+
+## 改类型
+
+<Opcode id="02FA" name="CHANGE_GARAGE_TYPE" member="Garage.ChangeType">
+改车库类型。
+
+```text
+02FA CHANGE_GARAGE_TYPE
+in: garageId, type
+```
+
+```lua
+changeGarageType(garageId, type)
+```
+
+```js
+Garage.changeType(garageId, type)
+```
+</Opcode>
+
+## 开门
+
+<Opcode id="0360" name="OPEN_GARAGE" member="Garage.Open">
+开车库门。
+
+```text
+0360 OPEN_GARAGE
+in: garageId
+```
+
+```lua
+openGarage(garageId)
+```
+
+```js
+Garage.open(garageId)
+```
+</Opcode>
+
+## 关门
+
+<Opcode id="0361" name="CLOSE_GARAGE" member="Garage.Close">
+关车库门。
+
+```text
+0361 CLOSE_GARAGE
+in: garageId
+```
+
+```lua
+closeGarage(garageId)
+```
+
+```js
+Garage.close(garageId)
+```
+</Opcode>
+
+## 是否打开
+
+<Opcode id="03B0" name="IS_GARAGE_OPEN" member="Garage.IsOpen">
+门是否打开。用在 `if` 里。
+
+```text
+03B0 IS_GARAGE_OPEN
+in: garageId
+```
+
+```lua
+if isGarageOpen(garageId) then
+end
+```
+
+```js
+if (Garage.isOpen(garageId)) {
+}
+```
+</Opcode>
+
+## 是否关闭
+
+<Opcode id="03B1" name="IS_GARAGE_CLOSED" member="Garage.IsClosed">
+门是否关闭。用在 `if` 里。
+
+```text
+03B1 IS_GARAGE_CLOSED
+in: garageId
+```
+
+```lua
+if isGarageClosed(garageId) then
+end
+```
+
+```js
+if (Garage.isClosed(garageId)) {
+}
+```
+</Opcode>
+
+## 喷漆免费
+
+<Opcode id="093A" name="SET_GARAGE_RESPRAY_FREE" member="Garage.SetResprayFree">
+喷漆是否免费。
+
+```text
+093A SET_GARAGE_RESPRAY_FREE
+in: garageId, state
+```
+
+```lua
+setGarageResprayFree(garageId, state)
+```
+
+```js
+Garage.setResprayFree(garageId, state)
+```
+</Opcode>

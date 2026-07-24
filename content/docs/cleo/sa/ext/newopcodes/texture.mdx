@@ -1,0 +1,133 @@
+---
+title: 贴图 Texture / Sprite
+description: BMP/PNG/DDS 贴图与 2D 精灵
+---
+
+`sa` · 扩展 `NewOpcodes` · 需 CLEO + NewOpcodes
+
+从文件加载贴图、释放、画 2D 精灵。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 加载
+
+<Opcode id="0D61" name="LOAD_TEXTURE_FROM_BMP_FILE" member="Texture.LoadFromBmpFile">
+从 BMP 加载贴图；可选 mask 作 alpha。用在 `if` 里。
+
+```text
+0D61 LOAD_TEXTURE_FROM_BMP_FILE
+in: bmp, mask
+out: texture
+```
+
+```lua
+if loadTextureFromBmpFile("img/a.bmp", "img/a_mask.bmp") then
+end
+```
+
+```js
+const texture = Texture.loadFromBmpFile(bmp, mask)
+```
+</Opcode>
+
+<Opcode id="0D64" name="LOAD_TEXTURE_FROM_PNG_FILE" member="Texture.LoadFromPngFile">
+从 PNG 加载贴图。用在 `if` 里。
+
+```text
+0D64 LOAD_TEXTURE_FROM_PNG_FILE
+in: png
+out: texture
+```
+
+```lua
+if loadTextureFromPngFile("img/a.png") then
+end
+```
+
+```js
+const texture = Texture.loadFromPngFile(png)
+```
+</Opcode>
+
+<Opcode id="0D7C" name="LOAD_TEXTURE_FROM_DDS_FILE" member="Texture.LoadFromDdsFile">
+从 DDS 加载贴图。用在 `if` 里。
+
+```text
+0D7C LOAD_TEXTURE_FROM_DDS_FILE
+in: dds
+out: texture
+```
+
+```lua
+if loadTextureFromDdsFile("img/a.dds") then
+end
+```
+
+```js
+const texture = Texture.loadFromDdsFile(dds)
+```
+</Opcode>
+
+## 释放 / 绘制
+
+<Opcode id="0D7D" name="CLEAN_LOADED_TEXTURE" member="Texture.CleanLoaded">
+释放已加载贴图。
+
+```text
+0D7D CLEAN_LOADED_TEXTURE
+in: self
+```
+
+```lua
+cleanLoadedTexture(tex)
+```
+
+```js
+Texture.cleanLoaded(self)
+```
+</Opcode>
+
+<Opcode id="0D7E" name="DRAW_2D_SPRITE" member="Sprite.Draw2D">
+画 2D 精灵：贴图、矩形两角、RGBA、旋转角。
+
+```text
+0D7E DRAW_2D_SPRITE
+in: texture, cornerAx, cornerAy, cornerBx, cornerBy, red, blue, green, alpha, angle
+```
+
+```lua
+draw2dSprite(tex, ax, ay, bx, by, r, b, g, a, angle)
+```
+
+```js
+Sprite.draw2D(texture, cornerAx, cornerAy, cornerBx, cornerBy, red, blue, green, alpha, angle)
+```
+</Opcode>
+
+<Opcode id="0D7F" name="DRAW_2D_SPRITE_WITH_GRADIENT" member="Sprite.Draw2DWithGradient">
+四顶点各自颜色的渐变 2D 精灵。
+
+```text
+0D7F DRAW_2D_SPRITE_WITH_GRADIENT
+in: texture, cornerAx, cornerAy, cornerBx, cornerBy,
+    red0, green0, blue0, alpha0, red1, green1, blue1, alpha1,
+    red2, green2, blue2, alpha2, red3, green3, blue3, alpha3, angle
+```
+
+```lua
+draw2dSpriteWithGradient(
+  tex, ax, ay, bx, by,
+  r0, g0, b0, a0, r1, g1, b1, a1,
+  r2, g2, b2, a2, r3, g3, b3, a3, angle
+)
+```
+
+```js
+Sprite.draw2DWithGradient(
+  texture, cornerAx, cornerAy, cornerBx, cornerBy,
+  red0, green0, blue0, alpha0,
+  red1, green1, blue1, alpha1,
+  red2, green2, blue2, alpha2,
+  red3, green3, blue3, alpha3,
+  angle
+)
+```
+</Opcode>

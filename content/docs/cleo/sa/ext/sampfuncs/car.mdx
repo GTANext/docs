@@ -1,0 +1,28 @@
+---
+title: 载具 Car
+description: 载具句柄 → SA-MP 车辆 ID
+---
+
+`sa` · 扩展 `SAMPFUNCS` · 仅 SA-MP；需 SAMPFUNCS
+
+共 1 条。调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 车辆 ID
+
+<Opcode id="0B2C" name="SAMP_GET_CAR_ID" member="Car.GetSampId">
+按车辆句柄返回 SA-MP 车辆 ID。
+
+```text
+0B2C SAMP_GET_CAR_ID
+in: self
+out: id
+```
+
+```lua
+local id = sampGetCarId(self)
+```
+
+```js
+const id = Car.getSampId(self)
+```
+</Opcode>

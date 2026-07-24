@@ -1,0 +1,333 @@
+---
+title: 调用 PluginBase / Call
+description: Call / CallDyn / Method / VMT 选型与基址
+---
+
+`shared/PluginBase.h` · 命名空间 `plugin`
+
+优先顺序：**已有 C++ 封装 → Command → Call → 最后才 patch**。
+
+| 场景 | 选用 |
+|---|---|
+| 编译期已知地址、cdecl | `Call` / `CallAndReturn` |
+| thiscall | `CallMethod` / `CallMethodAndReturn` |
+| 运行时才有地址（Pattern / 重定位） | `CallDyn*` |
+| 地址已是绝对、不要再加基址 | `*DynGlobal` |
+| 虚表槽 | `CallVirtualMethod*` |
+
+编译期地址 → `Call*`  
+运行时地址 → `CallDyn*`（多数配合 `GetGlobalAddress` / Pattern）  
+`*DynGlobal` **不做**重定位
+
+<Callout type="error" title="不要在这些时机 Call 游戏逻辑">
+静态构造 / `DllMain` / 对象池尚未建立 / 设备 Lost 之后继续画或调渲染相关逻辑。
+</Callout>
+
+## 无返回 cdecl
+
+<Api name="Call" header="编译期地址 · cdecl">
+无返回的 cdecl 调用。`address` 按 `void(__cdecl*)(Args...)` 解释。调用约定错误会破坏栈。固定 RVA 换游戏版本通常要更新，或改用 Pattern + `CallDyn`。
+
+```cpp
+template <uintptr_t address, typename... Args>
+void Call(Args... args);
+```
+
+```cpp
+#include "plugin.h"
+
+plugin::Call<0x53BEE0>();
+plugin::Call<0x123456>(1, 2.0f);
+```
+</Api>
+
+## 有返回 cdecl
+
+<Api name="CallAndReturn" header="编译期地址 · cdecl">
+`Ret` 写在模板参数最前。
+
+```cpp
+template <typename Ret, uintptr_t address, typename... Args>
+Ret CallAndReturn(Args... args);
+```
+
+```cpp
+int value = plugin::CallAndReturn<int, 0x53BEE0>();
+float f = plugin::CallAndReturn<float, 0x123456>(10);
+```
+</Api>
+
+## stdcall
+
+<Api name="CallStd / CallStdAndReturn" header="编译期地址 · stdcall">
+游戏内多数并不是 stdcall，确认约定后再用。
+
+```cpp
+template <uintptr_t address, typename... Args>
+void CallStd(Args... args);
+
+template <typename Ret, uintptr_t address, typename... Args>
+Ret CallStdAndReturn(Args... args);
+```
+
+```cpp
+plugin::CallStd<0x123456>(hwnd);
+BOOL ok = plugin::CallStdAndReturn<BOOL, 0x123456>(hwnd);
+```
+</Api>
+
+## thiscall 方法
+
+<Api name="CallMethod / CallMethodAndReturn" header="编译期地址 · thiscall">
+第一个参数是 `this`，必须有效。
+
+```cpp
+template <uintptr_t address, typename C, typename... Args>
+void CallMethod(C _this, Args... args);
+
+template <typename Ret, uintptr_t address, typename C, typename... Args>
+Ret CallMethodAndReturn(C _this, Args... args);
+```
+
+```cpp
+#include "plugin.h"
+#include "common.h"
+
+plugin::Events::processScriptsEvent += [] {
+    CPed* ped = FindPlayerPed();
+    if (!ped) {
+        return;
+    }
+    plugin::CallMethod<0x5E4280>(ped, WEAPONTYPE_M4, 999u, true);
+    bool alive = plugin::CallMethodAndReturn<bool, 0x5E0170>(ped);
+    (void)alive;
+};
+```
+</Api>
+
+## 虚表方法
+
+<Api name="CallVirtualMethod / CallVirtualMethodAndReturn" header="虚表下标">
+模板参数是虚表 **下标**，不是函数地址。下标错误几乎必崩。
+
+```cpp
+template <uintptr_t tableIndex, typename C, typename... Args>
+void CallVirtualMethod(C _this, Args... args);
+
+template <typename Ret, uintptr_t tableIndex, typename C, typename... Args>
+Ret CallVirtualMethodAndReturn(C _this, Args... args);
+```
+
+```cpp
+plugin::CallVirtualMethod<0>(entity);
+int model = plugin::CallVirtualMethodAndReturn<int, 2>(entity);
+```
+</Api>
+
+## 运行时地址 cdecl
+
+<Api name="CallDyn / CallAndReturnDyn" header="运行时 · cdecl · 重定位">
+内部会做重定位。地址为 `0` 时不要调用。
+
+```cpp
+template <typename... Args>
+void CallDyn(uintptr_t address, Args... args);
+
+template <typename Ret, typename... Args>
+Ret CallAndReturnDyn(uintptr_t address, Args... args);
+```
+
+```cpp
+uintptr_t addr = plugin::pattern::Get("53 8B D9 83 EC 08", 0);
+if (!addr) {
+    return;
+}
+plugin::CallDyn(addr);
+int r = plugin::CallAndReturnDyn<int>(addr, 1, 2);
+```
+</Api>
+
+## 运行时地址 stdcall
+
+<Api name="CallStdDyn / CallStdAndReturnDyn">
+
+```cpp
+template <typename... Args>
+void CallStdDyn(uintptr_t address, Args... args);
+
+template <typename Ret, typename... Args>
+Ret CallStdAndReturnDyn(uintptr_t address, Args... args);
+```
+
+```cpp
+plugin::CallStdDyn(addr, arg0);
+auto r = plugin::CallStdAndReturnDyn<int>(addr);
+```
+</Api>
+
+## 运行时地址 thiscall
+
+<Api name="CallMethodDyn / CallMethodAndReturnDyn">
+
+```cpp
+template <typename C, typename... Args>
+void CallMethodDyn(uintptr_t address, C _this, Args... args);
+
+template <typename Ret, typename C, typename... Args>
+Ret CallMethodAndReturnDyn(uintptr_t address, C _this, Args... args);
+```
+
+```cpp
+if (!ped || !addr) {
+    return;
+}
+plugin::CallMethodDyn(addr, ped, 1);
+bool ok = plugin::CallMethodAndReturnDyn<bool>(addr, ped);
+```
+</Api>
+
+## 绝对地址 cdecl
+
+<Api name="CallDynGlobal / CallAndReturnDynGlobal" header="绝对地址 · 不重定位">
+
+```cpp
+template <typename... Args>
+void CallDynGlobal(uintptr_t address, Args... args);
+
+template <typename Ret, typename... Args>
+Ret CallAndReturnDynGlobal(uintptr_t address, Args... args);
+```
+
+```cpp
+plugin::CallDynGlobal(0x401000);
+int r = plugin::CallAndReturnDynGlobal<int>(0x401000);
+```
+</Api>
+
+## 绝对地址 thiscall
+
+<Api name="CallMethodDynGlobal / CallMethodAndReturnDynGlobal">
+
+```cpp
+template <typename C, typename... Args>
+void CallMethodDynGlobal(uintptr_t address, C _this, Args... args);
+
+template <typename Ret, typename C, typename... Args>
+Ret CallMethodAndReturnDynGlobal(uintptr_t address, C _this, Args... args);
+```
+
+```cpp
+plugin::CallMethodDynGlobal(0x401000, ped);
+bool ok = plugin::CallMethodAndReturnDynGlobal<bool>(0x401000, ped);
+```
+</Api>
+
+## 取虚表
+
+<Api name="GetVMT">
+取虚表指针，或某一槽位。
+
+```cpp
+inline void** GetVMT(const void* self);
+inline void* GetVMT(const void* self, size_t index);
+```
+
+```cpp
+void** vmt = plugin::GetVMT(ped);
+void* fn = plugin::GetVMT(ped, 0);
+```
+</Api>
+
+## 基址与绝对地址
+
+<Api name="GetBaseAddress / GetGlobalAddress" header="DynAddress.h">
+模块基址；RVA → 绝对地址。
+
+```cpp
+uintptr_t GetBaseAddress();
+uintptr_t GetGlobalAddress(uintptr_t address);
+```
+
+```cpp
+uintptr_t base = plugin::GetBaseAddress();
+uintptr_t abs_addr = plugin::GetGlobalAddress(0x53BEE0);
+```
+</Api>
+
+## 分配与释放
+
+<Api name="operator_new / operator_delete 族">
+等价于 new / delete，必须成对使用。
+
+```cpp
+template <typename ClassType, typename... ArgTypes>
+ClassType* operator_new(ArgTypes... args);
+
+template <typename ClassType>
+ClassType* operator_new_array(size_t size);
+
+template <typename ClassType>
+void operator_delete(ClassType* data);
+
+template <typename ClassType>
+void operator_delete_array(ClassType* data);
+```
+
+```cpp
+CVector* v = plugin::operator_new<CVector>(1.0f, 2.0f, 3.0f);
+plugin::operator_delete(v);
+
+CVector* arr = plugin::operator_new_array<CVector>(8);
+plugin::operator_delete_array(arr);
+```
+</Api>
+
+## 栈上临时对象
+
+<Api name="stack_object">
+
+```cpp
+template <typename T>
+struct stack_object {
+    template <typename... ArgTypes>
+    stack_object(ArgTypes... args);
+    T* operator->();
+    T& get_object();
+};
+```
+
+```cpp
+plugin::stack_object<CVector> pos(0.0f, 0.0f, 0.0f);
+pos->z = 10.0f;
+```
+</Api>
+
+## SDK 版本
+
+<Api name="Core::GetVersion">
+
+```cpp
+namespace Core {
+    PLUGIN_API unsigned int GetVersion();
+}
+```
+
+```cpp
+unsigned int ver = plugin::Core::GetVersion();
+```
+</Api>
+
+## 跨游戏取值
+
+<Api name="BY_GAME" header="宏">
+按当前工程宏取三端之一。
+
+```cpp
+BY_GAME(iii_val, vc_val, sa_val)
+```
+
+```cpp
+uintptr_t addr = BY_GAME(0x48E000, 0x4A6000, 0x53BEE0);
+plugin::CallDyn(addr);
+```
+</Api>

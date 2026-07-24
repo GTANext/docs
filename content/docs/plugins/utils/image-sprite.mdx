@@ -1,0 +1,92 @@
+---
+title: 图片精灵 Image / SpriteLoader
+description: 加载图片与精灵绘制
+---
+
+`Image.h` / `SpriteLoader.h` · III / VC / SA / IV
+
+## 图片字段与释放
+
+`CreateImage*` 创建后，用完必须 `Release`。创建入口见 [杂项工具](/docs/plugins/utils/other)。
+
+```cpp
+class Image {
+    int32_t width;
+    int32_t height;
+    int32_t channels;
+    uint8_t* pixels;
+    void Release();
+};
+```
+
+```cpp
+plugin::Image* img = nullptr;
+if (plugin::CreateImageFromFile(path, img)) {
+    int w = img->width;
+    img->Release();
+}
+```
+
+## 从文件夹加载精灵
+
+默认扩展名 `png`，可用 `SetExtension` 修改。
+
+```cpp
+bool LoadAllSpritesFromFolder(std::string const& path);
+texClass* LoadSpriteFromFolder(std::string const& file);
+```
+
+```cpp
+#include "SpriteLoader.h"
+
+static plugin::SpriteLoader g_sprites;
+
+plugin::Events::initRwEvent += [] {
+    g_sprites.SetExtension("png");
+    g_sprites.LoadAllSpritesFromFolder(PLUGIN_PATH("sprites"));
+};
+```
+
+## 从 txd 加载
+
+```cpp
+bool LoadAllSpritesFromTxd(std::string const& path);
+```
+
+```cpp
+g_sprites.LoadAllSpritesFromTxd(PLUGIN_PATH("ui.txd"));
+```
+
+## 按名取精灵
+
+不存在时结果为空。
+
+```cpp
+CSprite2d GetSprite(std::string const& name);
+CSprite2d GetSprite(uint32_t id);
+texClass* GetTex(std::string const& name);
+```
+
+```cpp
+plugin::Events::drawingEvent += [] {
+    CSprite2d spr = g_sprites.GetSprite("icon");
+};
+```
+
+## 清理与选项
+
+设备丢失 / 关闭 RW 时 `Clear`。
+
+```cpp
+void Clear();
+void SetMipMapOn(bool on);
+void SetExtension(std::string const& ext);
+uint32_t GetMemoryUsed();
+```
+
+```cpp
+plugin::Events::shutdownRwEvent += [] {
+    g_sprites.Clear();
+};
+g_sprites.SetMipMapOn(true);
+```

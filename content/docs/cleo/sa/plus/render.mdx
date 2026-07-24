@@ -1,0 +1,161 @@
+---
+title: 渲染对象 RenderObject
+description: 挂到角色骨骼上的渲染物体
+---
+
+`sa` · 扩展 `CLEO+` · 需 CLEO + CLEO+
+
+挂到角色骨骼上的渲染物体。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 创建到骨骼
+
+<Opcode id="0E2E" name="CREATE_RENDER_OBJECT_TO_CHAR_BONE" member="RenderObject.CreateToCharBone">
+在角色骨骼上创建 renderObject（模型 + 位移/旋转）。
+
+```text
+0E2E CREATE_RENDER_OBJECT_TO_CHAR_BONE
+in: char, modelId, pedBone, x, y, z, rx, ry, rz
+out: handle
+```
+
+```lua
+local ro = createRenderObjectToCharBone(ped, modelId, bone, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+```
+
+```js
+const handle = RenderObject.createToCharBone(char, modelId, pedBone, x, y, z, rx, ry, rz)
+```
+</Opcode>
+
+## 删除
+
+<Opcode id="0E2F" name="DELETE_RENDER_OBJECT" member="RenderObject.Delete">
+删除 renderObject。
+
+```text
+0E2F DELETE_RENDER_OBJECT
+in: self
+```
+
+```lua
+deleteRenderObject(ro)
+```
+
+```js
+RenderObject.delete(self)
+```
+</Opcode>
+
+## 自动隐藏
+
+<Opcode id="0E30" name="SET_RENDER_OBJECT_AUTO_HIDE" member="Char.SetRenderObjectAutoHide">
+角色死亡 / 持枪 / 上车时自动隐藏挂件（绑在 Char 上）。
+
+```text
+0E30 SET_RENDER_OBJECT_AUTO_HIDE
+in: self, dead, weapon, car
+```
+
+```lua
+setRenderObjectAutoHide(ped, true, true, true)
+```
+
+```js
+Char.setRenderObjectAutoHide(self, dead, weapon, car)
+```
+</Opcode>
+
+## 显隐
+
+<Opcode id="0E31" name="SET_RENDER_OBJECT_VISIBLE" member="RenderObject.SetVisible">
+显隐。
+
+```text
+0E31 SET_RENDER_OBJECT_VISIBLE
+in: self, visible
+```
+
+```lua
+setRenderObjectVisible(ro, true)
+```
+
+```js
+RenderObject.setVisible(self, visible)
+```
+</Opcode>
+
+## 位置
+
+<Opcode id="0E35" name="SET_RENDER_OBJECT_POSITION" member="RenderObject.SetPosition">
+本地位置偏移。
+
+```text
+0E35 SET_RENDER_OBJECT_POSITION
+in: self, x, y, z
+```
+
+```lua
+setRenderObjectPosition(ro, 0.0, 0.1, 0.0)
+```
+
+```js
+RenderObject.setPosition(self, x, y, z)
+```
+</Opcode>
+
+## 旋转
+
+<Opcode id="0E36" name="SET_RENDER_OBJECT_ROTATION" member="RenderObject.SetRotation">
+本地旋转。
+
+```text
+0E36 SET_RENDER_OBJECT_ROTATION
+in: self, x, y, z
+```
+
+```lua
+setRenderObjectRotation(ro, 0.0, 0.0, 90.0)
+```
+
+```js
+RenderObject.setRotation(self, x, y, z)
+```
+</Opcode>
+
+## 缩放
+
+<Opcode id="0E37" name="SET_RENDER_OBJECT_SCALE" member="RenderObject.SetScale">
+缩放。
+
+```text
+0E37 SET_RENDER_OBJECT_SCALE
+in: self, x, y, z
+```
+
+```lua
+setRenderObjectScale(ro, 1.0, 1.0, 1.0)
+```
+
+```js
+RenderObject.setScale(self, x, y, z)
+```
+</Opcode>
+
+## 扭曲
+
+<Opcode id="0E3A" name="SET_RENDER_OBJECT_DISTORTION" member="RenderObject.SetDistortion">
+扭曲参数 x/y/z/w。
+
+```text
+0E3A SET_RENDER_OBJECT_DISTORTION
+in: self, x, y, z, w
+```
+
+```lua
+setRenderObjectDistortion(ro, 0.0, 0.0, 0.0, 0.0)
+```
+
+```js
+RenderObject.setDistortion(self, x, y, z, w)
+```
+</Opcode>

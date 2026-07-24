@@ -1,0 +1,115 @@
+---
+title: 脚本 SfScript
+description: 启停脚本与局部变量
+---
+
+`sa` · 扩展 `SAMPFUNCS` · 仅 SA-MP；需 SAMPFUNCS
+
+共 6 条。调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 启动
+
+<Opcode id="0C6A" name="SF_START_NEW_SCRIPT_FROM_LABEL" member="SfScript.RunFromLabel">
+从 scriptLabel 启动新脚本，并把指针写入 newScriptPtrTo。
+
+```text
+0C6A SF_START_NEW_SCRIPT_FROM_LABEL
+in: scriptLabel, newScriptPtrTo, passedValues
+```
+
+```lua
+sfStartNewScriptFromLabel(scriptLabel, newScriptPtrTo, passedValues)
+```
+
+```js
+SfScript.RunFromLabel(scriptLabel, newScriptPtrTo, passedValues)
+```
+</Opcode>
+
+<Opcode id="0C6B" name="SF_START_NEW_SCRIPT_FROM_POINTER" member="SfScript.RunFromPtr">
+从存放脚本二进制的内存位置（scriptBin）启动新脚本。
+
+```text
+0C6B SF_START_NEW_SCRIPT_FROM_POINTER
+in: scriptBin, newScriptPtrTo, passedValues
+```
+
+```lua
+sfStartNewScriptFromPointer(scriptBin, newScriptPtrTo, passedValues)
+```
+
+```js
+SfScript.RunFromPtr(scriptBin, newScriptPtrTo, passedValues)
+```
+</Opcode>
+
+## 局部变量 / 终止
+
+<Opcode id="0C6C" name="SF_SET_SCRIPT_LOCAL_VARIABLE" member="SfScript.SetLVar">
+设置指定脚本中局部变量的值。
+
+```text
+0C6C SF_SET_SCRIPT_LOCAL_VARIABLE
+in: self, varIndex, value
+```
+
+```lua
+sfSetScriptLocalVariable(self, varIndex, value)
+```
+
+```js
+SfScript.setLVar(self, varIndex, value)
+```
+</Opcode>
+
+<Opcode id="0C6D" name="SF_GET_SCRIPT_LOCAL_VARIABLE" member="SfScript.GetLVar">
+返回指定脚本中局部变量的值。
+
+```text
+0C6D SF_GET_SCRIPT_LOCAL_VARIABLE
+in: self, varIndex
+out: value
+```
+
+```lua
+local value = sfGetScriptLocalVariable(self, varIndex)
+```
+
+```js
+const value = SfScript.getLVar(self, varIndex)
+```
+</Opcode>
+
+<Opcode id="0C6E" name="SF_TERMINATE_SCRIPT" member="SfScript.Terminate">
+终止地址指向的脚本。
+
+```text
+0C6E SF_TERMINATE_SCRIPT
+in: self
+```
+
+```lua
+sfTerminateScript(self)
+```
+
+```js
+SfScript.terminate(self)
+```
+</Opcode>
+
+<Opcode id="0C6F" name="SF_RESTART_SCRIPT" member="SfScript.Restart">
+重启地址指向的脚本。
+
+```text
+0C6F SF_RESTART_SCRIPT
+in: self, passedValues
+```
+
+```lua
+sfRestartScript(self, passedValues)
+```
+
+```js
+SfScript.restart(self, passedValues)
+```
+</Opcode>

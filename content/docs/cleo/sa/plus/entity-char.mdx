@@ -1,0 +1,917 @@
+---
+title: 角色实体 Entity Char
+description: 角色骨骼、任务状态、武器与生命周期
+---
+
+`sa` · 扩展 `CLEO+` · 需 CLEO + CLEO+
+
+角色 / 玩家相关。入口见 [entity](/docs/cleo/sa/plus/entity)。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 骨骼 / 透明度
+
+<Opcode id="0D0B" name="GET_CHAR_BONE_MATRIX" member="Char.GetBoneMatrix">
+取角色骨骼矩阵地址。用在 `if` 里；失败没有有效地址。
+
+```text
+0D0B GET_CHAR_BONE_MATRIX
+in: self, pedBone
+out: matrix
+```
+
+```lua
+local mat = getCharBoneMatrix(ped, bone)
+if mat then
+end
+```
+
+```js
+const matrix = Char.getBoneMatrix(self, pedBone)
+```
+</Opcode>
+
+<Opcode id="0D10" name="SET_CHAR_MODEL_ALPHA" member="Char.SetModelAlpha">
+设角色模型透明度 0–255。
+
+```text
+0D10 SET_CHAR_MODEL_ALPHA
+in: self, alpha
+```
+
+```lua
+setCharModelAlpha(ped, 200)
+```
+
+```js
+Char.setModelAlpha(self, alpha)
+```
+</Opcode>
+
+<Opcode id="0D30" name="GET_CHAR_BONE" member="Char.GetBone">
+取骨骼节点地址。用在 `if` 里。
+
+```text
+0D30 GET_CHAR_BONE
+in: self, pedBone
+out: address
+```
+
+```lua
+local bone = getCharBone(ped, pedBone)
+```
+
+```js
+const address = Char.getBone(self, pedBone)
+```
+</Opcode>
+
+<Opcode id="0D31" name="GET_BONE_OFFSET_VECTOR" member="Char.GetBoneOffsetVector">
+骨骼偏移向量指针。
+
+```text
+0D31 GET_BONE_OFFSET_VECTOR
+in: pedBone
+out: offsetVector
+```
+
+```lua
+local v = getBoneOffsetVector(pedBone)
+```
+
+```js
+const offsetVector = Char.getBoneOffsetVector(pedBone)
+```
+</Opcode>
+
+<Opcode id="0D32" name="GET_BONE_QUAT" member="Char.GetBoneQuat">
+骨骼四元数指针（配合 `GET_CHAR_BONE`）。
+
+```text
+0D32 GET_BONE_QUAT
+in: bone
+out: quat
+```
+
+```lua
+local q = getBoneQuat(boneAddr)
+```
+
+```js
+const quat = Char.getBoneQuat(bone)
+```
+</Opcode>
+
+## 生命 / 控制 / 扩展变量
+
+<Opcode id="0D39" name="GET_CHAR_MAX_HEALTH" member="Char.GetMaxHealth">
+取角色最大生命。
+
+```text
+0D39 GET_CHAR_MAX_HEALTH
+in: self
+out: maxHealth
+```
+
+```lua
+local maxHp = getCharMaxHealth(ped)
+```
+
+```js
+const maxHealth = Char.getMaxHealth(self)
+```
+</Opcode>
+
+<Opcode id="0E0A" name="IS_CHAR_SCRIPT_CONTROLLED" member="Char.IsScriptControlled">
+角色是否脚本控制。用在 `if` 里。
+
+```text
+0E0A IS_CHAR_SCRIPT_CONTROLLED
+in: self
+```
+
+```lua
+if isCharScriptControlled(ped) then
+end
+```
+
+```js
+if (Char.isScriptControlled(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0E0B" name="MARK_CHAR_AS_NEEDED" member="Char.MarkAsNeeded">
+标记角色为脚本控制，避免被清理。
+
+```text
+0E0B MARK_CHAR_AS_NEEDED
+in: self
+```
+
+```lua
+markCharAsNeeded(ped)
+```
+
+```js
+Char.markAsNeeded(self)
+```
+</Opcode>
+
+<Opcode id="0E14" name="INIT_EXTENDED_CHAR_VARS" member="Char.InitExtendedVars">
+给角色挂扩展变量槽。`identifier` 可用 `"AUTO"`（按脚本指针唯一）。用在 `if` 里。
+
+```text
+0E14 INIT_EXTENDED_CHAR_VARS
+in: self, identifier, totalVars
+```
+
+```lua
+if initExtendedCharVars(ped, "AUTO", 8) then
+end
+```
+
+```js
+Char.initExtendedVars(self, identifier, totalVars)
+```
+</Opcode>
+
+<Opcode id="0E15" name="SET_EXTENDED_CHAR_VAR" member="Char.SetExtendedVar">
+写角色扩展变量；需先 `0E14`。用在 `if` 里。
+
+```text
+0E15 SET_EXTENDED_CHAR_VAR
+in: self, identifier, varNumber, value
+```
+
+```lua
+setExtendedCharVar(ped, "AUTO", 0, 1)
+```
+
+```js
+Char.setExtendedVar(self, identifier, varNumber, value)
+```
+</Opcode>
+
+<Opcode id="0E16" name="GET_EXTENDED_CHAR_VAR" member="Char.GetExtendedVar">
+读角色扩展变量；未初始化则失败。用在 `if` 里。
+
+```text
+0E16 GET_EXTENDED_CHAR_VAR
+in: self, identifier, varNumber
+out: value
+```
+
+```lua
+local v = getExtendedCharVar(ped, "AUTO", 0)
+```
+
+```js
+const value = Char.getExtendedVar(self, identifier, varNumber)
+```
+</Opcode>
+
+## 贴地 / 坐标 / 任务
+
+<Opcode id="0E24" name="FIX_CHAR_GROUND_BRIGHTNESS_AND_FADE_IN" member="Char.FixGroundBrightnessAndFadeIn">
+修正角色贴地/亮度，可选淡入。
+
+```text
+0E24 FIX_CHAR_GROUND_BRIGHTNESS_AND_FADE_IN
+in: self, fixGround, fixBrightness, fadeIn
+```
+
+```lua
+fixCharGroundBrightnessAndFadeIn(ped, true, true, true)
+```
+
+```js
+Char.fixGroundBrightnessAndFadeIn(self, fixGround, fixBrightness, fadeIn)
+```
+</Opcode>
+
+<Opcode id="0E32" name="SET_CHAR_COORDINATES_SIMPLE" member="Char.SetCoordinatesSimple">
+直接写角色坐标，不做常规传送那套异常处理。
+
+```text
+0E32 SET_CHAR_COORDINATES_SIMPLE
+in: self, x, y, z
+```
+
+```lua
+setCharCoordinatesSimple(ped, x, y, z)
+```
+
+```js
+Char.setCoordinatesSimple(self, x, y, z)
+```
+</Opcode>
+
+<Opcode id="0E42" name="IS_CHAR_DOING_TASK_ID" member="Char.IsDoingTaskId">
+角色是否在执行指定 taskId。用在 `if` 里。
+
+```text
+0E42 IS_CHAR_DOING_TASK_ID
+in: self, taskId
+```
+
+```lua
+if isCharDoingTaskId(ped, taskId) then
+end
+```
+
+```js
+if (Char.isDoingTaskId(self, taskId)) {
+}
+```
+</Opcode>
+
+<Opcode id="0E43" name="GET_CHAR_TASK_POINTER_BY_ID" member="Char.GetTaskPointerById">
+按 taskId 取任务结构地址。用在 `if` 里。
+
+```text
+0E43 GET_CHAR_TASK_POINTER_BY_ID
+in: self, taskId
+out: address
+```
+
+```lua
+local addr = getCharTaskPointerById(ped, taskId)
+```
+
+```js
+const address = Char.getTaskPointerById(self, taskId)
+```
+</Opcode>
+
+<Opcode id="0E44" name="GET_CHAR_KILL_TARGET_CHAR" member="Char.GetKillTargetChar">
+取角色当前击杀目标句柄。用在 `if` 里。
+
+```text
+0E44 GET_CHAR_KILL_TARGET_CHAR
+in: self
+out: killTarget
+```
+
+```lua
+local target = getCharKillTargetChar(ped)
+```
+
+```js
+const killTarget = Char.getKillTargetChar(self)
+```
+</Opcode>
+
+## 行为状态
+
+<Opcode id="0E46" name="IS_CHAR_USING_GUN" member="Char.IsUsingGun">
+是否在用枪。用在 `if` 里。
+
+```text
+0E46 IS_CHAR_USING_GUN
+in: self
+```
+
+```lua
+if isCharUsingGun(ped) then
+end
+```
+
+```js
+if (Char.isUsingGun(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0E47" name="IS_CHAR_FIGHTING" member="Char.IsFighting">
+是否在肉搏。用在 `if` 里。
+
+```text
+0E47 IS_CHAR_FIGHTING
+in: self
+```
+
+```lua
+if isCharFighting(ped) then
+end
+```
+
+```js
+if (Char.isFighting(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0E48" name="IS_CHAR_FALLEN_ON_GROUND" member="Char.IsFallenOnGround">
+是否倒地。用在 `if` 里。
+
+```text
+0E48 IS_CHAR_FALLEN_ON_GROUND
+in: self
+```
+
+```lua
+if isCharFallenOnGround(ped) then
+end
+```
+
+```js
+if (Char.isFallenOnGround(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0E49" name="IS_CHAR_ENTERING_ANY_CAR" member="Char.IsEnteringAnyCar">
+是否在上车过程中。用在 `if` 里。
+
+```text
+0E49 IS_CHAR_ENTERING_ANY_CAR
+in: self
+```
+
+```lua
+if isCharEnteringAnyCar(ped) then
+end
+```
+
+```js
+if (Char.isEnteringAnyCar(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0E4A" name="IS_CHAR_EXITING_ANY_CAR" member="Char.IsExitingAnyCar">
+是否在下车过程中。用在 `if` 里。
+
+```text
+0E4A IS_CHAR_EXITING_ANY_CAR
+in: self
+```
+
+```lua
+if isCharExitingAnyCar(ped) then
+end
+```
+
+```js
+if (Char.isExitingAnyCar(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0E4B" name="IS_CHAR_PLAYING_ANY_SCRIPT_ANIMATION" member="Char.IsPlayingAnyScriptAnimation">
+是否在播脚本动画；`includeAnims` 控制范围。用在 `if` 里。
+
+```text
+0E4B IS_CHAR_PLAYING_ANY_SCRIPT_ANIMATION
+in: self, includeAnims
+```
+
+```lua
+if isCharPlayingAnyScriptAnimation(ped, true) then
+end
+```
+
+```js
+if (Char.isPlayingAnyScriptAnimation(self, includeAnims)) {
+}
+```
+</Opcode>
+
+<Opcode id="0E4C" name="IS_CHAR_DOING_ANY_IMPORTANT_TASK" member="Char.IsDoingAnyImportantTask">
+是否在做重要任务；`includeAnims` 是否算动画。用在 `if` 里。
+
+```text
+0E4C IS_CHAR_DOING_ANY_IMPORTANT_TASK
+in: self, includeAnims
+```
+
+```lua
+if isCharDoingAnyImportantTask(ped, true) then
+end
+```
+
+```js
+if (Char.isDoingAnyImportantTask(self, includeAnims)) {
+}
+```
+</Opcode>
+
+## 生命 / 武器 / 碰撞
+
+<Opcode id="0E5C" name="GET_CHAR_HEALTH_PERCENT" member="Char.GetHealthPercent">
+取生命百分比（浮点）。
+
+```text
+0E5C GET_CHAR_HEALTH_PERCENT
+in: self
+out: healthPercent
+```
+
+```lua
+local hp = getCharHealthPercent(ped)
+```
+
+```js
+const healthPercent = Char.getHealthPercent(self)
+```
+</Opcode>
+
+<Opcode id="0E83" name="GET_CURRENT_CHAR_WEAPONINFO" member="Char.GetCurrentWeaponinfo">
+取角色当前武器的 WeaponInfo。用在 `if` 里。
+
+```text
+0E83 GET_CURRENT_CHAR_WEAPONINFO
+in: self
+out: handle
+```
+
+```lua
+local wi = getCurrentCharWeaponinfo(ped)
+```
+
+```js
+const handle = Char.getCurrentWeaponinfo(self)
+```
+</Opcode>
+
+<Opcode id="0E8B" name="GET_CHAR_WEAPON_STATE" member="Char.GetWeaponState">
+取当前武器状态。
+
+```text
+0E8B GET_CHAR_WEAPON_STATE
+in: self
+out: weaponState
+```
+
+```lua
+local st = getCharWeaponState(ped)
+```
+
+```js
+const weaponState = Char.getWeaponState(self)
+```
+</Opcode>
+
+<Opcode id="0E8C" name="GET_CHAR_WEAPON_CLIP" member="Char.GetCharWeaponClip">
+取当前弹匣余弹。
+
+```text
+0E8C GET_CHAR_WEAPON_CLIP
+in: self
+out: weaponClip
+```
+
+```lua
+local clip = getCharWeaponClip(ped)
+```
+
+```js
+const weaponClip = Char.getCharWeaponClip(self)
+```
+</Opcode>
+
+<Opcode id="0E8E" name="GET_CHAR_COLLISION_SURFACE" member="Char.GetCollisionSurface">
+取角色碰撞表面类型。
+
+```text
+0E8E GET_CHAR_COLLISION_SURFACE
+in: self
+out: surfaceType
+```
+
+```lua
+local surf = getCharCollisionSurface(ped)
+```
+
+```js
+const surfaceType = Char.getCollisionSurface(self)
+```
+</Opcode>
+
+<Opcode id="0E8F" name="GET_CHAR_COLLISION_LIGHTING" member="Char.GetCollisionLighting">
+取角色碰撞处光照。
+
+```text
+0E8F GET_CHAR_COLLISION_LIGHTING
+in: self
+out: lighting
+```
+
+```lua
+local light = getCharCollisionLighting(ped)
+```
+
+```js
+const lighting = Char.getCollisionLighting(self)
+```
+</Opcode>
+
+## 空中 / 任务清理 / 二号玩家
+
+<Opcode id="0E92" name="IS_CHAR_REALLY_IN_AIR" member="Char.IsReallyInAir">
+是否真在空中（含降落伞/喷气背包）。用在 `if` 里。
+
+```text
+0E92 IS_CHAR_REALLY_IN_AIR
+in: self
+```
+
+```lua
+if isCharReallyInAir(ped) then
+end
+```
+
+```js
+if (Char.isReallyInAir(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0E96" name="CLEAR_CHAR_PRIMARY_TASKS" member="Char.ClearPrimaryTasks">
+清主任务。
+
+```text
+0E96 CLEAR_CHAR_PRIMARY_TASKS
+in: self
+```
+
+```lua
+clearCharPrimaryTasks(ped)
+```
+
+```js
+Char.clearPrimaryTasks(self)
+```
+</Opcode>
+
+<Opcode id="0E97" name="CLEAR_CHAR_SECONDARY_TASKS" member="Char.ClearSecondaryTasks">
+清次任务。
+
+```text
+0E97 CLEAR_CHAR_SECONDARY_TASKS
+in: self
+```
+
+```lua
+clearCharSecondaryTasks(ped)
+```
+
+```js
+Char.clearSecondaryTasks(self)
+```
+</Opcode>
+
+<Opcode id="0EA0" name="SET_CHAR_SECOND_PLAYER" member="Char.SetSecondPlayer">
+把角色设为二号玩家控制；可选镜头与分车。
+
+```text
+0EA0 SET_CHAR_SECOND_PLAYER
+in: self, enableCamera, separateCars
+```
+
+```lua
+setCharSecondPlayer(ped, true, true)
+```
+
+```js
+Char.setSecondPlayer(self, enableCamera, separateCars)
+```
+</Opcode>
+
+## 着火 / 警察 / 逮捕
+
+<Opcode id="0EA4" name="IS_CHAR_ON_FIRE" member="Char.IsOnFire">
+是否着火。用在 `if` 里。
+
+```text
+0EA4 IS_CHAR_ON_FIRE
+in: self
+```
+
+```lua
+if isCharOnFire(ped) then
+end
+```
+
+```js
+if (Char.isOnFire(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0EA5" name="GET_CLOSEST_COP_NEAR_CHAR" member="Char.GetClosestCop">
+取角色附近最近警察。用在 `if` 里。
+
+```text
+0EA5 GET_CLOSEST_COP_NEAR_CHAR
+in: self, radius, alive, inCar, onFoot, seenInFront
+out: closestCop
+```
+
+```lua
+local cop = getClosestCopNearChar(ped, 30.0, true, true, true, false)
+```
+
+```js
+const closestCop = Char.getClosestCop(self, radius, alive, inCar, onFoot, seenInFront)
+```
+</Opcode>
+
+<Opcode id="0EAA" name="SET_CHAR_ARRESTED" member="Char.SetArrested">
+把 pedState 设为被逮捕。
+
+```text
+0EAA SET_CHAR_ARRESTED
+in: self
+```
+
+```lua
+setCharArrested(ped)
+```
+
+```js
+Char.setArrested(self)
+```
+</Opcode>
+
+<Opcode id="0EAB" name="GET_CHAR_PEDSTATE" member="Char.GetPedState">
+取 pedState。
+
+```text
+0EAB GET_CHAR_PEDSTATE
+in: self
+out: pedState
+```
+
+```lua
+local st = getCharPedstate(ped)
+```
+
+```js
+const pedState = Char.getPedState(self)
+```
+</Opcode>
+
+## 抗性 / 武器可见 / 统计
+
+<Opcode id="0EAC" name="GET_CHAR_PROOFS" member="Char.GetProofs">
+取角色伤害抗性：子弹/火/爆/撞/近战。
+
+```text
+0EAC GET_CHAR_PROOFS
+in: self
+out: bullet, fire, explosion, collision, melee
+```
+
+```lua
+local b, f, e, c, m = getCharProofs(ped)
+```
+
+```js
+const { bullet, fire, explosion, collision, melee } = Char.getProofs(self)
+```
+</Opcode>
+
+<Opcode id="0EAF" name="IS_CHAR_WEAPON_VISIBLE_SET" member="Char.IsWeaponVisibleSet">
+武器可见标志是否打开。用在 `if` 里。
+
+```text
+0EAF IS_CHAR_WEAPON_VISIBLE_SET
+in: self
+```
+
+```lua
+if isCharWeaponVisibleSet(ped) then
+end
+```
+
+```js
+if (Char.isWeaponVisibleSet(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0EB1" name="GET_CHAR_STAT_ID" member="Char.GetStatId">
+取 pedStat id（`data/pedstats.dat`）。
+
+```text
+0EB1 GET_CHAR_STAT_ID
+in: self
+out: pedStat
+```
+
+```lua
+local stat = getCharStatId(ped)
+```
+
+```js
+const pedStat = Char.getStatId(self)
+```
+</Opcode>
+
+<Opcode id="0EB5" name="GET_CHAR_DAMAGE_LAST_FRAME" member="Char.GetDamageLastFrame">
+上一帧伤害：来源角色、武器、部位、强度。用在 `if` 里。
+
+```text
+0EB5 GET_CHAR_DAMAGE_LAST_FRAME
+in: self
+out: entity, weaponType, bodyPart, intensity
+```
+
+```lua
+local ent, weap, part, inten = getCharDamageLastFrame(ped)
+```
+
+```js
+const { entity, weaponType, bodyPart, intensity } = Char.getDamageLastFrame(self)
+```
+</Opcode>
+
+## 生命周期 / 移动
+
+<Opcode id="0EC8" name="GET_CHAR_RANDOM_SEED" member="Char.GetRandomSeed">
+取角色 randomSeed。
+
+```text
+0EC8 GET_CHAR_RANDOM_SEED
+in: self
+out: randomSeed
+```
+
+```lua
+local seed = getCharRandomSeed(ped)
+```
+
+```js
+const randomSeed = Char.getRandomSeed(self)
+```
+</Opcode>
+
+<Opcode id="0ECB" name="GET_CHAR_MOVE_STATE" member="Char.GetMoveState">
+取角色移动状态。
+
+```text
+0ECB GET_CHAR_MOVE_STATE
+in: self
+out: moveState
+```
+
+```lua
+local ms = getCharMoveState(ped)
+```
+
+```js
+const moveState = Char.getMoveState(self)
+```
+</Opcode>
+
+<Opcode id="0ECC" name="DONT_DELETE_CHAR_UNTIL_TIME" member="Char.DontDeleteUntilTime">
+在 `msFromNow` 毫秒内不删角色。
+
+```text
+0ECC DONT_DELETE_CHAR_UNTIL_TIME
+in: self, msFromNow
+```
+
+```lua
+dontDeleteCharUntilTime(ped, 5000)
+```
+
+```js
+Char.dontDeleteUntilTime(self, msFromNow)
+```
+</Opcode>
+
+<Opcode id="0ECE" name="GET_TIME_CHAR_IS_DEAD" member="Char.GetTimeIsDead">
+角色死亡已过多久（ms）。
+
+```text
+0ECE GET_TIME_CHAR_IS_DEAD
+in: self
+out: timeIsDead
+```
+
+```lua
+local t = getTimeCharIsDead(ped)
+```
+
+```js
+const timeIsDead = Char.getTimeIsDead(self)
+```
+</Opcode>
+
+<Opcode id="0ED9" name="SET_CHAR_IGNORE_DAMAGE_ANIMS" member="Char.SetIgnoreDamageAnims">
+是否忽略受击动画。
+
+```text
+0ED9 SET_CHAR_IGNORE_DAMAGE_ANIMS
+in: self, state
+```
+
+```lua
+setCharIgnoreDamageAnims(ped, true)
+```
+
+```js
+Char.setIgnoreDamageAnims(self, state)
+```
+</Opcode>
+
+## fear / 任务 / special 挂件
+
+<Opcode id="0EFA" name="GET_CHAR_FEAR" member="Char.GetFear">
+取角色 fear（pedstats）。
+
+```text
+0EFA GET_CHAR_FEAR
+in: self
+out: fear
+```
+
+```lua
+local fear = getCharFear(ped)
+```
+
+```js
+const fear = Char.getFear(self)
+```
+</Opcode>
+
+<Opcode id="0EFF" name="GET_CHAR_SIMPLEST_ACTIVE_TASK" member="Char.GetSimplestActiveTask">
+取最简活动任务 taskId 与任务地址。用在 `if` 里。
+
+```text
+0EFF GET_CHAR_SIMPLEST_ACTIVE_TASK
+in: self
+out: taskId, address
+```
+
+```lua
+local taskId, addr = getCharSimplestActiveTask(ped)
+```
+
+```js
+const { taskId, address } = Char.getSimplestActiveTask(self)
+```
+</Opcode>
+
+<Opcode id="0F02" name="CREATE_RENDER_OBJECT_TO_CHAR_BONE_FROM_SPECIAL" member="Char.CreateRenderObjectToCharBoneFromSpecial">
+用 specialModel 挂到角色骨骼（相对 `0E2E`）。
+
+```text
+0F02 CREATE_RENDER_OBJECT_TO_CHAR_BONE_FROM_SPECIAL
+in: self, specialModel, pedBone, x, y, z, rx, ry, rz
+out: renderobject
+```
+
+```lua
+local ro = createRenderObjectToCharBoneFromSpecial(
+  ped, specialModel, bone, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+)
+```
+
+```js
+const renderobject = Char.createRenderObjectToCharBoneFromSpecial(
+  self, specialModel, pedBone, x, y, z, rx, ry, rz
+)
+```
+</Opcode>

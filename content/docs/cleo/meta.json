@@ -1,0 +1,13 @@
+{
+  "title": "CLEO",
+  "root": true,
+  "icon": "Terminal",
+  "pages": [
+    "index",
+    "syntax",
+    "syntax-redux",
+    "sa",
+    "vc",
+    "gta3"
+  ]
+}

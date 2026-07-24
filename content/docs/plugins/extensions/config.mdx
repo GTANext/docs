@@ -1,0 +1,73 @@
+---
+title: 配置 config_file
+description: 读写插件 ini
+---
+
+`Config.h`
+
+## 打开 ini
+
+<Api name="config_file">
+`usePluginName=true` 时使用与 ASI 同名的 ini。写完后记得 `save()`。
+
+```cpp
+config_file();
+config_file(std::string fileName);
+config_file(bool usePluginName, bool writeOnly);
+void open(std::string fileName);
+config_parameter& operator[](std::string name);
+void save();
+void setUseEqualitySign(bool enable);
+void setUseAlignment(bool enable);
+```
+
+```cpp
+#include "extensions/Config.h"
+#include "extensions/Paths.h"
+
+plugin::config_file cfg(PLUGIN_PATH("mod.ini"));
+bool god = cfg["God"].asBool(false);
+cfg["God"] = true;
+cfg.setUseEqualitySign(true);
+cfg.save();
+```
+</Api>
+
+## 读配置项
+
+<Api name="asFloat / asInt / asString / asBool …">
+数组在文件中用空格分隔。
+
+```cpp
+float asFloat(float defaultVal);
+unsigned int asInt(int defaultVal);
+std::string asString(std::string defaultVal);
+bool asBool(bool defaultVal);
+std::vector<int> asIntArray();
+CRGBA asRGBA(CRGBA defaultVal);
+// asRect asVec2d asVec3d asFloatArray asBoolArray isEmpty
+```
+
+```cpp
+float s = cfg["Sprint"].asFloat(1.0f);
+int key = static_cast<int>(cfg["Hotkey"].asInt('G'));
+auto slots = cfg["Slots"].asIntArray();
+```
+</Api>
+
+## 写配置项
+
+赋值后调用 `save()` 落盘。
+
+```cpp
+config_parameter& operator=(float n);
+config_parameter& operator=(int n);
+config_parameter& operator=(std::string s);
+config_parameter& operator=(bool v);
+```
+
+```cpp
+cfg["God"] = false;
+cfg["Sprint"] = 1.0f;
+cfg.save();
+```

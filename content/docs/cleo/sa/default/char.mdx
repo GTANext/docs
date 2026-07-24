@@ -1,0 +1,4836 @@
+---
+title: 角色 Char
+description: 角色创建 / 位置 / 载具 / 状态 / 武器
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 252 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 创建角色
+
+<Opcode id="009A" name="CREATE_CHAR" member="Char.Create">
+在指定位置创建角色，使用给定模型与 pedtype。
+
+```text
+009A CREATE_CHAR
+in: pedType, modelId, x, y, z
+out: handle
+```
+
+```lua
+local handle = createChar(pedType, modelId, x, y, z)
+```
+
+```js
+Char.create(pedType, modelId, x, y, z)
+```
+</Opcode>
+
+## 删除角色
+
+<Opcode id="009B" name="DELETE_CHAR" member="Char.Delete">
+从游戏和任务清理列表移除角色并释放内存。
+
+```text
+009B DELETE_CHAR
+in: self
+```
+
+```lua
+deleteChar(self)
+```
+
+```js
+Char.delete(self)
+```
+</Opcode>
+
+## 取坐标
+
+<Opcode id="00A0" name="GET_CHAR_COORDINATES" member="Char.GetCoordinates">
+返回角色坐标。
+
+```text
+00A0 GET_CHAR_COORDINATES
+in: self
+out: x, y, z
+```
+
+```lua
+local x, y, z = getCharCoordinates(self)
+```
+
+```js
+Char.getCoordinates(self)
+```
+</Opcode>
+
+## 设坐标
+
+<Opcode id="00A1" name="SET_CHAR_COORDINATES" member="Char.SetCoordinates">
+把角色放到指定位置。
+
+```text
+00A1 SET_CHAR_COORDINATES
+in: self, x, y, z
+```
+
+```lua
+setCharCoordinates(self, x, y, z)
+```
+
+```js
+Char.setCoordinates(self, x, y, z)
+```
+</Opcode>
+
+## 是否在 2D 区域
+
+<Opcode id="00A3" name="IS_CHAR_IN_AREA_2D" member="Char.IsInArea2D">
+用在 if：角色是否在指定 2D 区域内。
+
+```text
+00A3 IS_CHAR_IN_AREA_2D
+in: self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere
+```
+
+```lua
+isCharInArea2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere)
+```
+
+```js
+Char.isInArea2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere)
+```
+</Opcode>
+
+## 是否在 3D 区域
+
+<Opcode id="00A4" name="IS_CHAR_IN_AREA_3D" member="Char.IsInArea3D">
+用在 if：角色是否在指定 3D 区域内。
+
+```text
+00A4 IS_CHAR_IN_AREA_3D
+in: self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere
+```
+
+```lua
+isCharInArea3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere)
+```
+
+```js
+Char.isInArea3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere)
+```
+</Opcode>
+
+## 存当前车辆
+
+<Opcode id="00D9" name="STORE_CAR_CHAR_IS_IN" member="Char.StoreCarIsIn">
+返回角色当前车辆并加入任务清理列表（另见 03C0、0811、0484）。
+
+```text
+00D9 STORE_CAR_CHAR_IS_IN
+in: self
+out: handle
+```
+
+```lua
+local handle = storeCarCharIsIn(self)
+```
+
+```js
+Char.storeCarIsIn(self)
+```
+</Opcode>
+
+## 是否在指定车
+
+<Opcode id="00DB" name="IS_CHAR_IN_CAR" member="Char.IsInCar">
+用在 if：角色是否在指定车辆中。
+
+```text
+00DB IS_CHAR_IN_CAR
+in: self, vehicle
+```
+
+```lua
+isCharInCar(self, vehicle)
+```
+
+```js
+Char.isInCar(self, vehicle)
+```
+</Opcode>
+
+## 是否在指定车型
+
+<Opcode id="00DD" name="IS_CHAR_IN_MODEL" member="Char.IsInModel">
+用在 if：角色是否驾驶指定模型车辆。
+
+```text
+00DD IS_CHAR_IN_MODEL
+in: self, modelId
+```
+
+```lua
+isCharInModel(self, modelId)
+```
+
+```js
+Char.isInModel(self, modelId)
+```
+</Opcode>
+
+## 是否在任意车
+
+<Opcode id="00DF" name="IS_CHAR_IN_ANY_CAR" member="Char.IsInAnyCar">
+用在 if：角色是否拥有车辆（含开关门过程，未必已坐稳）。
+
+```text
+00DF IS_CHAR_IN_ANY_CAR
+in: self
+```
+
+```lua
+isCharInAnyCar(self)
+```
+
+```js
+Char.isInAnyCar(self)
+```
+</Opcode>
+
+## 任意方式在 2D 点
+
+<Opcode id="00EC" name="LOCATE_CHAR_ANY_MEANS_2D" member="Char.LocateAnyMeans2D">
+用在 if：角色是否在坐标点 2D 半径内。
+
+```text
+00EC LOCATE_CHAR_ANY_MEANS_2D
+in: self, x, y, xRadius, yRadius, drawSphere
+```
+
+```lua
+locateCharAnyMeans2D(self, x, y, xRadius, yRadius, drawSphere)
+```
+
+```js
+Char.locateAnyMeans2D(self, x, y, xRadius, yRadius, drawSphere)
+```
+</Opcode>
+
+## 徒步在 2D 点
+
+<Opcode id="00ED" name="LOCATE_CHAR_ON_FOOT_2D" member="Char.LocateOnFoot2D">
+用在 if：角色是否徒步在坐标点 2D 半径内。
+
+```text
+00ED LOCATE_CHAR_ON_FOOT_2D
+in: self, x, y, xRadius, yRadius, drawSphere
+```
+
+```lua
+locateCharOnFoot2D(self, x, y, xRadius, yRadius, drawSphere)
+```
+
+```js
+Char.locateOnFoot2D(self, x, y, xRadius, yRadius, drawSphere)
+```
+</Opcode>
+
+## 车内在 2D 点
+
+<Opcode id="00EE" name="LOCATE_CHAR_IN_CAR_2D" member="Char.LocateInCar2D">
+用在 if：角色是否在车内且位于坐标点 2D 半径内。
+
+```text
+00EE LOCATE_CHAR_IN_CAR_2D
+in: self, x, y, xRadius, yRadius, drawSphere
+```
+
+```lua
+locateCharInCar2D(self, x, y, xRadius, yRadius, drawSphere)
+```
+
+```js
+Char.locateInCar2D(self, x, y, xRadius, yRadius, drawSphere)
+```
+</Opcode>
+
+## 停下任意 2D
+
+<Opcode id="00EF" name="LOCATE_STOPPED_CHAR_ANY_MEANS_2D" member="Char.LocateStoppedAnyMeans2D">
+用在 if：角色是否已停在坐标点 2D 半径内。
+
+```text
+00EF LOCATE_STOPPED_CHAR_ANY_MEANS_2D
+in: self, x, y, xRadius, yRadius, drawSphere
+```
+
+```lua
+locateStoppedCharAnyMeans2D(self, x, y, xRadius, yRadius, drawSphere)
+```
+
+```js
+Char.locateStoppedAnyMeans2D(self, x, y, xRadius, yRadius, drawSphere)
+```
+</Opcode>
+
+## 停下徒步 2D
+
+<Opcode id="00F0" name="LOCATE_STOPPED_CHAR_ON_FOOT_2D" member="Char.LocateStoppedOnFoot2D">
+用在 if：角色是否徒步停在坐标点 2D 半径内。
+
+```text
+00F0 LOCATE_STOPPED_CHAR_ON_FOOT_2D
+in: self, x, y, xRadius, yRadius, drawSphere
+```
+
+```lua
+locateStoppedCharOnFoot2D(self, x, y, xRadius, yRadius, drawSphere)
+```
+
+```js
+Char.locateStoppedOnFoot2D(self, x, y, xRadius, yRadius, drawSphere)
+```
+</Opcode>
+
+## 停下车内 2D
+
+<Opcode id="00F1" name="LOCATE_STOPPED_CHAR_IN_CAR_2D" member="Char.LocateStoppedInCar2D">
+用在 if：角色是否在车内停在坐标点 2D 半径内。
+
+```text
+00F1 LOCATE_STOPPED_CHAR_IN_CAR_2D
+in: self, x, y, xRadius, yRadius, drawSphere
+```
+
+```lua
+locateStoppedCharInCar2D(self, x, y, xRadius, yRadius, drawSphere)
+```
+
+```js
+Char.locateStoppedInCar2D(self, x, y, xRadius, yRadius, drawSphere)
+```
+</Opcode>
+
+## 相对角色任意 2D
+
+<Opcode id="00F2" name="LOCATE_CHAR_ANY_MEANS_CHAR_2D" member="Char.LocateAnyMeansChar2D">
+用在 if：角色是否在另一角色 2D 半径内。
+
+```text
+00F2 LOCATE_CHAR_ANY_MEANS_CHAR_2D
+in: self, target, xRadius, yRadius, drawSphere
+```
+
+```lua
+locateCharAnyMeansChar2D(self, target, xRadius, yRadius, drawSphere)
+```
+
+```js
+Char.locateAnyMeansChar2D(self, target, xRadius, yRadius, drawSphere)
+```
+</Opcode>
+
+## 相对角色徒步 2D
+
+<Opcode id="00F3" name="LOCATE_CHAR_ON_FOOT_CHAR_2D" member="Char.LocateOnFootChar2D">
+用在 if：角色是否徒步在另一角色 2D 半径内。
+
+```text
+00F3 LOCATE_CHAR_ON_FOOT_CHAR_2D
+in: self, target, xRadius, yRadius, drawSphere
+```
+
+```lua
+locateCharOnFootChar2D(self, target, xRadius, yRadius, drawSphere)
+```
+
+```js
+Char.locateOnFootChar2D(self, target, xRadius, yRadius, drawSphere)
+```
+</Opcode>
+
+## 相对角色车内 2D
+
+<Opcode id="00F4" name="LOCATE_CHAR_IN_CAR_CHAR_2D" member="Char.LocateInCarChar2D">
+用在 if：角色是否在车内且位于另一角色 2D 半径内。
+
+```text
+00F4 LOCATE_CHAR_IN_CAR_CHAR_2D
+in: self, otherChar, xRadius, yRadius, drawSphere
+```
+
+```lua
+locateCharInCarChar2D(self, otherChar, xRadius, yRadius, drawSphere)
+```
+
+```js
+Char.locateInCarChar2D(self, otherChar, xRadius, yRadius, drawSphere)
+```
+</Opcode>
+
+## 任意方式在 3D 点
+
+<Opcode id="00FE" name="LOCATE_CHAR_ANY_MEANS_3D" member="Char.LocateAnyMeans3D">
+用在 if：角色是否在坐标点 3D 半径内。
+
+```text
+00FE LOCATE_CHAR_ANY_MEANS_3D
+in: self, x, y, z, xRadius, yRadius, zRadius, drawSphere
+```
+
+```lua
+locateCharAnyMeans3D(self, x, y, z, xRadius, yRadius, zRadius, drawSphere)
+```
+
+```js
+Char.locateAnyMeans3D(self, x, y, z, xRadius, yRadius, zRadius, drawSphere)
+```
+</Opcode>
+
+## 徒步在 3D 点
+
+<Opcode id="00FF" name="LOCATE_CHAR_ON_FOOT_3D" member="Char.LocateOnFoot3D">
+用在 if：角色是否徒步在坐标点 3D 半径内。
+
+```text
+00FF LOCATE_CHAR_ON_FOOT_3D
+in: self, x, y, z, xRadius, yRadius, zRadius, drawSphere
+```
+
+```lua
+locateCharOnFoot3D(self, x, y, z, xRadius, yRadius, zRadius, drawSphere)
+```
+
+```js
+Char.locateOnFoot3D(self, x, y, z, xRadius, yRadius, zRadius, drawSphere)
+```
+</Opcode>
+
+## 车内在 3D 点
+
+<Opcode id="0100" name="LOCATE_CHAR_IN_CAR_3D" member="Char.LocateInCar3D">
+用在 if：角色是否在车内且位于坐标点 3D 半径内。
+
+```text
+0100 LOCATE_CHAR_IN_CAR_3D
+in: self, x, y, z, xRadius, yRadius, zRadius, drawSphere
+```
+
+```lua
+locateCharInCar3D(self, x, y, z, xRadius, yRadius, zRadius, drawSphere)
+```
+
+```js
+Char.locateInCar3D(self, x, y, z, xRadius, yRadius, zRadius, drawSphere)
+```
+</Opcode>
+
+## 停下任意 3D
+
+<Opcode id="0101" name="LOCATE_STOPPED_CHAR_ANY_MEANS_3D" member="Char.LocateStoppedAnyMeans3D">
+用在 if：角色是否已停在坐标点 3D 半径内。
+
+```text
+0101 LOCATE_STOPPED_CHAR_ANY_MEANS_3D
+in: self, x, y, z, xRadius, yRadius, zRadius, drawSphere
+```
+
+```lua
+locateStoppedCharAnyMeans3D(self, x, y, z, xRadius, yRadius, zRadius, drawSphere)
+```
+
+```js
+Char.locateStoppedAnyMeans3D(self, x, y, z, xRadius, yRadius, zRadius, drawSphere)
+```
+</Opcode>
+
+## 停下徒步 3D
+
+<Opcode id="0102" name="LOCATE_STOPPED_CHAR_ON_FOOT_3D" member="Char.LocateStoppedOnFoot3D">
+用在 if：角色是否徒步停在坐标点 3D 半径内。
+
+```text
+0102 LOCATE_STOPPED_CHAR_ON_FOOT_3D
+in: self, x, y, z, xRadius, yRadius, zRadius, drawSphere
+```
+
+```lua
+locateStoppedCharOnFoot3D(self, x, y, z, xRadius, yRadius, zRadius, drawSphere)
+```
+
+```js
+Char.locateStoppedOnFoot3D(self, x, y, z, xRadius, yRadius, zRadius, drawSphere)
+```
+</Opcode>
+
+## 停下车内 3D
+
+<Opcode id="0103" name="LOCATE_STOPPED_CHAR_IN_CAR_3D" member="Char.LocateStoppedInCar3D">
+用在 if：角色是否在车内停在坐标点 3D 半径内。
+
+```text
+0103 LOCATE_STOPPED_CHAR_IN_CAR_3D
+in: self, x, y, z, xRadius, yRadius, zRadius, drawSphere
+```
+
+```lua
+locateStoppedCharInCar3D(self, x, y, z, xRadius, yRadius, zRadius, drawSphere)
+```
+
+```js
+Char.locateStoppedInCar3D(self, x, y, z, xRadius, yRadius, zRadius, drawSphere)
+```
+</Opcode>
+
+## 相对角色任意 3D
+
+<Opcode id="0104" name="LOCATE_CHAR_ANY_MEANS_CHAR_3D" member="Char.LocateAnyMeansChar3D">
+用在 if：角色是否在另一角色 3D 半径内。
+
+```text
+0104 LOCATE_CHAR_ANY_MEANS_CHAR_3D
+in: self, target, xRadius, yRadius, zRadius, drawSphere
+```
+
+```lua
+locateCharAnyMeansChar3D(self, target, xRadius, yRadius, zRadius, drawSphere)
+```
+
+```js
+Char.locateAnyMeansChar3D(self, target, xRadius, yRadius, zRadius, drawSphere)
+```
+</Opcode>
+
+## 相对角色徒步 3D
+
+<Opcode id="0105" name="LOCATE_CHAR_ON_FOOT_CHAR_3D" member="Char.LocateOnFootChar3D">
+用在 if：角色是否徒步在另一角色 3D 半径内。
+
+```text
+0105 LOCATE_CHAR_ON_FOOT_CHAR_3D
+in: self, target, xRadius, yRadius, zRadius, drawSphere
+```
+
+```lua
+locateCharOnFootChar3D(self, target, xRadius, yRadius, zRadius, drawSphere)
+```
+
+```js
+Char.locateOnFootChar3D(self, target, xRadius, yRadius, zRadius, drawSphere)
+```
+</Opcode>
+
+## 相对角色车内 3D
+
+<Opcode id="0106" name="LOCATE_CHAR_IN_CAR_CHAR_3D" member="Char.LocateInCarChar3D">
+用在 if：角色是否在车内且位于另一角色 3D 半径内。
+
+```text
+0106 LOCATE_CHAR_IN_CAR_CHAR_3D
+in: self, target, xRadius, yRadius, zRadius, drawSphere
+```
+
+```lua
+locateCharInCarChar3D(self, target, xRadius, yRadius, zRadius, drawSphere)
+```
+
+```js
+Char.locateInCarChar3D(self, target, xRadius, yRadius, zRadius, drawSphere)
+```
+</Opcode>
+
+## 加弹药
+
+<Opcode id="0114" name="ADD_AMMO_TO_CHAR" member="Char.AddAmmo">
+若角色持有该武器，则增加指定弹药量。
+
+```text
+0114 ADD_AMMO_TO_CHAR
+in: self, weaponType, ammo
+```
+
+```lua
+addAmmoToChar(self, weaponType, ammo)
+```
+
+```js
+Char.addAmmo(self, weaponType, ammo)
+```
+</Opcode>
+
+## 是否死亡
+
+<Opcode id="0118" name="IS_CHAR_DEAD" member="Char.IsDead">
+用在 if：句柄无效或角色已死（wasted）。
+
+```text
+0118 IS_CHAR_DEAD
+in: handle
+```
+
+```lua
+isCharDead(handle)
+```
+
+```js
+Char.isDead(handle)
+```
+</Opcode>
+
+## 车内创建角色
+
+<Opcode id="0129" name="CREATE_CHAR_INSIDE_CAR" member="Char.CreateInsideCar">
+在车辆驾驶座创建角色。
+
+```text
+0129 CREATE_CHAR_INSIDE_CAR
+in: vehicle, pedType, modelId
+out: handle
+```
+
+```lua
+local handle = createCharInsideCar(vehicle, pedType, modelId)
+```
+
+```js
+Char.createInsideCar(vehicle, pedType, modelId)
+```
+</Opcode>
+
+## 是否在区域
+
+<Opcode id="0154" name="IS_CHAR_IN_ZONE" member="Char.IsInZone">
+用在 if：角色是否在指定地图区域内。
+
+```text
+0154 IS_CHAR_IN_ZONE
+in: self, zone
+```
+
+```lua
+isCharInZone(self, zone)
+```
+
+```js
+Char.isInZone(self, zone)
+```
+</Opcode>
+
+## 取朝向
+
+<Opcode id="0172" name="GET_CHAR_HEADING" member="Char.GetHeading">
+返回角色朝向角（Z 角）。
+
+```text
+0172 GET_CHAR_HEADING
+in: self
+out: heading
+```
+
+```lua
+local heading = getCharHeading(self)
+```
+
+```js
+Char.getHeading(self)
+```
+</Opcode>
+
+## 设朝向
+
+<Opcode id="0173" name="SET_CHAR_HEADING" member="Char.SetHeading">
+设置角色朝向角（Z 角）。
+
+```text
+0173 SET_CHAR_HEADING
+in: self, heading
+```
+
+```lua
+setCharHeading(self, heading)
+```
+
+```js
+Char.setHeading(self, heading)
+```
+</Opcode>
+
+## 碰到物体
+
+<Opcode id="0179" name="IS_CHAR_TOUCHING_OBJECT" member="Char.IsTouchingObject">
+用在 if：角色是否与指定物体碰撞。
+
+```text
+0179 IS_CHAR_TOUCHING_OBJECT
+in: self, object
+```
+
+```lua
+isCharTouchingObject(self, object)
+```
+
+```js
+Char.isTouchingObject(self, object)
+```
+</Opcode>
+
+## 设弹药
+
+<Opcode id="017B" name="SET_CHAR_AMMO" member="Char.SetAmmo">
+设置角色指定武器的弹药量。
+
+```text
+017B SET_CHAR_AMMO
+in: self, weaponType, ammo
+```
+
+```lua
+setCharAmmo(self, weaponType, ammo)
+```
+
+```js
+Char.setAmmo(self, weaponType, ammo)
+```
+</Opcode>
+
+## 生命是否更高
+
+<Opcode id="0184" name="IS_CHAR_HEALTH_GREATER" member="Char.IsHealthGreater">
+用在 if：角色生命是否高于指定值。
+
+```text
+0184 IS_CHAR_HEALTH_GREATER
+in: self, health
+```
+
+```lua
+isCharHealthGreater(self, health)
+```
+
+```js
+Char.isHealthGreater(self, health)
+```
+</Opcode>
+
+## 徒步在 2D 区域
+
+<Opcode id="01A1" name="IS_CHAR_IN_AREA_ON_FOOT_2D" member="Char.IsInAreaOnFoot2D">
+用在 if：角色是否徒步在指定 2D 区域内。
+
+```text
+01A1 IS_CHAR_IN_AREA_ON_FOOT_2D
+in: self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere
+```
+
+```lua
+isCharInAreaOnFoot2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere)
+```
+
+```js
+Char.isInAreaOnFoot2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere)
+```
+</Opcode>
+
+## 车内在 2D 区域
+
+<Opcode id="01A2" name="IS_CHAR_IN_AREA_IN_CAR_2D" member="Char.IsInAreaInCar2D">
+用在 if：角色是否在车内且位于指定 2D 区域内。
+
+```text
+01A2 IS_CHAR_IN_AREA_IN_CAR_2D
+in: self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere
+```
+
+```lua
+isCharInAreaInCar2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere)
+```
+
+```js
+Char.isInAreaInCar2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere)
+```
+</Opcode>
+
+## 停下在 2D 区域
+
+<Opcode id="01A3" name="IS_CHAR_STOPPED_IN_AREA_2D" member="Char.IsStoppedInArea2D">
+用在 if：角色是否已停在指定 2D 区域内。
+
+```text
+01A3 IS_CHAR_STOPPED_IN_AREA_2D
+in: self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere
+```
+
+```lua
+isCharStoppedInArea2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere)
+```
+
+```js
+Char.isStoppedInArea2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere)
+```
+</Opcode>
+
+## 停下徒步 2D 区域
+
+<Opcode id="01A4" name="IS_CHAR_STOPPED_IN_AREA_ON_FOOT_2D" member="Char.IsStoppedInAreaOnFoot2D">
+用在 if：角色是否徒步停在指定 2D 区域内。
+
+```text
+01A4 IS_CHAR_STOPPED_IN_AREA_ON_FOOT_2D
+in: self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere
+```
+
+```lua
+isCharStoppedInAreaOnFoot2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere)
+```
+
+```js
+Char.isStoppedInAreaOnFoot2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere)
+```
+</Opcode>
+
+## 停下车内 2D 区域
+
+<Opcode id="01A5" name="IS_CHAR_STOPPED_IN_AREA_IN_CAR_2D" member="Char.IsStoppedInAreaInCar2D">
+用在 if：角色是否在车内停在指定 2D 区域内。
+
+```text
+01A5 IS_CHAR_STOPPED_IN_AREA_IN_CAR_2D
+in: self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere
+```
+
+```lua
+isCharStoppedInAreaInCar2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere)
+```
+
+```js
+Char.isStoppedInAreaInCar2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, drawSphere)
+```
+</Opcode>
+
+## 徒步在 3D 区域
+
+<Opcode id="01A6" name="IS_CHAR_IN_AREA_ON_FOOT_3D" member="Char.IsInAreaOnFoot3D">
+用在 if：角色是否徒步在指定 3D 区域内。
+
+```text
+01A6 IS_CHAR_IN_AREA_ON_FOOT_3D
+in: self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere
+```
+
+```lua
+isCharInAreaOnFoot3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere)
+```
+
+```js
+Char.isInAreaOnFoot3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere)
+```
+</Opcode>
+
+## 车内在 3D 区域
+
+<Opcode id="01A7" name="IS_CHAR_IN_AREA_IN_CAR_3D" member="Char.IsInAreaInCar3D">
+用在 if：角色是否在车内且位于指定 3D 区域内。
+
+```text
+01A7 IS_CHAR_IN_AREA_IN_CAR_3D
+in: self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere
+```
+
+```lua
+isCharInAreaInCar3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere)
+```
+
+```js
+Char.isInAreaInCar3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere)
+```
+</Opcode>
+
+## 停下在 3D 区域
+
+<Opcode id="01A8" name="IS_CHAR_STOPPED_IN_AREA_3D" member="Char.IsStoppedInArea3D">
+用在 if：角色是否已停在指定 3D 区域内。
+
+```text
+01A8 IS_CHAR_STOPPED_IN_AREA_3D
+in: self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere
+```
+
+```lua
+isCharStoppedInArea3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere)
+```
+
+```js
+Char.isStoppedInArea3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere)
+```
+</Opcode>
+
+## 停下徒步 3D 区域
+
+<Opcode id="01A9" name="IS_CHAR_STOPPED_IN_AREA_ON_FOOT_3D" member="Char.IsStoppedInAreaOnFoot3D">
+用在 if：角色是否徒步停在指定 3D 区域内。
+
+```text
+01A9 IS_CHAR_STOPPED_IN_AREA_ON_FOOT_3D
+in: self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere
+```
+
+```lua
+isCharStoppedInAreaOnFoot3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere)
+```
+
+```js
+Char.isStoppedInAreaOnFoot3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere)
+```
+</Opcode>
+
+## 停下车内 3D 区域
+
+<Opcode id="01AA" name="IS_CHAR_STOPPED_IN_AREA_IN_CAR_3D" member="Char.IsStoppedInAreaInCar3D">
+用在 if：角色是否在车内停在指定 3D 区域内。
+
+```text
+01AA IS_CHAR_STOPPED_IN_AREA_IN_CAR_3D
+in: self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere
+```
+
+```lua
+isCharStoppedInAreaInCar3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere)
+```
+
+```js
+Char.isStoppedInAreaInCar3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, drawSphere)
+```
+</Opcode>
+
+## 给武器
+
+<Opcode id="01B2" name="GIVE_WEAPON_TO_CHAR" member="Char.GiveWeapon">
+给角色指定武器及弹药量。
+
+```text
+01B2 GIVE_WEAPON_TO_CHAR
+in: self, weaponType, ammo
+```
+
+```lua
+giveWeaponToChar(self, weaponType, ammo)
+```
+
+```js
+Char.giveWeapon(self, weaponType, ammo)
+```
+</Opcode>
+
+## 设当前武器
+
+<Opcode id="01B9" name="SET_CURRENT_CHAR_WEAPON" member="Char.SetCurrentWeapon">
+设置角色当前手持武器。
+
+```text
+01B9 SET_CURRENT_CHAR_WEAPON
+in: self, weaponType
+```
+
+```lua
+setCurrentCharWeapon(self, weaponType)
+```
+
+```js
+Char.setCurrentWeapon(self, weaponType)
+```
+</Opcode>
+
+## 标记不再需要
+
+<Opcode id="01C2" name="MARK_CHAR_AS_NO_LONGER_NEEDED" member="Char.MarkAsNoLongerNeeded">
+允许游戏按需删除角色，并在适用时移出任务清理列表。
+
+```text
+01C2 MARK_CHAR_AS_NO_LONGER_NEEDED
+in: self
+```
+
+```lua
+markCharAsNoLongerNeeded(self)
+```
+
+```js
+Char.markAsNoLongerNeeded(self)
+```
+</Opcode>
+
+## 不随任务删除
+
+<Opcode id="01C5" name="DONT_REMOVE_CHAR" member="Char.DontRemove">
+从任务清理列表移除角色，任务结束时不会被删。
+
+```text
+01C5 DONT_REMOVE_CHAR
+in: self
+```
+
+```lua
+dontRemoveChar(self)
+```
+
+```js
+Char.dontRemove(self)
+```
+</Opcode>
+
+## 乘客位创建
+
+<Opcode id="01C8" name="CREATE_CHAR_AS_PASSENGER" member="Char.CreateAsPassenger">
+用指定模型在车辆乘客座创建角色。
+
+```text
+01C8 CREATE_CHAR_AS_PASSENGER
+in: vehicle, pedType, modelId, seat
+out: handle
+```
+
+```lua
+local handle = createCharAsPassenger(vehicle, pedType, modelId, seat)
+```
+
+```js
+Char.createAsPassenger(vehicle, pedType, modelId, seat)
+```
+</Opcode>
+
+## 相对车辆任意 2D
+
+<Opcode id="0202" name="LOCATE_CHAR_ANY_MEANS_CAR_2D" member="Char.LocateAnyMeansCar2D">
+用在 if：角色是否在车辆 2D 半径内。
+
+```text
+0202 LOCATE_CHAR_ANY_MEANS_CAR_2D
+in: self, vehicle, xRadius, yRadius, drawSphere
+```
+
+```lua
+locateCharAnyMeansCar2D(self, vehicle, xRadius, yRadius, drawSphere)
+```
+
+```js
+Char.locateAnyMeansCar2D(self, vehicle, xRadius, yRadius, drawSphere)
+```
+</Opcode>
+
+## 相对车辆徒步 2D
+
+<Opcode id="0203" name="LOCATE_CHAR_ON_FOOT_CAR_2D" member="Char.LocateOnFootCar2D">
+用在 if：角色是否徒步在车辆 2D 半径内。
+
+```text
+0203 LOCATE_CHAR_ON_FOOT_CAR_2D
+in: self, vehicle, xRadius, yRadius, drawSphere
+```
+
+```lua
+locateCharOnFootCar2D(self, vehicle, xRadius, yRadius, drawSphere)
+```
+
+```js
+Char.locateOnFootCar2D(self, vehicle, xRadius, yRadius, drawSphere)
+```
+</Opcode>
+
+## 相对车辆车内 2D
+
+<Opcode id="0204" name="LOCATE_CHAR_IN_CAR_CAR_2D" member="Char.LocateInCarCar2D">
+用在 if：角色是否在车内且位于车辆 2D 半径内。
+
+```text
+0204 LOCATE_CHAR_IN_CAR_CAR_2D
+in: self, handle, xRadius, yRadius, drawSphere
+```
+
+```lua
+locateCharInCarCar2D(self, handle, xRadius, yRadius, drawSphere)
+```
+
+```js
+Char.locateInCarCar2D(self, handle, xRadius, yRadius, drawSphere)
+```
+</Opcode>
+
+## 相对车辆任意 3D
+
+<Opcode id="0205" name="LOCATE_CHAR_ANY_MEANS_CAR_3D" member="Char.LocateAnyMeansCar3D">
+用在 if：角色是否在车辆 3D 半径内。
+
+```text
+0205 LOCATE_CHAR_ANY_MEANS_CAR_3D
+in: self, vehicle, xRadius, yRadius, zRadius, drawSphere
+```
+
+```lua
+locateCharAnyMeansCar3D(self, vehicle, xRadius, yRadius, zRadius, drawSphere)
+```
+
+```js
+Char.locateAnyMeansCar3D(self, vehicle, xRadius, yRadius, zRadius, drawSphere)
+```
+</Opcode>
+
+## 相对车辆徒步 3D
+
+<Opcode id="0206" name="LOCATE_CHAR_ON_FOOT_CAR_3D" member="Char.LocateOnFootCar3D">
+用在 if：角色是否徒步在车辆 3D 半径内。
+
+```text
+0206 LOCATE_CHAR_ON_FOOT_CAR_3D
+in: self, vehicle, xRadius, yRadius, zRadius, drawSphere
+```
+
+```lua
+locateCharOnFootCar3D(self, vehicle, xRadius, yRadius, zRadius, drawSphere)
+```
+
+```js
+Char.locateOnFootCar3D(self, vehicle, xRadius, yRadius, zRadius, drawSphere)
+```
+</Opcode>
+
+## 相对车辆车内 3D
+
+<Opcode id="0207" name="LOCATE_CHAR_IN_CAR_CAR_3D" member="Char.LocateInCarCar3D">
+用在 if：角色是否在车内且位于车辆 3D 半径内。
+
+```text
+0207 LOCATE_CHAR_IN_CAR_CAR_3D
+in: self, vehicle, xRadius, yRadius, zRadius, drawSphere
+```
+
+```lua
+locateCharInCarCar3D(self, vehicle, xRadius, yRadius, zRadius, drawSphere)
+```
+
+```js
+Char.locateInCarCar3D(self, vehicle, xRadius, yRadius, zRadius, drawSphere)
+```
+</Opcode>
+
+## 设生命
+
+<Opcode id="0223" name="SET_CHAR_HEALTH" member="Char.SetHealth">
+设置角色生命值。
+
+```text
+0223 SET_CHAR_HEALTH
+in: self, health
+```
+
+```lua
+setCharHealth(self, health)
+```
+
+```js
+Char.setHealth(self, health)
+```
+</Opcode>
+
+## 取生命
+
+<Opcode id="0226" name="GET_CHAR_HEALTH" member="Char.GetHealth">
+返回角色生命值。
+
+```text
+0226 GET_CHAR_HEALTH
+in: self
+out: health
+```
+
+```lua
+local health = getCharHealth(self)
+```
+
+```js
+Char.getHealth(self)
+```
+</Opcode>
+
+## 徒步碰到物体
+
+<Opcode id="023B" name="IS_CHAR_TOUCHING_OBJECT_ON_FOOT" member="Char.IsTouchingObjectOnFoot">
+用在 if：角色是否徒步与指定物体碰撞。
+
+```text
+023B IS_CHAR_TOUCHING_OBJECT_ON_FOOT
+in: self, object
+```
+
+```lua
+isCharTouchingObjectOnFoot(self, object)
+```
+
+```js
+Char.isTouchingObjectOnFoot(self, object)
+```
+</Opcode>
+
+## 动画组
+
+<Opcode id="0245" name="SET_ANIM_GROUP_FOR_CHAR" member="Char.SetAnimGroup">
+设置角色动画组。
+
+```text
+0245 SET_ANIM_GROUP_FOR_CHAR
+in: self, animGroup
+```
+
+```lua
+setAnimGroupForChar(self, animGroup)
+```
+
+```js
+Char.setAnimGroup(self, animGroup)
+```
+</Opcode>
+
+## 是否停下
+
+<Opcode id="02A0" name="IS_CHAR_STOPPED" member="Char.IsStopped">
+用在 if：角色是否未在移动。
+
+```text
+02A0 IS_CHAR_STOPPED
+in: self
+```
+
+```lua
+isCharStopped(self)
+```
+
+```js
+Char.isStopped(self)
+```
+</Opcode>
+
+## 仅玩家可伤
+
+<Opcode id="02A9" name="SET_CHAR_ONLY_DAMAGED_BY_PLAYER" member="Char.SetOnlyDamagedByPlayer">
+让角色免疫除玩家外的一切伤害。
+
+```text
+02A9 SET_CHAR_ONLY_DAMAGED_BY_PLAYER
+in: self, state
+```
+
+```lua
+setCharOnlyDamagedByPlayer(self, state)
+```
+
+```js
+Char.setOnlyDamagedByPlayer(self, state)
+```
+</Opcode>
+
+## 伤害免疫
+
+<Opcode id="02AB" name="SET_CHAR_PROOFS" member="Char.SetProofs">
+设置角色各类免疫。
+
+```text
+02AB SET_CHAR_PROOFS
+in: self, bulletProof, fireProof, explosionProof, collisionProof, meleeProof
+```
+
+```lua
+setCharProofs(self, bulletProof, fireProof, explosionProof, collisionProof, meleeProof)
+```
+
+```js
+Char.setProofs(self, bulletProof, fireProof, explosionProof, collisionProof, meleeProof)
+```
+</Opcode>
+
+## 是否在屏上
+
+<Opcode id="02CB" name="IS_CHAR_ON_SCREEN" member="Char.IsOnScreen">
+用在 if：角色是否可见。
+
+```text
+02CB IS_CHAR_ON_SCREEN
+in: self
+```
+
+```lua
+isCharOnScreen(self)
+```
+
+```js
+Char.isOnScreen(self)
+```
+</Opcode>
+
+## 区域内是否开火
+
+<Opcode id="02D6" name="IS_CHAR_SHOOTING_IN_AREA" member="Char.IsShootingInArea">
+用在 if：角色是否在指定 2D 区域内开过火。
+
+```text
+02D6 IS_CHAR_SHOOTING_IN_AREA
+in: self, leftBottomX, leftBottomY, topRightX, topRightY, drawSphere
+```
+
+```lua
+isCharShootingInArea(self, leftBottomX, leftBottomY, topRightX, topRightY, drawSphere)
+```
+
+```js
+Char.isShootingInArea(self, leftBottomX, leftBottomY, topRightX, topRightY, drawSphere)
+```
+</Opcode>
+
+## 是否当前武器
+
+<Opcode id="02D8" name="IS_CURRENT_CHAR_WEAPON" member="Char.IsCurrentWeapon">
+用在 if：角色是否手持指定类型武器。
+
+```text
+02D8 IS_CURRENT_CHAR_WEAPON
+in: self, weaponType
+```
+
+```lua
+isCurrentCharWeapon(self, weaponType)
+```
+
+```js
+Char.isCurrentWeapon(self, weaponType)
+```
+</Opcode>
+
+## 是否开火中
+
+<Opcode id="02E0" name="IS_CHAR_SHOOTING" member="Char.IsShooting">
+用在 if：角色是否正在开火。
+
+```text
+02E0 IS_CHAR_SHOOTING
+in: self
+```
+
+```lua
+isCharShooting(self)
+```
+
+```js
+Char.isShooting(self)
+```
+</Opcode>
+
+## 射击精度
+
+<Opcode id="02E2" name="SET_CHAR_ACCURACY" member="Char.SetAccuracy">
+影响角色用武器攻击时的命中频率。
+
+```text
+02E2 SET_CHAR_ACCURACY
+in: self, accuracy
+```
+
+```lua
+setCharAccuracy(self, accuracy)
+```
+
+```js
+Char.setAccuracy(self, accuracy)
+```
+</Opcode>
+
+## 是否指定模型
+
+<Opcode id="02F2" name="IS_CHAR_MODEL" member="Char.IsModel">
+用在 if：角色模型 ID 是否等于给定模型 ID。
+
+```text
+02F2 IS_CHAR_MODEL
+in: self, modelId
+```
+
+```lua
+isCharModel(self, modelId)
+```
+
+```js
+Char.isModel(self, modelId)
+```
+</Opcode>
+
+## 被武器击中
+
+<Opcode id="031D" name="HAS_CHAR_BEEN_DAMAGED_BY_WEAPON" member="Char.HasBeenDamagedByWeapon">
+用在 if：角色是否被指定武器击中过。
+
+```text
+031D HAS_CHAR_BEEN_DAMAGED_BY_WEAPON
+in: self, weaponType
+```
+
+```lua
+hasCharBeenDamagedByWeapon(self, weaponType)
+```
+
+```js
+Char.hasBeenDamagedByWeapon(self, weaponType)
+```
+</Opcode>
+
+## 爆头肢解
+
+<Opcode id="0321" name="EXPLODE_CHAR_HEAD" member="Char.ExplodeHead">
+肢解角色。
+
+```text
+0321 EXPLODE_CHAR_HEAD
+in: self
+```
+
+```lua
+explodeCharHead(self)
+```
+
+```js
+Char.explodeHead(self)
+```
+</Opcode>
+
+## 流血
+
+<Opcode id="0332" name="SET_CHAR_BLEEDING" member="Char.SetBleeding">
+让角色流血。
+
+```text
+0332 SET_CHAR_BLEEDING
+in: self, state
+```
+
+```lua
+setCharBleeding(self, state)
+```
+
+```js
+Char.setBleeding(self, state)
+```
+</Opcode>
+
+## 显隐
+
+<Opcode id="0337" name="SET_CHAR_VISIBLE" member="Char.SetVisible">
+设置角色是否可见。
+
+```text
+0337 SET_CHAR_VISIBLE
+in: self, state
+```
+
+```lua
+setCharVisible(self, state)
+```
+
+```js
+Char.setVisible(self, state)
+```
+</Opcode>
+
+## 优雅移除
+
+<Opcode id="034F" name="REMOVE_CHAR_ELEGANTLY" member="Char.RemoveElegantly">
+淡出移除角色并释放内存。
+
+```text
+034F REMOVE_CHAR_ELEGANTLY
+in: self
+```
+
+```lua
+removeCharElegantly(self)
+```
+
+```js
+Char.removeElegantly(self)
+```
+</Opcode>
+
+## 保持原地
+
+<Opcode id="0350" name="SET_CHAR_STAY_IN_SAME_PLACE" member="Char.SetStayInSamePlace">
+受攻击时让角色保持原位。
+
+```text
+0350 SET_CHAR_STAY_IN_SAME_PLACE
+in: self, state
+```
+
+```lua
+setCharStayInSamePlace(self, state)
+```
+
+```js
+Char.setStayInSamePlace(self, state)
+```
+</Opcode>
+
+## 加护甲
+
+<Opcode id="035F" name="ADD_ARMOUR_TO_CHAR" member="Char.AddArmor">
+按指定值增加护甲，上限 100。
+
+```text
+035F ADD_ARMOUR_TO_CHAR
+in: self, amount
+```
+
+```lua
+addArmourToChar(self, amount)
+```
+
+```js
+Char.addArmor(self, amount)
+```
+</Opcode>
+
+## 从车拉到坐标
+
+<Opcode id="0362" name="WARP_CHAR_FROM_CAR_TO_COORD" member="Char.WarpFromCarToCoord">
+把角色从车里拉出并放到指定位置。
+
+```text
+0362 WARP_CHAR_FROM_CAR_TO_COORD
+in: self, x, y, z
+```
+
+```lua
+warpCharFromCarToCoord(self, x, y, z)
+```
+
+```js
+Char.warpFromCarToCoord(self, x, y, z)
+```
+</Opcode>
+
+## 是否看见目标
+
+<Opcode id="0364" name="HAS_CHAR_SPOTTED_CHAR" member="Char.HasSpottedChar">
+用在 if：角色能否看见目标角色。
+
+```text
+0364 HAS_CHAR_SPOTTED_CHAR
+in: self, target
+```
+
+```lua
+hasCharSpottedChar(self, target)
+```
+
+```js
+Char.hasSpottedChar(self, target)
+```
+</Opcode>
+
+## 瞬移进车
+
+<Opcode id="036A" name="WARP_CHAR_INTO_CAR" member="Char.WarpIntoCar">
+把角色放进指定车辆。
+
+```text
+036A WARP_CHAR_INTO_CAR
+in: self, vehicle
+```
+
+```lua
+warpCharIntoCar(self, vehicle)
+```
+
+```js
+Char.warpIntoCar(self, vehicle)
+```
+</Opcode>
+
+## 创建随机角色
+
+<Opcode id="0376" name="CREATE_RANDOM_CHAR" member="Char.CreateRandom">
+在指定坐标创建模型与 pedtype 随机的角色。
+
+```text
+0376 CREATE_RANDOM_CHAR
+in: x, y, z
+out: handle
+```
+
+```lua
+local handle = createRandomChar(x, y, z)
+```
+
+```js
+Char.createRandom(x, y, z)
+```
+</Opcode>
+
+## 动画速度
+
+<Opcode id="0393" name="SET_CHAR_ANIM_SPEED" member="Char.SetAnimSpeed">
+让角色按指定速度播放动画。
+
+```text
+0393 SET_CHAR_ANIM_SPEED
+in: self, animName, animSpeed
+```
+
+```lua
+setCharAnimSpeed(self, animName, animSpeed)
+```
+
+```js
+Char.setAnimSpeed(self, animName, animSpeed)
+```
+</Opcode>
+
+## 不可拖出车
+
+<Opcode id="039E" name="SET_CHAR_CANT_BE_DRAGGED_OUT" member="Char.SetCantBeDraggedOut">
+锁定在车内的角色。
+
+```text
+039E SET_CHAR_CANT_BE_DRAGGED_OUT
+in: self, state
+```
+
+```lua
+setCharCantBeDraggedOut(self, state)
+```
+
+```js
+Char.setCantBeDraggedOut(self, state)
+```
+</Opcode>
+
+## 是否男性
+
+<Opcode id="03A3" name="IS_CHAR_MALE" member="Char.IsMale">
+用在 if：角色是否为男性。
+
+```text
+03A3 IS_CHAR_MALE
+in: self
+```
+
+```lua
+isCharMale(self)
+```
+
+```js
+Char.isMale(self)
+```
+</Opcode>
+
+## 取车不保存
+
+<Opcode id="03C0" name="STORE_CAR_CHAR_IS_IN_NO_SAVE" member="Char.StoreCarIsInNoSave">
+返回角色车辆句柄且不标记为脚本占用，游戏随时可删（另见 00D9、0811、0484）。
+
+```text
+03C0 STORE_CAR_CHAR_IS_IN_NO_SAVE
+in: self
+out: handle
+```
+
+```lua
+local handle = storeCarCharIsInNoSave(self)
+```
+
+```js
+Char.storeCarIsInNoSave(self)
+```
+</Opcode>
+
+## 设现金
+
+<Opcode id="03FE" name="SET_CHAR_MONEY" member="Char.SetMoney">
+设置角色现金，决定死后掉落金额。
+
+```text
+03FE SET_CHAR_MONEY
+in: self, amount
+```
+
+```lua
+setCharMoney(self, amount)
+```
+
+```js
+Char.setMoney(self, amount)
+```
+</Opcode>
+
+## 取武器弹药
+
+<Opcode id="041A" name="GET_AMMO_IN_CHAR_WEAPON" member="Char.GetAmmoInWeapon">
+获取角色指定武器的弹药量。
+
+```text
+041A GET_AMMO_IN_CHAR_WEAPON
+in: self, weaponType
+out: ammo
+```
+
+```lua
+local ammo = getAmmoInCharWeapon(self, weaponType)
+```
+
+```js
+Char.getAmmoInWeapon(self, weaponType)
+```
+</Opcode>
+
+## 瞬移乘客座
+
+<Opcode id="0430" name="WARP_CHAR_INTO_CAR_AS_PASSENGER" member="Char.WarpIntoCarAsPassenger">
+把角色放进车辆乘客座。
+
+```text
+0430 WARP_CHAR_INTO_CAR_AS_PASSENGER
+in: self, handle, seat
+```
+
+```lua
+warpCharIntoCarAsPassenger(self, handle, seat)
+```
+
+```js
+Char.warpIntoCarAsPassenger(self, handle, seat)
+```
+</Opcode>
+
+## 精神病杀手
+
+<Opcode id="0433" name="SET_CHAR_IS_CHRIS_CRIMINAL" member="Char.SetIsChrisCriminal">
+设置角色是否为精神病杀手。
+
+```text
+0433 SET_CHAR_IS_CHRIS_CRIMINAL
+in: self, state
+```
+
+```lua
+setCharIsChrisCriminal(self, state)
+```
+
+```js
+Char.setIsChrisCriminal(self, state)
+```
+</Opcode>
+
+## 爆头致命
+
+<Opcode id="0446" name="SET_CHAR_SUFFERS_CRITICAL_HITS" member="Char.SetSuffersCriticalHits">
+设置角色是否免疫爆头。
+
+```text
+0446 SET_CHAR_SUFFERS_CRITICAL_HITS
+in: self, state
+```
+
+```lua
+setCharSuffersCriticalHits(self, state)
+```
+
+```js
+Char.setSuffersCriticalHits(self, state)
+```
+</Opcode>
+
+## 是否坐在指定车
+
+<Opcode id="0448" name="IS_CHAR_SITTING_IN_CAR" member="Char.IsSittingInCar">
+用在 if：角色是否坐在指定车辆中。
+
+```text
+0448 IS_CHAR_SITTING_IN_CAR
+in: self, vehicle
+```
+
+```lua
+isCharSittingInCar(self, vehicle)
+```
+
+```js
+Char.isSittingInCar(self, vehicle)
+```
+</Opcode>
+
+## 是否坐在任意车
+
+<Opcode id="0449" name="IS_CHAR_SITTING_IN_ANY_CAR" member="Char.IsSittingInAnyCar">
+用在 if：角色是否坐在任意车辆中。
+
+```text
+0449 IS_CHAR_SITTING_IN_ANY_CAR
+in: self
+```
+
+```lua
+isCharSittingInAnyCar(self)
+```
+
+```js
+Char.isSittingInAnyCar(self)
+```
+</Opcode>
+
+## 是否徒步
+
+<Opcode id="044B" name="IS_CHAR_ON_FOOT" member="Char.IsOnFoot">
+用在 if：角色是否徒步且未占用车辆。
+
+```text
+044B IS_CHAR_ON_FOOT
+in: self
+```
+
+```lua
+isCharOnFoot(self)
+```
+
+```js
+Char.isOnFoot(self)
+```
+</Opcode>
+
+## 附着到车炮塔
+
+<Opcode id="0464" name="ATTACH_CHAR_TO_CAR" member="Char.AttachToCar">
+把角色放到车辆炮塔位以便射击。
+
+```text
+0464 ATTACH_CHAR_TO_CAR
+in: self, vehicle, xOffset, yOffset, zOffset, heading, headingRange, weaponType
+```
+
+```lua
+attachCharToCar(self, vehicle, xOffset, yOffset, zOffset, heading, headingRange, weaponType)
+```
+
+```js
+Char.attachToCar(self, vehicle, xOffset, yOffset, zOffset, heading, headingRange, weaponType)
+```
+</Opcode>
+
+## 脱离炮塔
+
+<Opcode id="0465" name="DETACH_CHAR_FROM_CAR" member="Char.DetachFromCar">
+把角色移出炮塔模式（0464）。
+
+```text
+0465 DETACH_CHAR_FROM_CAR
+in: self
+```
+
+```lua
+detachCharFromCar(self)
+```
+
+```js
+Char.detachFromCar(self)
+```
+</Opcode>
+
+## 清武器伤害记录
+
+<Opcode id="0467" name="CLEAR_CHAR_LAST_WEAPON_DAMAGE" member="Char.ClearLastWeaponDamage">
+清除角色最近一次武器伤害记录（见 031D）。
+
+```text
+0467 CLEAR_CHAR_LAST_WEAPON_DAMAGE
+in: self
+```
+
+```lua
+clearCharLastWeaponDamage(self)
+```
+
+```js
+Char.clearLastWeaponDamage(self)
+```
+</Opcode>
+
+## 跟随者数量
+
+<Opcode id="046D" name="GET_NUMBER_OF_FOLLOWERS" member="Char.GetNumberOfFollowers">
+返回角色所在小队成员数（01DE）。
+
+```text
+046D GET_NUMBER_OF_FOLLOWERS
+in: self
+out: number
+```
+
+```lua
+local number = getNumberOfFollowers(self)
+```
+
+```js
+Char.getNumberOfFollowers(self)
+```
+</Opcode>
+
+## 取当前武器
+
+<Opcode id="0470" name="GET_CURRENT_CHAR_WEAPON" member="Char.GetCurrentWeapon">
+返回角色当前手持武器类型。
+
+```text
+0470 GET_CURRENT_CHAR_WEAPON
+in: self
+out: weaponType
+```
+
+```lua
+local weaponType = getCurrentCharWeapon(self)
+```
+
+```js
+Char.getCurrentWeapon(self)
+```
+</Opcode>
+
+## 相对物体任意 2D
+
+<Opcode id="0471" name="LOCATE_CHAR_ANY_MEANS_OBJECT_2D" member="Char.LocateAnyMeansObject2D">
+用在 if：角色是否在物体 2D 半径内。
+
+```text
+0471 LOCATE_CHAR_ANY_MEANS_OBJECT_2D
+in: self, object, xRadius, yRadius, drawSphere
+```
+
+```lua
+locateCharAnyMeansObject2D(self, object, xRadius, yRadius, drawSphere)
+```
+
+```js
+Char.locateAnyMeansObject2D(self, object, xRadius, yRadius, drawSphere)
+```
+</Opcode>
+
+## 相对物体徒步 2D
+
+<Opcode id="0472" name="LOCATE_CHAR_ON_FOOT_OBJECT_2D" member="Char.LocateOnFootObject2D">
+用在 if：角色是否徒步在物体 2D 半径内。
+
+```text
+0472 LOCATE_CHAR_ON_FOOT_OBJECT_2D
+in: self, object, xRadius, yRadius, drawSphere
+```
+
+```lua
+locateCharOnFootObject2D(self, object, xRadius, yRadius, drawSphere)
+```
+
+```js
+Char.locateOnFootObject2D(self, object, xRadius, yRadius, drawSphere)
+```
+</Opcode>
+
+## 相对物体车内 2D
+
+<Opcode id="0473" name="LOCATE_CHAR_IN_CAR_OBJECT_2D" member="Char.LocateInCarObject2D">
+用在 if：角色是否在车内且位于物体 2D 半径内。
+
+```text
+0473 LOCATE_CHAR_IN_CAR_OBJECT_2D
+in: self, object, xRadius, yRadius, drawSphere
+```
+
+```lua
+locateCharInCarObject2D(self, object, xRadius, yRadius, drawSphere)
+```
+
+```js
+Char.locateInCarObject2D(self, object, xRadius, yRadius, drawSphere)
+```
+</Opcode>
+
+## 相对物体任意 3D
+
+<Opcode id="0474" name="LOCATE_CHAR_ANY_MEANS_OBJECT_3D" member="Char.LocateAnyMeansObject3D">
+用在 if：角色是否在物体 3D 半径内。
+
+```text
+0474 LOCATE_CHAR_ANY_MEANS_OBJECT_3D
+in: self, object, xRadius, yRadius, zRadius, drawSphere
+```
+
+```lua
+locateCharAnyMeansObject3D(self, object, xRadius, yRadius, zRadius, drawSphere)
+```
+
+```js
+Char.locateAnyMeansObject3D(self, object, xRadius, yRadius, zRadius, drawSphere)
+```
+</Opcode>
+
+## 相对物体徒步 3D
+
+<Opcode id="0475" name="LOCATE_CHAR_ON_FOOT_OBJECT_3D" member="Char.LocateOnFootObject3D">
+用在 if：角色是否徒步在物体 3D 半径内。
+
+```text
+0475 LOCATE_CHAR_ON_FOOT_OBJECT_3D
+in: self, object, xRadius, yRadius, zRadius, drawSphere
+```
+
+```lua
+locateCharOnFootObject3D(self, object, xRadius, yRadius, zRadius, drawSphere)
+```
+
+```js
+Char.locateOnFootObject3D(self, object, xRadius, yRadius, zRadius, drawSphere)
+```
+</Opcode>
+
+## 相对物体车内 3D
+
+<Opcode id="0476" name="LOCATE_CHAR_IN_CAR_OBJECT_3D" member="Char.LocateInCarObject3D">
+用在 if：角色是否在车内且位于物体 3D 半径内。
+
+```text
+0476 LOCATE_CHAR_IN_CAR_OBJECT_3D
+in: self, object, xRadius, yRadius, zRadius, drawSphere
+```
+
+```lua
+locateCharInCarObject3D(self, object, xRadius, yRadius, zRadius, drawSphere)
+```
+
+```js
+Char.locateInCarObject3D(self, object, xRadius, yRadius, zRadius, drawSphere)
+```
+</Opcode>
+
+## 是否在摩托上
+
+<Opcode id="047A" name="IS_CHAR_ON_ANY_BIKE" member="Char.IsOnAnyBike">
+用在 if：角色是否骑着摩托车。
+
+```text
+047A IS_CHAR_ON_ANY_BIKE
+in: self
+```
+
+```lua
+isCharOnAnyBike(self)
+```
+
+```js
+Char.isOnAnyBike(self)
+```
+</Opcode>
+
+## 是否看见尸体
+
+<Opcode id="0480" name="CAN_CHAR_SEE_DEAD_CHAR" member="Char.CanSeeDeadChar">
+用在 if：角色是否看见指定类型尸体。
+
+```text
+0480 CAN_CHAR_SEE_DEAD_CHAR
+in: self, pedType
+```
+
+```lua
+canCharSeeDeadChar(self, pedType)
+```
+
+```js
+Char.canSeeDeadChar(self, pedType)
+```
+</Opcode>
+
+## 闭嘴
+
+<Opcode id="0489" name="SHUT_CHAR_UP" member="Char.ShutUp">
+设置角色能否说话。
+
+```text
+0489 SHUT_CHAR_UP
+in: self, state
+```
+
+```lua
+shutCharUp(self, state)
+```
+
+```js
+Char.shutUp(self, state)
+```
+</Opcode>
+
+## 卸全部武器
+
+<Opcode id="048F" name="REMOVE_ALL_CHAR_WEAPONS" member="Char.RemoveAllWeapons">
+移除角色全部武器。
+
+```text
+048F REMOVE_ALL_CHAR_WEAPONS
+in: self
+```
+
+```lua
+removeAllCharWeapons(self)
+```
+
+```js
+Char.removeAllWeapons(self)
+```
+</Opcode>
+
+## 是否持有武器
+
+<Opcode id="0491" name="HAS_CHAR_GOT_WEAPON" member="Char.HasGotWeapon">
+用在 if：角色是否持有指定武器。
+
+```text
+0491 HAS_CHAR_GOT_WEAPON
+in: self, weaponType
+```
+
+```lua
+hasCharGotWeapon(self, weaponType)
+```
+
+```js
+Char.hasGotWeapon(self, weaponType)
+```
+</Opcode>
+
+## 是否在船上
+
+<Opcode id="04A7" name="IS_CHAR_IN_ANY_BOAT" member="Char.IsInAnyBoat">
+用在 if：角色是否在开船。
+
+```text
+04A7 IS_CHAR_IN_ANY_BOAT
+in: self
+```
+
+```lua
+isCharInAnyBoat(self)
+```
+
+```js
+Char.isInAnyBoat(self)
+```
+</Opcode>
+
+## 是否在直升机
+
+<Opcode id="04A9" name="IS_CHAR_IN_ANY_HELI" member="Char.IsInAnyHeli">
+用在 if：角色是否在开直升机。
+
+```text
+04A9 IS_CHAR_IN_ANY_HELI
+in: self
+```
+
+```lua
+isCharInAnyHeli(self)
+```
+
+```js
+Char.isInAnyHeli(self)
+```
+</Opcode>
+
+## 是否在飞机
+
+<Opcode id="04AB" name="IS_CHAR_IN_ANY_PLANE" member="Char.IsInAnyPlane">
+用在 if：角色是否在飞机上。
+
+```text
+04AB IS_CHAR_IN_ANY_PLANE
+in: self
+```
+
+```lua
+isCharInAnyPlane(self)
+```
+
+```js
+Char.isInAnyPlane(self)
+```
+</Opcode>
+
+## 是否在水中
+
+<Opcode id="04AD" name="IS_CHAR_IN_WATER" member="Char.IsInWater">
+用在 if：角色是否在水中。
+
+```text
+04AD IS_CHAR_IN_WATER
+in: self
+```
+
+```lua
+isCharInWater(self)
+```
+
+```js
+Char.isInWater(self)
+```
+</Opcode>
+
+## 取武器槽
+
+<Opcode id="04B8" name="GET_CHAR_WEAPON_IN_SLOT" member="Char.GetWeaponInSlot">
+返回指定武器槽的武器类型、弹药与模型。
+
+```text
+04B8 GET_CHAR_WEAPON_IN_SLOT
+in: self, slot
+out: weaponType, weaponAmmo, weaponModel
+```
+
+```lua
+local weaponType, weaponAmmo, weaponModel = getCharWeaponInSlot(self, slot)
+```
+
+```js
+Char.getWeaponInSlot(self, slot)
+```
+</Opcode>
+
+## 偏移世界坐标
+
+<Opcode id="04C4" name="GET_OFFSET_FROM_CHAR_IN_WORLD_COORDS" member="Char.GetOffsetInWorldCoords">
+返回带偏移的角色坐标。
+
+```text
+04C4 GET_OFFSET_FROM_CHAR_IN_WORLD_COORDS
+in: self, xOffset, yOffset, zOffset
+out: x, y, z
+```
+
+```lua
+local x, y, z = getOffsetFromCharInWorldCoords(self, xOffset, yOffset, zOffset)
+```
+
+```js
+Char.getOffsetInWorldCoords(self, xOffset, yOffset, zOffset)
+```
+</Opcode>
+
+## 是否被拍照
+
+<Opcode id="04C5" name="HAS_CHAR_BEEN_PHOTOGRAPHED" member="Char.HasBeenPhotographed">
+用在 if：角色是否被拍过照。
+
+```text
+04C5 HAS_CHAR_BEEN_PHOTOGRAPHED
+in: self
+```
+
+```lua
+hasCharBeenPhotographed(self)
+```
+
+```js
+Char.hasBeenPhotographed(self)
+```
+</Opcode>
+
+## 是否在飞行器
+
+<Opcode id="04C8" name="IS_CHAR_IN_FLYING_VEHICLE" member="Char.IsInFlyingVehicle">
+用在 if：角色是否在飞行器中。
+
+```text
+04C8 IS_CHAR_IN_FLYING_VEHICLE
+in: self
+```
+
+```lua
+isCharInFlyingVehicle(self)
+```
+
+```js
+Char.isInFlyingVehicle(self)
+```
+</Opcode>
+
+## 锁定位置
+
+<Opcode id="04D7" name="FREEZE_CHAR_POSITION" member="Char.FreezePosition">
+设置角色位置是否保持不变。
+
+```text
+04D7 FREEZE_CHAR_POSITION
+in: self, state
+```
+
+```lua
+freezeCharPosition(self, state)
+```
+
+```js
+Char.freezePosition(self, state)
+```
+</Opcode>
+
+## 是否溺水
+
+<Opcode id="04D8" name="SET_CHAR_DROWNS_IN_WATER" member="Char.SetDrownsInWater">
+控制角色是否会在水中溺水。
+
+```text
+04D8 SET_CHAR_DROWNS_IN_WATER
+in: self, state
+```
+
+```lua
+setCharDrownsInWater(self, state)
+```
+
+```js
+Char.setDrownsInWater(self, state)
+```
+</Opcode>
+
+## 取护甲
+
+<Opcode id="04DD" name="GET_CHAR_ARMOUR" member="Char.GetArmor">
+返回角色护甲值。
+
+```text
+04DD GET_CHAR_ARMOUR
+in: self
+out: armor
+```
+
+```lua
+local armor = getCharArmour(self)
+```
+
+```js
+Char.getArmor(self)
+```
+</Opcode>
+
+## 等世界碰撞
+
+<Opcode id="04F0" name="IS_CHAR_WAITING_FOR_WORLD_COLLISION" member="Char.IsWaitingForWorldCollision">
+用在 if：是否在等世界碰撞加载。
+
+```text
+04F0 IS_CHAR_WAITING_FOR_WORLD_COLLISION
+in: self
+```
+
+```lua
+isCharWaitingForWorldCollision(self)
+```
+
+```js
+Char.isWaitingForWorldCollision(self)
+```
+</Opcode>
+
+## 附着到物体
+
+<Opcode id="04F4" name="ATTACH_CHAR_TO_OBJECT" member="Char.AttachToObject">
+以炮塔模式把角色附着到指定物体。
+
+```text
+04F4 ATTACH_CHAR_TO_OBJECT
+in: self, handle, xOffset, yOffset, zOffset, heading, headingRange, weaponType
+```
+
+```lua
+attachCharToObject(self, handle, xOffset, yOffset, zOffset, heading, headingRange, weaponType)
+```
+
+```js
+Char.attachToObject(self, handle, xOffset, yOffset, zOffset, heading, headingRange, weaponType)
+```
+</Opcode>
+
+## 创建 SWAT 绳降
+
+<Opcode id="0503" name="CREATE_SWAT_ROPE" member="Char.CreateSwatRope">
+创建沿绳索下降的角色。
+
+```text
+0503 CREATE_SWAT_ROPE
+in: pedType, modelId, x, y, z
+out: handle
+```
+
+```lua
+local handle = createSwatRope(pedType, modelId, x, y, z)
+```
+
+```js
+Char.createSwatRope(pedType, modelId, x, y, z)
+```
+</Opcode>
+
+## 被角色打伤
+
+<Opcode id="051A" name="HAS_CHAR_BEEN_DAMAGED_BY_CHAR" member="Char.HasBeenDamagedByChar">
+用在 if：角色是否被另一角色打伤过。
+
+```text
+051A HAS_CHAR_BEEN_DAMAGED_BY_CHAR
+in: self, handle
+```
+
+```lua
+hasCharBeenDamagedByChar(self, handle)
+```
+
+```js
+Char.hasBeenDamagedByChar(self, handle)
+```
+</Opcode>
+
+## 被车撞伤
+
+<Opcode id="051B" name="HAS_CHAR_BEEN_DAMAGED_BY_CAR" member="Char.HasBeenDamagedByCar">
+用在 if：角色是否被指定车辆撞伤过。
+
+```text
+051B HAS_CHAR_BEEN_DAMAGED_BY_CAR
+in: self, handle
+```
+
+```lua
+hasCharBeenDamagedByCar(self, handle)
+```
+
+```js
+Char.hasBeenDamagedByCar(self, handle)
+```
+</Opcode>
+
+## 劫车时留车
+
+<Opcode id="0526" name="SET_CHAR_STAY_IN_CAR_WHEN_JACKED" member="Char.SetStayInCarWhenJacked">
+被劫车时让角色留在车内（可被“绑架”带走）。
+
+```text
+0526 SET_CHAR_STAY_IN_CAR_WHEN_JACKED
+in: self, state
+```
+
+```lua
+setCharStayInCarWhenJacked(self, state)
+```
+
+```js
+Char.setStayInCarWhenJacked(self, state)
+```
+</Opcode>
+
+## 碰到车辆
+
+<Opcode id="0547" name="IS_CHAR_TOUCHING_VEHICLE" member="Char.IsTouchingVehicle">
+用在 if：角色是否与车辆碰撞。
+
+```text
+0547 IS_CHAR_TOUCHING_VEHICLE
+in: self, handle
+```
+
+```lua
+isCharTouchingVehicle(self, handle)
+```
+
+```js
+Char.isTouchingVehicle(self, handle)
+```
+</Opcode>
+
+## 车内可被射击
+
+<Opcode id="054A" name="SET_CHAR_CAN_BE_SHOT_IN_VEHICLE" member="Char.SetCanBeShotInVehicle">
+让角色在车内免疫伤害。
+
+```text
+054A SET_CHAR_CAN_BE_SHOT_IN_VEHICLE
+in: self, state
+```
+
+```lua
+setCharCanBeShotInVehicle(self, state)
+```
+
+```js
+Char.setCanBeShotInVehicle(self, state)
+```
+</Opcode>
+
+## 清伤害来源
+
+<Opcode id="054E" name="CLEAR_CHAR_LAST_DAMAGE_ENTITY" member="Char.ClearLastDamageEntity">
+清上次伤害来源实体。
+
+```text
+054E CLEAR_CHAR_LAST_DAMAGE_ENTITY
+in: self
+```
+
+```lua
+clearCharLastDamageEntity(self)
+```
+
+```js
+Char.clearLastDamageEntity(self)
+```
+</Opcode>
+
+## 卸指定武器
+
+<Opcode id="0555" name="REMOVE_WEAPON_FROM_CHAR" member="Char.RemoveWeapon">
+从角色身上移除该武器。
+
+```text
+0555 REMOVE_WEAPON_FROM_CHAR
+in: self, weaponType
+```
+
+```lua
+removeWeaponFromChar(self, weaponType)
+```
+
+```js
+Char.removeWeapon(self, weaponType)
+```
+</Opcode>
+
+## 随机驾驶员
+
+<Opcode id="0560" name="CREATE_RANDOM_CHAR_AS_DRIVER" member="Char.CreateRandomAsDriver">
+在车辆中创建驾驶员。
+
+```text
+0560 CREATE_RANDOM_CHAR_AS_DRIVER
+in: vehicle
+out: handle
+```
+
+```lua
+local handle = createRandomCharAsDriver(vehicle)
+```
+
+```js
+Char.createRandomAsDriver(vehicle)
+```
+</Opcode>
+
+## 随机乘客
+
+<Opcode id="0561" name="CREATE_RANDOM_CHAR_AS_PASSENGER" member="Char.CreateRandomAsPassenger">
+在车辆乘客座创建随机角色。
+
+```text
+0561 CREATE_RANDOM_CHAR_AS_PASSENGER
+in: vehicle, seat
+out: handle
+```
+
+```lua
+local handle = createRandomCharAsPassenger(vehicle, seat)
+```
+
+```js
+Char.createRandomAsPassenger(vehicle, seat)
+```
+</Opcode>
+
+## 永不被瞄准
+
+<Opcode id="0568" name="SET_CHAR_NEVER_TARGETTED" member="Char.SetNeverTargeted">
+设置角色是否不被自动瞄准锁定。
+
+```text
+0568 SET_CHAR_NEVER_TARGETTED
+in: self, state
+```
+
+```lua
+setCharNeverTargetted(self, state)
+```
+
+```js
+Char.setNeverTargeted(self, state)
+```
+</Opcode>
+
+## 是否在警车
+
+<Opcode id="056C" name="IS_CHAR_IN_ANY_POLICE_VEHICLE" member="Char.IsInAnyPoliceVehicle">
+用在 if：角色是否驾驶警车。
+
+```text
+056C IS_CHAR_IN_ANY_POLICE_VEHICLE
+in: self
+```
+
+```lua
+isCharInAnyPoliceVehicle(self)
+```
+
+```js
+Char.isInAnyPoliceVehicle(self)
+```
+</Opcode>
+
+## 角色是否存在
+
+<Opcode id="056D" name="DOES_CHAR_EXIST" member="Char.DoesExist">
+用在 if：句柄是否为有效角色句柄。
+
+```text
+056D DOES_CHAR_EXIST
+in: handle
+```
+
+```lua
+doesCharExist(handle)
+```
+
+```js
+Char.doesExist(handle)
+```
+</Opcode>
+
+## 冻结且不加载碰撞
+
+<Opcode id="0575" name="FREEZE_CHAR_POSITION_AND_DONT_LOAD_COLLISION" member="Char.FreezePositionAndDontLoadCollision">
+冻结位置且不加载碰撞。
+
+```text
+0575 FREEZE_CHAR_POSITION_AND_DONT_LOAD_COLLISION
+in: self, state
+```
+
+```lua
+freezeCharPositionAndDontLoadCollision(self, state)
+```
+
+```js
+Char.freezePositionAndDontLoadCollision(self, state)
+```
+</Opcode>
+
+## 碰撞加载标志
+
+<Opcode id="0588" name="SET_LOAD_COLLISION_FOR_CHAR_FLAG" member="Char.SetLoadCollisionFlag">
+是否为该角色加载碰撞。
+
+```text
+0588 SET_LOAD_COLLISION_FOR_CHAR_FLAG
+in: self, state
+```
+
+```lua
+setLoadCollisionForCharFlag(self, state)
+```
+
+```js
+Char.setLoadCollisionFlag(self, state)
+```
+</Opcode>
+
+## 是否蹲下
+
+<Opcode id="0597" name="IS_CHAR_DUCKING" member="Char.IsDucking">
+用在 if：角色是否蹲下。
+
+```text
+0597 IS_CHAR_DUCKING
+in: self
+```
+
+```lua
+isCharDucking(self)
+```
+
+```js
+Char.isDucking(self)
+```
+</Opcode>
+
+## 倾斜 2D 区域
+
+<Opcode id="05F6" name="IS_CHAR_IN_ANGLED_AREA_2D" member="Char.IsInAngledArea2D">
+用在 if：角色是否在倾斜 2D 区域内。
+
+```text
+05F6 IS_CHAR_IN_ANGLED_AREA_2D
+in: self, leftBottomX, leftBottomY, rightTopX, rightTopY, angle, drawSphere
+```
+
+```lua
+isCharInAngledArea2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, angle, drawSphere)
+```
+
+```js
+Char.isInAngledArea2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, angle, drawSphere)
+```
+</Opcode>
+
+## 倾斜 2D 徒步
+
+<Opcode id="05F7" name="IS_CHAR_IN_ANGLED_AREA_ON_FOOT_2D" member="Char.IsInAngledAreaOnFoot2D">
+用在 if：角色是否徒步在倾斜 2D 区域内。
+
+```text
+05F7 IS_CHAR_IN_ANGLED_AREA_ON_FOOT_2D
+in: self, leftBottomX, leftBottomY, rightTopX, rightTopY, angle, drawSphere
+```
+
+```lua
+isCharInAngledAreaOnFoot2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, angle, drawSphere)
+```
+
+```js
+Char.isInAngledAreaOnFoot2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, angle, drawSphere)
+```
+</Opcode>
+
+## 倾斜 2D 车内
+
+<Opcode id="05F8" name="IS_CHAR_IN_ANGLED_AREA_IN_CAR_2D" member="Char.IsInAngledAreaInCar2D">
+用在 if：角色是否在车内且位于倾斜 2D 区域内。
+
+```text
+05F8 IS_CHAR_IN_ANGLED_AREA_IN_CAR_2D
+in: self, leftBottomX, leftBottomY, rightTopX, rightTopY, angle, drawSphere
+```
+
+```lua
+isCharInAngledAreaInCar2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, angle, drawSphere)
+```
+
+```js
+Char.isInAngledAreaInCar2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, angle, drawSphere)
+```
+</Opcode>
+
+## 停下倾斜 2D
+
+<Opcode id="05F9" name="IS_CHAR_STOPPED_IN_ANGLED_AREA_2D" member="Char.IsStoppedInAngledArea2D">
+用在 if：角色是否停在倾斜 2D 区域内。
+
+```text
+05F9 IS_CHAR_STOPPED_IN_ANGLED_AREA_2D
+in: self, leftBottomX, leftBottomY, rightTopX, rightTopY, angle, drawSphere
+```
+
+```lua
+isCharStoppedInAngledArea2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, angle, drawSphere)
+```
+
+```js
+Char.isStoppedInAngledArea2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, angle, drawSphere)
+```
+</Opcode>
+
+## 停下徒步倾斜 2D
+
+<Opcode id="05FA" name="IS_CHAR_STOPPED_IN_ANGLED_AREA_ON_FOOT_2D" member="Char.IsStoppedInAngledAreaOnFoot2D">
+用在 if：角色是否徒步停在倾斜 2D 区域内。
+
+```text
+05FA IS_CHAR_STOPPED_IN_ANGLED_AREA_ON_FOOT_2D
+in: self, leftBottomX, leftBottomY, rightTopX, rightTopY, angle, drawSphere
+```
+
+```lua
+isCharStoppedInAngledAreaOnFoot2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, angle, drawSphere)
+```
+
+```js
+Char.isStoppedInAngledAreaOnFoot2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, angle, drawSphere)
+```
+</Opcode>
+
+## 停下车内倾斜 2D
+
+<Opcode id="05FB" name="IS_CHAR_STOPPED_IN_ANGLED_AREA_IN_CAR_2D" member="Char.IsStoppedInAngledAreaInCar2D">
+用在 if：角色是否在静止车内且位于倾斜 2D 区域内。
+
+```text
+05FB IS_CHAR_STOPPED_IN_ANGLED_AREA_IN_CAR_2D
+in: self, leftBottomX, leftBottomY, rightTopX, rightTopY, angle, drawSphere
+```
+
+```lua
+isCharStoppedInAngledAreaInCar2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, angle, drawSphere)
+```
+
+```js
+Char.isStoppedInAngledAreaInCar2D(self, leftBottomX, leftBottomY, rightTopX, rightTopY, angle, drawSphere)
+```
+</Opcode>
+
+## 倾斜 3D 区域
+
+<Opcode id="05FC" name="IS_CHAR_IN_ANGLED_AREA_3D" member="Char.IsInAngledArea3D">
+用在 if：角色是否在倾斜 3D 区域内。
+
+```text
+05FC IS_CHAR_IN_ANGLED_AREA_3D
+in: self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, angle, drawSphere
+```
+
+```lua
+isCharInAngledArea3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, angle, drawSphere)
+```
+
+```js
+Char.isInAngledArea3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, angle, drawSphere)
+```
+</Opcode>
+
+## 倾斜 3D 徒步
+
+<Opcode id="05FD" name="IS_CHAR_IN_ANGLED_AREA_ON_FOOT_3D" member="Char.IsInAngledAreaOnFoot3D">
+用在 if：角色是否徒步在倾斜 3D 区域内。
+
+```text
+05FD IS_CHAR_IN_ANGLED_AREA_ON_FOOT_3D
+in: self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, angle, drawSphere
+```
+
+```lua
+isCharInAngledAreaOnFoot3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, angle, drawSphere)
+```
+
+```js
+Char.isInAngledAreaOnFoot3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, angle, drawSphere)
+```
+</Opcode>
+
+## 倾斜 3D 车内
+
+<Opcode id="05FE" name="IS_CHAR_IN_ANGLED_AREA_IN_CAR_3D" member="Char.IsInAngledAreaInCar3D">
+用在 if：角色是否在车内且位于倾斜 3D 区域内。
+
+```text
+05FE IS_CHAR_IN_ANGLED_AREA_IN_CAR_3D
+in: self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, angle, drawSphere
+```
+
+```lua
+isCharInAngledAreaInCar3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, angle, drawSphere)
+```
+
+```js
+Char.isInAngledAreaInCar3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, angle, drawSphere)
+```
+</Opcode>
+
+## 停下倾斜 3D
+
+<Opcode id="05FF" name="IS_CHAR_STOPPED_IN_ANGLED_AREA_3D" member="Char.IsStoppedInAngledArea3D">
+用在 if：角色是否停在倾斜 3D 区域内。
+
+```text
+05FF IS_CHAR_STOPPED_IN_ANGLED_AREA_3D
+in: self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, angle, drawSphere
+```
+
+```lua
+isCharStoppedInAngledArea3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, angle, drawSphere)
+```
+
+```js
+Char.isStoppedInAngledArea3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, angle, drawSphere)
+```
+</Opcode>
+
+## 停下徒步倾斜 3D
+
+<Opcode id="0600" name="IS_CHAR_STOPPED_IN_ANGLED_AREA_ON_FOOT_3D" member="Char.IsStoppedInAngledAreaOnFoot3D">
+用在 if：角色是否徒步停在倾斜 3D 区域内。
+
+```text
+0600 IS_CHAR_STOPPED_IN_ANGLED_AREA_ON_FOOT_3D
+in: self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, angle, drawSphere
+```
+
+```lua
+isCharStoppedInAngledAreaOnFoot3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, angle, drawSphere)
+```
+
+```js
+Char.isStoppedInAngledAreaOnFoot3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, angle, drawSphere)
+```
+</Opcode>
+
+## 停下车内倾斜 3D
+
+<Opcode id="0601" name="IS_CHAR_STOPPED_IN_ANGLED_AREA_IN_CAR_3D" member="Char.IsStoppedInAngledAreaInCar3D">
+用在 if：角色是否在静止车内且位于倾斜 3D 区域内。
+
+```text
+0601 IS_CHAR_STOPPED_IN_ANGLED_AREA_IN_CAR_3D
+in: self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, angle, drawSphere
+```
+
+```lua
+isCharStoppedInAngledAreaInCar3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, angle, drawSphere)
+```
+
+```js
+Char.isStoppedInAngledAreaInCar3D(self, leftBottomX, leftBottomY, leftBottomZ, rightTopX, rightTopY, rightTopZ, angle, drawSphere)
+```
+</Opcode>
+
+## 是否在出租车
+
+<Opcode id="0602" name="IS_CHAR_IN_TAXI" member="Char.IsInTaxi">
+用在 if：角色是否驾驶出租车。
+
+```text
+0602 IS_CHAR_IN_TAXI
+in: self
+```
+
+```lua
+isCharInTaxi(self)
+```
+
+```js
+Char.isInTaxi(self)
+```
+</Opcode>
+
+## 决策器
+
+<Opcode id="060B" name="SET_CHAR_DECISION_MAKER" member="Char.SetDecisionMaker">
+为角色设置决策器。
+
+```text
+060B SET_CHAR_DECISION_MAKER
+in: self, handleOrTemplate
+```
+
+```lua
+setCharDecisionMaker(self, handleOrTemplate)
+```
+
+```js
+Char.setDecisionMaker(self, handleOrTemplate)
+```
+</Opcode>
+
+## 感知范围
+
+<Opcode id="060F" name="SET_SENSE_RANGE" member="Char.SetSenseRange">
+设置指定角色（句柄 -1 时为全部任务角色）的视听范围。
+
+```text
+060F SET_SENSE_RANGE
+in: handle, range
+```
+
+```lua
+setSenseRange(handle, range)
+```
+
+```js
+Char.setSenseRange(handle, range)
+```
+</Opcode>
+
+## 是否播动画
+
+<Opcode id="0611" name="IS_CHAR_PLAYING_ANIM" member="Char.IsPlayingAnim">
+用在 if：角色是否正在播指定动画。
+
+```text
+0611 IS_CHAR_PLAYING_ANIM
+in: self, animationName
+```
+
+```lua
+isCharPlayingAnim(self, animationName)
+```
+
+```js
+Char.isPlayingAnim(self, animationName)
+```
+</Opcode>
+
+## 动画播放开关
+
+<Opcode id="0612" name="SET_CHAR_ANIM_PLAYING_FLAG" member="Char.SetAnimPlayingFlag">
+设置动画是否播放。
+
+```text
+0612 SET_CHAR_ANIM_PLAYING_FLAG
+in: self, animationName, flag
+```
+
+```lua
+setCharAnimPlayingFlag(self, animationName, flag)
+```
+
+```js
+Char.setAnimPlayingFlag(self, animationName, flag)
+```
+</Opcode>
+
+## 动画进度
+
+<Opcode id="0613" name="GET_CHAR_ANIM_CURRENT_TIME" member="Char.GetAnimCurrentTime">
+返回角色动画进度，范围 0.0–1.0。
+
+```text
+0613 GET_CHAR_ANIM_CURRENT_TIME
+in: self, animationName
+out: time
+```
+
+```lua
+local time = getCharAnimCurrentTime(self, animationName)
+```
+
+```js
+Char.getAnimCurrentTime(self, animationName)
+```
+</Opcode>
+
+## 设动画进度
+
+<Opcode id="0614" name="SET_CHAR_ANIM_CURRENT_TIME" member="Char.SetAnimCurrentTime">
+设置角色动画播放到哪一段，1 为完整。
+
+```text
+0614 SET_CHAR_ANIM_CURRENT_TIME
+in: self, animationName, time
+```
+
+```lua
+setCharAnimCurrentTime(self, animationName, time)
+```
+
+```js
+Char.setAnimCurrentTime(self, animationName, time)
+```
+</Opcode>
+
+## 执行动作序列
+
+<Opcode id="0618" name="PERFORM_SEQUENCE_TASK" member="Char.PerformSequence">
+把角色指派到指定动作序列。
+
+```text
+0618 PERFORM_SEQUENCE_TASK
+in: self, sequence
+```
+
+```lua
+performSequenceTask(self, sequence)
+```
+
+```js
+Char.performSequence(self, sequence)
+```
+</Opcode>
+
+## 碰撞开关
+
+<Opcode id="0619" name="SET_CHAR_COLLISION" member="Char.SetCollision">
+设置是否启用角色碰撞检测。
+
+```text
+0619 SET_CHAR_COLLISION
+in: self, state
+```
+
+```lua
+setCharCollision(self, state)
+```
+
+```js
+Char.setCollision(self, state)
+```
+</Opcode>
+
+## 动画总时长
+
+<Opcode id="061A" name="GET_CHAR_ANIM_TOTAL_TIME" member="Char.GetAnimTotalTime">
+返回动画时长（毫秒，浮点）。
+
+```text
+061A GET_CHAR_ANIM_TOTAL_TIME
+in: self, animationName
+out: totalTime
+```
+
+```lua
+local totalTime = getCharAnimTotalTime(self, animationName)
+```
+
+```js
+Char.getAnimTotalTime(self, animationName)
+```
+</Opcode>
+
+## 吸引点创建
+
+<Opcode id="0621" name="CREATE_CHAR_AT_ATTRACTOR" member="Char.CreateAtAttractor">
+在吸引点创建角色。
+
+```text
+0621 CREATE_CHAR_AT_ATTRACTOR
+in: pedType, modelId, attractor, task
+out: handle
+```
+
+```lua
+local handle = createCharAtAttractor(pedType, modelId, attractor, task)
+```
+
+```js
+Char.createAtAttractor(pedType, modelId, attractor, task)
+```
+</Opcode>
+
+## 脚本任务状态
+
+<Opcode id="062E" name="GET_SCRIPT_TASK_STATUS" member="Char.GetScriptTaskStatus">
+返回角色指定脚本任务的状态。
+
+```text
+062E GET_SCRIPT_TASK_STATUS
+in: self, task
+out: status
+```
+
+```lua
+local status = getScriptTaskStatus(self, task)
+```
+
+```js
+Char.getScriptTaskStatus(self, task)
+```
+</Opcode>
+
+## 是否在脚本吸引点
+
+<Opcode id="0642" name="IS_CHAR_AT_SCRIPTED_ATTRACTOR" member="Char.IsAtScriptedAttractor">
+用在 if：角色是否在脚本吸引点。
+
+```text
+0642 IS_CHAR_AT_SCRIPTED_ATTRACTOR
+in: self, handle
+```
+
+```lua
+isCharAtScriptedAttractor(self, handle)
+```
+
+```js
+Char.isAtScriptedAttractor(self, handle)
+```
+</Opcode>
+
+## 序列进度
+
+<Opcode id="0646" name="GET_SEQUENCE_PROGRESS" member="Char.GetSequenceProgress">
+获取角色任务序列进度（由 0618 启动）。
+
+```text
+0646 GET_SEQUENCE_PROGRESS
+in: self
+out: progress
+```
+
+```lua
+local progress = getSequenceProgress(self)
+```
+
+```js
+Char.getSequenceProgress(self)
+```
+</Opcode>
+
+## 清看向
+
+<Opcode id="0647" name="CLEAR_LOOK_AT" member="Char.ClearLookAt">
+清除角色看向任务，停止看目标。
+
+```text
+0647 CLEAR_LOOK_AT
+in: self
+```
+
+```lua
+clearLookAt(self)
+```
+
+```js
+Char.clearLookAt(self)
+```
+</Opcode>
+
+## 跟随节点阈值距离
+
+<Opcode id="0648" name="SET_FOLLOW_NODE_THRESHOLD_DISTANCE" member="Char.SetFollowNodeThresholdDistance">
+设置角色对事件作出反应的范围。
+
+```text
+0648 SET_FOLLOW_NODE_THRESHOLD_DISTANCE
+in: self, range
+```
+
+```lua
+setFollowNodeThresholdDistance(self, range)
+```
+
+```js
+Char.setFollowNodeThresholdDistance(self, range)
+```
+</Opcode>
+
+## 取模型
+
+<Opcode id="0665" name="GET_CHAR_MODEL" member="Char.GetModel">
+返回角色模型。
+
+```text
+0665 GET_CHAR_MODEL
+in: self
+out: modelId
+```
+
+```lua
+local modelId = getCharModel(self)
+```
+
+```js
+Char.getModel(self)
+```
+</Opcode>
+
+## 清任务
+
+<Opcode id="0687" name="CLEAR_CHAR_TASKS" member="Char.ClearTasks">
+清除角色任务，让其停下当前行为。
+
+```text
+0687 CLEAR_CHAR_TASKS
+in: self
+```
+
+```lua
+clearCharTasks(self)
+```
+
+```js
+Char.clearTasks(self)
+```
+</Opcode>
+
+## 附着到摩托
+
+<Opcode id="06A7" name="ATTACH_CHAR_TO_BIKE" member="Char.AttachToBike">
+把角色附着到摩托上。
+
+```text
+06A7 ATTACH_CHAR_TO_BIKE
+in: self, vehicle, xOffset, yOffset, zOffset, heading, headingRange, pitchRange, weaponType
+```
+
+```lua
+attachCharToBike(self, vehicle, xOffset, yOffset, zOffset, heading, headingRange, pitchRange, weaponType)
+```
+
+```js
+Char.attachToBike(self, vehicle, xOffset, yOffset, zOffset, heading, headingRange, pitchRange, weaponType)
+```
+</Opcode>
+
+## 过场藏武器
+
+<Opcode id="06AB" name="HIDE_CHAR_WEAPON_FOR_SCRIPTED_CUTSCENE" member="Char.HideWeaponForScriptedCutscene">
+隐藏角色全部武器。
+
+```text
+06AB HIDE_CHAR_WEAPON_FOR_SCRIPTED_CUTSCENE
+in: self, state
+```
+
+```lua
+hideCharWeaponForScriptedCutscene(self, state)
+```
+
+```js
+Char.hideWeaponForScriptedCutscene(self, state)
+```
+</Opcode>
+
+## 取速度
+
+<Opcode id="06AC" name="GET_CHAR_SPEED" member="Char.GetSpeed">
+返回角色移动速度。
+
+```text
+06AC GET_CHAR_SPEED
+in: self
+out: speed
+```
+
+```lua
+local speed = getCharSpeed(self)
+```
+
+```js
+Char.getSpeed(self)
+```
+</Opcode>
+
+## 移出小队
+
+<Opcode id="06C9" name="REMOVE_CHAR_FROM_GROUP" member="Char.RemoveFromGroup">
+把角色移出当前小队。
+
+```text
+06C9 REMOVE_CHAR_FROM_GROUP
+in: self
+```
+
+```lua
+removeCharFromGroup(self)
+```
+
+```js
+Char.removeFromGroup(self)
+```
+</Opcode>
+
+## 是否小队成员
+
+<Opcode id="06EE" name="IS_GROUP_MEMBER" member="Char.IsGroupMember">
+用在 if：角色是否为指定小队成员。
+
+```text
+06EE IS_GROUP_MEMBER
+in: self, handle
+```
+
+```lua
+isGroupMember(self, handle)
+```
+
+```js
+Char.isGroupMember(self, handle)
+```
+</Opcode>
+
+## 是否小队长
+
+<Opcode id="06EF" name="IS_GROUP_LEADER" member="Char.IsGroupLeader">
+用在 if：角色是否为指定小队队长。
+
+```text
+06EF IS_GROUP_LEADER
+in: self, handle
+```
+
+```lua
+isGroupLeader(self, handle)
+```
+
+```js
+Char.isGroupLeader(self, handle)
+```
+</Opcode>
+
+## 附近是否有人
+
+<Opcode id="06FF" name="ARE_ANY_CHARS_NEAR_CHAR" member="Char.IsNearAnyChars">
+用在 if：附近是否有其他角色。
+
+```text
+06FF ARE_ANY_CHARS_NEAR_CHAR
+in: self, radius
+```
+
+```lua
+areAnyCharsNearChar(self, radius)
+```
+
+```js
+Char.isNearAnyChars(self, radius)
+```
+</Opcode>
+
+## 丢物体
+
+<Opcode id="070B" name="DROP_OBJECT" member="Char.DropObject">
+让角色丢下物体。
+
+```text
+070B DROP_OBJECT
+in: self, state
+```
+
+```lua
+dropObject(self, state)
+```
+
+```js
+Char.dropObject(self, state)
+```
+</Opcode>
+
+## 是否举着物体
+
+<Opcode id="0737" name="IS_CHAR_HOLDING_OBJECT" member="Char.IsHoldingObject">
+用在 if：角色是否在举起指定物体。
+
+```text
+0737 IS_CHAR_HOLDING_OBJECT
+in: self, handle
+```
+
+```lua
+isCharHoldingObject(self, handle)
+```
+
+```js
+Char.isHoldingObject(self, handle)
+```
+</Opcode>
+
+## 是否被捕
+
+<Opcode id="0741" name="HAS_CHAR_BEEN_ARRESTED" member="Char.HasBeenArrested">
+用在 if：角色是否已被逮捕。
+
+```text
+0741 HAS_CHAR_BEEN_ARRESTED
+in: self
+```
+
+```lua
+hasCharBeenArrested(self)
+```
+
+```js
+Char.hasBeenArrested(self)
+```
+</Opcode>
+
+## 通知受尊敬朋友
+
+<Opcode id="074E" name="SET_INFORM_RESPECTED_FRIENDS" member="Char.SetInformRespectedFriends">
+设置通知受尊敬朋友。
+
+```text
+074E SET_INFORM_RESPECTED_FRIENDS
+in: self, radius, _p3
+```
+
+```lua
+setInformRespectedFriends(self, radius, _p3)
+```
+
+```js
+Char.setInformRespectedFriends(self, radius, _p3)
+```
+</Opcode>
+
+## 是否响应事件
+
+<Opcode id="074F" name="IS_CHAR_RESPONDING_TO_EVENT" member="Char.IsRespondingToEvent">
+用在 if：角色是否在响应指定 ped 事件。
+
+```text
+074F IS_CHAR_RESPONDING_TO_EVENT
+in: self, event
+```
+
+```lua
+isCharRespondingToEvent(self, event)
+```
+
+```js
+Char.isRespondingToEvent(self, event)
+```
+</Opcode>
+
+## 优先瞄准目标
+
+<Opcode id="0770" name="SET_CHAR_IS_TARGET_PRIORITY" member="Char.SetIsTargetPriority">
+让自动瞄准更倾向锁定此角色。
+
+```text
+0770 SET_CHAR_IS_TARGET_PRIORITY
+in: self, state
+```
+
+```lua
+setCharIsTargetPriority(self, state)
+```
+
+```js
+Char.setIsTargetPriority(self, state)
+```
+</Opcode>
+
+## 设关系
+
+<Opcode id="077A" name="SET_CHAR_RELATIONSHIP" member="Char.SetRelationship">
+设置角色与 ped 类型的关系。
+
+```text
+077A SET_CHAR_RELATIONSHIP
+in: self, relationshipType, pedType
+```
+
+```lua
+setCharRelationship(self, relationshipType, pedType)
+```
+
+```js
+Char.setRelationship(self, relationshipType, pedType)
+```
+</Opcode>
+
+## 清关系
+
+<Opcode id="077B" name="CLEAR_CHAR_RELATIONSHIP" member="Char.ClearRelationship">
+清除角色与 ped 类型的关系。
+
+```text
+077B CLEAR_CHAR_RELATIONSHIP
+in: self, relationshipType, toPedType
+```
+
+```lua
+clearCharRelationship(self, relationshipType, toPedType)
+```
+
+```js
+Char.clearRelationship(self, relationshipType, toPedType)
+```
+</Opcode>
+
+## 清全部关系
+
+<Opcode id="077C" name="CLEAR_ALL_CHAR_RELATIONSHIPS" member="Char.ClearAllRelationships">
+清除角色全部指定类型关系。
+
+```text
+077C CLEAR_ALL_CHAR_RELATIONSHIPS
+in: self, relationshipType
+```
+
+```lua
+clearAllCharRelationships(self, relationshipType)
+```
+
+```js
+Char.clearAllRelationships(self, relationshipType)
+```
+</Opcode>
+
+## 立即清任务
+
+<Opcode id="0792" name="CLEAR_CHAR_TASKS_IMMEDIATELY" member="Char.ClearTasksImmediately">
+立即清除角色全部任务，回到空闲。
+
+```text
+0792 CLEAR_CHAR_TASKS_IMMEDIATELY
+in: self
+```
+
+```lua
+clearCharTasksImmediately(self)
+```
+
+```js
+Char.clearTasksImmediately(self)
+```
+</Opcode>
+
+## 从进度执行序列
+
+<Opcode id="07A0" name="PERFORM_SEQUENCE_TASK_FROM_PROGRESS" member="Char.PerformSequenceFromProgress">
+从指定进度执行动作序列。
+
+```text
+07A0 PERFORM_SEQUENCE_TASK_FROM_PROGRESS
+in: self, sequence, startTaskIndex, endTaskIndex
+```
+
+```lua
+performSequenceTaskFromProgress(self, sequence, startTaskIndex, endTaskIndex)
+```
+
+```js
+Char.performSequenceFromProgress(self, sequence, startTaskIndex, endTaskIndex)
+```
+</Opcode>
+
+## 下一移动状态
+
+<Opcode id="07A1" name="SET_NEXT_DESIRED_MOVE_STATE" member="Char.SetNextDesiredMoveState">
+设置后续无路程参数任务时角色如何前往目的地。
+
+```text
+07A1 SET_NEXT_DESIRED_MOVE_STATE
+in: moveState
+```
+
+```lua
+setNextDesiredMoveState(moveState)
+```
+
+```js
+Char.setNextDesiredMoveState(moveState)
+```
+</Opcode>
+
+## 递归序列进度
+
+<Opcode id="07A4" name="GET_SEQUENCE_PROGRESS_RECURSIVE" member="Char.GetSequenceProgressRecursive">
+取递归序列进度。
+
+```text
+07A4 GET_SEQUENCE_PROGRESS_RECURSIVE
+in: self
+out: _p2, _p3
+```
+
+```lua
+local _p2, _p3 = getSequenceProgressRecursive(self)
+```
+
+```js
+Char.getSequenceProgressRecursive(self)
+```
+</Opcode>
+
+## 是否在探照灯
+
+<Opcode id="07A9" name="IS_CHAR_IN_ANY_SEARCHLIGHT" member="Char.IsInAnySearchlight">
+返回正在瞄准该角色的探照灯句柄。
+
+```text
+07A9 IS_CHAR_IN_ANY_SEARCHLIGHT
+in: self
+out: handle
+```
+
+```lua
+local handle = isCharInAnySearchlight(self)
+```
+
+```js
+Char.isInAnySearchlight(self)
+```
+</Opcode>
+
+## 听玩家小队指令
+
+<Opcode id="07CB" name="LISTEN_TO_PLAYER_GROUP_COMMANDS" member="Char.ListenToPlayerGroupCommands">
+是否听从玩家小队指令。
+
+```text
+07CB LISTEN_TO_PLAYER_GROUP_COMMANDS
+in: self, state
+```
+
+```lua
+listenToPlayerGroupCommands(self, state)
+```
+
+```js
+Char.listenToPlayerGroupCommands(self, state)
+```
+</Opcode>
+
+## 射击频率
+
+<Opcode id="07DD" name="SET_CHAR_SHOOT_RATE" member="Char.SetShootRate">
+设置角色攻击频率。
+
+```text
+07DD SET_CHAR_SHOOT_RATE
+in: self, rate
+```
+
+```lua
+setCharShootRate(self, rate)
+```
+
+```js
+Char.setShootRate(self, rate)
+```
+</Opcode>
+
+## 格斗风格
+
+<Opcode id="07FE" name="GIVE_MELEE_ATTACK_TO_CHAR" member="Char.GiveMeleeAttack">
+设置角色格斗风格与招式。
+
+```text
+07FE GIVE_MELEE_ATTACK_TO_CHAR
+in: self, style, move
+```
+
+```lua
+giveMeleeAttackToChar(self, style, move)
+```
+
+```js
+Char.giveMeleeAttack(self, style, move)
+```
+</Opcode>
+
+## 最高优先事件
+
+<Opcode id="080E" name="GET_CHAR_HIGHEST_PRIORITY_EVENT" member="Char.GetHighestPriorityEvent">
+获取角色当前 ped 事件。
+
+```text
+080E GET_CHAR_HIGHEST_PRIORITY_EVENT
+in: self
+out: event
+```
+
+```lua
+local event = getCharHighestPriorityEvent(self)
+```
+
+```js
+Char.getHighestPriorityEvent(self)
+```
+</Opcode>
+
+## 取正在用的车
+
+<Opcode id="0811" name="GET_CAR_CHAR_IS_USING" member="Char.GetCarIsUsing">
+存下角色正在乘坐或进入的车辆句柄（另见 00D9、03C0、0484）。
+
+```text
+0811 GET_CAR_CHAR_IS_USING
+in: self
+out: handle
+```
+
+```lua
+local handle = getCarCharIsUsing(self)
+```
+
+```js
+Char.getCarIsUsing(self)
+```
+</Opcode>
+
+## 大致原地
+
+<Opcode id="0816" name="SET_CHAR_KINDA_STAY_IN_SAME_PLACE" member="Char.SetKindaStayInSamePlace">
+设置角色是否不远追受害者（近战或进射程）。
+
+```text
+0816 SET_CHAR_KINDA_STAY_IN_SAME_PLACE
+in: self, state
+```
+
+```lua
+setCharKindaStayInSamePlace(self, state)
+```
+
+```js
+Char.setKindaStayInSamePlace(self, state)
+```
+</Opcode>
+
+## 是否在空中
+
+<Opcode id="0818" name="IS_CHAR_IN_AIR" member="Char.IsInAir">
+用在 if：角色是否在空中。
+
+```text
+0818 IS_CHAR_IN_AIR
+in: self
+```
+
+```lua
+isCharInAir(self)
+```
+
+```js
+Char.isInAir(self)
+```
+</Opcode>
+
+## 离地高度
+
+<Opcode id="0819" name="GET_CHAR_HEIGHT_ABOVE_GROUND" member="Char.GetHeightAboveGround">
+返回角色离地高度。
+
+```text
+0819 GET_CHAR_HEIGHT_ABOVE_GROUND
+in: self
+out: height
+```
+
+```lua
+local height = getCharHeightAboveGround(self)
+```
+
+```js
+Char.getHeightAboveGround(self)
+```
+</Opcode>
+
+## 持枪姿势
+
+<Opcode id="081A" name="SET_CHAR_WEAPON_SKILL" member="Char.SetWeaponSkill">
+设置角色持枪姿势风格。
+
+```text
+081A SET_CHAR_WEAPON_SKILL
+in: self, skill
+```
+
+```lua
+setCharWeaponSkill(self, skill)
+```
+
+```js
+Char.setWeaponSkill(self, skill)
+```
+</Opcode>
+
+## 设速度向量
+
+<Opcode id="083C" name="SET_CHAR_VELOCITY" member="Char.SetVelocity">
+设置角色速度。
+
+```text
+083C SET_CHAR_VELOCITY
+in: self, x, y, z
+```
+
+```lua
+setCharVelocity(self, x, y, z)
+```
+
+```js
+Char.setVelocity(self, x, y, z)
+```
+</Opcode>
+
+## 取速度向量
+
+<Opcode id="083D" name="GET_CHAR_VELOCITY" member="Char.GetVelocity">
+获取角色速度。
+
+```text
+083D GET_CHAR_VELOCITY
+in: self
+out: x, y, z
+```
+
+```lua
+local x, y, z = getCharVelocity(self)
+```
+
+```js
+Char.getVelocity(self)
+```
+</Opcode>
+
+## 设旋转
+
+<Opcode id="083E" name="SET_CHAR_ROTATION" member="Char.SetRotation">
+设置角色旋转。
+
+```text
+083E SET_CHAR_ROTATION
+in: self, x, y, z
+```
+
+```lua
+setCharRotation(self, x, y, z)
+```
+
+```js
+Char.setRotation(self, x, y, z)
+```
+</Opcode>
+
+## 造成伤害
+
+<Opcode id="0851" name="DAMAGE_CHAR" member="Char.Damage">
+降低角色生命。
+
+```text
+0851 DAMAGE_CHAR
+in: self, amount, damageArmour
+```
+
+```lua
+damageChar(self, amount, damageArmour)
+```
+
+```js
+Char.damage(self, amount, damageArmour)
+```
+</Opcode>
+
+## 允许蹲下
+
+<Opcode id="0856" name="SET_CHAR_ALLOWED_TO_DUCK" member="Char.SetAllowedToDuck">
+设置角色能否蹲下。
+
+```text
+0856 SET_CHAR_ALLOWED_TO_DUCK
+in: self, state
+```
+
+```lua
+setCharAllowedToDuck(self, state)
+```
+
+```js
+Char.setAllowedToDuck(self, state)
+```
+</Opcode>
+
+## 可见 interior
+
+<Opcode id="0860" name="SET_CHAR_AREA_VISIBLE" member="Char.SetAreaVisible">
+设置角色所在室内。
+
+```text
+0860 SET_CHAR_AREA_VISIBLE
+in: self, areaId
+```
+
+```lua
+setCharAreaVisible(self, areaId)
+```
+
+```js
+Char.setAreaVisible(self, areaId)
+```
+</Opcode>
+
+## 死后掉武器
+
+<Opcode id="087E" name="SET_CHAR_DROPS_WEAPONS_WHEN_DEAD" member="Char.SetDropsWeaponsWhenDead">
+设置角色死后是否掉落武器。
+
+```text
+087E SET_CHAR_DROPS_WEAPONS_WHEN_DEAD
+in: self, state
+```
+
+```lua
+setCharDropsWeaponsWhenDead(self, state)
+```
+
+```js
+Char.setDropsWeaponsWhenDead(self, state)
+```
+</Opcode>
+
+## 永不离队
+
+<Opcode id="087F" name="SET_CHAR_NEVER_LEAVES_GROUP" member="Char.SetNeverLeavesGroup">
+阻止角色离开所属小队。
+
+```text
+087F SET_CHAR_NEVER_LEAVES_GROUP
+in: self, state
+```
+
+```lua
+setCharNeverLeavesGroup(self, state)
+```
+
+```js
+Char.setNeverLeavesGroup(self, state)
+```
+</Opcode>
+
+## 附着朝向限制
+
+<Opcode id="0887" name="SET_HEADING_LIMIT_FOR_ATTACHED_CHAR" member="Char.SetHeadingLimitForAttached">
+设置附着在物体或车辆上的角色朝向限制。
+
+```text
+0887 SET_HEADING_LIMIT_FOR_ATTACHED_CHAR
+in: self, heading, headingRange
+```
+
+```lua
+setHeadingLimitForAttachedChar(self, heading, headingRange)
+```
+
+```js
+Char.setHeadingLimitForAttached(self, heading, headingRange)
+```
+</Opcode>
+
+## 死亡坐标
+
+<Opcode id="0889" name="GET_DEAD_CHAR_COORDINATES" member="Char.GetCoordinatesOfDied">
+取角色死亡坐标。
+
+```text
+0889 GET_DEAD_CHAR_COORDINATES
+in: self
+out: x, y, z
+```
+
+```lua
+local x, y, z = getDeadCharCoordinates(self)
+```
+
+```js
+Char.getCoordinatesOfDied(self)
+```
+</Opcode>
+
+## 取 ped 类型
+
+<Opcode id="089F" name="GET_PED_TYPE" member="Char.GetPedType">
+获取角色 ped 类型。
+
+```text
+089F GET_PED_TYPE
+in: self
+out: pedType
+```
+
+```lua
+local pedType = getPedType(self)
+```
+
+```js
+Char.getPedType(self)
+```
+</Opcode>
+
+## 使用过出入口
+
+<Opcode id="08AD" name="SET_CHAR_HAS_USED_ENTRY_EXIT" member="Char.SetHasUsedEntryExit">
+在坐标半径内定位入口标记并绑定角色，设置室内 ID；玩家控制时还会设天空色。
+
+```text
+08AD SET_CHAR_HAS_USED_ENTRY_EXIT
+in: self, x, y, radius
+```
+
+```lua
+setCharHasUsedEntryExit(self, x, y, radius)
+```
+
+```js
+Char.setHasUsedEntryExit(self, x, y, radius)
+```
+</Opcode>
+
+## 最大生命
+
+<Opcode id="08AF" name="SET_CHAR_MAX_HEALTH" member="Char.SetMaxHealth">
+设置角色最大生命。
+
+```text
+08AF SET_CHAR_MAX_HEALTH
+in: self, maxHealth
+```
+
+```lua
+setCharMaxHealth(self, maxHealth)
+```
+
+```js
+Char.setMaxHealth(self, maxHealth)
+```
+</Opcode>
+
+## 摩托不被撞落
+
+<Opcode id="08C6" name="SET_CHAR_CAN_BE_KNOCKED_OFF_BIKE" member="Char.SetCanBeKnockedOffBike">
+设置碰撞时角色是否始终留在摩托上。
+
+```text
+08C6 SET_CHAR_CAN_BE_KNOCKED_OFF_BIKE
+in: self, stayOnBike
+```
+
+```lua
+setCharCanBeKnockedOffBike(self, stayOnBike)
+```
+
+```js
+Char.setCanBeKnockedOffBike(self, stayOnBike)
+```
+</Opcode>
+
+## 设坐标不传小队
+
+<Opcode id="08C7" name="SET_CHAR_COORDINATES_DONT_WARP_GANG" member="Char.SetCoordinatesDontWarpGang">
+设置角色坐标，不传送其小队其余成员。
+
+```text
+08C7 SET_CHAR_COORDINATES_DONT_WARP_GANG
+in: self, x, y, z
+```
+
+```lua
+setCharCoordinatesDontWarpGang(self, x, y, z)
+```
+
+```js
+Char.setCoordinatesDontWarpGang(self, x, y, z)
+```
+</Opcode>
+
+## 防弹衣
+
+<Opcode id="093B" name="SET_CHAR_BULLETPROOF_VEST" member="Char.SetBulletproofVest">
+角色只播上半身受伤动画，腿部中弹仍可跑。
+
+```text
+093B SET_CHAR_BULLETPROOF_VEST
+in: self, state
+```
+
+```lua
+setCharBulletproofVest(self, state)
+```
+
+```js
+Char.setBulletproofVest(self, state)
+```
+</Opcode>
+
+## 仅上半身受伤动画
+
+<Opcode id="0946" name="SET_CHAR_USES_UPPERBODY_DAMAGE_ANIMS_ONLY" member="Char.SetUsesUpperbodyDamageAnimsOnly">
+是否只用上半身受伤动画。
+
+```text
+0946 SET_CHAR_USES_UPPERBODY_DAMAGE_ANIMS_ONLY
+in: self, state
+```
+
+```lua
+setCharUsesUpperbodyDamageAnimsOnly(self, state)
+```
+
+```js
+Char.setUsesUpperbodyDamageAnimsOnly(self, state)
+```
+</Opcode>
+
+## 说上下文语音
+
+<Opcode id="0947" name="SET_CHAR_SAY_CONTEXT" member="Char.SetSayContext">
+类似 05C1，但返回说了哪句，且不作为任务运行。
+
+```text
+0947 SET_CHAR_SAY_CONTEXT
+in: self, phrase
+out: _p3
+```
+
+```lua
+local _p3 = setCharSayContext(self, phrase)
+```
+
+```js
+Char.setSayContext(self, phrase)
+```
+</Opcode>
+
+## 所在室内名
+
+<Opcode id="094B" name="GET_NAME_OF_ENTRY_EXIT_CHAR_USED" member="Char.GetNameOfEntryExitUsed">
+获取角色所在室内名称。
+
+```text
+094B GET_NAME_OF_ENTRY_EXIT_CHAR_USED
+in: self
+out: interiorName
+```
+
+```lua
+local interiorName = getNameOfEntryExitCharUsed(self)
+```
+
+```js
+Char.getNameOfEntryExitUsed(self)
+```
+</Opcode>
+
+## 所用入口位置
+
+<Opcode id="094C" name="GET_POSITION_OF_ENTRY_EXIT_CHAR_USED" member="Char.GetPositionOfEntryExitCharUsed">
+返回角色进入当前室内所用入口标记的坐标与朝向。
+
+```text
+094C GET_POSITION_OF_ENTRY_EXIT_CHAR_USED
+in: self
+out: x, y, z, heading
+```
+
+```lua
+local x, y, z, heading = getPositionOfEntryExitCharUsed(self)
+```
+
+```js
+Char.getPositionOfEntryExitCharUsed(self)
+```
+</Opcode>
+
+## 是否在说话
+
+<Opcode id="094D" name="IS_CHAR_TALKING" member="Char.IsTalking">
+用在 if：角色是否正在播任意语音。
+
+```text
+094D IS_CHAR_TALKING
+in: self
+```
+
+```lua
+isCharTalking(self)
+```
+
+```js
+Char.isTalking(self)
+```
+</Opcode>
+
+## 禁用语音
+
+<Opcode id="094E" name="DISABLE_CHAR_SPEECH" member="Char.DisableSpeech">
+阻止播放任何角色语音。
+
+```text
+094E DISABLE_CHAR_SPEECH
+in: self, stopNow
+```
+
+```lua
+disableCharSpeech(self, stopNow)
+```
+
+```js
+Char.disableSpeech(self, stopNow)
+```
+</Opcode>
+
+## 启用语音
+
+<Opcode id="094F" name="ENABLE_CHAR_SPEECH" member="Char.EnableSpeech">
+若用 094E 关掉过痛呼，则重新启用。
+
+```text
+094F ENABLE_CHAR_SPEECH
+in: self
+```
+
+```lua
+enableCharSpeech(self)
+```
+
+```js
+Char.enableSpeech(self)
+```
+</Opcode>
+
+## 卡在车底
+
+<Opcode id="095D" name="IS_CHAR_STUCK_UNDER_CAR" member="Char.IsStuckUnderCar">
+用在 if：角色是否卡在车底。
+
+```text
+095D IS_CHAR_STUCK_UNDER_CAR
+in: self
+```
+
+```lua
+isCharStuckUnderCar(self)
+```
+
+```js
+Char.isStuckUnderCar(self)
+```
+</Opcode>
+
+## 保留任务
+
+<Opcode id="0961" name="SET_CHAR_KEEP_TASK" member="Char.SetKeepTask">
+设置任务清理后角色是否保留任务（实质跳过清理）。
+
+```text
+0961 SET_CHAR_KEEP_TASK
+in: self, state
+```
+
+```lua
+setCharKeepTask(self, state)
+```
+
+```js
+Char.setKeepTask(self, state)
+```
+</Opcode>
+
+## 是否游泳
+
+<Opcode id="0965" name="IS_CHAR_SWIMMING" member="Char.IsSwimming">
+用在 if：角色是否在游泳。
+
+```text
+0965 IS_CHAR_SWIMMING
+in: self
+```
+
+```lua
+isCharSwimming(self)
+```
+
+```js
+Char.isSwimming(self)
+```
+</Opcode>
+
+## 游泳状态
+
+<Opcode id="0966" name="GET_CHAR_SWIM_STATE" member="Char.GetSwimState">
+取角色游泳状态。
+
+```text
+0966 GET_CHAR_SWIM_STATE
+in: self
+out: state
+```
+
+```lua
+local state = getCharSwimState(self)
+```
+
+```js
+Char.getSwimState(self)
+```
+</Opcode>
+
+## 开始面部说话
+
+<Opcode id="0967" name="START_CHAR_FACIAL_TALK" member="Char.StartFacialTalk">
+让角色张嘴像在说话。
+
+```text
+0967 START_CHAR_FACIAL_TALK
+in: self, duration
+```
+
+```lua
+startCharFacialTalk(self, duration)
+```
+
+```js
+Char.startFacialTalk(self, duration)
+```
+</Opcode>
+
+## 停止面部说话
+
+<Opcode id="0968" name="STOP_CHAR_FACIAL_TALK" member="Char.StopFacialTalk">
+停止角色张嘴说话动作。
+
+```text
+0968 STOP_CHAR_FACIAL_TALK
+in: self
+```
+
+```lua
+stopCharFacialTalk(self)
+```
+
+```js
+Char.stopFacialTalk(self)
+```
+</Opcode>
+
+## 无偏移设坐标
+
+<Opcode id="0972" name="SET_CHAR_COORDINATES_NO_OFFSET" member="Char.SetCoordinatesNoOffset">
+按身体中心而非脚底放置角色坐标。
+
+```text
+0972 SET_CHAR_COORDINATES_NO_OFFSET
+in: self, x, y, z
+```
+
+```lua
+setCharCoordinatesNoOffset(self, x, y, z)
+```
+
+```js
+Char.setCoordinatesNoOffset(self, x, y, z)
+```
+</Opcode>
+
+## 死在车里
+
+<Opcode id="0982" name="SET_CHAR_FORCE_DIE_IN_CAR" member="Char.SetForceDieInCar">
+角色死后仍留在车内。
+
+```text
+0982 SET_CHAR_FORCE_DIE_IN_CAR
+in: self, state
+```
+
+```lua
+setCharForceDieInCar(self, state)
+```
+
+```js
+Char.setForceDieInCar(self, state)
+```
+</Opcode>
+
+## 丢第二物体
+
+<Opcode id="09A1" name="DROP_SECOND_OBJECT" member="Char.DropSecondObject">
+丢下第二物体。
+
+```text
+09A1 DROP_SECOND_OBJECT
+in: self, state
+```
+
+```lua
+dropSecondObject(self, state)
+```
+
+```js
+Char.dropSecondObject(self, state)
+```
+</Opcode>
+
+## 嗑药状态
+
+<Opcode id="09A7" name="SET_CHAR_DRUGGED_UP" member="Char.SetDruggedUp">
+设置角色嗑药状态。
+
+```text
+09A7 SET_CHAR_DRUGGED_UP
+in: self, state
+```
+
+```lua
+setCharDruggedUp(self, state)
+```
+
+```js
+Char.setDruggedUp(self, state)
+```
+</Opcode>
+
+## 头是否缺失
+
+<Opcode id="09A8" name="IS_CHAR_HEAD_MISSING" member="Char.IsHeadMissing">
+用在 if：角色头部是否被爆掉。
+
+```text
+09A8 IS_CHAR_HEAD_MISSING
+in: self
+```
+
+```lua
+isCharHeadMissing(self)
+```
+
+```js
+Char.isHeadMissing(self)
+```
+</Opcode>
+
+## 是否在火车
+
+<Opcode id="09AE" name="IS_CHAR_IN_ANY_TRAIN" member="Char.IsInAnyTrain">
+用在 if：角色是否在火车上。
+
+```text
+09AE IS_CHAR_IN_ANY_TRAIN
+in: self
+```
+
+```lua
+isCharInAnyTrain(self)
+```
+
+```js
+Char.isInAnyTrain(self)
+```
+</Opcode>
+
+## 击杀后信号
+
+<Opcode id="09B5" name="SET_CHAR_SIGNAL_AFTER_KILL" member="Char.SetSignalAfterKill">
+设置角色击杀后是否做信号手势。
+
+```text
+09B5 SET_CHAR_SIGNAL_AFTER_KILL
+in: self, state
+```
+
+```lua
+setCharSignalAfterKill(self, state)
+```
+
+```js
+Char.setSignalAfterKill(self, state)
+```
+</Opcode>
+
+## 被警察通缉
+
+<Opcode id="09B6" name="SET_CHAR_WANTED_BY_POLICE" member="Char.SetWantedByPolice">
+设置警察是否追击该角色。
+
+```text
+09B6 SET_CHAR_WANTED_BY_POLICE
+in: self, state
+```
+
+```lua
+setCharWantedByPolice(self, state)
+```
+
+```js
+Char.setWantedByPolice(self, state)
+```
+</Opcode>
+
+## 设坐标不传队无偏移
+
+<Opcode id="09BC" name="SET_CHAR_COORDINATES_DONT_WARP_GANG_NO_OFFSET" member="Char.SetCoordinatesDontWarpGangNoOffset">
+本命令是 0972 与 08C7 的组合。
+
+```text
+09BC SET_CHAR_COORDINATES_DONT_WARP_GANG_NO_OFFSET
+in: self, x, y, z
+```
+
+```lua
+setCharCoordinatesDontWarpGangNoOffset(self, x, y, z)
+```
+
+```js
+Char.setCoordinatesDontWarpGangNoOffset(self, x, y, z)
+```
+</Opcode>
+
+## 用地图吸引点
+
+<Opcode id="09C5" name="IS_CHAR_USING_MAP_ATTRACTOR" member="Char.IsUsingMapAttractor">
+用在 if：角色是否在使用地图 attractor。
+
+```text
+09C5 IS_CHAR_USING_MAP_ATTRACTOR
+in: self
+```
+
+```lua
+isCharUsingMapAttractor(self)
+```
+
+```js
+Char.isUsingMapAttractor(self)
+```
+</Opcode>
+
+## 下车保持位置
+
+<Opcode id="09C9" name="REMOVE_CHAR_FROM_CAR_MAINTAIN_POSITION" member="Char.RemoveFromCarMaintainPosition">
+把角色从车辆中移除。
+
+```text
+09C9 REMOVE_CHAR_FROM_CAR_MAINTAIN_POSITION
+in: self, vehicle
+```
+
+```lua
+removeCharFromCarMaintainPosition(self, vehicle)
+```
+
+```js
+Char.removeFromCarMaintainPosition(self, vehicle)
+```
+</Opcode>
+
+## 重要上下文语音
+
+<Opcode id="09D5" name="SET_CHAR_SAY_CONTEXT_IMPORTANT" member="Char.SetSayContextImportant">
+说重要上下文语音。
+
+```text
+09D5 SET_CHAR_SAY_CONTEXT_IMPORTANT
+in: self, phrase, overrideSilence, ignoreMute, frontEnd
+out: saidVariant
+```
+
+```lua
+local saidVariant = setCharSayContextImportant(self, phrase, overrideSilence, ignoreMute, frontEnd)
+```
+
+```js
+Char.setSayContextImportant(self, phrase, overrideSilence, ignoreMute, frontEnd)
+```
+</Opcode>
+
+## 脚本语音
+
+<Opcode id="09D6" name="SET_CHAR_SAY_SCRIPT" member="Char.SetSayScript">
+脚本语音。
+
+```text
+09D6 SET_CHAR_SAY_SCRIPT
+in: self, _p2, _p3, _p4, _p5
+```
+
+```lua
+setCharSayScript(self, _p2, _p3, _p4, _p5)
+```
+
+```js
+Char.setSayScript(self, _p2, _p3, _p4, _p5)
+```
+</Opcode>
+
+## 是否正在上车
+
+<Opcode id="09DE" name="IS_CHAR_GETTING_IN_TO_A_CAR" member="Char.IsGettingInToACar">
+用在 if：角色是否正在上车但尚未入座。
+
+```text
+09DE IS_CHAR_GETTING_IN_TO_A_CAR
+in: self
+```
+
+```lua
+isCharGettingInToACar(self)
+```
+
+```js
+Char.isGettingInToACar(self)
+```
+</Opcode>
+
+## 取 interior
+
+<Opcode id="09E8" name="GET_CHAR_AREA_VISIBLE" member="Char.GetAreaVisible">
+返回角色所在室内 ID。
+
+```text
+09E8 GET_CHAR_AREA_VISIBLE
+in: self
+out: areaId
+```
+
+```lua
+local areaId = getCharAreaVisible(self)
+```
+
+```js
+Char.getAreaVisible(self)
+```
+</Opcode>
+
+## 前方是否看见
+
+<Opcode id="09ED" name="HAS_CHAR_SPOTTED_CHAR_IN_FRONT" member="Char.HasSpottedCharInFront">
+用在 if：角色能否在正前方看见另一角色。
+
+```text
+09ED HAS_CHAR_SPOTTED_CHAR_IN_FRONT
+in: self, handle
+```
+
+```lua
+hasCharSpottedCharInFront(self, handle)
+```
+
+```js
+Char.hasSpottedCharInFront(self, handle)
+```
+</Opcode>
+
+## 跟随节点忽略高度
+
+<Opcode id="09F4" name="IGNORE_HEIGHT_DIFFERENCE_FOLLOWING_NODES" member="Char.IgnoreHeightDifferenceFollowingNodes">
+跟随节点时忽略高度差。
+
+```text
+09F4 IGNORE_HEIGHT_DIFFERENCE_FOLLOWING_NODES
+in: self, state
+```
+
+```lua
+ignoreHeightDifferenceFollowingNodes(self, state)
+```
+
+```js
+Char.ignoreHeightDifferenceFollowingNodes(self, state)
+```
+</Opcode>
+
+## 翻车时下车
+
+<Opcode id="09F6" name="SET_CHAR_GET_OUT_UPSIDE_DOWN_CAR" member="Char.SetGetOutUpsideDownCar">
+控制角色是否在车翻到起火前尝试下车。
+
+```text
+09F6 SET_CHAR_GET_OUT_UPSIDE_DOWN_CAR
+in: self, state
+```
+
+```lua
+setCharGetOutUpsideDownCar(self, state)
+```
+
+```js
+Char.setGetOutUpsideDownCar(self, state)
+```
+</Opcode>
+
+## 脚本语音静音
+
+<Opcode id="0A09" name="SHUT_CHAR_UP_FOR_SCRIPTED_SPEECH" member="Char.ShutUpForScriptedSpeech">
+类似 0489，但静音更多内容，含环境语音（待确认）。
+
+```text
+0A09 SHUT_CHAR_UP_FOR_SCRIPTED_SPEECH
+in: self, state
+```
+
+```lua
+shutCharUpForScriptedSpeech(self, state)
+```
+
+```js
+Char.shutUpForScriptedSpeech(self, state)
+```
+</Opcode>
+
+## 碰到另一角色
+
+<Opcode id="0A1B" name="IS_CHAR_TOUCHING_CHAR" member="Char.IsTouchingChar">
+用在 if：角色是否碰到另一角色。
+
+```text
+0A1B IS_CHAR_TOUCHING_CHAR
+in: self, other
+```
+
+```lua
+isCharTouchingChar(self, other)
+```
+
+```js
+Char.isTouchingChar(self, other)
+```
+</Opcode>
+
+## 死后武器持久
+
+<Opcode id="0A27" name="SET_DEATH_WEAPONS_PERSIST" member="Char.SetDeathWeaponsPersist">
+角色死后生成的拾取物在被玩家捡起前不会消失。
+
+```text
+0A27 SET_DEATH_WEAPONS_PERSIST
+in: self, state
+```
+
+```lua
+setDeathWeaponsPersist(self, state)
+```
+
+```js
+Char.setDeathWeaponsPersist(self, state)
+```
+</Opcode>
+
+## 游泳速度
+
+<Opcode id="0A28" name="SET_SWIM_SPEED" member="Char.SetSwimSpeed">
+设置角色游泳速度，并改变游泳动画速度。
+
+```text
+0A28 SET_SWIM_SPEED
+in: self, speed
+```
+
+```lua
+setSwimSpeed(self, speed)
+```
+
+```js
+Char.setSwimSpeed(self, speed)
+```
+</Opcode>
+
+## 是否附着任意车
+
+<Opcode id="0A32" name="IS_CHAR_ATTACHED_TO_ANY_CAR" member="Char.IsAttachedToAnyCar">
+用在 if：角色是否在任意车辆炮塔位。
+
+```text
+0A32 IS_CHAR_ATTACHED_TO_ANY_CAR
+in: self
+```
+
+```lua
+isCharAttachedToAnyCar(self)
+```
+
+```js
+Char.isAttachedToAnyCar(self)
+```
+</Opcode>
+
+## 取附着车辆
+
+<Opcode id="0A33" name="STORE_CAR_CHAR_IS_ATTACHED_TO_NO_SAVE" member="Char.StoreCarIsAttachedToNoSave">
+返回角色附着的车辆。
+
+```text
+0A33 STORE_CAR_CHAR_IS_ATTACHED_TO_NO_SAVE
+in: self
+out: handle
+```
+
+```lua
+local handle = storeCarCharIsAttachedToNoSave(self)
+```
+
+```js
+Char.storeCarIsAttachedToNoSave(self)
+```
+</Opcode>

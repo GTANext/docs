@@ -1,0 +1,58 @@
+---
+title: 贴图 Txd / Draw
+description: 扩展贴图绘制与 sprite 取纹理
+---
+
+`sa` · 扩展 `CLEO+` · 需 CLEO + CLEO+
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 扩展绘制
+
+<Opcode id="0E1E" name="DRAW_TEXTURE_PLUS" member="Txd.DrawTexturePlus">
+在指定绘制事件上画 RwTexture/sprite 一次，可带 mask，无数量硬限制。
+
+```text
+0E1E DRAW_TEXTURE_PLUS
+in: rwTextureOrSprite, drawEvent, posX, posY, sizeX, sizeY, angle, depth,
+    fixAr, maskVertCount, maskVertArray, red, green, blue, alpha
+```
+
+```lua
+drawTexturePlus(
+  tex, drawEvent,
+  px, py, sx, sy, 0.0, 0.0,
+  true, 0, 0,
+  255, 255, 255, 255
+)
+```
+
+```js
+Txd.drawTexturePlus(
+  rwTextureOrSprite, drawEvent,
+  posX, posY, sizeX, sizeY, angle, depth,
+  fixAr, maskVertCount, maskVertArray,
+  red, green, blue, alpha
+)
+```
+</Opcode>
+
+## sprite → 纹理
+
+<Opcode id="0E3C" name="GET_TEXTURE_FROM_SPRITE" member="Txd.GetTextureFromSprite">
+从 sprite 槽取 RwTexture 指针。
+
+```text
+0E3C GET_TEXTURE_FROM_SPRITE
+in: spriteSlot
+out: rwTexture
+```
+
+```lua
+local tex = getTextureFromSprite(spriteSlot)
+```
+
+```js
+const rwTexture = Txd.getTextureFromSprite(spriteSlot)
+```
+</Opcode>

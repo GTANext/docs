@@ -1,0 +1,140 @@
+---
+title: 碰撞点 ColPoint
+description: 碰撞点查询
+---
+
+`sa` · 扩展 `CLEO+` · 需 CLEO + CLEO+
+
+碰撞点查询。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 两点射线碰撞
+
+<Opcode id="0D3A" name="GET_COLLISION_BETWEEN_POINTS" member="ColPoint.GetCollisionBetweenPoints">
+两点间射线检测，返回 ColPoint、命中坐标、实体。用在 `if` 里。
+
+```text
+0D3A GET_COLLISION_BETWEEN_POINTS
+in: fromX, fromY, fromZ, toX, toY, toZ,
+    buildings, vehicles, peds, objects, dummies,
+    seeThroughCheck, cameraIgnoreCheck, shotThroughCheck, entityToIgnore
+out: handle, outX, outY, outZ, entity
+```
+
+```lua
+local col, x, y, z, ent = getCollisionBetweenPoints(
+  fx, fy, fz, tx, ty, tz,
+  true, true, true, true, true,
+  false, false, false, 0
+)
+if col then
+end
+```
+
+```js
+const { handle, outX, outY, outZ, entity } = ColPoint.getCollisionBetweenPoints(
+  fromX, fromY, fromZ, toX, toY, toZ,
+  buildings, vehicles, peds, objects, dummies,
+  seeThroughCheck, cameraIgnoreCheck, shotThroughCheck, entityToIgnore
+)
+```
+</Opcode>
+
+## 法线
+
+<Opcode id="0D3B" name="GET_COLPOINT_NORMAL_VECTOR" member="ColPoint.GetNormalVector">
+碰撞法线。
+
+```text
+0D3B GET_COLPOINT_NORMAL_VECTOR
+in: self
+out: x, y, z
+```
+
+```lua
+local nx, ny, nz = getColpointNormalVector(col)
+```
+
+```js
+const { x, y, z } = ColPoint.getNormalVector(self)
+```
+</Opcode>
+
+## 表面类型
+
+<Opcode id="0D3C" name="GET_COLPOINT_SURFACE" member="ColPoint.GetSurface">
+碰撞表面类型。
+
+```text
+0D3C GET_COLPOINT_SURFACE
+in: self
+out: surfaceType
+```
+
+```lua
+local surf = getColpointSurface(col)
+```
+
+```js
+const surfaceType = ColPoint.getSurface(self)
+```
+</Opcode>
+
+## 深度
+
+<Opcode id="0D3E" name="GET_COLPOINT_DEPTH" member="ColPoint.GetDepth">
+碰撞深度。
+
+```text
+0D3E GET_COLPOINT_DEPTH
+in: self
+out: depth
+```
+
+```lua
+local d = getColpointDepth(col)
+```
+
+```js
+const depth = ColPoint.getDepth(self)
+```
+</Opcode>
+
+## 光照
+
+<Opcode id="0E6B" name="GET_COLPOINT_LIGHTING" member="ColPoint.GetLighting">
+ColPoint 光照；`fromNight` 是否按夜间取样。
+
+```text
+0E6B GET_COLPOINT_LIGHTING
+in: self, fromNight
+out: lighting
+```
+
+```lua
+local light = getColpointLighting(col, false)
+```
+
+```js
+const lighting = ColPoint.getLighting(self, fromNight)
+```
+</Opcode>
+
+## 世界坐标
+
+<Opcode id="0EE1" name="GET_COLPOINT_COORDINATES" member="ColPoint.GetCoordinates">
+ColPoint 世界坐标。
+
+```text
+0EE1 GET_COLPOINT_COORDINATES
+in: self
+out: x, y, z
+```
+
+```lua
+local x, y, z = getColpointCoordinates(col)
+```
+
+```js
+const { x, y, z } = ColPoint.getCoordinates(self)
+```
+</Opcode>

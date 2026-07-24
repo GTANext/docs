@@ -1,0 +1,82 @@
+---
+title: 抛射物 CProjectileInfo
+description: 火箭手雷等抛射物槽
+---
+
+`CProjectileInfo.h`
+
+火箭、手雷等抛射物槽。上限 `MAX_PROJECTILES` / `MAX_PROJECTILE_INFOS`（默认 32）。
+
+## 添加抛射物
+
+<Api name="AddProjectile">
+creator / 类型 / 位置 / 力 / 方向 / 目标。
+
+```cpp
+static bool AddProjectile(CEntity* creator, eWeaponType eWeaponType, CVector posn,
+    float force, CVector* direction, CEntity* victim);
+```
+
+```cpp
+CVector pos = ped->GetPosition();
+CVector dir = ped->GetForward();
+CProjectileInfo::AddProjectile(ped, WEAPONTYPE_ROCKET, pos, 0.0f, &dir, nullptr);
+// 具体 weaponType 以 eWeaponType 为准
+```
+</Api>
+
+## 取信息 / 列表
+
+<Api name="GetProjectileInfo / ms_apProjectile">
+
+```cpp
+static CProjectileInfo* GetProjectileInfo(int infoId);
+static CProjectile** ms_apProjectile;
+extern CProjectileInfo* gaProjectileInfo;
+```
+
+```cpp
+// CProjectileInfo* info = CProjectileInfo::GetProjectileInfo(id);
+```
+</Api>
+
+## 移除
+
+<Api name="RemoveProjectile / RemoveAllProjectiles">
+
+```cpp
+static void RemoveProjectile(CProjectileInfo* projectileInfo, CProjectile* projectileObject);
+static void RemoveAllProjectiles();
+static void RemoveDetonatorProjectiles();
+static bool RemoveIfThisIsAProjectile(CObject* object);
+```
+
+```cpp
+CProjectileInfo::RemoveAllProjectiles();
+```
+</Api>
+
+## 范围查询
+
+<Api name="IsProjectileInRange">
+盒内是否有弹，可选销毁。
+
+```cpp
+static bool IsProjectileInRange(float x1, float y1, float z1, float x2, float y2, float z2, bool bDestroy);
+```
+
+```cpp
+bool hit = CProjectileInfo::IsProjectileInRange(x1, y1, z1, x2, y2, z2, false);
+```
+</Api>
+
+## 更新
+
+<Api name="Update / RemoveFXSystem">
+游戏帧内调用；ASI 少直接 Update。
+
+```cpp
+static void Update();
+static void RemoveFXSystem(unsigned char bInstantly);
+```
+</Api>

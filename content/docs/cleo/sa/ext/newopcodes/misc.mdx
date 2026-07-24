@@ -1,0 +1,190 @@
+---
+title: 杂项 Misc
+description: 内存拷贝、线程变量、结构体与字符串
+---
+
+`sa` · 扩展 `NewOpcodes` · 需 CLEO + NewOpcodes
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。部分号与 CLEO+ 重叠，以实际加载插件为准。
+
+## 内存 / 时间
+
+<Opcode id="0D27" name="MEMCPY">
+内存块拷贝 `size` 字节。
+
+```text
+0D27 MEMCPY
+in: source, destination, size
+```
+
+```lua
+memcpy(src, dst, 64)
+```
+
+```js
+native(0x0D27, source, destination, size)
+```
+</Opcode>
+
+<Opcode id="0D2D" name="GET_LOCAL_TIME">
+取本机时间：年/月/星期/日/时/分/秒/毫秒。
+
+```text
+0D2D GET_LOCAL_TIME
+out: year, month, dayOfWeek, day, hour, minute, second, milliseconds
+```
+
+```lua
+local y, mo, dow, d, h, mi, s, ms = getLocalTime()
+```
+
+```js
+const { year, month, dayOfWeek, day, hour, minute, second, milliseconds } = native(0x0D2D)
+```
+</Opcode>
+
+## 线程变量
+
+<Opcode id="0D2E" name="SET_THREAD_VAR">
+写另一脚本线程的局部变量槽。
+
+```text
+0D2E SET_THREAD_VAR
+in: thread, var, value
+```
+
+```lua
+setThreadVar(thread, 0, 123)
+```
+
+```js
+native(0x0D2E, thread, var, value)
+```
+</Opcode>
+
+<Opcode id="0D2F" name="GET_THREAD_VAR">
+读另一脚本线程局部变量。
+
+```text
+0D2F GET_THREAD_VAR
+in: thread, var
+out: result
+```
+
+```lua
+local v = getThreadVar(thread, 0)
+```
+
+```js
+const result = native(0x0D2F, thread, var)
+```
+</Opcode>
+
+## 结构体槽 / 字段
+
+<Opcode id="0D37" name="SET_STRUCT_PARAM">
+按元素下标写结构体 4 字节槽（裸内存）。
+
+```text
+0D37 SET_STRUCT_PARAM
+in: struct, param, value
+```
+
+```lua
+setStructParam(ptr, 2, 1)
+```
+
+```js
+native(0x0D37, struct, param, value)
+```
+</Opcode>
+
+<Opcode id="0D38" name="GET_STRUCT_PARAM">
+按元素下标读结构体 4 字节槽。
+
+```text
+0D38 GET_STRUCT_PARAM
+in: struc, param
+out: value
+```
+
+```lua
+local v = getStructParam(ptr, 2)
+```
+
+```js
+const value = native(0x0D38, struc, param)
+```
+</Opcode>
+
+<Opcode id="0D4E" name="GET_STRUCT_FIELD">
+按字节偏移读结构体字段（可指定 size，支持串）。
+
+```text
+0D4E GET_STRUCT_FIELD
+in: struct, offset, size
+out: result
+```
+
+```lua
+local v = getStructField(ptr, 8, 4)
+```
+
+```js
+const result = native(0x0D4E, struct, offset, size)
+```
+</Opcode>
+
+<Opcode id="0D4F" name="SET_STRUCT_FIELD">
+按字节偏移写结构体字段。
+
+```text
+0D4F SET_STRUCT_FIELD
+in: struct, offset, size, value
+```
+
+```lua
+setStructField(ptr, 8, 4, 1)
+```
+
+```js
+native(0x0D4F, struct, offset, size, value)
+```
+</Opcode>
+
+## 字符串
+
+<Opcode id="0D4C" name="STRING_LEN">
+字符串长度（strlen）。
+
+```text
+0D4C STRING_LEN
+in: string
+out: length
+```
+
+```lua
+local n = stringLen(s)
+```
+
+```js
+const length = native(0x0D4C, string)
+```
+</Opcode>
+
+<Opcode id="0D4D" name="STRING_CPY">
+拷贝字符串到目标缓冲（strcpy）。
+
+```text
+0D4D STRING_CPY
+in: source, destination
+```
+
+```lua
+stringCpy(src, dest)
+```
+
+```js
+native(0x0D4D, source, destination)
+```
+</Opcode>

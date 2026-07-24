@@ -1,0 +1,86 @@
+---
+title: 本地聊天命令 SampLocalChatCmd
+description: 本地聊天命令钩子
+---
+
+`sa` · 扩展 `SAMPFUNCS` · 仅 SA-MP；需 SAMPFUNCS
+
+共 4 条。调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 钩子
+
+<Opcode id="0B34" name="SAMP_HOOK_CHAT_COMMAND_AS_LOCAL" member="SampLocalChatCmd.Hook">
+注册客户端侧聊天命令的回调钩子。用在 `if` 里。
+
+```text
+0B34 SAMP_HOOK_CHAT_COMMAND_AS_LOCAL
+in: chatCommand, callback
+```
+
+```lua
+if sampHookChatCommandAsLocal(chatCommand, callback) then
+end
+```
+
+```js
+if (SampLocalChatCmd.Hook(chatCommand, callback)) {
+}
+```
+</Opcode>
+
+<Opcode id="0B63" name="SAMP_UNHOOK_LOCAL_CHAT_COMMAND" member="SampLocalChatCmd.Unhook">
+移除为 chatCommand 挂上的全部本地回调。用在 `if` 里。
+
+```text
+0B63 SAMP_UNHOOK_LOCAL_CHAT_COMMAND
+in: chatCommand
+```
+
+```lua
+if sampUnhookLocalChatCommand(chatCommand) then
+end
+```
+
+```js
+if (SampLocalChatCmd.Unhook(chatCommand)) {
+}
+```
+</Opcode>
+
+## 说明 / 查询
+
+<Opcode id="0C7F" name="SAMP_SET_LOCAL_CHAT_COMMAND_DESCRIPTION" member="SampLocalChatCmd.SetDescription">
+设置本地命令的说明文字。
+
+```text
+0C7F SAMP_SET_LOCAL_CHAT_COMMAND_DESCRIPTION
+in: chatCommand, decription
+```
+
+```lua
+sampSetLocalChatCommandDescription(chatCommand, decription)
+```
+
+```js
+SampLocalChatCmd.SetDescription(chatCommand, decription)
+```
+</Opcode>
+
+<Opcode id="0C90" name="SAMP_IS_CHAT_COMMAND_HOOKED" member="SampLocalChatCmd.IsHooked">
+若指定命令已被回调钩子本地化则为真。
+
+```text
+0C90 SAMP_IS_CHAT_COMMAND_HOOKED
+in: chatCommand
+```
+
+```lua
+if sampIsChatCommandHooked(chatCommand) then
+end
+```
+
+```js
+if (SampLocalChatCmd.IsHooked(chatCommand)) {
+}
+```
+</Opcode>

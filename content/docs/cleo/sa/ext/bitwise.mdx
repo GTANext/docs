@@ -1,0 +1,298 @@
+---
+title: 位运算
+description: 位运算与取余
+---
+
+`sa` · 扩展 `bitwise` · 需对应 CLEO 扩展
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 与
+
+<Opcode id="0B10" name="BIT_AND">
+按位与。
+
+```text
+0B10 BIT_AND
+in: a, b
+out: result
+```
+
+```lua
+local r = bitAnd(a, b)
+```
+
+```js
+const result = native("BIT_AND", a, b)
+```
+</Opcode>
+
+## 或
+
+<Opcode id="0B11" name="BIT_OR">
+按位或。
+
+```text
+0B11 BIT_OR
+in: a, b
+out: result
+```
+
+```lua
+local r = bitOr(a, b)
+```
+
+```js
+const result = native("BIT_OR", a, b)
+```
+</Opcode>
+
+## 异或
+
+<Opcode id="0B12" name="BIT_XOR">
+按位异或。
+
+```text
+0B12 BIT_XOR
+in: a, b
+out: result
+```
+
+```lua
+local r = bitXor(a, b)
+```
+
+```js
+const result = native("BIT_XOR", a, b)
+```
+</Opcode>
+
+## 取反
+
+<Opcode id="0B13" name="BIT_NOT">
+按位取反（有符号）。
+
+```text
+0B13 BIT_NOT
+in: a
+out: result
+```
+
+```lua
+local r = bitNot(a)
+```
+
+```js
+const result = native("BIT_NOT", a)
+```
+</Opcode>
+
+## 取余
+
+<Opcode id="0B14" name="MOD">
+整数取余。
+
+```text
+0B14 MOD
+in: a, b
+out: result
+```
+
+```lua
+local r = mod(a, b)
+```
+
+```js
+const result = native("MOD", a, b)
+```
+</Opcode>
+
+## 右移
+
+<Opcode id="0B15" name="BIT_SHR">
+右移 `n` 位。
+
+```text
+0B15 BIT_SHR
+in: value, n
+out: result
+```
+
+```lua
+local r = bitShr(value, n)
+```
+
+```js
+const result = native("BIT_SHR", value, n)
+```
+</Opcode>
+
+## 左移
+
+<Opcode id="0B16" name="BIT_SHL">
+左移 `n` 位。
+
+```text
+0B16 BIT_SHL
+in: value, n
+out: result
+```
+
+```lua
+local r = bitShl(value, n)
+```
+
+```js
+const result = native("BIT_SHL", value, n)
+```
+</Opcode>
+
+## 原地与
+
+<Opcode id="0B17" name="BIT_AND_COMPOUND">
+原地 `&=`。
+
+```text
+0B17 BIT_AND_COMPOUND
+in: value, n
+```
+
+```lua
+bitAndCompound(value, n)
+```
+
+```js
+native("BIT_AND_COMPOUND", value, n)
+```
+</Opcode>
+
+## 原地或
+
+<Opcode id="0B18" name="BIT_OR_COMPOUND">
+原地 `|=`。
+
+```text
+0B18 BIT_OR_COMPOUND
+in: value, n
+```
+
+```lua
+bitOrCompound(value, n)
+```
+
+```js
+native("BIT_OR_COMPOUND", value, n)
+```
+</Opcode>
+
+## 原地异或
+
+<Opcode id="0B19" name="BIT_XOR_COMPOUND">
+原地 `^=`。
+
+```text
+0B19 BIT_XOR_COMPOUND
+in: value, n
+```
+
+```lua
+bitXorCompound(value, n)
+```
+
+```js
+native("BIT_XOR_COMPOUND", value, n)
+```
+</Opcode>
+
+## 原地取反
+
+<Opcode id="0B1A" name="BIT_NOT_COMPOUND">
+原地取反写回。
+
+```text
+0B1A BIT_NOT_COMPOUND
+in: value
+```
+
+```lua
+bitNotCompound(value)
+```
+
+```js
+native("BIT_NOT_COMPOUND", value)
+```
+</Opcode>
+
+## 原地取余
+
+<Opcode id="0B1B" name="MOD_COMPOUND">
+原地 `%=`。
+
+```text
+0B1B MOD_COMPOUND
+in: value, number
+```
+
+```lua
+modCompound(value, number)
+```
+
+```js
+native("MOD_COMPOUND", value, number)
+```
+</Opcode>
+
+## 原地右移
+
+<Opcode id="0B1C" name="BIT_SHR_COMPOUND">
+
+```text
+0B1C BIT_SHR_COMPOUND
+in: value, n
+```
+
+```lua
+bitShrCompound(value, n)
+```
+
+```js
+native("BIT_SHR_COMPOUND", value, n)
+```
+</Opcode>
+
+## 原地左移
+
+<Opcode id="0B1D" name="BIT_SHL_COMPOUND">
+
+```text
+0B1D BIT_SHL_COMPOUND
+in: value, n
+```
+
+```lua
+bitShlCompound(value, n)
+```
+
+```js
+native("BIT_SHL_COMPOUND", value, n)
+```
+</Opcode>
+
+## 符号扩展
+
+<Opcode id="0B1E" name="SIGN_EXTEND" member="Math.SignExtend">
+把 1 / 2 / 3 字节有符号数扩成 32 位。
+
+```text
+0B1E SIGN_EXTEND
+in: value, fromSize
+```
+
+```lua
+signExtend(value, fromSize)
+```
+
+```js
+Math.signExtend(value, fromSize)
+```
+</Opcode>

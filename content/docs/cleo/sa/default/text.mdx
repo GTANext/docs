@@ -1,0 +1,1127 @@
+---
+title: 文本 Text
+description: 消息 / 帮助框 / 屏幕文字
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 59 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 样式大字
+
+<Opcode id="00BA" name="PRINT_BIG" member="Text.PrintBig">
+样式大字，显示指定时长。
+
+```text
+00BA PRINT_BIG
+in: key, time, style
+```
+
+```lua
+printBig(key, time, style)
+```
+
+```js
+Text.printBig(key, time, style)
+```
+</Opcode>
+
+## 底部消息
+
+<Opcode id="00BB" name="PRINT" member="Text.Print">
+底部普通消息，指定时长。
+
+```text
+00BB PRINT
+in: key, time, flag
+```
+
+```lua
+print(key, time, flag)
+```
+
+```js
+Text.print(key, time, flag)
+```
+</Opcode>
+
+## 立即消息
+
+<Opcode id="00BC" name="PRINT_NOW" member="Text.PrintNow">
+底部立即消息（插队），指定时长。
+
+```text
+00BC PRINT_NOW
+in: key, time, flag
+```
+
+```lua
+printNow(key, time, flag)
+```
+
+```js
+Text.printNow(key, time, flag)
+```
+</Opcode>
+
+## 清消息
+
+<Opcode id="00BE" name="CLEAR_PRINTS" member="Text.ClearPrints">
+清优先文本与部分大字样式。
+
+```text
+00BE CLEAR_PRINTS
+```
+
+```lua
+clearPrints()
+```
+
+```js
+Text.clearPrints()
+```
+</Opcode>
+
+## 大字带数字
+
+<Opcode id="01E3" name="PRINT_WITH_NUMBER_BIG" member="Text.PrintWithNumberBig">
+大字：首个 `~1~` 换成数字。
+
+```text
+01E3 PRINT_WITH_NUMBER_BIG
+in: key, num, duration, style
+```
+
+```lua
+printWithNumberBig(key, num, duration, style)
+```
+
+```js
+Text.printWithNumberBig(key, num, duration, style)
+```
+</Opcode>
+
+## 消息带数字
+
+<Opcode id="01E4" name="PRINT_WITH_NUMBER" member="Text.PrintWithNumber">
+底部消息：首个 `~1~` 换成数字。
+
+```text
+01E4 PRINT_WITH_NUMBER
+in: key, num, duration, flag
+```
+
+```lua
+printWithNumber(key, num, duration, flag)
+```
+
+```js
+Text.printWithNumber(key, num, duration, flag)
+```
+</Opcode>
+
+## 立即消息带数字
+
+<Opcode id="01E5" name="PRINT_WITH_NUMBER_NOW" member="Text.PrintWithNumberNow">
+立即底部消息：首个 `~1~` 换成数字。
+
+```text
+01E5 PRINT_WITH_NUMBER_NOW
+in: key, num, duration, flag
+```
+
+```lua
+printWithNumberNow(key, num, duration, flag)
+```
+
+```js
+Text.printWithNumberNow(key, num, duration, flag)
+```
+</Opcode>
+
+## 低优先大字
+
+<Opcode id="0217" name="PRINT_BIG_Q" member="Text.PrintBigQ">
+低优先样式大字。
+
+```text
+0217 PRINT_BIG_Q
+in: key, duration, style
+```
+
+```lua
+printBigQ(key, duration, style)
+```
+
+```js
+Text.printBigQ(key, duration, style)
+```
+</Opcode>
+
+## 立即消息 2 数
+
+<Opcode id="02FD" name="PRINT_WITH_2_NUMBERS_NOW" member="Text.PrintWith2NumbersNow">
+立即消息：前两个 `~1~` 换成数字。
+
+```text
+02FD PRINT_WITH_2_NUMBERS_NOW
+in: key, num1, num2, duration, style
+```
+
+```lua
+printWith2NumbersNow(key, num1, num2, duration, style)
+```
+
+```js
+Text.printWith2NumbersNow(key, num1, num2, duration, style)
+```
+</Opcode>
+
+## 消息 3 数
+
+<Opcode id="02FF" name="PRINT_WITH_3_NUMBERS" member="Text.PrintWith3Numbers">
+消息：前三个 `~1~` 换成数字。
+
+```text
+02FF PRINT_WITH_3_NUMBERS
+in: key, num1, num2, num3, duration, style
+```
+
+```lua
+printWith3Numbers(key, num1, num2, num3, duration, style)
+```
+
+```js
+Text.printWith3Numbers(key, num1, num2, num3, duration, style)
+```
+</Opcode>
+
+## 消息 4 数
+
+<Opcode id="0302" name="PRINT_WITH_4_NUMBERS" member="Text.PrintWith4Numbers">
+消息：前四个 `~1~` 换成数字。
+
+```text
+0302 PRINT_WITH_4_NUMBERS
+in: key, num1, num2, num3, num4, duration, style
+```
+
+```lua
+printWith4Numbers(key, num1, num2, num3, num4, duration, style)
+```
+
+```js
+Text.printWith4Numbers(key, num1, num2, num3, num4, duration, style)
+```
+</Opcode>
+
+## 立即消息 4 数
+
+<Opcode id="0303" name="PRINT_WITH_4_NUMBERS_NOW" member="Text.PrintWith4NumbersNow">
+立即消息：前四个 `~1~` 换成数字。
+
+```text
+0303 PRINT_WITH_4_NUMBERS_NOW
+in: key, num1, num2, num3, num4, duration, style
+```
+
+```lua
+printWith4NumbersNow(key, num1, num2, num3, num4, duration, style)
+```
+
+```js
+Text.printWith4NumbersNow(key, num1, num2, num3, num4, duration, style)
+```
+</Opcode>
+
+## 消息 6 数
+
+<Opcode id="0308" name="PRINT_WITH_6_NUMBERS" member="Text.PrintWith6Numbers">
+消息：前六个 `~1~` 换成数字。
+
+```text
+0308 PRINT_WITH_6_NUMBERS
+in: key, num1, num2, num3, num4, num5, num6, duration, style
+```
+
+```lua
+printWith6Numbers(key, num1, num2, num3, num4, num5, num6, duration, style)
+```
+
+```js
+Text.printWith6Numbers(key, num1, num2, num3, num4, num5, num6, duration, style)
+```
+</Opcode>
+
+## 画 GXT 字
+
+<Opcode id="033E" name="DISPLAY_TEXT" member="Text.Display">
+在屏幕坐标画 GXT 字。
+
+```text
+033E DISPLAY_TEXT
+in: offsetLeft, offsetTop, key
+```
+
+```lua
+displayText(offsetLeft, offsetTop, key)
+```
+
+```js
+Text.display(offsetLeft, offsetTop, key)
+```
+</Opcode>
+
+## 文字缩放
+
+<Opcode id="033F" name="SET_TEXT_SCALE" member="Text.SetScale">
+文字宽高缩放。
+
+```text
+033F SET_TEXT_SCALE
+in: widthScale, heightScale
+```
+
+```lua
+setTextScale(widthScale, heightScale)
+```
+
+```js
+Text.setScale(widthScale, heightScale)
+```
+</Opcode>
+
+## 文字颜色
+
+<Opcode id="0340" name="SET_TEXT_COLOUR" member="Text.SetColor">
+文字颜色 RGBA。
+
+```text
+0340 SET_TEXT_COLOUR
+in: red, green, blue, alpha
+```
+
+```lua
+setTextColour(red, green, blue, alpha)
+```
+
+```js
+Text.setColor(red, green, blue, alpha)
+```
+</Opcode>
+
+## 两端对齐
+
+<Opcode id="0341" name="SET_TEXT_JUSTIFY" member="Text.SetJustify">
+两端对齐/自动换行成矩形。
+
+```text
+0341 SET_TEXT_JUSTIFY
+in: state
+```
+
+```lua
+setTextJustify(state)
+```
+
+```js
+Text.setJustify(state)
+```
+</Opcode>
+
+## 水平居中
+
+<Opcode id="0342" name="SET_TEXT_CENTRE" member="Text.SetCenter">
+水平居中。
+
+```text
+0342 SET_TEXT_CENTRE
+in: state
+```
+
+```lua
+setTextCentre(state)
+```
+
+```js
+Text.setCenter(state)
+```
+</Opcode>
+
+## 换行宽度
+
+<Opcode id="0343" name="SET_TEXT_WRAPX" member="Text.SetWrapX">
+换行宽度。
+
+```text
+0343 SET_TEXT_WRAPX
+in: width
+```
+
+```lua
+setTextWrapx(width)
+```
+
+```js
+Text.setWrapX(width)
+```
+</Opcode>
+
+## 居中行宽
+
+<Opcode id="0344" name="SET_TEXT_CENTRE_SIZE" member="Text.SetCenterSize">
+居中文字的行宽。
+
+```text
+0344 SET_TEXT_CENTRE_SIZE
+in: width
+```
+
+```lua
+setTextCentreSize(width)
+```
+
+```js
+Text.setCenterSize(width)
+```
+</Opcode>
+
+## 文字背景
+
+<Opcode id="0345" name="SET_TEXT_BACKGROUND" member="Text.SetBackground">
+是否画文字背景。
+
+```text
+0345 SET_TEXT_BACKGROUND
+in: state
+```
+
+```lua
+setTextBackground(state)
+```
+
+```js
+Text.setBackground(state)
+```
+</Opcode>
+
+## 比例字体
+
+<Opcode id="0348" name="SET_TEXT_PROPORTIONAL" member="Text.SetProportional">
+比例字体宽。
+
+```text
+0348 SET_TEXT_PROPORTIONAL
+in: state
+```
+
+```lua
+setTextProportional(state)
+```
+
+```js
+Text.setProportional(state)
+```
+</Opcode>
+
+## 字体
+
+<Opcode id="0349" name="SET_TEXT_FONT" member="Text.SetFont">
+绘制字体。
+
+```text
+0349 SET_TEXT_FONT
+in: font
+```
+
+```lua
+setTextFont(font)
+```
+
+```js
+Text.setFont(font)
+```
+</Opcode>
+
+## 大字 2 数
+
+<Opcode id="036D" name="PRINT_WITH_2_NUMBERS_BIG" member="Text.PrintWith2NumbersBig">
+大字：前两个 `~1~` 换成数字。
+
+```text
+036D PRINT_WITH_2_NUMBERS_BIG
+in: key, num1, num2, duration, style
+```
+
+```lua
+printWith2NumbersBig(key, num1, num2, duration, style)
+```
+
+```js
+Text.printWith2NumbersBig(key, num1, num2, duration, style)
+```
+</Opcode>
+
+## 嵌套 GXT 立即消息
+
+<Opcode id="0384" name="PRINT_STRING_IN_STRING_NOW" member="Text.PrintStringInStringNow">
+立即消息：`~a~` 换成另一段 GXT。
+
+```text
+0384 PRINT_STRING_IN_STRING_NOW
+in: templateKey, replacementKey, duration, style
+```
+
+```lua
+printStringInStringNow(templateKey, replacementKey, duration, style)
+```
+
+```js
+Text.printStringInStringNow(templateKey, replacementKey, duration, style)
+```
+</Opcode>
+
+## 清指定消息
+
+<Opcode id="03D5" name="CLEAR_THIS_PRINT" member="Text.ClearThisPrint">
+清指定 key 的优先消息。
+
+```text
+03D5 CLEAR_THIS_PRINT
+in: key
+```
+
+```lua
+clearThisPrint(key)
+```
+
+```js
+Text.clearThisPrint(key)
+```
+</Opcode>
+
+## 清指定大字
+
+<Opcode id="03D6" name="CLEAR_THIS_BIG_PRINT" member="Text.ClearThisBigPrint">
+清指定 key 的样式大字。
+
+```text
+03D6 CLEAR_THIS_BIG_PRINT
+in: key
+```
+
+```lua
+clearThisBigPrint(key)
+```
+
+```js
+Text.clearThisBigPrint(key)
+```
+</Opcode>
+
+## 画在淡入前
+
+<Opcode id="03E0" name="SET_TEXT_DRAW_BEFORE_FADE" member="Text.SetDrawBeforeFade">
+下一次文字画在淡入淡出之前。
+
+```text
+03E0 SET_TEXT_DRAW_BEFORE_FADE
+in: state
+```
+
+```lua
+setTextDrawBeforeFade(state)
+```
+
+```js
+Text.setDrawBeforeFade(state)
+```
+</Opcode>
+
+## 右对齐
+
+<Opcode id="03E4" name="SET_TEXT_RIGHT_JUSTIFY" member="Text.SetRightJustify">
+右对齐。
+
+```text
+03E4 SET_TEXT_RIGHT_JUSTIFY
+in: state
+```
+
+```lua
+setTextRightJustify(state)
+```
+
+```js
+Text.setRightJustify(state)
+```
+</Opcode>
+
+## 帮助框
+
+<Opcode id="03E5" name="PRINT_HELP" member="Text.PrintHelp">
+黑底帮助框，数秒后消失。
+
+```text
+03E5 PRINT_HELP
+in: key
+```
+
+```lua
+printHelp(key)
+```
+
+```js
+Text.printHelp(key)
+```
+</Opcode>
+
+## 关帮助框
+
+<Opcode id="03E6" name="CLEAR_HELP" member="Text.ClearHelp">
+关掉帮助框。
+
+```text
+03E6 CLEAR_HELP
+```
+
+```lua
+clearHelp()
+```
+
+```js
+Text.clearHelp()
+```
+</Opcode>
+
+## 清小字
+
+<Opcode id="03EB" name="CLEAR_SMALL_PRINTS" member="Text.ClearSmallPrints">
+清小字消息。
+
+```text
+03EB CLEAR_SMALL_PRINTS
+```
+
+```lua
+clearSmallPrints()
+```
+
+```js
+Text.clearSmallPrints()
+```
+</Opcode>
+
+## 开关绘制命令
+
+<Opcode id="03F0" name="USE_TEXT_COMMANDS" member="Text.UseCommands">
+开关文字/贴图绘制命令。
+
+```text
+03F0 USE_TEXT_COMMANDS
+in: state
+```
+
+```lua
+useTextCommands(state)
+```
+
+```js
+Text.useCommands(state)
+```
+</Opcode>
+
+## 画带 1 数 GXT
+
+<Opcode id="045A" name="DISPLAY_TEXT_WITH_NUMBER" member="Text.DisplayWithNumber">
+屏幕坐标画带 1 个数字的 GXT。
+
+```text
+045A DISPLAY_TEXT_WITH_NUMBER
+in: offsetLeft, offsetTop, key, num
+```
+
+```lua
+displayTextWithNumber(offsetLeft, offsetTop, key, num)
+```
+
+```js
+Text.displayWithNumber(offsetLeft, offsetTop, key, num)
+```
+</Opcode>
+
+## 画带 2 数 GXT
+
+<Opcode id="045B" name="DISPLAY_TEXT_WITH_2_NUMBERS" member="Text.DisplayWith2Numbers">
+屏幕坐标画带 2 个数字的 GXT。
+
+```text
+045B DISPLAY_TEXT_WITH_2_NUMBERS
+in: offsetLeft, offsetTop, key, num1, num2
+```
+
+```lua
+displayTextWith2Numbers(offsetLeft, offsetTop, key, num1, num2)
+```
+
+```js
+Text.displayWith2Numbers(offsetLeft, offsetTop, key, num1, num2)
+```
+</Opcode>
+
+## 常驻帮助框
+
+<Opcode id="0512" name="PRINT_HELP_FOREVER" member="Text.PrintHelpForever">
+常驻帮助框，直到别的命令清掉。
+
+```text
+0512 PRINT_HELP_FOREVER
+in: key
+```
+
+```lua
+printHelpForever(key)
+```
+
+```js
+Text.printHelpForever(key)
+```
+</Opcode>
+
+## 常驻帮助框带数
+
+<Opcode id="0513" name="PRINT_HELP_FOREVER_WITH_NUMBER" member="Text.PrintHelpForeverWithNumber">
+常驻帮助框带 1 个数字。
+
+```text
+0513 PRINT_HELP_FOREVER_WITH_NUMBER
+in: gxt, number
+```
+
+```lua
+printHelpForeverWithNumber(gxt, number)
+```
+
+```js
+Text.printHelpForeverWithNumber(gxt, number)
+```
+</Opcode>
+
+## 加载任务 GXT
+
+<Opcode id="054C" name="LOAD_MISSION_TEXT" member="Text.LoadMissionText">
+加载指定 GXT 表作任务文本源。
+
+```text
+054C LOAD_MISSION_TEXT
+in: tableName
+```
+
+```lua
+loadMissionText(tableName)
+```
+
+```js
+Text.loadMissionText(tableName)
+```
+</Opcode>
+
+## 文字阴影
+
+<Opcode id="060D" name="SET_TEXT_DROPSHADOW" member="Text.SetDropshadow">
+当前绘制文字的阴影。
+
+```text
+060D SET_TEXT_DROPSHADOW
+in: intensity, red, green, blue, alpha
+```
+
+```lua
+setTextDropshadow(intensity, red, green, blue, alpha)
+```
+
+```js
+Text.setDropshadow(intensity, red, green, blue, alpha)
+```
+</Opcode>
+
+## 是否有优先消息
+
+<Opcode id="076F" name="IS_MESSAGE_BEING_DISPLAYED" member="Text.IsMessageBeingDisplayed">
+用在 if：是否有优先 GXT 在屏上。
+
+```text
+076F IS_MESSAGE_BEING_DISPLAYED
+```
+
+```lua
+isMessageBeingDisplayed()
+```
+
+```js
+Text.isMessageBeingDisplayed()
+```
+</Opcode>
+
+## 画浮点 GXT
+
+<Opcode id="07FC" name="DISPLAY_TEXT_WITH_FLOAT" member="Text.DisplayWithFloat">
+浮点按精度拆成两数再画 2 数字 GXT。
+
+```text
+07FC DISPLAY_TEXT_WITH_FLOAT
+in: leftTopX, leftTopY, key, value, precision
+```
+
+```lua
+displayTextWithFloat(leftTopX, leftTopY, key, value, precision)
+```
+
+```js
+Text.displayWithFloat(leftTopX, leftTopY, key, value, precision)
+```
+</Opcode>
+
+## 文字描边
+
+<Opcode id="081C" name="SET_TEXT_EDGE" member="Text.SetEdge">
+下一次绘制文字描边。
+
+```text
+081C SET_TEXT_EDGE
+in: size, red, green, blue, alpha
+```
+
+```lua
+setTextEdge(size, red, green, blue, alpha)
+```
+
+```js
+Text.setEdge(size, red, green, blue, alpha)
+```
+</Opcode>
+
+## 全局 label 是否空
+
+<Opcode id="0844" name="IS_VAR_TEXT_LABEL_EMPTY" member="Text.IsEmpty">
+用在 if：全局 text label 是否空串。
+
+```text
+0844 IS_VAR_TEXT_LABEL_EMPTY
+in: text
+```
+
+```lua
+isVarTextLabelEmpty(text)
+```
+
+```js
+Text.isEmpty(text)
+```
+</Opcode>
+
+## 局部 label 是否空
+
+<Opcode id="0845" name="IS_LVAR_TEXT_LABEL_EMPTY" member="Text.IsEmpty">
+用在 if：局部 text label 是否空串。
+
+```text
+0845 IS_LVAR_TEXT_LABEL_EMPTY
+in: text
+```
+
+```lua
+isLvarTextLabelEmpty(text)
+```
+
+```js
+Text.isEmpty(text)
+```
+</Opcode>
+
+## 全局 label16 是否空
+
+<Opcode id="0846" name="IS_VAR_TEXT_LABEL16_EMPTY" member="Text.IsEmpty">
+用在 if：全局 label16 是否空串。
+
+```text
+0846 IS_VAR_TEXT_LABEL16_EMPTY
+in: text
+```
+
+```lua
+isVarTextLabel16Empty(text)
+```
+
+```js
+Text.isEmpty(text)
+```
+</Opcode>
+
+## 局部 label16 是否空
+
+<Opcode id="0847" name="IS_LVAR_TEXT_LABEL16_EMPTY" member="Text.IsEmpty">
+用在 if：局部 label16 是否空串。
+
+```text
+0847 IS_LVAR_TEXT_LABEL16_EMPTY
+in: text
+```
+
+```lua
+isLvarTextLabel16Empty(text)
+```
+
+```js
+Text.isEmpty(text)
+```
+</Opcode>
+
+## 是否有帮助框
+
+<Opcode id="08FE" name="IS_HELP_MESSAGE_BEING_DISPLAYED" member="Text.IsHelpMessageBeingDisplayed">
+用在 if：是否有任意帮助框。
+
+```text
+08FE IS_HELP_MESSAGE_BEING_DISPLAYED
+```
+
+```lua
+isHelpMessageBeingDisplayed()
+```
+
+```js
+Text.isHelpMessageBeingDisplayed()
+```
+</Opcode>
+
+## 消息排版
+
+<Opcode id="0912" name="SET_MESSAGE_FORMATTING" member="Text.SetMessageFormatting">
+覆盖底部消息屏上位置/边距/宽。
+
+```text
+0912 SET_MESSAGE_FORMATTING
+in: customPosition, margin, width
+```
+
+```lua
+setMessageFormatting(customPosition, margin, width)
+```
+
+```js
+Text.setMessageFormatting(customPosition, margin, width)
+```
+</Opcode>
+
+## 帮助框宽度
+
+<Opcode id="0989" name="SET_HELP_MESSAGE_BOX_SIZE" member="Text.SetHelpMessageBoxSize">
+帮助框全局宽度。
+
+```text
+0989 SET_HELP_MESSAGE_BOX_SIZE
+in: size
+```
+
+```lua
+setHelpMessageBoxSize(size)
+```
+
+```js
+Text.setHelpMessageBoxSize(size)
+```
+</Opcode>
+
+## 字符串哈希
+
+<Opcode id="09A9" name="GET_HASH_KEY" member="Text.GetHashKey">
+字符串 CRC 哈希。
+
+```text
+09A9 GET_HASH_KEY
+in: text
+out: hash
+```
+
+```lua
+local hash = getHashKey(text)
+```
+
+```js
+Text.getHashKey(text)
+```
+</Opcode>
+
+## 下条进简报
+
+<Opcode id="09C1" name="ADD_NEXT_MESSAGE_TO_PREVIOUS_BRIEFS" member="Text.AddNextMessageToPreviousBriefs">
+下一条是否进菜单简报记录。
+
+```text
+09C1 ADD_NEXT_MESSAGE_TO_PREVIOUS_BRIEFS
+in: state
+```
+
+```lua
+addNextMessageToPreviousBriefs(state)
+```
+
+```js
+Text.addNextMessageToPreviousBriefs(state)
+```
+</Opcode>
+
+## GXT 宽度
+
+<Opcode id="09FD" name="GET_STRING_WIDTH" member="Text.GetStringWidth">
+GXT 条目渲染宽度。
+
+```text
+09FD GET_STRING_WIDTH
+in: entry
+out: width
+```
+
+```lua
+local width = getStringWidth(entry)
+```
+
+```js
+Text.getStringWidth(entry)
+```
+</Opcode>
+
+## 带数 GXT 宽度
+
+<Opcode id="0A08" name="GET_STRING_WIDTH_WITH_NUMBER" member="Text.GetStringWidthWithNumber">
+带数字的 GXT 渲染宽度。
+
+```text
+0A08 GET_STRING_WIDTH_WITH_NUMBER
+in: gxtEntry, number
+out: width
+```
+
+```lua
+local width = getStringWidthWithNumber(gxtEntry, number)
+```
+
+```js
+Text.getStringWidthWithNumber(gxtEntry, number)
+```
+</Opcode>
+
+## 清 style 大字
+
+<Opcode id="0A0E" name="CLEAR_THIS_PRINT_BIG_NOW" member="Text.ClearThisPrintBigNow">
+清指定 style 的大字。
+
+```text
+0A0E CLEAR_THIS_PRINT_BIG_NOW
+in: textStyle
+```
+
+```lua
+clearThisPrintBigNow(textStyle)
+```
+
+```js
+Text.clearThisPrintBigNow(textStyle)
+```
+</Opcode>
+
+## 区域名样式
+
+<Opcode id="0A19" name="SET_AREA_NAME" member="Text.SetAreaName">
+用区域名样式显示 GXT。
+
+```text
+0A19 SET_AREA_NAME
+in: name
+```
+
+```lua
+setAreaName(name)
+```
+
+```js
+Text.setAreaName(name)
+```
+</Opcode>
+
+## 是否该帮助框
+
+<Opcode id="0A2A" name="IS_THIS_HELP_MESSAGE_BEING_DISPLAYED" member="Text.IsThisHelpMessageBeingDisplayed">
+用在 if：是否正显示该 GXT 帮助框。
+
+```text
+0A2A IS_THIS_HELP_MESSAGE_BEING_DISPLAYED
+in: gxt
+```
+
+```lua
+isThisHelpMessageBeingDisplayed(gxt)
+```
+
+```js
+Text.isThisHelpMessageBeingDisplayed(gxt)
+```
+</Opcode>
+
+## 淡出前画字幕
+
+<Opcode id="0A2C" name="DRAW_SUBTITLES_BEFORE_FADE" member="Text.DrawSubtitlesBeforeFade">
+淡出时字幕是否仍画在前面。
+
+```text
+0A2C DRAW_SUBTITLES_BEFORE_FADE
+in: state
+```
+
+```lua
+drawSubtitlesBeforeFade(state)
+```
+
+```js
+Text.drawSubtitlesBeforeFade(state)
+```
+</Opcode>
+
+## 淡出前画零活标题
+
+<Opcode id="0A2D" name="DRAW_ODDJOB_TITLE_BEFORE_FADE" member="Text.DrawOddjobTitleBeforeFade">
+淡出时零活标题大字是否仍画在前面。
+
+```text
+0A2D DRAW_ODDJOB_TITLE_BEFORE_FADE
+in: state
+```
+
+```lua
+drawOddjobTitleBeforeFade(state)
+```
+
+```js
+Text.drawOddjobTitleBeforeFade(state)
+```
+</Opcode>
+
+## 小游戏外帮助消息
+
+<Opcode id="0A44" name="DISPLAY_NON_MINIGAME_HELP_MESSAGES" member="Text.DisplayNonMinigameHelpMessages">
+覆盖 `09BD` 的小游戏文本块限制。
+
+```text
+0A44 DISPLAY_NON_MINIGAME_HELP_MESSAGES
+in: state
+```
+
+```lua
+displayNonMinigameHelpMessages(state)
+```
+
+```js
+Text.displayNonMinigameHelpMessages(state)
+```
+</Opcode>

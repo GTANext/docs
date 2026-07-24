@@ -1,0 +1,465 @@
+---
+title: 界面 Hud
+description: 计时 / 计数 / 雷达 / 绘制
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 24 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 屏上计时
+
+<Opcode id="014E" name="DISPLAY_ONSCREEN_TIMER" member="Hud.DisplayTimer">
+屏上倒计时 / 正计时。
+
+```text
+014E DISPLAY_ONSCREEN_TIMER
+in: timer, direction
+```
+
+```lua
+displayOnscreenTimer(timer, direction)
+```
+
+```js
+Hud.displayTimer(timer, direction)
+```
+</Opcode>
+
+## 清计时
+
+<Opcode id="014F" name="CLEAR_ONSCREEN_TIMER" member="Hud.ClearTimer">
+移除屏上计时。
+
+```text
+014F CLEAR_ONSCREEN_TIMER
+in: timer
+```
+
+```lua
+clearOnscreenTimer(timer)
+```
+
+```js
+Hud.clearTimer(timer)
+```
+</Opcode>
+
+## 清计数
+
+<Opcode id="0151" name="CLEAR_ONSCREEN_COUNTER" member="Hud.ClearCounter">
+移除屏上计数（`0150` / `03C4`）。
+
+```text
+0151 CLEAR_ONSCREEN_COUNTER
+in: counter
+```
+
+```lua
+clearOnscreenCounter(counter)
+```
+
+```js
+Hud.clearCounter(counter)
+```
+</Opcode>
+
+## 宽银幕
+
+<Opcode id="02A3" name="SWITCH_WIDESCREEN" member="Hud.SwitchWidescreen">
+开关宽银幕黑边。
+
+```text
+02A3 SWITCH_WIDESCREEN
+in: state
+```
+
+```lua
+switchWidescreen(state)
+```
+
+```js
+Hud.switchWidescreen(state)
+```
+</Opcode>
+
+## 画精灵
+
+<Opcode id="038D" name="DRAW_SPRITE" member="Hud.DrawSprite">
+画已加载精灵（`038F`）：位置、尺寸、RGBA。
+
+```text
+038D DRAW_SPRITE
+in: spriteSlot, offsetLeft, offsetTop, width, height, r, g, b, a
+```
+
+```lua
+drawSprite(spriteSlot, offsetLeft, offsetTop, width, height, r, g, b, a)
+```
+
+```js
+Hud.drawSprite(spriteSlot, offsetLeft, offsetTop, width, height, r, g, b, a)
+```
+</Opcode>
+
+## 画矩形
+
+<Opcode id="038E" name="DRAW_RECT" member="Hud.DrawRect">
+画矩形色块。
+
+```text
+038E DRAW_RECT
+in: x, y, width, height, r, g, b, a
+```
+
+```lua
+drawRect(x, y, width, height, r, g, b, a)
+```
+
+```js
+Hud.drawRect(x, y, width, height, r, g, b, a)
+```
+</Opcode>
+
+## 冻结计时
+
+<Opcode id="0396" name="FREEZE_ONSCREEN_TIMER" member="Hud.FreezeTimer">
+冻结屏上计时更新。
+
+```text
+0396 FREEZE_ONSCREEN_TIMER
+in: state
+```
+
+```lua
+freezeOnscreenTimer(state)
+```
+
+```js
+Hud.freezeTimer(state)
+```
+</Opcode>
+
+## 带字计时
+
+<Opcode id="03C3" name="DISPLAY_ONSCREEN_TIMER_WITH_STRING" member="Hud.DisplayTimerWithString">
+带文字的屏上计时。
+
+```text
+03C3 DISPLAY_ONSCREEN_TIMER_WITH_STRING
+in: timer, direction, text
+```
+
+```lua
+displayOnscreenTimerWithString(timer, direction, text)
+```
+
+```js
+Hud.displayTimerWithString(timer, direction, text)
+```
+</Opcode>
+
+## 带字计数
+
+<Opcode id="03C4" name="DISPLAY_ONSCREEN_COUNTER_WITH_STRING" member="Hud.DisplayCounterWithString">
+带文字的计数器（数字或条）。
+
+```text
+03C4 DISPLAY_ONSCREEN_COUNTER_WITH_STRING
+in: counter, display, text
+```
+
+```lua
+displayOnscreenCounterWithString(counter, display, text)
+```
+
+```js
+Hud.displayCounterWithString(counter, display, text)
+```
+</Opcode>
+
+## 精灵先于淡入淡出
+
+<Opcode id="03E3" name="SET_SPRITES_DRAW_BEFORE_FADE" member="Hud.SetSpritesDrawBeforeFade">
+下一次 `038D` 画在淡入淡出之前。
+
+```text
+03E3 SET_SPRITES_DRAW_BEFORE_FADE
+in: state
+```
+
+```lua
+setSpritesDrawBeforeFade(state)
+```
+
+```js
+Hud.setSpritesDrawBeforeFade(state)
+```
+</Opcode>
+
+## 闪 HUD
+
+<Opcode id="03E7" name="FLASH_HUD_OBJECT" member="Hud.FlashObject">
+闪烁某块 HUD。
+
+```text
+03E7 FLASH_HUD_OBJECT
+in: object
+```
+
+```lua
+flashHudObject(object)
+```
+
+```js
+Hud.flashObject(object)
+```
+</Opcode>
+
+## 第 n 槽计数
+
+<Opcode id="04F7" name="DISPLAY_NTH_ONSCREEN_COUNTER_WITH_STRING" member="Hud.DisplayNthCounterWithString">
+指定槽位的带文字计数器。
+
+```text
+04F7 DISPLAY_NTH_ONSCREEN_COUNTER_WITH_STRING
+in: counter, display, slot, text
+```
+
+```lua
+displayNthOnscreenCounterWithString(counter, display, slot, text)
+```
+
+```js
+Hud.displayNthCounterWithString(counter, display, slot, text)
+```
+</Opcode>
+
+## 雷达显示
+
+<Opcode id="0581" name="DISPLAY_RADAR" member="Hud.DisplayRadar">
+显示 / 隐藏雷达。
+
+```text
+0581 DISPLAY_RADAR
+in: state
+```
+
+```lua
+displayRadar(state)
+```
+
+```js
+Hud.displayRadar(state)
+```
+</Opcode>
+
+## 首次闪计数
+
+<Opcode id="059C" name="SET_ONSCREEN_COUNTER_FLASH_WHEN_FIRST_DISPLAYED" member="Hud.SetCounterFlashWhenFirstDisplayed">
+计数器首次出现是否闪一下。
+
+```text
+059C SET_ONSCREEN_COUNTER_FLASH_WHEN_FIRST_DISPLAYED
+in: counter, state
+```
+
+```lua
+setOnscreenCounterFlashWhenFirstDisplayed(counter, state)
+```
+
+```js
+Hud.setCounterFlashWhenFirstDisplayed(counter, state)
+```
+</Opcode>
+
+## 旋转精灵
+
+<Opcode id="074B" name="DRAW_SPRITE_WITH_ROTATION" member="Hud.DrawSpriteWithRotation">
+`038D` 扩展：带旋转角。
+
+```text
+074B DRAW_SPRITE_WITH_ROTATION
+in: spriteSlot, offsetLeft, offsetTop, width, height, angle, red, green, blue, alpha
+```
+
+```lua
+drawSpriteWithRotation(spriteSlot, offsetLeft, offsetTop, width, height, angle, red, green, blue, alpha)
+```
+
+```js
+Hud.drawSpriteWithRotation(spriteSlot, offsetLeft, offsetTop, width, height, angle, red, green, blue, alpha)
+```
+</Opcode>
+
+## 雷达缩放
+
+<Opcode id="075B" name="SET_RADAR_ZOOM" member="Hud.SetRadarZoom">
+雷达缩放。
+
+```text
+075B SET_RADAR_ZOOM
+in: zoom
+```
+
+```lua
+setRadarZoom(zoom)
+```
+
+```js
+Hud.setRadarZoom(zoom)
+```
+</Opcode>
+
+## HUD 显示
+
+<Opcode id="0826" name="DISPLAY_HUD" member="Hud.Display">
+显示 / 隐藏 HUD。
+
+```text
+0826 DISPLAY_HUD
+in: state
+```
+
+```lua
+displayHud(state)
+```
+
+```js
+Hud.display(state)
+```
+</Opcode>
+
+## 倒计时滴答
+
+<Opcode id="0890" name="SET_TIMER_BEEP_COUNTDOWN_TIME" member="Hud.SetTimerBeepCountdownTime">
+倒计时剩多少秒开始滴答。
+
+```text
+0890 SET_TIMER_BEEP_COUNTDOWN_TIME
+in: timer, timeInSec
+```
+
+```lua
+setTimerBeepCountdownTime(timer, timeInSec)
+```
+
+```js
+Hud.setTimerBeepCountdownTime(timer, timeInSec)
+```
+</Opcode>
+
+## 取 HUD 色
+
+<Opcode id="0904" name="GET_HUD_COLOUR" member="Hud.GetColor">
+取 HUD 色表 RGBA。
+
+```text
+0904 GET_HUD_COLOUR
+in: color
+out: red, green, blue, alpha
+```
+
+```lua
+local red, green, blue, alpha = getHudColour(color)
+```
+
+```js
+const { red, green, blue, alpha } = Hud.getColor(color)
+```
+</Opcode>
+
+## 画窗
+
+<Opcode id="0937" name="DRAW_WINDOW" member="Hud.DrawWindow">
+画对角黑底样式窗 + 标题。
+
+```text
+0937 DRAW_WINDOW
+in: leftTopX, leftTopY, rightBottomX, rightBottomY, header, zIndex
+```
+
+```lua
+drawWindow(leftTopX, leftTopY, rightBottomX, rightBottomY, header, zIndex)
+```
+
+```js
+Hud.drawWindow(leftTopX, leftTopY, rightBottomX, rightBottomY, header, zIndex)
+```
+</Opcode>
+
+## 准星
+
+<Opcode id="09A3" name="DRAW_CROSSHAIR" member="Hud.DrawCrosshair">
+强制显示瞄准准星（如 Catalyst 任务）。
+
+```text
+09A3 DRAW_CROSSHAIR
+in: state
+```
+
+```lua
+drawCrosshair(state)
+```
+
+```js
+Hud.drawCrosshair(state)
+```
+</Opcode>
+
+## 车名
+
+<Opcode id="09B9" name="DISPLAY_CAR_NAMES" member="Hud.DisplayCarNames">
+是否显示当前车名。
+
+```text
+09B9 DISPLAY_CAR_NAMES
+in: state
+```
+
+```lua
+displayCarNames(state)
+```
+
+```js
+Hud.displayCarNames(state)
+```
+</Opcode>
+
+## 区名
+
+<Opcode id="09BA" name="DISPLAY_ZONE_NAMES" member="Hud.DisplayZoneNames">
+是否显示区域名。
+
+```text
+09BA DISPLAY_ZONE_NAMES
+in: state
+```
+
+```lua
+displayZoneNames(state)
+```
+
+```js
+Hud.displayZoneNames(state)
+```
+</Opcode>
+
+## 强制大字
+
+<Opcode id="09EE" name="FORCE_BIG_MESSAGE_AND_COUNTER" member="Hud.ForceBigMessageAndCounter">
+与其它大字冲突时仍强制显示计时 / 大字。
+
+```text
+09EE FORCE_BIG_MESSAGE_AND_COUNTER
+in: state
+```
+
+```lua
+forceBigMessageAndCounter(state)
+```
+
+```js
+Hud.forceBigMessageAndCounter(state)
+```
+</Opcode>

@@ -1,0 +1,44 @@
+---
+title: ASI 覆盖边界
+description: entities 收录范围与明确不扩清单
+---
+
+本站 **entities** 按 SA 高频 ASI 用法收录，不是 `game_sa` 500+ 头全文。
+
+## 已收录（本树）
+
+| 类 / 主题 | 页 |
+|---|---|
+| CPlaceable / CEntity / CPhysical | placeable / entity / physical |
+| FindPlayer* / CPlayerPed / CPlayerInfo | player* |
+| CPools / CPed / CVehicle / CObject | pools / ped / vehicle / object |
+| CWorld / CStreaming / CModelInfo / CTxdStore | world / streaming / model-info / txd-store |
+| CFireManager / CExplosion / CPickups / CProjectileInfo | fire / explosion / pickups / projectile |
+| CAnimManager / CWeapon / CWeaponInfo（world-state） | anim / weapon / world-state |
+| CWanted / CPad / CRadar / CHud·CMessages | wanted / pad / radar / hud-messages |
+| CTimer / CCamera / CDraw / CTimeCycle / CClock·CWeather | timer / camera / draw / time-cycle / world-state |
+| CFont / CSprite2d / CCoronas·C3dMarkers / CShadows | font / sprite2d / markers / shadows |
+| CStats / CPopulation / CCarCtrl / CPathFind | stats / population / car-ctrl / pathfind |
+| CWaterLevel / CEntryExitManager / CGame / CMenuManager | water / entry-exit / game / menu |
+| CFileMgr / CTheScripts / CAudioEngine | file-mgr / scripts / audio-engine |
+
+## 明确不扩（除非以后单开）
+
+| 范围 | 原因 |
+|---|---|
+| 每个 `CTask*` / `CEvent*` / `CDecisionMaker` 子类 | 体量爆炸，查头文件 + 任务图 |
+| 全套 `CAE*Audio*` | 只留 AudioEngine 入口 |
+| `CAutomobile` / `CHeli` / … 全字段 | 用 CVehicle + 具体头 |
+| `CRenderer` 可见列表细节 | 渲染逆向专题 |
+| `CGarages` 全逻辑 | 头文件字段少，任务向 |
+| VC / III `game_vc` / `game_iii` 类页 | 未开坑；API 名常类似，以对应头为准 |
+| `ScriptCommands` 全枚举 | 见 [Command](/docs/plugins/commands) 用法 + 枚举头 |
+| `injector` / `safetyhook` 底层 | 非游戏类 |
+
+## 写法约定
+
+- `##` 功能中文；`<Api>` 里符号 + 一句人话
+- 签名贴近 plugin-sdk 头；调用可跑或标明以头文件为准
+- 改全局倍数 / 表 / 标志：备份还原
+
+本地头永远大于文档。缺页先搜 `plugin_sa/game_sa`。

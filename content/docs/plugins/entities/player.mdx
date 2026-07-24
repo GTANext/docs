@@ -1,0 +1,110 @@
+---
+title: 玩家 FindPlayer*
+description: common.h 玩家快捷（SA 高频）
+---
+
+`common.h` · SA 高频
+
+未进档时指针常 null，先判空。
+
+## 取玩家 ped
+
+<Api name="FindPlayerPed">
+`playerId = -1` 为本机。
+
+```cpp
+CPlayerPed* FindPlayerPed(int playerId = -1);
+```
+
+```cpp
+#include "common.h"
+
+CPed* ped = FindPlayerPed();
+if (!ped) {
+    return;
+}
+```
+</Api>
+
+## 取玩家载具
+
+<Api name="FindPlayerVehicle">
+不在车返回 null。
+
+```cpp
+CVehicle* FindPlayerVehicle(int playerId = -1, bool bIncludeRemote = false);
+```
+
+```cpp
+CVehicle* veh = FindPlayerVehicle(-1, false);
+if (!veh) {
+    return;
+}
+```
+</Api>
+
+## 取坐标速度朝向
+
+<Api name="FindPlayerCoors / FindPlayerSpeed / FindPlayerHeading">
+
+```cpp
+CVector FindPlayerCoors(int playerId = -1);
+CVector const& FindPlayerSpeed(int playerId = -1);
+float FindPlayerHeading(int playerId = -1);
+float FindPlayerHeight();
+```
+
+```cpp
+CVector pos = FindPlayerCoors();
+float h = FindPlayerHeading();
+```
+</Api>
+
+## 取玩家实体与世界中心
+
+<Api name="FindPlayerEntity / FindPlayerCentreOfWorld">
+变体去掉瞄准 / 室内偏移。
+
+```cpp
+CEntity* FindPlayerEntity(int playerId = -1);
+CVector const& FindPlayerCentreOfWorld(int playerId = -1);
+CVector const& FindPlayerCentreOfWorld_NoSniperShift(int playerId = -1);
+CVector FindPlayerCentreOfWorld_NoInteriorShift(int playerId = -1);
+```
+
+```cpp
+CVector c = FindPlayerCentreOfWorld();
+```
+</Api>
+
+## 取通缉对象
+
+<Api name="FindPlayerWanted">
+判空再用。改星级见 [通缉 CWanted](/docs/plugins/entities/wanted)。
+
+```cpp
+CWanted* FindPlayerWanted(int playerId = -1);
+```
+
+```cpp
+CWanted* w = FindPlayerWanted();
+if (!w) {
+    return;
+}
+w->SetWantedLevel(0);
+```
+</Api>
+
+## 双人模式
+
+<Api name="InTwoPlayersMode">
+
+```cpp
+bool InTwoPlayersMode();
+```
+
+```cpp
+if (InTwoPlayersMode()) {
+}
+```
+</Api>

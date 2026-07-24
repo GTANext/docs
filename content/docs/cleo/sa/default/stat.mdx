@@ -1,0 +1,502 @@
+---
+title: 统计 Stat
+description: 进度 / 统计读写
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 26 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 进度加值
+
+<Opcode id="030C" name="PLAYER_MADE_PROGRESS" member="Stat.PlayerMadeProgress">
+进度统计加指定量。
+
+```text
+030C PLAYER_MADE_PROGRESS
+in: progress
+```
+
+```lua
+playerMadeProgress(progress)
+```
+
+```js
+Stat.playerMadeProgress(progress)
+```
+</Opcode>
+
+## 进度上限
+
+<Opcode id="030D" name="SET_PROGRESS_TOTAL" member="Stat.SetProgressTotal">
+设置进度上限。
+
+```text
+030D SET_PROGRESS_TOTAL
+in: maxProgress
+```
+
+```lua
+setProgressTotal(maxProgress)
+```
+
+```js
+Stat.setProgressTotal(maxProgress)
+```
+</Opcode>
+
+## 任务尝试 +1
+
+<Opcode id="0317" name="REGISTER_MISSION_GIVEN" member="Stat.RegisterMissionGiven">
+任务尝试次数 +1。
+
+```text
+0317 REGISTER_MISSION_GIVEN
+```
+
+```lua
+registerMissionGiven()
+```
+
+```js
+Stat.registerMissionGiven()
+```
+</Opcode>
+
+## 任务通过
+
+<Opcode id="0318" name="REGISTER_MISSION_PASSED" member="Stat.RegisterMissionPassed">
+登记最近通过的任务 GXT。
+
+```text
+0318 REGISTER_MISSION_PASSED
+in: key
+```
+
+```lua
+registerMissionPassed(key)
+```
+
+```js
+Stat.registerMissionPassed(key)
+```
+</Opcode>
+
+## 任务总数
+
+<Opcode id="042C" name="SET_TOTAL_NUMBER_OF_MISSIONS" member="Stat.SetTotalNumberOfMissions">
+可完成任务总数。
+
+```text
+042C SET_TOTAL_NUMBER_OF_MISSIONS
+in: numMissions
+```
+
+```lua
+setTotalNumberOfMissions(numMissions)
+```
+
+```js
+Stat.setTotalNumberOfMissions(numMissions)
+```
+</Opcode>
+
+## 最快时间
+
+<Opcode id="042E" name="REGISTER_FASTEST_TIME" member="Stat.RegisterFastestTime">
+更快才更新的最快时间统计。
+
+```text
+042E REGISTER_FASTEST_TIME
+in: id, value
+```
+
+```lua
+registerFastestTime(id, value)
+```
+
+```js
+Stat.registerFastestTime(id, value)
+```
+</Opcode>
+
+## 最佳名次
+
+<Opcode id="0582" name="REGISTER_BEST_POSITION" member="Stat.RegisterBestPosition">
+更新竞速最佳名次。
+
+```text
+0582 REGISTER_BEST_POSITION
+in: id, position
+```
+
+```lua
+registerBestPosition(id, position)
+```
+
+```js
+Stat.registerBestPosition(id, position)
+```
+</Opcode>
+
+## 进度百分比
+
+<Opcode id="058C" name="GET_PROGRESS_PERCENTAGE" member="Stat.GetProgressPercentage">
+完成进度百分比。
+
+```text
+058C GET_PROGRESS_PERCENTAGE
+out: percentage
+```
+
+```lua
+local percentage = getProgressPercentage()
+```
+
+```js
+Stat.getProgressPercentage()
+```
+</Opcode>
+
+## 零活通过
+
+<Opcode id="0595" name="REGISTER_ODDJOB_MISSION_PASSED" member="Stat.RegisterOddjobMissionPassed">
+登记最近通过的零活任务。
+
+```text
+0595 REGISTER_ODDJOB_MISSION_PASSED
+```
+
+```lua
+registerOddjobMissionPassed()
+```
+
+```js
+Stat.registerOddjobMissionPassed()
+```
+</Opcode>
+
+## 整型 +
+
+<Opcode id="0623" name="INCREMENT_INT_STAT" member="Stat.IncrementInt">
+整型统计加值。
+
+```text
+0623 INCREMENT_INT_STAT
+in: id, value
+```
+
+```lua
+incrementIntStat(id, value)
+```
+
+```js
+Stat.incrementInt(id, value)
+```
+</Opcode>
+
+## 浮点 +
+
+<Opcode id="0624" name="INCREMENT_FLOAT_STAT" member="Stat.IncrementFloat">
+浮点统计加值。
+
+```text
+0624 INCREMENT_FLOAT_STAT
+in: id, value
+```
+
+```lua
+incrementFloatStat(id, value)
+```
+
+```js
+Stat.incrementFloat(id, value)
+```
+</Opcode>
+
+## 整型 −
+
+<Opcode id="0625" name="DECREMENT_INT_STAT" member="Stat.DecrementInt">
+整型统计减值。
+
+```text
+0625 DECREMENT_INT_STAT
+in: id, value
+```
+
+```lua
+decrementIntStat(id, value)
+```
+
+```js
+Stat.decrementInt(id, value)
+```
+</Opcode>
+
+## 浮点 −
+
+<Opcode id="0626" name="DECREMENT_FLOAT_STAT" member="Stat.DecrementFloat">
+浮点统计减值。
+
+```text
+0626 DECREMENT_FLOAT_STAT
+in: id, value
+```
+
+```lua
+decrementFloatStat(id, value)
+```
+
+```js
+Stat.decrementFloat(id, value)
+```
+</Opcode>
+
+## 登记整型
+
+<Opcode id="0627" name="REGISTER_INT_STAT" member="Stat.RegisterInt">
+登记 / 更新整型统计（按规则写入）。
+
+```text
+0627 REGISTER_INT_STAT
+in: id, value
+```
+
+```lua
+registerIntStat(id, value)
+```
+
+```js
+Stat.registerInt(id, value)
+```
+</Opcode>
+
+## 登记浮点
+
+<Opcode id="0628" name="REGISTER_FLOAT_STAT" member="Stat.RegisterFloat">
+仅当新值更大时写入浮点统计。
+
+```text
+0628 REGISTER_FLOAT_STAT
+in: id, value
+```
+
+```lua
+registerFloatStat(id, value)
+```
+
+```js
+Stat.registerFloat(id, value)
+```
+</Opcode>
+
+## 设整型
+
+<Opcode id="0629" name="SET_INT_STAT" member="Stat.SetInt">
+直接设整型统计。
+
+```text
+0629 SET_INT_STAT
+in: id, value
+```
+
+```lua
+setIntStat(id, value)
+```
+
+```js
+Stat.setInt(id, value)
+```
+</Opcode>
+
+## 设浮点
+
+<Opcode id="062A" name="SET_FLOAT_STAT" member="Stat.SetFloat">
+直接设浮点统计。
+
+```text
+062A SET_FLOAT_STAT
+in: id, value
+```
+
+```lua
+setFloatStat(id, value)
+```
+
+```js
+Stat.setFloat(id, value)
+```
+</Opcode>
+
+## 读整型
+
+<Opcode id="0652" name="GET_INT_STAT" member="Stat.GetInt">
+读整型统计。
+
+```text
+0652 GET_INT_STAT
+in: id
+out: value
+```
+
+```lua
+local value = getIntStat(id)
+```
+
+```js
+Stat.getInt(id)
+```
+</Opcode>
+
+## 读浮点
+
+<Opcode id="0653" name="GET_FLOAT_STAT" member="Stat.GetFloat">
+读浮点统计。
+
+```text
+0653 GET_FLOAT_STAT
+in: id
+out: value
+```
+
+```lua
+local value = getFloatStat(id)
+```
+
+```js
+Stat.getFloat(id)
+```
+</Opcode>
+
+## 涂鸦数
+
+<Opcode id="08E1" name="FIND_NUMBER_TAGS_TAGGED" member="Stat.FindNumberTagsTagged">
+已喷掉的涂鸦数。
+
+```text
+08E1 FIND_NUMBER_TAGS_TAGGED
+out: numTags
+```
+
+```lua
+local numTags = findNumberTagsTagged()
+```
+
+```js
+Stat.findNumberTagsTagged()
+```
+</Opcode>
+
+## 地盘百分比
+
+<Opcode id="08E2" name="GET_TERRITORY_UNDER_CONTROL_PERCENTAGE" member="Stat.GetTerritoryUnderControlPercentage">
+地盘控制百分比。
+
+```text
+08E2 GET_TERRITORY_UNDER_CONTROL_PERCENTAGE
+out: percentage
+```
+
+```lua
+local percentage = getTerritoryUnderControlPercentage()
+```
+
+```js
+Stat.getTerritoryUnderControlPercentage()
+```
+</Opcode>
+
+## 属性更新提示
+
+<Opcode id="08F8" name="SHOW_UPDATE_STATS" member="Stat.ShowUpdateStats">
+是否弹出「属性已更新」提示。
+
+```text
+08F8 SHOW_UPDATE_STATS
+in: state
+```
+
+```lua
+showUpdateStats(state)
+```
+
+```js
+Stat.showUpdateStats(state)
+```
+</Opcode>
+
+## 任务声望上限
+
+<Opcode id="0997" name="SET_MISSION_RESPECT_TOTAL" member="Stat.SetMissionRespectTotal">
+任务声望总分上限（stat 228）。
+
+```text
+0997 SET_MISSION_RESPECT_TOTAL
+in: value
+```
+
+```lua
+setMissionRespectTotal(value)
+```
+
+```js
+Stat.setMissionRespectTotal(value)
+```
+</Opcode>
+
+## 任务声望奖励
+
+<Opcode id="0998" name="AWARD_PLAYER_MISSION_RESPECT" member="Stat.AwardPlayerMissionRespect">
+任务声望（stat 224）加值。
+
+```text
+0998 AWARD_PLAYER_MISSION_RESPECT
+in: value
+```
+
+```lua
+awardPlayerMissionRespect(value)
+```
+
+```js
+Stat.awardPlayerMissionRespect(value)
+```
+</Opcode>
+
+## 整型 + 无提示
+
+<Opcode id="0A10" name="INCREMENT_INT_STAT_NO_MESSAGE" member="Stat.IncrementIntNoMessage">
+整型统计加值，不弹提示。
+
+```text
+0A10 INCREMENT_INT_STAT_NO_MESSAGE
+in: id, value
+```
+
+```lua
+incrementIntStatNoMessage(id, value)
+```
+
+```js
+Stat.incrementIntNoMessage(id, value)
+```
+</Opcode>
+
+## 浮点 + 无提示
+
+<Opcode id="0A1F" name="INCREMENT_FLOAT_STAT_NO_MESSAGE" member="Stat.IncrementFloatNoMessage">
+浮点统计加值，不弹提示。
+
+```text
+0A1F INCREMENT_FLOAT_STAT_NO_MESSAGE
+in: id, value
+```
+
+```lua
+incrementFloatStatNoMessage(id, value)
+```
+
+```js
+Stat.incrementFloatNoMessage(id, value)
+```
+</Opcode>

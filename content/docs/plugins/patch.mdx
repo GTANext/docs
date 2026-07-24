@@ -1,0 +1,244 @@
+---
+title: 内存 Patch
+description: 读写、NOP、跳转重定向与可逆修改
+---
+
+`shared/Patch.h` · `plugin::patch`
+
+大多数写入 API 的 `vp` 默认为 `true`（内部 `VirtualProtect`）。改代码前先 `GetRaw` 备份，关闭功能时写回备份。
+
+<Callout type="warn" title="可逆">
+可开关的修改务必保存原始字节或数值，不要把「默认值」写死在还原路径里。
+</Callout>
+
+## 写 NOP
+
+<Api name="Nop / NopRestore">
+`Nop` 写入 `0x90`。`NopRestore` 还原 SDK 记录的那一次 Nop。
+
+```cpp
+static void Nop(uintptr_t address, size_t size, bool vp = true);
+static void NopRestore(uintptr_t address, bool vp = true);
+```
+
+```cpp
+plugin::patch::Nop(0x53BEE0, 5);
+plugin::patch::NopRestore(0x53BEE0);
+```
+</Api>
+
+## 读写 1 字节
+
+<Api name="SetChar / GetChar 族">
+
+```cpp
+static void SetChar(uintptr_t address, char value, bool vp = true);
+static void SetUChar(uintptr_t address, unsigned char value, bool vp = true);
+static char GetChar(uintptr_t address, bool vp = true);
+static unsigned char GetUChar(uintptr_t address, bool vp = true);
+```
+
+```cpp
+plugin::patch::SetUChar(0x96916D, 1);
+unsigned char v = plugin::patch::GetUChar(0x96916D);
+```
+</Api>
+
+## 读写 2 字节
+
+<Api name="SetShort / GetShort 族">
+
+```cpp
+static void SetShort(uintptr_t address, short value, bool vp = true);
+static void SetUShort(uintptr_t address, unsigned short value, bool vp = true);
+static short GetShort(uintptr_t address, bool vp = true);
+static unsigned short GetUShort(uintptr_t address, bool vp = true);
+```
+
+```cpp
+plugin::patch::SetUShort(0x123456, 100);
+unsigned short v = plugin::patch::GetUShort(0x123456);
+```
+</Api>
+
+## 读写 4 字节整数
+
+<Api name="SetInt / GetInt 族">
+
+```cpp
+static void SetInt(uintptr_t address, uintptr_t value, bool vp = true);
+static void SetUInt(uintptr_t address, uintptr_t value, bool vp = true);
+static uintptr_t GetInt(uintptr_t address, bool vp = true);
+static uintptr_t GetUInt(uintptr_t address, bool vp = true);
+```
+
+```cpp
+plugin::patch::SetInt(0x123456, 0);
+uintptr_t v = plugin::patch::GetUInt(0x123456);
+```
+</Api>
+
+## 读写 float
+
+<Api name="SetFloat / GetFloat">
+改倍率等浮点配置时：先备份再写，关闭时还原。
+
+```cpp
+static void SetFloat(uintptr_t address, float value, bool vp = true);
+static float GetFloat(uintptr_t address, bool vp = true);
+```
+
+```cpp
+float old = plugin::patch::GetFloat(0x8D2458);
+plugin::patch::SetFloat(0x8D2458, 0.1f);
+plugin::patch::SetFloat(0x8D2458, old);
+```
+</Api>
+
+## 读写指针
+
+<Api name="SetPointer / GetPointer">
+按指针宽度读写。
+
+```cpp
+static void SetPointer(uintptr_t address, injector::memory_pointer_raw value, bool vp = true);
+static void* GetPointer(uintptr_t address, bool vp = true);
+```
+
+```cpp
+void* p = plugin::patch::GetPointer(0x123456);
+plugin::patch::SetPointer(0x123456, nullptr);
+```
+</Api>
+
+## 模板读写 POD
+
+<Api name="Set / Get（模板）">
+任意 POD 类型读写。
+
+```cpp
+template <typename T>
+static void Set(uintptr_t address, T value, bool vp = true);
+
+template <typename T>
+static T Get(uintptr_t address, bool vp = true);
+```
+
+```cpp
+plugin::patch::Set<bool>(0x96916D, true);
+bool on = plugin::patch::Get<bool>(0x96916D);
+plugin::patch::Set<bool>(0x96916D, false);
+```
+</Api>
+
+## 读写原始字节
+
+<Api name="SetRaw / GetRaw">
+任意长度字节块。修改代码路径前务必备份。
+
+```cpp
+static void SetRaw(uintptr_t address, void* value, size_t size, bool vp = true);
+static void GetRaw(uintptr_t address, void* ret, size_t size, bool vp = true);
+```
+
+```cpp
+uint8_t backup[5]{};
+plugin::patch::GetRaw(0x6F8C2A, backup, 5);
+
+uint8_t patch_bytes[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 };
+plugin::patch::SetRaw(0x6F8C2A, patch_bytes, 5);
+
+plugin::patch::SetRaw(0x6F8C2A, backup, 5);
+```
+</Api>
+
+## 重定向 call / jump
+
+<Api name="RedirectCall / RedirectJump / RedirectShortJump">
+改写 `E8` call、`E9` 跳转或短跳。`address` 指向 **指令本身** 的起始地址。
+
+```cpp
+static void RedirectCall(uintptr_t address, injector::memory_pointer_raw func, bool vp = true);
+static void RedirectJump(uintptr_t address, injector::memory_pointer_raw func, bool vp = true);
+static void RedirectShortJump(uintptr_t address, injector::memory_pointer_raw dest = nullptr, bool vp = true);
+```
+
+```cpp
+void __cdecl MyDraw() {}
+plugin::patch::RedirectCall(0x53E293, MyDraw);
+plugin::patch::RedirectJump(0x123456, MyFn);
+```
+</Api>
+
+## 替换函数入口
+
+<Api name="ReplaceFunction / ReplaceFunctionCall">
+入口整体替换，或只替换 call 点。
+
+```cpp
+static void ReplaceFunction(uintptr_t address, void* func, bool vp = true);
+static void ReplaceFunctionCall(uintptr_t address, void* func, bool vp = true);
+```
+
+```cpp
+plugin::patch::ReplaceFunction(0x123456, &MyFn);
+plugin::patch::ReplaceFunctionCall(0x123456, &MyFn);
+```
+</Api>
+
+## 写 ret 返回
+
+<Api name="PutRetn / PutRetn0 / PutRetn1">
+写入返回指令。`Retn0` / `Retn1` 会先让函数返回 0 / 1。`BytesToPop` 用于 stdcall 清栈。
+
+```cpp
+static void PutRetn(uintptr_t address, unsigned short BytesToPop = 0, bool vp = true);
+static void PutRetn0(uintptr_t address, unsigned short BytesToPop = 0, bool vp = true);
+static void PutRetn1(uintptr_t address, unsigned short BytesToPop = 0, bool vp = true);
+```
+
+```cpp
+plugin::patch::PutRetn(0x123456, 0);
+plugin::patch::PutRetn0(0x123456, 4);
+```
+</Api>
+
+## 解析跳转目标
+
+<Api name="TranslateCallOffset / TranslateJumpOffset">
+解析 `E8` / `E9` 的目标地址。若该处不是对应 opcode，结果为空。
+
+```cpp
+template <typename T>
+static T TranslateCallOffset(uintptr_t address);
+
+template <typename T>
+static T TranslateJumpOffset(uintptr_t address);
+```
+
+```cpp
+using Fn = void(__cdecl*)();
+Fn original = plugin::patch::TranslateCallOffset<Fn>(0x53E293);
+if (original) {
+    original();
+}
+```
+</Api>
+
+## 批量改多地址
+
+同一操作可对一组地址执行。
+
+```cpp
+template <typename T>
+static void Set(std::vector<uintptr_t> const& addresses, T value, bool vp = true);
+static void SetFloat(std::vector<uintptr_t> const& addresses, float value, bool vp = true);
+static void Nop(std::vector<uintptr_t> const& addresses, size_t size, bool vp = true);
+static void RedirectCall(std::vector<uintptr_t> const& addresses, /* ... */, bool vp = true);
+static void RedirectJump(std::vector<uintptr_t> const& addresses, /* ... */, bool vp = true);
+```
+
+```cpp
+plugin::patch::SetFloat(std::vector<uintptr_t>{0xA, 0xB}, 1.0f);
+plugin::patch::Nop(std::vector<uintptr_t>{0xA, 0xB}, 5);
+```

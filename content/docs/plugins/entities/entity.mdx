@@ -1,0 +1,111 @@
+---
+title: 实体 CEntity
+description: 模型、标志、传送与 RW 对象
+---
+
+`CEntity.h` · 继承 `CPlaceable`
+
+Ped / Vehicle / Object 共同基类。删实体走正确 Destroy 路径，别乱 `delete`。
+
+## 取模型与类型
+
+<Api name="m_nModelIndex / m_nType / m_nStatus">
+
+```cpp
+short m_nModelIndex;
+eEntityType m_nType : 3;
+eEntityStatus m_nStatus : 5;
+unsigned char m_nAreaCode;
+```
+
+```cpp
+if (entity && entity->m_nModelIndex == modelId) {
+}
+```
+</Api>
+
+## 可见与碰撞标志
+
+<Api name="bIsVisible / bUsesCollision / bIsStatic">
+bitfield，直接改要小心。
+
+```cpp
+bool bIsVisible : 1;
+bool bUsesCollision : 1;
+bool bIsStatic : 1;
+bool bDontStream : 1;
+// 其余见 CEntity.h
+```
+
+```cpp
+entity->bIsVisible = true;
+```
+</Api>
+
+## 坐标与传送
+
+<Api name="GetPosition / Teleport">
+逻辑帧调用。
+
+```cpp
+CVector GetPosition();
+void Teleport(CVector destination, bool resetRotation = false);
+```
+
+```cpp
+CVector p = entity->GetPosition();
+entity->Teleport(CVector(x, y, z), false);
+```
+</Api>
+
+## 换模型
+
+<Api name="SetModelIndex / CreateRwObject">
+
+```cpp
+void SetModelIndex(unsigned int index);
+void SetModelIndexNoCreate(unsigned int index);
+void CreateRwObject();
+void DeleteRwObject();
+```
+
+```cpp
+// 模型先 Streaming 加载再 SetModelIndex
+entity->SetModelIndex(modelId);
+```
+</Api>
+
+## 进出世界
+
+<Api name="Add / Remove">
+与 `CWorld::Add` / `Remove` 相关，脚本实体生命周期要对。
+
+```cpp
+void Add();
+void Remove();
+```
+
+```cpp
+// 优先用游戏提供的创建/销毁路径
+```
+</Api>
+
+## RenderWare 对象
+
+<Api name="m_pRwObject / m_pRwClump / m_pRwAtomic">
+渲染钩子里判空。
+
+```cpp
+union {
+    struct RwObject* m_pRwObject;
+    struct RpClump* m_pRwClump;
+    struct RpAtomic* m_pRwAtomic;
+};
+```
+
+```cpp
+if (!entity->m_pRwObject) {
+    return;
+}
+```
+</Api>

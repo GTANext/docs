@@ -1,0 +1,69 @@
+---
+title: 文本与报错
+description: TextLoader、StringUtils、Error / Message
+---
+
+`TextLoader.h` / `StringUtils.h` / `Error.h`
+
+## 加载键值文本
+
+SA 上 `Get` 返回 `char*`；III / VC 为 `wchar_t*`（见头文件 `char_t`）。
+
+```cpp
+bool Load(const std::string& fileName);
+const char_t* Get(const char* key);
+void Clear();
+```
+
+```cpp
+#include "TextLoader.h"
+
+static plugin::TextLoader g_text;
+
+plugin::Events::initRwEvent += [] {
+    g_text.Load(PLUGIN_PATH("lang.txt"));
+};
+const auto* s = g_text.Get("MENU_TITLE");
+```
+
+## 字符映射替换
+
+```cpp
+void ApplyTable(string_t& str);
+extern std::map<char_t, char_t> table;
+```
+
+```cpp
+plugin::string_t s = L"abc";
+plugin::ApplyTable(s);
+```
+
+## 窄转宽写固定缓冲
+
+命名空间 `StringUtils`（不在 `plugin::`）。超出长度会截断。
+
+```cpp
+template <size_t S>
+void atow_static(wchar_t (&wt)[S], char const* at);
+```
+
+```cpp
+#include "StringUtils.h"
+wchar_t buf[64];
+StringUtils::atow_static(buf, "hello");
+```
+
+## 弹窗提示与报错
+
+`Message` / `Error` / `Warning` 走 MessageBox，适合调试。`Error` 返回 `false`，可写 `return Error(...)`。
+
+```cpp
+template <typename... ArgTypes>
+bool Message(char const* format, ArgTypes... Args);
+// Error / Warning / Internal* 等同理
+```
+
+```cpp
+#include "Error.h"
+plugin::Message("loaded %s", PLUGIN_FILENAME);
+```

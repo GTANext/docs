@@ -1,0 +1,276 @@
+---
+title: 自定义脚本
+description: 启停脚本、CLEO_CALL 与共享变量
+---
+
+`sa` · 扩展 `CLEO` · 需 CLEO
+
+启动 / 结束自定义脚本、CLEO_CALL、共享变量。
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 启动自定义脚本
+
+<Opcode id="0A92" name="STREAM_CUSTOM_SCRIPT">
+加载指定路径编译 SCM，启动一条自定义脚本。可跟变长参数。
+
+```text
+0A92 STREAM_CUSTOM_SCRIPT
+in: scriptFileName, args...
+```
+
+```lua
+streamCustomScript("./otherScript.s", 42, 3.1415)
+```
+
+```js
+native("STREAM_CUSTOM_SCRIPT", scriptFileName, ...args)
+```
+</Opcode>
+
+## 结束本脚本
+
+<Opcode id="0A93" name="TERMINATE_THIS_CUSTOM_SCRIPT">
+结束当前自定义脚本。
+
+```text
+0A93 TERMINATE_THIS_CUSTOM_SCRIPT
+```
+
+```lua
+terminateThisCustomScript()
+```
+
+```js
+native("TERMINATE_THIS_CUSTOM_SCRIPT")
+```
+</Opcode>
+
+## 启动自定义任务
+
+<Opcode id="0A94" name="LOAD_AND_LAUNCH_CUSTOM_MISSION">
+加载并启动 CLEO 自定义任务（`.cm`）。成功则条件为真。
+
+```text
+0A94 LOAD_AND_LAUNCH_CUSTOM_MISSION
+in: scriptFileName, args...
+```
+
+```lua
+if loadAndLaunchCustomMission("my_mission.cm") then
+  -- ok
+end
+```
+
+```js
+native("LOAD_AND_LAUNCH_CUSTOM_MISSION", scriptFileName, ...args)
+```
+</Opcode>
+
+## 标记随档保存
+
+<Opcode id="0A95" name="SAVE_THIS_CUSTOM_SCRIPT">
+标记本脚本随存档保存；读档后从保存点继续。
+
+```text
+0A95 SAVE_THIS_CUSTOM_SCRIPT
+```
+
+```lua
+saveThisCustomScript()
+```
+
+```js
+native("SAVE_THIS_CUSTOM_SCRIPT")
+```
+</Opcode>
+
+## 按名结束脚本
+
+<Opcode id="0ABA" name="TERMINATE_ALL_CUSTOM_SCRIPTS_WITH_THIS_NAME">
+结束所有指定名字的自定义脚本并释放内存。
+
+```text
+0ABA TERMINATE_ALL_CUSTOM_SCRIPTS_WITH_THIS_NAME
+in: name
+```
+
+```lua
+terminateAllCustomScriptsWithThisName("helper")
+```
+
+```js
+native("TERMINATE_ALL_CUSTOM_SCRIPTS_WITH_THIS_NAME", name)
+```
+</Opcode>
+
+## CLEO_CALL
+
+<Opcode id="0AB1" name="CLEO_CALL">
+调用 SCM 子程序并传参；可用 `0AB2` / `2002` / `2003` 返回。
+
+```text
+0AB1 CLEO_CALL
+in: label, numArgs, args...
+```
+
+```lua
+local sum = cleoCall(addNums, 2, 3, 5)
+```
+
+```js
+native("CLEO_CALL", label, numArgs, ...args)
+```
+</Opcode>
+
+## CLEO_RETURN
+
+<Opcode id="0AB2" name="CLEO_RETURN">
+从 `CLEO_CALL` 返回，可带回返回值。
+
+```text
+0AB2 CLEO_RETURN
+in: numRet, retParams...
+```
+
+```lua
+cleoReturn(1, result)
+```
+
+```js
+native("CLEO_RETURN", numRet, ...retParams)
+```
+</Opcode>
+
+## 写共享变量
+
+<Opcode id="0AB3" name="SET_CLEO_SHARED_VAR">
+写全局共享变量，全脚本可见。`index` 0–1023。
+
+```text
+0AB3 SET_CLEO_SHARED_VAR
+in: index, value
+```
+
+```lua
+setCleoSharedVar(0, 123)
+```
+
+```js
+native("SET_CLEO_SHARED_VAR", index, value)
+```
+</Opcode>
+
+## 读共享变量
+
+<Opcode id="0AB4" name="GET_CLEO_SHARED_VAR">
+读全局共享变量（0–1023）。
+
+```text
+0AB4 GET_CLEO_SHARED_VAR
+in: index
+out: result
+```
+
+```lua
+local v = getCleoSharedVar(0)
+```
+
+```js
+const result = native("GET_CLEO_SHARED_VAR", index)
+```
+</Opcode>
+
+## 实参个数
+
+<Opcode id="2000" name="GET_CLEO_ARG_COUNT">
+当前 `CLEO_CALL` 实际传入参数个数。
+
+```text
+2000 GET_CLEO_ARG_COUNT
+out: count
+```
+
+```lua
+local n = getCleoArgCount()
+```
+
+```js
+const count = native("GET_CLEO_ARG_COUNT")
+```
+</Opcode>
+
+## 带条件返回
+
+<Opcode id="2002" name="CLEO_RETURN_WITH">
+从 `0AB1` 返回并强制设置条件结果。
+
+```text
+2002 CLEO_RETURN_WITH
+in: conditionResult, retArgs...
+```
+
+```lua
+cleoReturnWith(true, result)
+```
+
+```js
+native("CLEO_RETURN_WITH", conditionResult, ...retArgs)
+```
+</Opcode>
+
+## 失败返回
+
+<Opcode id="2003" name="CLEO_RETURN_FAIL">
+返回且条件为假，并跳过调用侧接收返回值的变量。
+
+```text
+2003 CLEO_RETURN_FAIL
+in: args...
+```
+
+```lua
+cleoReturnFail()
+```
+
+```js
+native("CLEO_RETURN_FAIL", ...args)
+```
+</Opcode>
+
+## 条件为假则 GOSUB
+
+<Opcode id="0AA0" name="GOSUB_IF_FALSE">
+条件为假时 GOSUB 进子程序。
+
+```text
+0AA0 GOSUB_IF_FALSE
+in: label
+```
+
+```lua
+gosubIfFalse(onFail)
+```
+
+```js
+native("GOSUB_IF_FALSE", label)
+```
+</Opcode>
+
+## 条件为假则 RETURN
+
+<Opcode id="0AA1" name="RETURN_IF_FALSE">
+条件为假时从当前子程序返回。
+
+```text
+0AA1 RETURN_IF_FALSE
+```
+
+```lua
+returnIfFalse()
+```
+
+```js
+native("RETURN_IF_FALSE")
+```
+</Opcode>

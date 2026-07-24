@@ -1,0 +1,169 @@
+---
+title: 武器 Weapon
+description: 开火类型与 WeaponInfo 字段
+---
+
+`sa` · 扩展 `CLEO+` · 需 CLEO + CLEO+
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 开火类型
+
+<Opcode id="0E26" name="IS_WEAPON_FIRE_TYPE" member="Weapon.IsFireType">
+武器是否指定开火类型。用在 `if` 里。
+
+```text
+0E26 IS_WEAPON_FIRE_TYPE
+in: weaponType, weaponFire
+```
+
+```lua
+if isWeaponFireType(weaponType, fireType) then
+end
+```
+
+```js
+if (Weapon.isFireType(weaponType, weaponFire)) {
+}
+```
+</Opcode>
+
+## WeaponInfo 句柄
+
+<Opcode id="0E84" name="GET_WEAPONINFO" member="Weapon.GetWeaponInfo">
+按武器类型 + 技能取 `WeaponInfo` 句柄。用在 `if` 里。
+
+```text
+0E84 GET_WEAPONINFO
+in: weaponType, weaponSkill
+out: handle
+```
+
+```lua
+local wi = getWeaponinfo(weaponType, skill)
+```
+
+```js
+const handle = Weapon.getWeaponInfo(weaponType, weaponSkill)
+```
+</Opcode>
+
+## 模型
+
+<Opcode id="0E85" name="GET_WEAPONINFO_MODELS" member="WeaponInfo.GetModels">
+WeaponInfo 的 model1 / model2。
+
+```text
+0E85 GET_WEAPONINFO_MODELS
+in: self
+out: model1, model2
+```
+
+```lua
+local m1, m2 = getWeaponinfoModels(wi)
+```
+
+```js
+const { model1, model2 } = WeaponInfo.getModels(self)
+```
+</Opcode>
+
+## 标志
+
+<Opcode id="0E86" name="GET_WEAPONINFO_FLAGS" member="WeaponInfo.GetFlags">
+标志位。
+
+```text
+0E86 GET_WEAPONINFO_FLAGS
+in: self
+out: flags
+```
+
+```lua
+local flags = getWeaponinfoFlags(wi)
+```
+
+```js
+const flags = WeaponInfo.getFlags(self)
+```
+</Opcode>
+
+## 动画组
+
+<Opcode id="0E87" name="GET_WEAPONINFO_ANIMGROUP" member="WeaponInfo.GetAnimgroup">
+动画组（SBL 个别描述可能写错，member 以 Animgroup 为准）。
+
+```text
+0E87 GET_WEAPONINFO_ANIMGROUP
+in: self
+out: animGroup
+```
+
+```lua
+local ag = getWeaponinfoAnimgroup(wi)
+```
+
+```js
+const animGroup = WeaponInfo.getAnimgroup(self)
+```
+</Opcode>
+
+## 弹匣容量
+
+<Opcode id="0E88" name="GET_WEAPONINFO_TOTAL_CLIP" member="WeaponInfo.GetTotalClip">
+弹匣容量。
+
+```text
+0E88 GET_WEAPONINFO_TOTAL_CLIP
+in: self
+out: totalClip
+```
+
+```lua
+local clip = getWeaponinfoTotalClip(wi)
+```
+
+```js
+const totalClip = WeaponInfo.getTotalClip(self)
+```
+</Opcode>
+
+## 开火类型字段
+
+<Opcode id="0E89" name="GET_WEAPONINFO_FIRE_TYPE" member="WeaponInfo.GetFireType">
+开火类型。
+
+```text
+0E89 GET_WEAPONINFO_FIRE_TYPE
+in: self
+out: fireType
+```
+
+```lua
+local ft = getWeaponinfoFireType(wi)
+```
+
+```js
+const fireType = WeaponInfo.getFireType(self)
+```
+</Opcode>
+
+## 武器槽
+
+<Opcode id="0E8A" name="GET_WEAPONINFO_SLOT" member="WeaponInfo.GetSlot">
+武器槽。
+
+```text
+0E8A GET_WEAPONINFO_SLOT
+in: self
+out: weaponSlot
+```
+
+```lua
+local slot = getWeaponinfoSlot(wi)
+```
+
+```js
+const weaponSlot = WeaponInfo.getSlot(self)
+```
+</Opcode>

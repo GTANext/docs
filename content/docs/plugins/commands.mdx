@@ -1,0 +1,122 @@
+---
+title: 脚本 Command
+description: 在 C++ 中调用 SCM 脚本命令
+---
+
+`shared/extensions/ScriptCommands.h`  
+命令枚举：`scripting/ScriptCommandNames.h`
+
+在 `processScriptsEvent`（或同等安全的脚本节拍）里调用。III / VC / SA 的命令集不同，以当前工程头文件为准。
+
+<Callout type="warn" title="别混">
+本页是 **C++** 封装。CLEO / CLEO+ 的 **opcode · Lua · Redux** 见 [CLEO](/docs/cleo)。
+</Callout>
+
+## 调用 SCM 命令
+
+<Api name="Command" header="plugin::Command / Commands::">
+按枚举调用 SCM 命令。返回值是脚本条件结果 `m_bCondResult`，**不是**「是否执行成功」的笼统含义。
+
+`CPed*` 等实体会按约定转成脚本句柄；输出参数用 `int*` / `float*` 等指针。
+
+```cpp
+template <int CommandId, typename... Args>
+bool Command(Args&&... args);
+
+plugin::Command<plugin::Commands::NAME>(...);
+```
+
+```cpp
+#include "plugin.h"
+#include "common.h"
+#include "extensions/ScriptCommands.h"
+
+plugin::Events::processScriptsEvent += [] {
+    CPed* ped = FindPlayerPed();
+    if (!ped) {
+        return;
+    }
+    plugin::Command<plugin::Commands::SET_CHAR_HEALTH>(ped, 100.0f);
+    float hp = 0.0f;
+    plugin::Command<plugin::Commands::GET_CHAR_HEALTH>(ped, &hp);
+};
+```
+</Api>
+
+## 模型加载链
+
+模型是异步资源。正确顺序：
+
+<Steps>
+  <Step>`REQUEST_MODEL`</Step>
+  <Step>之后每一帧检查 `HAS_MODEL_LOADED`</Step>
+  <Step>就绪后 `CREATE_*`</Step>
+  <Step>`MARK_MODEL_AS_NO_LONGER_NEEDED`</Step>
+</Steps>
+
+同帧 `REQUEST` 立刻 `CREATE` 很容易失败或崩溃。
+
+```cpp
+#include "plugin.h"
+#include "common.h"
+#include "CWorld.h"
+#include "extensions/ScriptCommands.h"
+
+static int g_model = -1;
+static bool g_wait = false;
+
+void begin_spawn(int model) {
+    g_model = model;
+    g_wait = true;
+    plugin::Command<plugin::Commands::REQUEST_MODEL>(model);
+}
+
+void poll_spawn() {
+    if (!g_wait) {
+        return;
+    }
+    if (!plugin::Command<plugin::Commands::HAS_MODEL_LOADED>(g_model)) {
+        return;
+    }
+    CPed* ped = FindPlayerPed();
+    if (!ped) {
+        g_wait = false;
+        return;
+    }
+    CVector pos = ped->GetPosition();
+    pos.x += 5.0f;
+    pos.z = CWorld::FindGroundZForCoord(pos.x, pos.y) + 1.0f;
+
+    int car = -1;
+    plugin::Command<plugin::Commands::CREATE_CAR>(g_model, pos.x, pos.y, pos.z, &car);
+    plugin::Command<plugin::Commands::MARK_MODEL_AS_NO_LONGER_NEEDED>(g_model);
+    if (car != -1) {
+        plugin::Command<plugin::Commands::WARP_CHAR_INTO_CAR>(ped, car);
+    }
+    g_wait = false;
+}
+```
+
+## 按 ID 调用
+
+<Api name="CallCommandById" header="plugin::scripting">
+更底层的按 ID 调用接口。日常优先 `Command<>` 模板。
+
+```cpp
+plugin::scripting::CallCommandById(plugin::Commands::SOME_COMMAND, ...);
+```
+
+```cpp
+plugin::scripting::CallCommandById(plugin::Commands::SET_TIME_OF_DAY, 12, 0);
+```
+</Api>
+
+## 常用命令名
+
+`Commands::` 前缀。完整列表见 `ScriptCommandNames.h`，三端有差异。
+
+```cpp
+// REQUEST_MODEL HAS_MODEL_LOADED MARK_MODEL_AS_NO_LONGER_NEEDED
+// CREATE_CAR DELETE_CAR WARP_CHAR_INTO_CAR
+// SET_CHAR_HEALTH GET_CHAR_HEALTH SET_TIME_OF_DAY FORCE_WEATHER
+```

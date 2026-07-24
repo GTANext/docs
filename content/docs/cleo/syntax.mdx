@@ -1,0 +1,66 @@
+---
+title: OP / Lua 语法
+description: OP · Lua · Redux 三种形态与 Lua 约定
+---
+
+本站 opcode 页统一三块：**OP 签名** · **CLEO Lua** · **CLEO Redux**。
+
+数据同源 [sanny-builder-library](https://github.com/sannybuilder/library) 的 `sa.json`（Script 视图）。SBL snippet 多为 Sanny 高级语法，只作语义参考，不直接粘贴 `0@`。
+
+## 三种形态（同源）
+
+| 形态 | 是什么 | 本站写在哪 |
+|---|---|---|
+| **OP** | opcode 号 + 命令名 + 参数（SBL `sb_command`） | `text` 签名块 |
+| **CLEO Lua** | `SNAKE` → `camelCase` 函数 | `lua` 调用块 |
+| **CLEO Redux** | JS：`Class.member(...)` / `native("NAME", ...)` | `js` 调用块 |
+
+细则见 [Redux 语法](/docs/cleo/syntax-redux)。
+
+## CLEO Lua 约定
+
+| 项 | 规则 |
+|---|---|
+| 函数名 | opcode 名 `SNAKE_CASE` → `camelCase`（`WRITE_MEMORY` → `writeMemory`） |
+| 参数 | 位置参数，顺序与签名 `in` 一致 |
+| bool | `true` / `false` |
+| 返回值 | `local x = foo(...)`；多输出 `local a, b = foo(...)` |
+| 条件命令 | `if foo(...) then ... end` |
+| 等待 | `wait(ms)` |
+
+## 最小脚本（Lua）
+
+```lua
+script_name("demo")
+
+while true do
+  wait(0)
+  if testCheat("LUA") then
+    printFormattedNow("ok %d", 1000, 1)
+  end
+end
+```
+
+## 对照
+
+| Sanny / SBL snippet | OP | Lua | Redux |
+|---|---|---|---|
+| `write_memory ...` | `0A8C WRITE_MEMORY` | `writeMemory(...)` | `Memory.Write(...)` 或 class 形态 |
+| `0@ = read_memory ...` | `0A8D READ_MEMORY` | `local v = readMemory(...)` | `const result = Memory.Read(...)` |
+| `create_car ...` | `00A5 CREATE_CAR` | `local car = createCar(...)` | `const handle = Car.Create(...)` |
+
+## 无绑定名时
+
+个别环境可能没有 camelCase 包装。页内仍按 **参数顺序** 给调用；对照签名里的 **opcode 号** 用你装的绑定层调。
+
+## 和 C++
+
+在 ASI 里调同一条 SCM / CLEO 命令，用 [plugin::Command](/docs/plugins/commands)，不是本页 Lua / JS。
+
+## 表在哪
+
+| 表 | 入口 |
+|---|---|
+| CLEO 扩展（类型页） | [sa/memory](/docs/cleo/sa/memory) 等 |
+| 后续 | CLEO+ / 扩展 / default / SAMPFUNCS（波次手写） |
+| native.json（Code） | 未收录全文，见 [Redux](/docs/cleo/syntax-redux) |

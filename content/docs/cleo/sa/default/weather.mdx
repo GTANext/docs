@@ -1,0 +1,101 @@
+---
+title: 天气 Weather
+description: 天气强制与热浪
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 5 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 强制天气
+
+<Opcode id="01B5" name="FORCE_WEATHER" member="Weather.Force">
+强制天气类型（过渡到该天气）。
+
+```text
+01B5 FORCE_WEATHER
+in: type
+```
+
+```lua
+forceWeather(type)
+```
+
+```js
+Weather.force(type)
+```
+</Opcode>
+
+## 立刻强制
+
+<Opcode id="01B6" name="FORCE_WEATHER_NOW" member="Weather.ForceNow">
+立刻切到指定天气。
+
+```text
+01B6 FORCE_WEATHER_NOW
+in: type
+```
+
+```lua
+forceWeatherNow(type)
+```
+
+```js
+Weather.forceNow(type)
+```
+</Opcode>
+
+## 释放天气
+
+<Opcode id="01B7" name="RELEASE_WEATHER" member="Weather.Release">
+取消 `01B5` 强制，恢复游戏自带天气规律。
+
+```text
+01B7 RELEASE_WEATHER
+```
+
+```lua
+releaseWeather()
+```
+
+```js
+Weather.release()
+```
+</Opcode>
+
+## 热浪效果
+
+<Opcode id="08FD" name="SET_HEATHAZE_EFFECT" member="Weather.SetHeathazeEffect">
+晴天是否开热浪扭曲。
+
+```text
+08FD SET_HEATHAZE_EFFECT
+in: state
+```
+
+```lua
+setHeathazeEffect(state)
+```
+
+```js
+Weather.setHeathazeEffect(state)
+```
+</Opcode>
+
+## 区适宜天气
+
+<Opcode id="0915" name="SET_WEATHER_TO_APPROPRIATE_TYPE_NOW" member="Weather.SetToAppropriateTypeNow">
+按玩家当前天气区立刻设合适天气。
+
+```text
+0915 SET_WEATHER_TO_APPROPRIATE_TYPE_NOW
+```
+
+```lua
+setWeatherToAppropriateTypeNow()
+```
+
+```js
+Weather.setToAppropriateTypeNow()
+```
+</Opcode>

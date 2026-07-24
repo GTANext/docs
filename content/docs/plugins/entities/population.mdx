@@ -1,0 +1,108 @@
+---
+title: 人口 CPopulation
+description: 路人密度、生成与组表
+---
+
+`CPopulation.h`
+
+路人密度、生成 / 移除行人、组表。改倍数记得还原。
+
+## 密度与上限
+
+<Api name="PedDensityMultiplier / MaxNumberOfPedsInUse">
+
+```cpp
+static float& PedDensityMultiplier;
+static unsigned int& MaxNumberOfPedsInUse;
+static unsigned int& NumberOfPedsInUseInterior;
+```
+
+```cpp
+// float old = CPopulation::PedDensityMultiplier;
+// CPopulation::PedDensityMultiplier = 0.0f; // 清场向
+```
+</Api>
+
+## 人数统计
+
+<Api name="ms_nTotalPeds / ms_nTotalCivPeds">
+
+```cpp
+static unsigned int& ms_nTotalPeds;
+static unsigned int& ms_nTotalCivPeds;
+static unsigned int& ms_nTotalGangPeds;
+static unsigned int& ms_nTotalMissionPeds;
+static unsigned int& ms_nNumCop;
+static unsigned int& ms_nNumCivMale;
+static unsigned int& ms_nNumCivFemale;
+```
+
+```cpp
+unsigned int n = CPopulation::ms_nTotalPeds;
+```
+</Api>
+
+## 生成开关
+
+<Api name="m_bDontCreateRandomCops / m_bDontCreateRandomGangMembers">
+
+```cpp
+static bool& m_bDontCreateRandomCops;
+static bool& m_bDontCreateRandomGangMembers;
+static bool& m_bOnlyCreateRandomGangMembers;
+static bool& m_bMoreCarsAndFewerPeds;
+```
+
+```cpp
+CPopulation::m_bDontCreateRandomCops = true;
+```
+</Api>
+
+## 加行人
+
+<Api name="AddPed / AddPedInCar / RemovePed">
+
+```cpp
+static CPed* AddPed(ePedType pedType, unsigned int modelIndex, CVector const& posn, bool makeWander);
+static CPed* AddPedInCar(CVehicle* vehicle, bool driver, int gangPedType, int seatNumber, bool male, bool criminal);
+static void RemovePed(CPed* ped);
+static void RemoveAllRandomPeds();
+```
+
+```cpp
+// 模型要先 Streaming 加载；失败会 null
+// CPed* p = CPopulation::AddPed(type, model, pos, true);
+```
+</Api>
+
+## 选职业模型
+
+<Api name="ChooseCivilianOccupation / ChoosePolicePedOccupation">
+
+```cpp
+static int ChooseCivilianOccupation(bool male, bool female, int animType, int ignoreModelIndex, int statType, bool arg5, bool arg6, bool checkAttractor, char* attrName);
+static int ChoosePolicePedOccupation();
+static void ChooseGangOccupation(int arg0);
+```
+
+```cpp
+// int mi = CPopulation::ChooseCivilianOccupation(...);
+```
+</Api>
+
+## 组表
+
+<Api name="m_PedGroups / m_CarGroups / LoadPedGroups">
+
+```cpp
+static short (*m_PedGroups)[21];
+static short (*m_CarGroups)[23];
+static unsigned short* m_nNumPedsInGroup;
+static void LoadPedGroups();
+static void LoadCarGroups();
+```
+
+```cpp
+// 改组表影响随机刷人刷车池
+```
+</Api>

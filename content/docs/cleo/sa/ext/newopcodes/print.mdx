@@ -1,0 +1,62 @@
+---
+title: 打印 PrintText
+description: 临时屏上文字
+---
+
+`sa` · 扩展 `NewOpcodes` · 需 CLEO + NewOpcodes
+
+临时屏上文字（基础 / 全格式）。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 基础
+
+<Opcode id="0D65" name="PRINT_TEMPORARY_TEXT">
+在屏幕位置画临时文字：缩放 + 字体样式。
+
+```text
+0D65 PRINT_TEMPORARY_TEXT
+in: text, x, y, widthScale, heightScale, style
+```
+
+```lua
+printTemporaryText("hello", 320.0, 200.0, 0.5, 1.0, style)
+```
+
+```js
+native(0x0D65, text, x, y, widthScale, heightScale, style)
+```
+</Opcode>
+
+## 全格式
+
+<Opcode id="0D66" name="PRINT_TEMPORARY_TEXT_EX">
+全格式临时文字：对齐、换行、颜色、描边、阴影、背景等。
+
+```text
+0D66 PRINT_TEMPORARY_TEXT_EX
+in: text, x, y, widthScale, heightScale, style, prop, align, wrap, justify,
+    red, green, blue, alpha, outline, shadow,
+    dropRed, dropGreen, dropBlue, dropAlpha,
+    background, backRed, backGreen, backBlue, backAlpha
+```
+
+```lua
+printTemporaryTextEx(
+  "hello", 320.0, 200.0, 0.5, 1.0, style,
+  true, align, 200.0, 0,
+  255, 255, 255, 255,
+  1, 0, 0, 0, 0, 255,
+  0, 0, 0, 0, 0
+)
+```
+
+```js
+native(
+  0x0D66,
+  text, x, y, widthScale, heightScale, style,
+  prop, align, wrap, justify,
+  red, green, blue, alpha,
+  outline, shadow, dropRed, dropGreen, dropBlue, dropAlpha,
+  background, backRed, backGreen, backBlue, backAlpha
+)
+```
+</Opcode>

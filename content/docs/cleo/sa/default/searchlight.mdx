@@ -1,0 +1,263 @@
+---
+title: 探照灯 Searchlight
+description: 探照灯
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 13 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 创建
+
+<Opcode id="06B1" name="CREATE_SEARCHLIGHT" member="Searchlight.Create">
+创建探照灯（源点、指向点、两半径）。
+
+```text
+06B1 CREATE_SEARCHLIGHT
+in: x, y, z, xPoint, yPoint, zPoint, radius, radiusPoint
+out: handle
+```
+
+```lua
+local handle = createSearchlight(x, y, z, xPoint, yPoint, zPoint, radius, radiusPoint)
+```
+
+```js
+const handle = Searchlight.create(x, y, z, xPoint, yPoint, zPoint, radius, radiusPoint)
+```
+</Opcode>
+
+## 删除
+
+<Opcode id="06B2" name="DELETE_SEARCHLIGHT" member="Searchlight.Delete">
+删除探照灯。
+
+```text
+06B2 DELETE_SEARCHLIGHT
+in: self
+```
+
+```lua
+deleteSearchlight(self)
+```
+
+```js
+Searchlight.delete(self)
+```
+</Opcode>
+
+## 是否存在
+
+<Opcode id="06B3" name="DOES_SEARCHLIGHT_EXIST" member="Searchlight.DoesExist">
+handle 是否有效探照灯。用在 `if` 里。
+
+```text
+06B3 DOES_SEARCHLIGHT_EXIST
+in: handle
+```
+
+```lua
+if doesSearchlightExist(handle) then
+end
+```
+
+```js
+if (Searchlight.doesExist(handle)) {
+}
+```
+</Opcode>
+
+## 两点往返
+
+<Opcode id="06B4" name="MOVE_SEARCHLIGHT_BETWEEN_COORDS" member="Searchlight.MoveBetweenCoords">
+光束在两点间往返移动。
+
+```text
+06B4 MOVE_SEARCHLIGHT_BETWEEN_COORDS
+in: self, fromX, fromY, fromZ, toX, toY, toZ, speed
+```
+
+```lua
+moveSearchlightBetweenCoords(self, fromX, fromY, fromZ, toX, toY, toZ, speed)
+```
+
+```js
+Searchlight.moveBetweenCoords(self, fromX, fromY, fromZ, toX, toY, toZ, speed)
+```
+</Opcode>
+
+## 指向坐标
+
+<Opcode id="06B5" name="POINT_SEARCHLIGHT_AT_COORD" member="Searchlight.PointAtCoord">
+光束移向坐标。
+
+```text
+06B5 POINT_SEARCHLIGHT_AT_COORD
+in: self, x, y, z, speed
+```
+
+```lua
+pointSearchlightAtCoord(self, x, y, z, speed)
+```
+
+```js
+Searchlight.pointAtCoord(self, x, y, z, speed)
+```
+</Opcode>
+
+## 指向角色
+
+<Opcode id="06B6" name="POINT_SEARCHLIGHT_AT_CHAR" member="Searchlight.PointAtChar">
+光束跟随角色。
+
+```text
+06B6 POINT_SEARCHLIGHT_AT_CHAR
+in: self, handle, speed
+```
+
+```lua
+pointSearchlightAtChar(self, handle, speed)
+```
+
+```js
+Searchlight.pointAtChar(self, handle, speed)
+```
+</Opcode>
+
+## 照到角色
+
+<Opcode id="06B7" name="IS_CHAR_IN_SEARCHLIGHT" member="Searchlight.IsCharIn">
+是否照到该角色。用在 `if` 里。
+
+```text
+06B7 IS_CHAR_IN_SEARCHLIGHT
+in: self, handle
+```
+
+```lua
+if isCharInSearchlight(self, handle) then
+end
+```
+
+```js
+if (Searchlight.isCharIn(self, handle)) {
+}
+```
+</Opcode>
+
+## 指向载具
+
+<Opcode id="06BF" name="POINT_SEARCHLIGHT_AT_VEHICLE" member="Searchlight.PointAtVehicle">
+光束跟随载具。
+
+```text
+06BF POINT_SEARCHLIGHT_AT_VEHICLE
+in: self, handle, speed
+```
+
+```lua
+pointSearchlightAtVehicle(self, handle, speed)
+```
+
+```js
+Searchlight.pointAtVehicle(self, handle, speed)
+```
+</Opcode>
+
+## 照到载具
+
+<Opcode id="06C0" name="IS_VEHICLE_IN_SEARCHLIGHT" member="Searchlight.IsVehicleIn">
+是否照到该载具。用在 `if` 里。
+
+```text
+06C0 IS_VEHICLE_IN_SEARCHLIGHT
+in: self, handle
+```
+
+```lua
+if isVehicleInSearchlight(self, handle) then
+end
+```
+
+```js
+if (Searchlight.isVehicleIn(self, handle)) {
+}
+```
+</Opcode>
+
+## 车上创建
+
+<Opcode id="06C1" name="CREATE_SEARCHLIGHT_ON_VEHICLE" member="Searchlight.CreateOnVehicle">
+在车上挂探照锥，指向某点。
+
+```text
+06C1 CREATE_SEARCHLIGHT_ON_VEHICLE
+in: vehicle, xOffset, yOffset, zOffset, xPoint, yPoint, zPoint, pointRadius, radius
+out: handle
+```
+
+```lua
+local handle = createSearchlightOnVehicle(vehicle, xOffset, yOffset, zOffset, xPoint, yPoint, zPoint, pointRadius, radius)
+```
+
+```js
+const handle = Searchlight.createOnVehicle(vehicle, xOffset, yOffset, zOffset, xPoint, yPoint, zPoint, pointRadius, radius)
+```
+</Opcode>
+
+## 绑物体
+
+<Opcode id="06CA" name="ATTACH_SEARCHLIGHT_TO_SEARCHLIGHT_OBJECT" member="Searchlight.AttachToObject">
+绑到塔 / 罩 / 灯泡物体上。
+
+```text
+06CA ATTACH_SEARCHLIGHT_TO_SEARCHLIGHT_OBJECT
+in: self, spotTower, spotHousing, spotBulb, xOffset, yOffset, zOffset
+```
+
+```lua
+attachSearchlightToSearchlightObject(self, spotTower, spotHousing, spotBulb, xOffset, yOffset, zOffset)
+```
+
+```js
+Searchlight.attachToObject(self, spotTower, spotHousing, spotBulb, xOffset, yOffset, zOffset)
+```
+</Opcode>
+
+## 碰撞裁剪
+
+<Opcode id="0941" name="SET_SEARCHLIGHT_CLIP_IF_COLLIDING" member="Searchlight.SetClipIfColliding">
+撞到物体是否裁剪光束。
+
+```text
+0941 SET_SEARCHLIGHT_CLIP_IF_COLLIDING
+in: self, state
+```
+
+```lua
+setSearchlightClipIfColliding(self, state)
+```
+
+```js
+Searchlight.setClipIfColliding(self, state)
+```
+</Opcode>
+
+## 地面阴影
+
+<Opcode id="0A02" name="SWITCH_ON_GROUND_SEARCHLIGHT" member="Searchlight.SwitchOnGround">
+照射面是否显示地面阴影效果。
+
+```text
+0A02 SWITCH_ON_GROUND_SEARCHLIGHT
+in: self, state
+```
+
+```lua
+switchOnGroundSearchlight(self, state)
+```
+
+```js
+Searchlight.switchOnGround(self, state)
+```
+</Opcode>

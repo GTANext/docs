@@ -1,0 +1,228 @@
+---
+title: 算术
+description: 整数与位运算 opcode
+---
+
+`gta3` · 扩展 `CLEO` · 需 CLEO
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 整数加
+
+<Opcode id="0A8E" name="INT_ADD">
+整数加。
+
+```text
+0A8E INT_ADD
+in: a, b
+out: result
+```
+
+```lua
+local r = intAdd(1, 2)
+```
+
+```js
+const result = native("INT_ADD", a, b)
+```
+</Opcode>
+
+## 整数减
+
+<Opcode id="0A8F" name="INT_SUB">
+整数减。
+
+```text
+0A8F INT_SUB
+in: a, b
+out: result
+```
+
+```lua
+local r = intSub(5, 3)
+```
+
+```js
+const result = native("INT_SUB", a, b)
+```
+</Opcode>
+
+## 整数乘
+
+<Opcode id="0A90" name="INT_MUL">
+整数乘。
+
+```text
+0A90 INT_MUL
+in: a, b
+out: result
+```
+
+```lua
+local r = intMul(3, 4)
+```
+
+```js
+const result = native("INT_MUL", a, b)
+```
+</Opcode>
+
+## 整数除
+
+<Opcode id="0A91" name="INT_DIV">
+整数除。
+
+```text
+0A91 INT_DIV
+in: a, b
+out: result
+```
+
+```lua
+local r = intDiv(10, 2)
+```
+
+```js
+const result = native("INT_DIV", a, b)
+```
+</Opcode>
+
+## 按位与
+
+<Opcode id="05F9" name="BIT_AND">
+按位与。
+
+```text
+05F9 BIT_AND
+in: a, b
+out: result
+```
+
+```lua
+local r = bitAnd(0xFF, 0x0F)
+```
+
+```js
+const result = native("BIT_AND", a, b)
+```
+</Opcode>
+
+## 按位或
+
+<Opcode id="05FA" name="BIT_OR">
+按位或。
+
+```text
+05FA BIT_OR
+in: a, b
+out: result
+```
+
+```lua
+local r = bitOr(1, 2)
+```
+
+```js
+const result = native("BIT_OR", a, b)
+```
+</Opcode>
+
+## 按位异或
+
+<Opcode id="05FB" name="BIT_XOR">
+按位异或。
+
+```text
+05FB BIT_XOR
+in: a, b
+out: result
+```
+
+```lua
+local r = bitXor(1, 3)
+```
+
+```js
+const result = native("BIT_XOR", a, b)
+```
+</Opcode>
+
+## 按位取反
+
+<Opcode id="05FC" name="BIT_NOT">
+按位取反。
+
+```text
+05FC BIT_NOT
+in: a
+out: result
+```
+
+```lua
+local r = bitNot(0)
+```
+
+```js
+const result = native("BIT_NOT", a)
+```
+</Opcode>
+
+## 取模
+
+<Opcode id="05FD" name="BIT_MOD">
+取模。
+
+```text
+05FD BIT_MOD
+in: a, b
+out: result
+```
+
+```lua
+local r = bitMod(10, 3)
+```
+
+```js
+const result = native("BIT_MOD", a, b)
+```
+</Opcode>
+
+## 右移
+
+<Opcode id="05FE" name="BIT_SHR">
+右移。
+
+```text
+05FE BIT_SHR
+in: a, b
+out: result
+```
+
+```lua
+local r = bitShr(8, 1)
+```
+
+```js
+const result = native("BIT_SHR", a, b)
+```
+</Opcode>
+
+## 左移
+
+<Opcode id="05FF" name="BIT_SHL">
+左移。
+
+```text
+05FF BIT_SHL
+in: a, b
+out: result
+```
+
+```lua
+local r = bitShl(1, 3)
+```
+
+```js
+const result = native("BIT_SHL", a, b)
+```
+</Opcode>

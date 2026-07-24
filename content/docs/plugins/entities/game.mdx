@@ -1,0 +1,91 @@
+---
+title: 游戏态 CGame
+description: 区域、关卡与游戏状态
+---
+
+`CGame.h`
+
+当前区域、关卡、游戏状态。初始化 / 关 RW 一般别从 ASI 硬调。
+
+## 当前区域
+
+<Api name="currArea / currLevel">
+
+```cpp
+static int& currArea;
+static int& currLevel;
+static char (&aDatFile)[32];
+static unsigned char& bMissionPackGame;
+```
+
+```cpp
+int area = CGame::currArea; // 0 室外，室内为 area 码
+```
+</Api>
+
+## 能否看见外景 / 水
+
+<Api name="CanSeeOutSideFromCurrArea / CanSeeWaterFromCurrArea">
+
+```cpp
+static bool CanSeeOutSideFromCurrArea();
+static bool CanSeeWaterFromCurrArea();
+```
+
+```cpp
+if (CGame::CanSeeOutSideFromCurrArea()) {
+}
+```
+</Api>
+
+## 游戏状态
+
+<Api name="gGameState">
+进程大状态（加载中 / 可玩等）。值以逆向 / 头注释为准。
+
+```cpp
+extern int& gGameState;
+```
+
+```cpp
+// if (gGameState == ...) { 已进入可玩 }
+```
+</Api>
+
+## 工作矩阵
+
+<Api name="m_pWorkingMatrix1 / m_pWorkingMatrix2">
+临时 RW 矩阵。
+
+```cpp
+static RwMatrix*& m_pWorkingMatrix1;
+static RwMatrix*& m_pWorkingMatrix2;
+```
+</Api>
+
+## 生命周期（只读了解）
+
+<Api name="Initialise / Process / Shutdown">
+引擎内部；ASI 用 Events 挂接。
+
+```cpp
+static bool Initialise(char const* datFile);
+static void Process();
+static bool Shutdown();
+static void TidyUpMemory(bool a1, bool clearD3Dmem);
+```
+
+```cpp
+// 不要在插件里直接 Initialise/Shutdown 整局
+```
+</Api>
+
+## TXD 槽
+
+<Api name="gameTxdSlot">
+游戏主 txd 槽。
+
+```cpp
+extern int& gameTxdSlot;
+```
+</Api>

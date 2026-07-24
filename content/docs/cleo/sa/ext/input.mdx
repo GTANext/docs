@@ -1,0 +1,149 @@
+---
+title: 手柄 Pad
+description: 键边沿、模拟按键与绑定查询
+---
+
+`sa` · 扩展 `input` · 需对应 CLEO 扩展
+
+键边沿 / 模拟按键 / 控制器绑定查询。
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 键刚按下
+
+<Opcode id="2080" name="IS_KEY_JUST_PRESSED" member="Pad.IsKeyJustPressed">
+虚拟键本帧刚按下（边沿）。用在 `if` 里。
+
+```text
+2080 IS_KEY_JUST_PRESSED
+in: keyCode
+```
+
+```lua
+if isKeyJustPressed(keyCode) then
+end
+```
+
+```js
+if (Pad.isKeyJustPressed(keyCode)) {
+}
+```
+</Opcode>
+
+## 区间内正按住
+
+<Opcode id="2081" name="GET_KEY_PRESSED_IN_RANGE" member="Pad.GetKeyPressedInRange">
+区间内是否有键正按住，返回该键码。用在 `if` 里。
+
+```text
+2081 GET_KEY_PRESSED_IN_RANGE
+in: minKeyCode, maxKeyCode
+out: keyCode
+```
+
+```lua
+local k = getKeyPressedInRange(0x41, 0x5A)
+if k then
+end
+```
+
+```js
+const keyCode = Pad.getKeyPressedInRange(minKeyCode, maxKeyCode)
+```
+</Opcode>
+
+## 区间内刚按下
+
+<Opcode id="2082" name="GET_KEY_JUST_PRESSED_IN_RANGE" member="Pad.GetKeyJustPressedInRange">
+用在 `if` 里。
+
+```text
+2082 GET_KEY_JUST_PRESSED_IN_RANGE
+in: minKeyCode, maxKeyCode
+out: keyCode
+```
+
+```lua
+local k = getKeyJustPressedInRange(0x30, 0x39)
+```
+
+```js
+const keyCode = Pad.getKeyJustPressedInRange(minKeyCode, maxKeyCode)
+```
+</Opcode>
+
+## 模拟按下
+
+<Opcode id="2083" name="EMULATE_KEY_PRESS" member="Pad.EmulateKeyPress">
+
+```text
+2083 EMULATE_KEY_PRESS
+in: keyCode
+```
+
+```lua
+emulateKeyPress(0x20)
+```
+
+```js
+Pad.emulateKeyPress(keyCode)
+```
+</Opcode>
+
+## 模拟松开
+
+<Opcode id="2084" name="EMULATE_KEY_RELEASE" member="Pad.EmulateKeyRelease">
+
+```text
+2084 EMULATE_KEY_RELEASE
+in: keyCode
+```
+
+```lua
+emulateKeyRelease(0x20)
+```
+
+```js
+Pad.emulateKeyRelease(keyCode)
+```
+</Opcode>
+
+## 动作绑定键
+
+<Opcode id="2085" name="GET_CONTROLLER_KEY" member="Pad.GetControllerKey">
+取动作绑定的第 n 个备用键。未绑定时输出不变且条件假。用在 `if` 里。
+
+```text
+2085 GET_CONTROLLER_KEY
+in: action, altKey
+out: keyCode
+```
+
+```lua
+local k = getControllerKey(action, altKey)
+```
+
+```js
+const keyCode = Pad.getControllerKey(action, altKey)
+```
+</Opcode>
+
+## 键显示名
+
+<Opcode id="2086" name="GET_KEY_NAME" member="Pad.GetKeyName">
+取键显示名。无名则条件假。用在 `if` 里。
+
+```text
+2086 GET_KEY_NAME
+in: keyCode
+out: name
+```
+
+```lua
+local name = getKeyName(keyCode)
+```
+
+```js
+const name = Pad.getKeyName(keyCode)
+```
+</Opcode>

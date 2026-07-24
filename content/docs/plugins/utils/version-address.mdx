@@ -1,0 +1,89 @@
+---
+title: 版本与地址
+description: GameVersion、DynAddress、DynamicResource
+---
+
+`GameVersion.h` / `DynAddress.h` / `extensions/DynamicResource.h`
+
+## 取游戏版本
+
+SA 常见：`GAME_10US_COMPACT` / `HOODLUM` / `STEAM` 等。
+
+```cpp
+unsigned int GetGameVersion();
+char const* GetGameVersionName(int gameVersionId);
+char const* GetGameVersionName();
+```
+
+```cpp
+#include "GameVersion.h"
+
+unsigned int ver = plugin::GetGameVersion();
+const char* name = plugin::GetGameVersionName();
+```
+
+## 判断支持的版本
+
+`IsSupportedGameVersion` 受编译期 `PLUGIN_SGV_*` 影响。
+
+```cpp
+bool IsGameVersionUnknown();
+bool IsGameVersion10us();
+bool IsGameVersion10eu();
+bool IsGameVersion11us();
+bool IsGameVersion11eu();
+bool IsGameVersionSteam();
+bool IsGameVersionSteamLV();
+bool IsGameVersion10en();
+bool IsGameVersion11en();
+bool IsSupportedGameVersion(int gameVersionId);
+bool IsSupportedGameVersion();
+```
+
+```cpp
+if (plugin::IsGameVersionUnknown()) {
+    return;
+}
+if (!plugin::IsSupportedGameVersion()) {
+    return;
+}
+if (plugin::IsGameVersion10us()) {
+}
+```
+
+## 基址与重定位
+
+```cpp
+uintptr_t GetBaseAddress();
+uintptr_t GetGlobalAddress(uintptr_t address);
+const uintptr_t GetExternalAddress(const char* processName, uintptr_t shift, uintptr_t address);
+```
+
+```cpp
+uintptr_t abs_addr = plugin::GetGlobalAddress(0x53BEE0);
+```
+
+## 设备丢失资源
+
+注册后：设备 Lost 调 `Unload`，Reset 调 `Load`。继承并实现纯虚函数。
+
+```cpp
+class DynamicResource {
+    DynamicResource();
+    virtual ~DynamicResource();
+    virtual void Load() = 0;
+    virtual void Unload() = 0;
+};
+```
+
+```cpp
+#include "extensions/DynamicResource.h"
+
+class MyRes : public plugin::DynamicResource {
+public:
+    void Load() override {}
+    void Unload() override {}
+};
+
+static MyRes g_res;
+```

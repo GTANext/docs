@@ -1,0 +1,86 @@
+---
+title: 组决策 DecisionMakerGroup
+description: 组决策器
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 4 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 加载
+
+<Opcode id="06AE" name="LOAD_GROUP_DECISION_MAKER" member="DecisionMakerGroup.Load">
+加载给角色组用的决策器。
+
+```text
+06AE LOAD_GROUP_DECISION_MAKER
+in: type
+out: handle
+```
+
+```lua
+local handle = loadGroupDecisionMaker(type)
+```
+
+```js
+const handle = DecisionMakerGroup.load(type)
+```
+</Opcode>
+
+## 清事件响应
+
+<Opcode id="0749" name="CLEAR_GROUP_DECISION_MAKER_EVENT_RESPONSE" member="DecisionMakerGroup.ClearEventResponse">
+清掉组决策器对某事件的响应。
+
+```text
+0749 CLEAR_GROUP_DECISION_MAKER_EVENT_RESPONSE
+in: self, event
+```
+
+```lua
+clearGroupDecisionMakerEventResponse(self, event)
+```
+
+```js
+DecisionMakerGroup.clearEventResponse(self, event)
+```
+</Opcode>
+
+## 加事件响应
+
+<Opcode id="074A" name="ADD_GROUP_DECISION_MAKER_EVENT_RESPONSE" member="DecisionMakerGroup.AddEventResponse">
+按事件配置组反应（任务、好感档、车内 / 步行等）。
+
+```text
+074A ADD_GROUP_DECISION_MAKER_EVENT_RESPONSE
+in: self, event, taskId, respect, hate, like, dislike, inCar, onFoot
+```
+
+```lua
+addGroupDecisionMakerEventResponse(self, event, taskId, respect, hate, like, dislike, inCar, onFoot)
+```
+
+```js
+DecisionMakerGroup.addEventResponse(self, event, taskId, respect, hate, like, dislike, inCar, onFoot)
+```
+</Opcode>
+
+## 复制
+
+<Opcode id="07E6" name="COPY_GROUP_DECISION_MAKER" member="DecisionMakerGroup.Copy">
+复制组决策器（进任务清理表；否则用 `065C` 释放）。
+
+```text
+07E6 COPY_GROUP_DECISION_MAKER
+in: handleOrTemplate
+out: handle
+```
+
+```lua
+local handle = copyGroupDecisionMaker(handleOrTemplate)
+```
+
+```js
+const handle = DecisionMakerGroup.copy(handleOrTemplate)
+```
+</Opcode>

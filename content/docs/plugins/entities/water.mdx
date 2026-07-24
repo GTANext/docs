@@ -1,0 +1,85 @@
+---
+title: 水面 CWaterLevel
+description: 水面高度、波浪与渲染入口
+---
+
+`CWaterLevel.h`
+
+水面高度、波浪、渲染入口。贴水、游泳、船相关判断常用。
+
+## 取水面高度
+
+<Api name="GetWaterLevel / GetWaterLevelNoWaves">
+成功写 `*pWaterZ`。
+
+```cpp
+static bool GetWaterLevel(/* 重载见头文件：坐标 + out Z + 波浪相关 */);
+static bool GetWaterLevelNoWaves(float x, float y, float z, float* pWaterZ);
+```
+
+```cpp
+float wz = 0.0f;
+CVector p = ped->GetPosition();
+if (CWaterLevel::GetWaterLevelNoWaves(p.x, p.y, p.z, &wz)) {
+    // wz 为无浪水面
+}
+```
+</Api>
+
+## 波浪叠加
+
+<Api name="AddWaveToResult / CalculateWavesOnlyForCoordinate">
+
+```cpp
+static void AddWaveToResult(float x, float y, float* pWaterZ, float BigWavesAmpl, float SmallWavesAmpl, CVector* pNormal);
+static void CalculateWavesOnlyForCoordinate(int32_t X, int32_t Y, float BigWavesAmpl, float SmallWavesAmpl, float* pResultHeight);
+```
+
+```cpp
+// 在已有 waterZ 上叠浪
+```
+</Api>
+
+## 配置与顶点
+
+<Api name="m_nWaterConfiguration / ChangeWaterConfiguration">
+
+```cpp
+static int& m_nWaterConfiguration;
+static void ChangeWaterConfiguration(int32_t NewWaterConfig);
+static int& m_nNumOfWaterTriangles;
+static int& m_nNumOfWaterQuads;
+static int& m_nNumOfWaterVertices;
+static std::array<CWaterVertex, 1021>& m_aVertices;
+```
+
+```cpp
+// 改配置影响整图水面；调试用，别常驻乱切
+```
+</Api>
+
+## 沙滩玩具
+
+<Api name="CreateBeachToy">
+
+```cpp
+static CObject* CreateBeachToy(const CVector* pos, eBeachToy beachToy);
+```
+
+```cpp
+// CObject* o = CWaterLevel::CreateBeachToy(&pos, toy);
+```
+</Api>
+
+## 渲染入口
+
+<Api name="RenderWater / PreRenderWater">
+一般只 hook 观察，别每帧瞎调。
+
+```cpp
+static void PreRenderWater();
+static void RenderWater();
+static void RenderTransparentWater();
+static void RenderWaterFog();
+```
+</Api>

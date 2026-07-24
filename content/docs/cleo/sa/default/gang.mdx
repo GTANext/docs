@@ -1,0 +1,27 @@
+---
+title: 帮派 Gang
+description: 帮派武器配置
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 1 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 帮派三武器
+
+<Opcode id="0237" name="SET_GANG_WEAPONS" member="Gang.SetWeapons">
+设帮派可用的三把武器类型。
+
+```text
+0237 SET_GANG_WEAPONS
+in: gangId, weaponType1, weaponType2, weaponType3
+```
+
+```lua
+setGangWeapons(gangId, weaponType1, weaponType2, weaponType3)
+```
+
+```js
+Gang.setWeapons(gangId, weaponType1, weaponType2, weaponType3)
+```
+</Opcode>

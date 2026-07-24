@@ -1,0 +1,272 @@
+---
+title: 实体 Char / Car / Player / World
+description: 实体查询、刷车、瞄准与档位
+---
+
+`sa` · 扩展 `CLEO` · 需 CLEO
+
+实体查询、刷车、瞄准、档位等。
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 最近实体
+
+<Opcode id="0AB5" name="STORE_CLOSEST_ENTITIES" member="Char.StoreClosestEntities">
+角色附近最近载具和 ped；没有为 -1。忽略脚本创建实体。
+
+```text
+0AB5 STORE_CLOSEST_ENTITIES
+in: self
+out: carHandle, charHandle
+```
+
+```lua
+local car, ped = storeClosestEntities(playerActor)
+```
+
+```js
+const { carHandle, charHandle } = Char.storeClosestEntities(self)
+```
+</Opcode>
+
+## 目标点坐标
+
+<Opcode id="0AB6" name="GET_TARGET_BLIP_COORDS" member="World.GetTargetCoords">
+雷达目标点世界坐标。条件表示是否有目标。
+
+```text
+0AB6 GET_TARGET_BLIP_COORDS
+out: x, y, z
+```
+
+```lua
+local x, y, z = getTargetBlipCoords()
+if x then
+end
+```
+
+```js
+const { x, y, z } = World.getTargetCoords()
+```
+</Opcode>
+
+## 档位数
+
+<Opcode id="0AB7" name="GET_CAR_NUMBER_OF_GEARS" member="Car.GetNumberOfGears">
+handling 档位数。
+
+```text
+0AB7 GET_CAR_NUMBER_OF_GEARS
+in: self
+out: numGear
+```
+
+```lua
+local n = getCarNumberOfGears(car)
+```
+
+```js
+const numGear = Car.getNumberOfGears(self)
+```
+</Opcode>
+
+## 当前档位
+
+<Opcode id="0AB8" name="GET_CAR_CURRENT_GEAR" member="Car.GetCurrentGear">
+当前档位。
+
+```text
+0AB8 GET_CAR_CURRENT_GEAR
+in: self
+out: gear
+```
+
+```lua
+local gear = getCarCurrentGear(car)
+```
+
+```js
+const gear = Car.getCurrentGear(self)
+```
+</Opcode>
+
+## 警笛是否开
+
+<Opcode id="0ABD" name="IS_CAR_SIREN_ON" member="Car.IsSirenOn">
+用在 `if` 里。
+
+```text
+0ABD IS_CAR_SIREN_ON
+in: self
+```
+
+```lua
+if isCarSirenOn(car) then
+end
+```
+
+```js
+if (Car.isSirenOn(self)) {
+}
+```
+</Opcode>
+
+## 引擎是否开
+
+<Opcode id="0ABE" name="IS_CAR_ENGINE_ON" member="Car.IsEngineOn">
+用在 `if` 里。
+
+```text
+0ABE IS_CAR_ENGINE_ON
+in: self
+```
+
+```lua
+if isCarEngineOn(car) then
+end
+```
+
+```js
+if (Car.isEngineOn(self)) {
+}
+```
+</Opcode>
+
+## 强制引擎
+
+<Opcode id="0ABF" name="CLEO_SET_CAR_ENGINE_ON" member="Car.CleoSetEngineOn">
+强制开 / 关引擎。
+
+```text
+0ABF CLEO_SET_CAR_ENGINE_ON
+in: self, state
+```
+
+```lua
+cleoSetCarEngineOn(car, true)
+```
+
+```js
+Car.cleoSetEngineOn(self, state)
+```
+</Opcode>
+
+## 玩家瞄准目标
+
+<Opcode id="0AD2" name="GET_CHAR_PLAYER_IS_TARGETING" member="Player.GetCharIsTargeting">
+玩家当前瞄准的角色。条件表示是否有目标。
+
+```text
+0AD2 GET_CHAR_PLAYER_IS_TARGETING
+in: self
+out: handle
+```
+
+```lua
+local target = getCharPlayerIsTargeting(player)
+if target then
+end
+```
+
+```js
+const handle = Player.getCharIsTargeting(self)
+```
+</Opcode>
+
+## 作弊刷车
+
+<Opcode id="0ADD" name="SPAWN_VEHICLE_BY_CHEATING" member="World.SpawnVehicleByCheating">
+用模型 ID 在玩家前刷车（无需先 REQUEST）。
+
+```text
+0ADD SPAWN_VEHICLE_BY_CHEATING
+in: modelId
+```
+
+```lua
+spawnVehicleByCheating(411) -- INFERNUS
+```
+
+```js
+World.spawnVehicleByCheating(modelId)
+```
+</Opcode>
+
+## 球内随机角色
+
+<Opcode id="0AE1" name="GET_RANDOM_CHAR_IN_SPHERE_NO_SAVE_RECURSIVE" member="World.GetRandomCharInSphereNoSaveRecursive">
+`findNext` 继续搜；`filter` 过滤。
+
+```text
+0AE1 GET_RANDOM_CHAR_IN_SPHERE_NO_SAVE_RECURSIVE
+in: x, y, z, radius, findNext, filter
+out: handle
+```
+
+```lua
+local ped = getRandomCharInSphereNoSaveRecursive(0.0, 0.0, 0.0, 50.0, false, 0)
+```
+
+```js
+const handle = World.getRandomCharInSphereNoSaveRecursive(x, y, z, radius, findNext, filter)
+```
+</Opcode>
+
+## 球内随机载具
+
+<Opcode id="0AE2" name="GET_RANDOM_CAR_IN_SPHERE_NO_SAVE_RECURSIVE" member="World.GetRandomCarInSphereNoSaveRecursive">
+`skipWrecked` 可跳过废车。
+
+```text
+0AE2 GET_RANDOM_CAR_IN_SPHERE_NO_SAVE_RECURSIVE
+in: x, y, z, radius, findNext, skipWrecked
+out: handle
+```
+
+```lua
+local car = getRandomCarInSphereNoSaveRecursive(0.0, 0.0, 0.0, 50.0, false, true)
+```
+
+```js
+const handle = World.getRandomCarInSphereNoSaveRecursive(x, y, z, radius, findNext, skipWrecked)
+```
+</Opcode>
+
+## 球内随机物体
+
+<Opcode id="0AE3" name="GET_RANDOM_OBJECT_IN_SPHERE_NO_SAVE_RECURSIVE" member="World.GetRandomObjectInSphereNoSaveRecursive">
+
+```text
+0AE3 GET_RANDOM_OBJECT_IN_SPHERE_NO_SAVE_RECURSIVE
+in: x, y, z, radius, findNext
+out: handle
+```
+
+```lua
+local obj = getRandomObjectInSphereNoSaveRecursive(0.0, 0.0, 0.0, 20.0, false)
+```
+
+```js
+const handle = World.getRandomObjectInSphereNoSaveRecursive(x, y, z, radius, findNext)
+```
+</Opcode>
+
+## 载具模型名
+
+<Opcode id="0ADB" name="GET_NAME_OF_VEHICLE_MODEL" member="Streaming.GetNameOfVehicleModel">
+显示名（如 `INFERNUS`）。
+
+```text
+0ADB GET_NAME_OF_VEHICLE_MODEL
+in: modelId
+out: carName
+```
+
+```lua
+local name = getNameOfVehicleModel(411)
+```
+
+```js
+const carName = Streaming.getNameOfVehicleModel(modelId)
+```
+</Opcode>

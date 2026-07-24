@@ -1,0 +1,181 @@
+---
+title: 定时器 SfTimer
+description: 周期定时器
+---
+
+`sa` · 扩展 `SAMPFUNCS` · 仅 SA-MP；需 SAMPFUNCS
+
+共 9 条。调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 创建 / 删除 / 重置
+
+<Opcode id="0C74" name="SF_CREATE_TIMER" member="SfTimer.Create">
+创建并启动 SfTimer，到期后周期执行回调。
+
+```text
+0C74 SF_CREATE_TIMER
+in: interval, callback
+out: handle
+```
+
+```lua
+local handle = sfCreateTimer(interval, callback)
+```
+
+```js
+const handle = SfTimer.Create(interval, callback)
+```
+</Opcode>
+
+<Opcode id="0C75" name="SF_DELETE_TIMER" member="SfTimer.Delete">
+删除指定 SfTimer 并释放内存。用在 `if` 里。
+
+```text
+0C75 SF_DELETE_TIMER
+in: self
+```
+
+```lua
+if sfDeleteTimer(self) then
+end
+```
+
+```js
+if (SfTimer.delete(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C76" name="SF_RESET_TIMER" member="SfTimer.Reset">
+重置 SfTimer 到期时间，重新开始倒计时。用在 `if` 里。
+
+```text
+0C76 SF_RESET_TIMER
+in: self
+```
+
+```lua
+if sfResetTimer(self) then
+end
+```
+
+```js
+if (SfTimer.reset(self)) {
+}
+```
+</Opcode>
+
+## 间隔 / 状态
+
+<Opcode id="0C77" name="SF_SET_TIMER_INTERVAL" member="SfTimer.SetInterval">
+设置 SfTimer 新的间隔。用在 `if` 里。
+
+```text
+0C77 SF_SET_TIMER_INTERVAL
+in: self, interval
+```
+
+```lua
+if sfSetTimerInterval(self, interval) then
+end
+```
+
+```js
+if (SfTimer.setInterval(self, interval)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C78" name="SF_SET_TIMER_STATUS" member="SfTimer.SetStatus">
+激活或暂停 SfTimer。用在 `if` 里。
+
+```text
+0C78 SF_SET_TIMER_STATUS
+in: self, isActive
+```
+
+```lua
+if sfSetTimerStatus(self, isActive) then
+end
+```
+
+```js
+if (SfTimer.setStatus(self, isActive)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C79" name="SF_IS_TIMER_ACTIVE" member="SfTimer.IsActive">
+若 SfTimer 处于活动状态则为真。
+
+```text
+0C79 SF_IS_TIMER_ACTIVE
+in: self
+```
+
+```lua
+if sfIsTimerActive(self) then
+end
+```
+
+```js
+if (SfTimer.isActive(self)) {
+}
+```
+</Opcode>
+
+## 时间查询
+
+<Opcode id="0C7A" name="SF_GET_TIMER_INTERVAL" member="SfTimer.GetInterval">
+返回 SfTimer 配置的间隔。
+
+```text
+0C7A SF_GET_TIMER_INTERVAL
+in: self
+out: interval
+```
+
+```lua
+local interval = sfGetTimerInterval(self)
+```
+
+```js
+const interval = SfTimer.getInterval(self)
+```
+</Opcode>
+
+<Opcode id="0C7B" name="SF_GET_TIMER_ELAPSED_TIME" member="SfTimer.GetElapsedTime">
+返回自上次重置以来经过的毫秒数（含已超过间隔后的时间）。
+
+```text
+0C7B SF_GET_TIMER_ELAPSED_TIME
+in: self
+out: elapsedTime
+```
+
+```lua
+local elapsedTime = sfGetTimerElapsedTime(self)
+```
+
+```js
+const elapsedTime = SfTimer.getElapsedTime(self)
+```
+</Opcode>
+
+<Opcode id="0C7C" name="SF_GET_TIMER_TIME_LEFT" member="SfTimer.GetTimeLeft">
+返回距到期剩余毫秒数（定时器活动时会递减）。
+
+```text
+0C7C SF_GET_TIMER_TIME_LEFT
+in: self
+out: timeLeft
+```
+
+```lua
+local timeLeft = sfGetTimerTimeLeft(self)
+```
+
+```js
+const timeLeft = SfTimer.getTimeLeft(self)
+```
+</Opcode>

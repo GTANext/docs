@@ -1,0 +1,114 @@
+---
+title: 流式 CStreaming
+description: 请求加载模型与场景
+---
+
+`CStreaming.h`
+
+也可走 Command `REQUEST_MODEL`（见 [Command](/docs/plugins/commands)）。
+
+## 请求与加载模型
+
+<Api name="RequestModel / LoadAllRequestedModels / HasModelLoaded">
+
+```cpp
+static void RequestModel(int dwModelId, int Streamingflags);
+static void LoadAllRequestedModels(bool bOnlyPriorityRequests);
+static bool HasModelLoaded(int modelIndex);
+static void SetModelIsDeletable(int modelIndex);
+static void SetModelTxdIsDeletable(int modelIndex);
+```
+
+```cpp
+CStreaming::RequestModel(model_id, 0x16);
+CStreaming::LoadAllRequestedModels(false);
+// create ...
+CStreaming::SetModelIsDeletable(model_id);
+```
+</Api>
+
+## 移除模型
+
+<Api name="RemoveModel">
+用完再删，避免正在用的被踢。
+
+```cpp
+static void RemoveModel(int Modelindex);
+```
+
+```cpp
+CStreaming::RemoveModel(model_id);
+```
+</Api>
+
+## 特殊模型 / 特殊角色
+
+<Api name="RequestSpecialModel / RequestSpecialChar">
+
+```cpp
+static void RequestSpecialModel(int slot, char const* name, int StreamingFlags);
+static void RequestSpecialChar(int slot, char const* Name, int streamingFlags);
+static bool HasSpecialCharLoaded(int slot);
+static void RequestPlayerSection(int modelIndex, char const* string, int streamingFlags);
+```
+
+```cpp
+// CStreaming::RequestSpecialChar(slot, "name", 0x16);
+```
+</Api>
+
+## TXD 与升级件
+
+<Api name="RequestTxdModel / RequestVehicleUpgrade">
+
+```cpp
+static void RequestTxdModel(int TxdModelID, int Streamingflags);
+static void RequestVehicleUpgrade(int modelIndex, int StreamingFlags);
+static bool HasVehicleUpgradeLoaded(int ModelIndex);
+```
+
+```cpp
+CStreaming::RequestVehicleUpgrade(upgradeId, 0x16);
+CStreaming::LoadAllRequestedModels(false);
+```
+</Api>
+
+## 加载场景碰撞
+
+<Api name="LoadScene / LoadSceneCollision / RequestBigBuildings">
+
+```cpp
+static void LoadScene(CVector const* Posn);
+static void LoadSceneCollision(CVector const* Posn);
+static void RequestBigBuildings(CVector const* posn);
+```
+
+```cpp
+CVector p = FindPlayerCoors();
+CStreaming::LoadSceneCollision(&p);
+```
+</Api>
+
+## 内存与状态
+
+<Api name="ms_memoryAvailable / ms_numPriorityRequests">
+诊断用。
+
+```cpp
+static unsigned int& ms_memoryAvailable;
+static unsigned int& ms_numPriorityRequests;
+```
+
+```cpp
+unsigned int mem = CStreaming::ms_memoryAvailable;
+```
+</Api>
+
+## 典型顺序
+
+```
+RequestModel
+  → LoadAllRequestedModels（或分帧等 HasModelLoaded）
+  → 创建实体 / SetModelIndex
+  → SetModelIsDeletable（可选）
+```

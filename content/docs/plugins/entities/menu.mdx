@@ -1,0 +1,104 @@
+---
+title: 菜单 CMenuManager
+description: 暂停菜单与偏好开关
+---
+
+`CMenuManager.h` · 全局 `FrontEndMenuManager`
+
+暂停菜单、偏好、是否在前端。逻辑帧里常用来判断「能不能动游戏」。
+
+## 菜单是否打开
+
+<Api name="m_bMenuActive / m_bSaveMenuActive">
+
+```cpp
+bool m_bMenuActive;
+bool m_bSaveMenuActive;
+bool m_bGameNotLoaded;
+```
+
+```cpp
+if (FrontEndMenuManager.m_bMenuActive) {
+    return; // 暂停菜单打开时跳过作弊处理
+}
+```
+</Api>
+
+## 请求开关前端
+
+<Api name="m_bStartUpFrontEndRequested / m_bExitMenu">
+
+```cpp
+bool m_bStartUpFrontEndRequested;
+bool m_bShutDownFrontEndRequested;
+bool m_bExitMenu;
+```
+
+```cpp
+// 一般只读；强行改可能卡菜单状态机
+```
+</Api>
+
+## 常用偏好
+
+<Api name="m_bPrefsShowHud / m_bPrefsShowSubtitles">
+
+```cpp
+bool m_bPrefsShowHud;
+bool m_bPrefsShowSubtitles;
+bool m_bPrefsUseWideScreen;
+bool m_bPrefsVsync;
+```
+
+```cpp
+bool showHud = FrontEndMenuManager.m_bPrefsShowHud;
+```
+</Api>
+
+## 地图图例偏好
+
+<Api name="m_bPrefsShowLocations / Contacts / Mission">
+
+```cpp
+bool m_bPrefsShowLocations;
+bool m_bPrefsShowContacts;
+bool m_bPrefsShowMission;
+bool m_bPrefsShowOther;
+bool m_bPrefsShowGangArea;
+bool m_bPrefsShowLegends;
+```
+
+```cpp
+// 雷达/地图过滤相关
+```
+</Api>
+
+## 重启与读档意图
+
+<Api name="m_bWantToRestart / m_bWantToLoad">
+
+```cpp
+bool m_bWantToRestart;
+bool m_bWantToLoad;
+bool m_bOnlySaveMenu;
+```
+
+```cpp
+// 监听读档/重启时清自己的运行时状态
+```
+</Api>
+
+## 静态杂项
+
+<Api name="nLastMenuPage / bInvertMouseX">
+
+```cpp
+static int& nLastMenuPage;
+static bool& bInvertMouseX;
+static bool& bInvertMouseY;
+```
+
+```cpp
+int page = CMenuManager::nLastMenuPage;
+```
+</Api>

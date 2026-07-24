@@ -1,0 +1,219 @@
+---
+title: 对话 Conversation
+description: 脚本对话节点
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 11 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 开始配置
+
+<Opcode id="0717" name="START_SETTING_UP_CONVERSATION" member="Conversation.StartSettingUp">
+开始配置与玩家的对话，并清掉旧行。
+
+```text
+0717 START_SETTING_UP_CONVERSATION
+in: handle
+```
+
+```lua
+startSettingUpConversation(handle)
+```
+
+```js
+Conversation.startSettingUp(handle)
+```
+</Opcode>
+
+## 结束配置
+
+<Opcode id="0719" name="FINISH_SETTING_UP_CONVERSATION" member="Conversation.FinishSettingUp">
+结束 `0717` 配置；选项字幕会显示。
+
+```text
+0719 FINISH_SETTING_UP_CONVERSATION
+```
+
+```lua
+finishSettingUpConversation()
+```
+
+```js
+Conversation.finishSettingUp()
+```
+</Opcode>
+
+## 是否在节点
+
+<Opcode id="071A" name="IS_CONVERSATION_AT_NODE" member="Conversation.IsAtNode">
+对话是否在指定节点。用在 `if` 里。
+
+```text
+071A IS_CONVERSATION_AT_NODE
+in: handle, speech
+```
+
+```lua
+if isConversationAtNode(handle, speech) then
+end
+```
+
+```js
+if (Conversation.isAtNode(handle, speech)) {
+}
+```
+</Opcode>
+
+## 位置是否合适
+
+<Opcode id="089B" name="IS_PLAYER_IN_POSITION_FOR_CONVERSATION" member="Conversation.IsPlayerInPosition">
+双方是否在对话且能互相交流。用在 `if` 里。
+
+```text
+089B IS_PLAYER_IN_POSITION_FOR_CONVERSATION
+in: handle
+```
+
+```lua
+if isPlayerInPositionForConversation(handle) then
+end
+```
+
+```js
+if (Conversation.isPlayerInPosition(handle)) {
+}
+```
+</Opcode>
+
+## 开关对话
+
+<Opcode id="089C" name="ENABLE_CONVERSATION" member="Conversation.Enable">
+暂停 / 恢复该角色的脚本对话。
+
+```text
+089C ENABLE_CONVERSATION
+in: handle, state
+```
+
+```lua
+enableConversation(handle, state)
+```
+
+```js
+Conversation.enable(handle, state)
+```
+</Opcode>
+
+## 清角色对话
+
+<Opcode id="08ED" name="CLEAR_CONVERSATION_FOR_CHAR" member="Conversation.ClearForChar">
+清掉该角色上的对话。
+
+```text
+08ED CLEAR_CONVERSATION_FOR_CHAR
+in: handle
+```
+
+```lua
+clearConversationForChar(handle)
+```
+
+```js
+Conversation.clearForChar(handle)
+```
+</Opcode>
+
+## 节点 + 语音
+
+<Opcode id="09A4" name="SET_UP_CONVERSATION_NODE_WITH_SPEECH" member="Conversation.SetUpNodeWithSpeech">
+配置节点：问 / 正 / 负 GXT 与语音短语。
+
+```text
+09A4 SET_UP_CONVERSATION_NODE_WITH_SPEECH
+in: question, positiveAnswer, negativeAnswer, questionPhrase, positiveAnswerPhrase, negativeAnswerPhrase
+```
+
+```lua
+setUpConversationNodeWithSpeech(question, positiveAnswer, negativeAnswer, questionPhrase, positiveAnswerPhrase, negativeAnswerPhrase)
+```
+
+```js
+Conversation.setUpNodeWithSpeech(question, positiveAnswer, negativeAnswer, questionPhrase, positiveAnswerPhrase, negativeAnswerPhrase)
+```
+</Opcode>
+
+## 结束节点 + 语音
+
+<Opcode id="09AA" name="SET_UP_CONVERSATION_END_NODE_WITH_SPEECH" member="Conversation.SetUpEndNodeWithSpeech">
+结束节点的语音短语。
+
+```text
+09AA SET_UP_CONVERSATION_END_NODE_WITH_SPEECH
+in: text, phrase
+```
+
+```lua
+setUpConversationEndNodeWithSpeech(text, phrase)
+```
+
+```js
+Conversation.setUpEndNodeWithSpeech(text, phrase)
+```
+</Opcode>
+
+## 节点 + 脚本语音
+
+<Opcode id="0A18" name="SET_UP_CONVERSATION_NODE_WITH_SCRIPTED_SPEECH" member="Conversation.SetUpNodeWithScriptedSpeech">
+用脚本语音 ID（`03CF` 一类）加对话行。
+
+```text
+0A18 SET_UP_CONVERSATION_NODE_WITH_SCRIPTED_SPEECH
+in: question, positiveAnswer, negativeAnswer, questionSoundId, positiveAnswerSoundId, negativeAnswerSoundId
+```
+
+```lua
+setUpConversationNodeWithScriptedSpeech(question, positiveAnswer, negativeAnswer, questionSoundId, positiveAnswerSoundId, negativeAnswerSoundId)
+```
+
+```js
+Conversation.setUpNodeWithScriptedSpeech(question, positiveAnswer, negativeAnswer, questionSoundId, positiveAnswerSoundId, negativeAnswerSoundId)
+```
+</Opcode>
+
+## 结束节点 + 脚本语音
+
+<Opcode id="0A3C" name="SET_UP_CONVERSATION_END_NODE_WITH_SCRIPTED_SPEECH" member="Conversation.SetUpEndNodeWithScriptedSpeech">
+结束节点的脚本语音 ID。
+
+```text
+0A3C SET_UP_CONVERSATION_END_NODE_WITH_SCRIPTED_SPEECH
+in: speech, speechSoundId
+```
+
+```lua
+setUpConversationEndNodeWithScriptedSpeech(speech, speechSoundId)
+```
+
+```js
+Conversation.setUpEndNodeWithScriptedSpeech(speech, speechSoundId)
+```
+</Opcode>
+
+## 结束配置无字幕
+
+<Opcode id="0A47" name="FINISH_SETTING_UP_CONVERSATION_NO_SUBTITLES" member="Conversation.FinishSettingUpNoSubtitles">
+结束 `0717` 配置；选项不显示字幕。
+
+```text
+0A47 FINISH_SETTING_UP_CONVERSATION_NO_SUBTITLES
+```
+
+```lua
+finishSettingUpConversationNoSubtitles()
+```
+
+```js
+Conversation.finishSettingUpNoSubtitles()
+```
+</Opcode>

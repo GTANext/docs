@@ -1,0 +1,82 @@
+---
+title: 纹理 SfD3DTexture
+description: D3D 纹理加载与绘制
+---
+
+`sa` · 扩展 `SAMPFUNCS` · 仅 SA-MP；需 SAMPFUNCS
+
+共 4 条。调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 加载 / 释放 / 绘制
+
+<Opcode id="0B71" name="SF_D3D_LOAD_TEXTURE_FROM_FILE" member="SfD3DTexture.Load">
+从文件（图片或 txd）加载为 D3DTexture 对象。
+
+```text
+0B71 SF_D3D_LOAD_TEXTURE_FROM_FILE
+in: filePath
+out: handle
+```
+
+```lua
+local handle = sfD3dLoadTextureFromFile(filePath)
+```
+
+```js
+const handle = SfD3DTexture.Load(filePath)
+```
+</Opcode>
+
+<Opcode id="0B72" name="SF_D3D_RELEASE_TEXTURE" member="SfD3DTexture.Release">
+释放 D3DTexture 对象内存。用在 `if` 里。
+
+```text
+0B72 SF_D3D_RELEASE_TEXTURE
+in: self
+```
+
+```lua
+if sfD3dReleaseTexture(self) then
+end
+```
+
+```js
+if (SfD3DTexture.release(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0B73" name="SF_D3D_DRAW_TEXTURE" member="SfD3DTexture.Draw">
+在屏幕上绘制该纹理。
+
+```text
+0B73 SF_D3D_DRAW_TEXTURE
+in: self, coordX, coordY, width, height, heading, contrast
+```
+
+```lua
+sfD3dDrawTexture(self, coordX, coordY, width, height, heading, contrast)
+```
+
+```js
+SfD3DTexture.draw(self, coordX, coordY, width, height, heading, contrast)
+```
+</Opcode>
+
+<Opcode id="0C8C" name="SF_D3D_LOAD_TEXTURE_FROM_FILE_IN_MEMORY" member="SfD3DTexture.LoadTextureFromFileMemory">
+从内存缓冲中的文件数据加载纹理。
+
+```text
+0C8C SF_D3D_LOAD_TEXTURE_FROM_FILE_IN_MEMORY
+in: buffer, bufferSize
+out: handle
+```
+
+```lua
+local handle = sfD3dLoadTextureFromFileInMemory(buffer, bufferSize)
+```
+
+```js
+const handle = SfD3DTexture.LoadTextureFromFileMemory(buffer, bufferSize)
+```
+</Opcode>

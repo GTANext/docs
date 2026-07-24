@@ -1,0 +1,121 @@
+---
+title: 时间天气 CClock / CWeather / CWeaponInfo
+description: 全局时钟、天气与武器表
+---
+
+全局游戏态。改全局表要备份还原，别每帧无脑写。
+
+## 锁定游戏时钟
+
+<Api name="CClock::ms_nGameClockHours / SetGameClock">
+冻时间每帧写回；或用 `SetGameClock` / `StoreClock` / `RestoreClock`。
+
+```cpp
+static unsigned char& ms_nGameClockHours;
+static unsigned char& ms_nGameClockMinutes;
+static unsigned short& ms_nGameClockSeconds;
+static void SetGameClock(unsigned char hours, unsigned char minutes, unsigned char day);
+static void StoreClock();
+static void RestoreClock();
+static bool GetIsTimeInRange(unsigned char hourA, unsigned char hourB);
+```
+
+```cpp
+plugin::Events::processScriptsEvent += [] {
+    if (!g_lock_time) {
+        return;
+    }
+    CClock::ms_nGameClockHours = g_h;
+    CClock::ms_nGameClockMinutes = g_m;
+};
+// 一次性：CClock::SetGameClock(12, 0, CClock::ms_nGameClockDays);
+```
+</Api>
+
+## 强制天气
+
+<Api name="CWeather::ForceWeather / ForceWeatherNow">
+也可用 Command `FORCE_WEATHER`。
+
+```cpp
+static void ForceWeather(short weatherType);
+static void ForceWeatherNow(short weatherType);
+static void ReleaseWeather();
+static short& ForcedWeatherType;
+static short& NewWeatherType;
+static short& OldWeatherType;
+```
+
+```cpp
+CWeather::ForceWeatherNow(0); // id 见 eWeatherType
+// 恢复自然切换：
+// CWeather::ReleaseWeather();
+```
+</Api>
+
+## 读当前天气强度
+
+<Api name="Rain / Sandstorm / Wind / Foggyness">
+
+```cpp
+static float& Rain;
+static float& Sandstorm;
+static float& Wind;
+static CVector& WindDir;
+static float& Foggyness;
+static float& WetRoads;
+static float& InterpolationValue;
+```
+
+```cpp
+float r = CWeather::Rain;
+```
+</Api>
+
+## 预报天气
+
+<Api name="ForecastWeather / SetWeatherToAppropriateTypeNow">
+
+```cpp
+static bool ForecastWeather(int weatherType, int numSteps);
+static void SetWeatherToAppropriateTypeNow();
+```
+
+```cpp
+// CWeather::ForecastWeather(weatherId, 1);
+```
+</Api>
+
+## 改武器全局参数
+
+<Api name="CWeaponInfo::GetWeaponInfo">
+改的是全局表。实例弹药见 [CWeapon](/docs/plugins/entities/weapon)。
+
+```cpp
+static CWeaponInfo* GetWeaponInfo(eWeaponType weaponType, unsigned char skill = 0);
+static eWeaponType FindWeaponType(char* name);
+extern CWeaponInfo* aWeaponInfo;
+```
+
+```cpp
+static float saved_range = -1.0f;
+auto* info = CWeaponInfo::GetWeaponInfo(WEAPONTYPE_M4, 1);
+if (!info) {
+    return;
+}
+if (saved_range < 0.0f) {
+    saved_range = info->m_fWeaponRange;
+}
+if (g_tweak) {
+    info->m_fWeaponRange = 200.0f;
+} else {
+    info->m_fWeaponRange = saved_range;
+}
+```
+</Api>
+
+Command 写法：
+
+```cpp
+plugin::Command<plugin::Commands::FORCE_WEATHER>(weather_id);
+```

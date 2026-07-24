@@ -1,0 +1,30 @@
+---
+title: GTA III
+description: GTA III CLEO 扩展 opcode 按类型分页
+---
+
+`gta3` · 扩展 `CLEO` · 需 CLEO
+
+III 的 CLEO 表含：
+
+- 一批补进扩展的原生命令（Player/Object 偏移等）
+- 与 VC/SA 对齐的 `05xx` 经典号 + `0Axx` 现代号
+
+页内优先现代 id；地址以 III 为准。
+
+源：`sanny-builder-library/gta3/gta3.json`
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+| 类型 | 页 |
+|---|---|
+| Memory | [memory](/docs/cleo/gta3/memory) |
+| 算术 | [arith](/docs/cleo/gta3/arith) |
+| 自定义脚本 | [script](/docs/cleo/gta3/script) |
+| File / Fs | [file](/docs/cleo/gta3/file) |
+| DynamicLibrary | [dll](/docs/cleo/gta3/dll) |
+| Game / Pad | [game](/docs/cleo/gta3/game) |
+| Entity | [entity](/docs/cleo/gta3/entity) |
+| Text | [text](/docs/cleo/gta3/text) |
+| Math | [math](/docs/cleo/gta3/math) |
+| 杂项 | [misc](/docs/cleo/gta3/misc) |

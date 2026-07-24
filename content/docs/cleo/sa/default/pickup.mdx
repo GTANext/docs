@@ -1,0 +1,288 @@
+---
+title: 拾取物 Pickup
+description: 拾取物 / 收藏品
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 14 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 创建
+
+<Opcode id="0213" name="CREATE_PICKUP" member="Pickup.Create">
+按模型与类型创建拾取物。
+
+```text
+0213 CREATE_PICKUP
+in: modelId, pickupType, x, y, z
+out: handle
+```
+
+```lua
+local handle = createPickup(modelId, pickupType, x, y, z)
+```
+
+```js
+const handle = Pickup.create(modelId, pickupType, x, y, z)
+```
+</Opcode>
+
+## 是否已捡
+
+<Opcode id="0214" name="HAS_PICKUP_BEEN_COLLECTED" member="Pickup.HasBeenCollected">
+是否已被捡起。用在 `if` 里。
+
+```text
+0214 HAS_PICKUP_BEEN_COLLECTED
+in: self
+```
+
+```lua
+if hasPickupBeenCollected(self) then
+end
+```
+
+```js
+if (Pickup.hasBeenCollected(self)) {
+}
+```
+</Opcode>
+
+## 删除
+
+<Opcode id="0215" name="REMOVE_PICKUP" member="Pickup.Remove">
+删除拾取物，腾内存。
+
+```text
+0215 REMOVE_PICKUP
+in: self
+```
+
+```lua
+removePickup(self)
+```
+
+```js
+Pickup.remove(self)
+```
+</Opcode>
+
+## 现金
+
+<Opcode id="02E1" name="CREATE_MONEY_PICKUP" member="Pickup.CreateMoney">
+创建现金拾取。
+
+```text
+02E1 CREATE_MONEY_PICKUP
+in: x, y, z, cashAmount, permanent
+out: handle
+```
+
+```lua
+local handle = createMoneyPickup(x, y, z, cashAmount, permanent)
+```
+
+```js
+const handle = Pickup.createMoney(x, y, z, cashAmount, permanent)
+```
+</Opcode>
+
+## 带弹药
+
+<Opcode id="032B" name="CREATE_PICKUP_WITH_AMMO" member="Pickup.CreateWithAmmo">
+武器拾取并带弹药量。
+
+```text
+032B CREATE_PICKUP_WITH_AMMO
+in: modelId, pickupType, ammo, x, y, z
+out: handle
+```
+
+```lua
+local handle = createPickupWithAmmo(modelId, pickupType, ammo, x, y, z)
+```
+
+```js
+const handle = Pickup.createWithAmmo(modelId, pickupType, ammo, x, y, z)
+```
+</Opcode>
+
+## 资产收益
+
+<Opcode id="04A6" name="CREATE_PROTECTION_PICKUP" member="Pickup.CreateProtection">
+资产收益拾取。
+
+```text
+04A6 CREATE_PROTECTION_PICKUP
+in: x, y, z, revenueLimit, revenueRate
+out: handle
+```
+
+```lua
+local handle = createProtectionPickup(x, y, z, revenueLimit, revenueRate)
+```
+
+```js
+const handle = Pickup.createProtection(x, y, z, revenueLimit, revenueRate)
+```
+</Opcode>
+
+## 锁定资产
+
+<Opcode id="0517" name="CREATE_LOCKED_PROPERTY_PICKUP" member="Pickup.CreateLockedProperty">
+不可购买资产图标。
+
+```text
+0517 CREATE_LOCKED_PROPERTY_PICKUP
+in: x, y, z, message
+out: handle
+```
+
+```lua
+local handle = createLockedPropertyPickup(x, y, z, message)
+```
+
+```js
+const handle = Pickup.createLockedProperty(x, y, z, message)
+```
+</Opcode>
+
+## 待售资产
+
+<Opcode id="0518" name="CREATE_FORSALE_PROPERTY_PICKUP" member="Pickup.CreateForSaleProperty">
+可购买资产拾取。
+
+```text
+0518 CREATE_FORSALE_PROPERTY_PICKUP
+in: x, y, z, price, message
+out: handle
+```
+
+```lua
+local handle = createForsalePropertyPickup(x, y, z, price, message)
+```
+
+```js
+const handle = Pickup.createForSaleProperty(x, y, z, price, message)
+```
+</Opcode>
+
+## 取坐标
+
+<Opcode id="065B" name="GET_PICKUP_COORDINATES" member="Pickup.GetCoordinates">
+取拾取物坐标。
+
+```text
+065B GET_PICKUP_COORDINATES
+in: self
+out: x, y, z
+```
+
+```lua
+local x, y, z = getPickupCoordinates(self)
+```
+
+```js
+const { x, y, z } = Pickup.getCoordinates(self)
+```
+</Opcode>
+
+## 更新日收益
+
+<Opcode id="094A" name="UPDATE_PICKUP_MONEY_PER_DAY" member="Pickup.UpdateMoneyPerDay">
+更新每日收益金额。
+
+```text
+094A UPDATE_PICKUP_MONEY_PER_DAY
+in: self, value
+```
+
+```lua
+updatePickupMoneyPerDay(self, value)
+```
+
+```js
+Pickup.updateMoneyPerDay(self, value)
+```
+</Opcode>
+
+## 快照
+
+<Opcode id="0958" name="CREATE_SNAPSHOT_PICKUP" member="Pickup.CreateSnapshot">
+创建快照收藏品。
+
+```text
+0958 CREATE_SNAPSHOT_PICKUP
+in: x, y, z
+out: handle
+```
+
+```lua
+local handle = createSnapshotPickup(x, y, z)
+```
+
+```js
+const handle = Pickup.createSnapshot(x, y, z)
+```
+</Opcode>
+
+## 马蹄铁
+
+<Opcode id="0959" name="CREATE_HORSESHOE_PICKUP" member="Pickup.CreateHorseshoe">
+创建马蹄铁收藏品。
+
+```text
+0959 CREATE_HORSESHOE_PICKUP
+in: x, y, z
+out: handle
+```
+
+```lua
+local handle = createHorseshoePickup(x, y, z)
+```
+
+```js
+const handle = Pickup.createHorseshoe(x, y, z)
+```
+</Opcode>
+
+## 牡蛎
+
+<Opcode id="095A" name="CREATE_OYSTER_PICKUP" member="Pickup.CreateOyster">
+创建牡蛎收藏品。
+
+```text
+095A CREATE_OYSTER_PICKUP
+in: x, y, z
+out: handle
+```
+
+```lua
+local handle = createOysterPickup(x, y, z)
+```
+
+```js
+const handle = Pickup.createOyster(x, y, z)
+```
+</Opcode>
+
+## 是否存在
+
+<Opcode id="09D1" name="DOES_PICKUP_EXIST" member="Pickup.DoesExist">
+handle 是否有效拾取物。用在 `if` 里。
+
+```text
+09D1 DOES_PICKUP_EXIST
+in: handle
+```
+
+```lua
+if doesPickupExist(handle) then
+end
+```
+
+```js
+if (Pickup.doesExist(handle)) {
+}
+```
+</Opcode>

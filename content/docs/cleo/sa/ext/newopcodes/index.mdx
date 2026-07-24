@@ -1,0 +1,38 @@
+---
+title: 扩展 NewOpcodes
+description: NewOpcodes 按页入口（约 128 条）
+---
+
+`sa` · 扩展 `NewOpcodes` · 需 CLEO + NewOpcodes 插件
+
+源：`sa.json` → `NewOpcodes`（`0D00`…`0D7F`，中间有洞）。
+
+部分号与 CLEO+ 重叠（如 `0D0B` 骨骼矩阵）；以实际加载的插件为准。
+
+## 按页
+
+| 页 | 范围概要 |
+|---|---|
+| [matrix](/docs/cleo/sa/ext/newopcodes/matrix) | 矩阵 / 四元数 / 向量 |
+| [entity](/docs/cleo/sa/ext/newopcodes/entity) | 部件 / 透明度 / 碰撞 / 骨骼 |
+| [draw](/docs/cleo/sa/ext/newopcodes/draw) | ColPoint / shape / TXD / 串 |
+| [misc](/docs/cleo/sa/ext/newopcodes/misc) | memcpy / 线程变量 / 串 |
+| [fx](/docs/cleo/sa/ext/newopcodes/fx) | 阴影光 corona 天气 分辨率 |
+| [vehicle](/docs/cleo/sa/ext/newopcodes/vehicle) | 车灯损伤 dummy 抛射物 |
+| [texture](/docs/cleo/sa/ext/newopcodes/texture) | BMP/PNG/DDS + 2D 精灵 |
+| [print](/docs/cleo/sa/ext/newopcodes/print) | 临时屏字 |
+| [atomic](/docs/cleo/sa/ext/newopcodes/atomic) | Component / Atomic / 材质 |
+
+调用见 [CLEO Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 覆盖
+
+| 状态 | 说明 |
+|---|---|
+| **本目录** | 上表各页全文切片已齐 |
+| **对账** | 与 `sa.json` NewOpcodes.commands 对齐；无命令空洞 ID 不写页 |
+| **重复** | 与 CLEO+ 同号语义接近，勿混装冲突插件 |
+
+<Callout type="info" title="进度">
+NewOpcodes 子页全齐：`matrix` · `entity` · `draw` · `misc` · `fx` · `vehicle` · `texture` · `print` · `atomic`。
+</Callout>

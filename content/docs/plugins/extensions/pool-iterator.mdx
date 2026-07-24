@@ -1,0 +1,40 @@
+---
+title: 池遍历 PoolIterator
+description: 对 CPool 做 range-for
+---
+
+`PoolIterator.h`
+
+## range-for 遍历池
+
+为 `CPool` 提供 `begin` / `end`，自动跳过 free 槽。**池尚未建立时不要遍历。**
+
+```cpp
+// CPool 引用或指针
+for (CPed* ped : *CPools::ms_pPedPool) {}
+```
+
+```cpp
+#include "CPools.h"
+#include "extensions/PoolIterator.h"
+
+for (CPed* ped : *CPools::ms_pPedPool) {
+    if (!ped) {
+        continue;
+    }
+    ped->m_fHealth = ped->m_fMaxHealth;
+}
+```
+
+## 找下一个占用槽
+
+日常优先 range-for；需要手动扫槽时再用：
+
+```cpp
+static int FindNextActiveSlotInPool(CPool<T1, T2>* pool, int currentSlot);
+```
+
+```cpp
+int i = plugin::PoolIterator<CPed, CCopPed>::FindNextActiveSlotInPool(
+    CPools::ms_pPedPool, 0);
+```

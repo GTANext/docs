@@ -1,0 +1,95 @@
+---
+title: 模型信息 CModelInfo
+description: 按 id 查模型信息与车型判断
+---
+
+`CModelInfo.h`
+
+按模型 id 查 `CBaseModelInfo*`；换皮 / 判断车型常用。
+
+## 按 id 取模型信息
+
+<Api name="GetModelInfo / ms_modelInfoPtrs">
+
+```cpp
+static CBaseModelInfo* GetModelInfo(int modelId);
+static CBaseModelInfo** ms_modelInfoPtrs;
+static const int& ms_modelInfoCount;
+```
+
+```cpp
+CBaseModelInfo* mi = CModelInfo::GetModelInfo(modelId);
+if (!mi) {
+    return;
+}
+```
+</Api>
+
+## 按名字取模型
+
+<Api name="GetModelInfo(name) / GetModelInfoFromHashKey">
+
+```cpp
+static CBaseModelInfo* GetModelInfo(const char* name, int* modelId);
+static CBaseModelInfo* GetModelInfo(const char* name, int minModelId, int maxModelId);
+static CBaseModelInfo* GetModelInfoUInt16(const char* name, int* modelId);
+static CBaseModelInfo* GetModelInfoFromHashKey(unsigned int arg0, int* modelId);
+```
+
+```cpp
+int id = -1;
+CBaseModelInfo* mi = CModelInfo::GetModelInfo("infernus", &id);
+```
+</Api>
+
+## 判断行人 / 载具
+
+<Api name="IsPedModel / IsVehicleModel">
+
+```cpp
+static bool IsPedModel(int modelId);
+static bool IsVehicleModel(int modelId);
+```
+
+```cpp
+if (CModelInfo::IsVehicleModel(modelId)) {
+}
+```
+</Api>
+
+## 判断载具子类
+
+<Api name="GetVehicleModelType / IsCarModel / IsHeliModel">
+
+```cpp
+static eVehicleType GetVehicleModelType(int modelId);
+static bool IsBikeModel(int modelId);
+static bool IsBmxModel(int modelId);
+static bool IsBoatModel(int modelId);
+static bool IsCarModel(int modelId);
+static bool IsHeliModel(int modelId);
+static bool IsMonsterTruckModel(int modelId);
+static bool IsPlaneModel(int modelId);
+static bool IsQuadBikeModel(int modelId);
+static bool IsTrailerModel(int modelId);
+static bool IsTrainModel(int modelId);
+```
+
+```cpp
+if (CModelInfo::IsCarModel(modelId)) {
+}
+```
+</Api>
+
+## 遍历同类型模型
+
+<Api name="FindNextModel">
+
+```cpp
+static int FindNextModel(eModelInfoType type, int startModelId, bool searchForward = true, bool warpAround = true);
+```
+
+```cpp
+// int next = CModelInfo::FindNextModel(type, startId);
+```
+</Api>

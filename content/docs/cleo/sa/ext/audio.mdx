@@ -1,0 +1,478 @@
+---
+title: 音频流 AudioStream
+description: 流式音频与 3D 声源（26 条）
+---
+
+`sa` · 扩展 `audio` · 需对应 CLEO 扩展
+
+流式音频 / 3D 声源。共 26 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 加载 / 状态
+
+<Opcode id="0AAC" name="LOAD_AUDIO_STREAM" member="AudioStream.Load">
+加载音频文件成流。成功才往下走。用在 `if` 里。
+
+```text
+0AAC LOAD_AUDIO_STREAM
+in: audioFileName
+out: handle
+```
+
+```lua
+local stream = loadAudioStream("cleo/music.mp3")
+if stream then
+end
+```
+
+```js
+const handle = AudioStream.Load(audioFileName)
+```
+</Opcode>
+
+<Opcode id="0AAD" name="SET_AUDIO_STREAM_STATE" member="AudioStream.SetState">
+设流状态（播/停等，看 `AudioStreamAction`）。
+
+```text
+0AAD SET_AUDIO_STREAM_STATE
+in: self, action
+```
+
+```lua
+setAudioStreamState(stream, action)
+```
+
+```js
+AudioStream.setState(self, action)
+```
+</Opcode>
+
+<Opcode id="0AAE" name="REMOVE_AUDIO_STREAM" member="AudioStream.Remove">
+释放流。
+
+```text
+0AAE REMOVE_AUDIO_STREAM
+in: self
+```
+
+```lua
+removeAudioStream(stream)
+```
+
+```js
+AudioStream.remove(self)
+```
+</Opcode>
+
+<Opcode id="0AAF" name="GET_AUDIO_STREAM_LENGTH" member="AudioStream.GetLength">
+取长度（秒，整型）。
+
+```text
+0AAF GET_AUDIO_STREAM_LENGTH
+in: self
+out: length
+```
+
+```lua
+local length = getAudioStreamLength(stream)
+```
+
+```js
+const length = AudioStream.getLength(self)
+```
+</Opcode>
+
+<Opcode id="0AB9" name="GET_AUDIO_STREAM_STATE" member="AudioStream.GetState">
+取当前状态。
+
+```text
+0AB9 GET_AUDIO_STREAM_STATE
+in: self
+out: state
+```
+
+```lua
+local state = getAudioStreamState(stream)
+```
+
+```js
+const state = AudioStream.getState(self)
+```
+</Opcode>
+
+## 音量 / 循环
+
+<Opcode id="0ABB" name="GET_AUDIO_STREAM_VOLUME" member="AudioStream.GetVolume">
+取音量 0.0–1.0。
+
+```text
+0ABB GET_AUDIO_STREAM_VOLUME
+in: self
+out: volume
+```
+
+```lua
+local volume = getAudioStreamVolume(stream)
+```
+
+```js
+const volume = AudioStream.getVolume(self)
+```
+</Opcode>
+
+<Opcode id="0ABC" name="SET_AUDIO_STREAM_VOLUME" member="AudioStream.SetVolume">
+设音量（默认 1.0）；必要时会启停播放。
+
+```text
+0ABC SET_AUDIO_STREAM_VOLUME
+in: self, volume
+```
+
+```lua
+setAudioStreamVolume(stream, 0.5)
+```
+
+```js
+AudioStream.setVolume(self, volume)
+```
+</Opcode>
+
+<Opcode id="0AC0" name="SET_AUDIO_STREAM_LOOPED" member="AudioStream.SetLooped">
+是否循环。
+
+```text
+0AC0 SET_AUDIO_STREAM_LOOPED
+in: self, state
+```
+
+```lua
+setAudioStreamLooped(stream, true)
+```
+
+```js
+AudioStream.setLooped(self, state)
+```
+</Opcode>
+
+## 3D 流
+
+<Opcode id="0AC1" name="LOAD_3D_AUDIO_STREAM" member="AudioStream3D.Load">
+加载带 3D 定位的流。用在 `if` 里。
+
+```text
+0AC1 LOAD_3D_AUDIO_STREAM
+in: audioFileName
+out: handle
+```
+
+```lua
+local s3d = load3dAudioStream("cleo/sfx.wav")
+if s3d then
+end
+```
+
+```js
+const handle = AudioStream3D.Load(audioFileName)
+```
+</Opcode>
+
+<Opcode id="0AC2" name="SET_PLAY_3D_AUDIO_STREAM_AT_COORDS" member="AudioStream3D.SetPlayAtCoords">
+3D 流绑世界坐标。
+
+```text
+0AC2 SET_PLAY_3D_AUDIO_STREAM_AT_COORDS
+in: self, x, y, z
+```
+
+```lua
+setPlay3dAudioStreamAtCoords(s3d, x, y, z)
+```
+
+```js
+AudioStream3D.setPlayAtCoords(self, x, y, z)
+```
+</Opcode>
+
+<Opcode id="0AC3" name="SET_PLAY_3D_AUDIO_STREAM_AT_OBJECT" member="AudioStream3D.SetPlayAtObject">
+3D 流绑物体。
+
+```text
+0AC3 SET_PLAY_3D_AUDIO_STREAM_AT_OBJECT
+in: self, object
+```
+
+```lua
+setPlay3dAudioStreamAtObject(s3d, obj)
+```
+
+```js
+AudioStream3D.setPlayAtObject(self, object)
+```
+</Opcode>
+
+<Opcode id="0AC4" name="SET_PLAY_3D_AUDIO_STREAM_AT_CHAR" member="AudioStream3D.SetPlayAtChar">
+3D 流绑角色。
+
+```text
+0AC4 SET_PLAY_3D_AUDIO_STREAM_AT_CHAR
+in: self, char
+```
+
+```lua
+setPlay3dAudioStreamAtChar(s3d, ped)
+```
+
+```js
+AudioStream3D.setPlayAtChar(self, char)
+```
+</Opcode>
+
+<Opcode id="0AC5" name="SET_PLAY_3D_AUDIO_STREAM_AT_CAR" member="AudioStream3D.SetPlayAtCar">
+3D 流绑载具。
+
+```text
+0AC5 SET_PLAY_3D_AUDIO_STREAM_AT_CAR
+in: self, car
+```
+
+```lua
+setPlay3dAudioStreamAtCar(s3d, car)
+```
+
+```js
+AudioStream3D.setPlayAtCar(self, car)
+```
+</Opcode>
+
+## 播放状态 / 时长 / 速度
+
+<Opcode id="2500" name="IS_AUDIO_STREAM_PLAYING" member="AudioStream.IsPlaying">
+是否在 play 状态。用在 `if` 里。
+
+```text
+2500 IS_AUDIO_STREAM_PLAYING
+in: self
+```
+
+```lua
+if isAudioStreamPlaying(stream) then
+end
+```
+
+```js
+if (AudioStream.isPlaying(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="2501" name="GET_AUDIO_STREAM_DURATION" member="AudioStream.GetDuration">
+总时长（秒，浮点，会考虑速度 2505）。
+
+```text
+2501 GET_AUDIO_STREAM_DURATION
+in: self
+out: seconds
+```
+
+```lua
+local sec = getAudioStreamDuration(stream)
+```
+
+```js
+const seconds = AudioStream.getDuration(self)
+```
+</Opcode>
+
+<Opcode id="2502" name="GET_AUDIO_STREAM_SPEED" member="AudioStream.GetSpeed">
+取播放速度倍率。
+
+```text
+2502 GET_AUDIO_STREAM_SPEED
+in: self
+out: speed
+```
+
+```lua
+local speed = getAudioStreamSpeed(stream)
+```
+
+```js
+const speed = AudioStream.getSpeed(self)
+```
+</Opcode>
+
+<Opcode id="2503" name="SET_AUDIO_STREAM_SPEED" member="AudioStream.SetSpeed">
+设播放速度倍率。
+
+```text
+2503 SET_AUDIO_STREAM_SPEED
+in: self, speed
+```
+
+```lua
+setAudioStreamSpeed(stream, 1.25)
+```
+
+```js
+AudioStream.setSpeed(self, speed)
+```
+</Opcode>
+
+## 过渡 / 声源尺寸
+
+<Opcode id="2504" name="SET_AUDIO_STREAM_VOLUME_WITH_TRANSITION" member="AudioStream.SetVolumeWithTransition">
+平滑改音量，`timeMs` 过渡时间。
+
+```text
+2504 SET_AUDIO_STREAM_VOLUME_WITH_TRANSITION
+in: self, volume, timeMs
+```
+
+```lua
+setAudioStreamVolumeWithTransition(stream, 0.0, 500)
+```
+
+```js
+AudioStream.setVolumeWithTransition(self, volume, timeMs)
+```
+</Opcode>
+
+<Opcode id="2505" name="SET_AUDIO_STREAM_SPEED_WITH_TRANSITION" member="AudioStream.SetSpeedWithTransition">
+平滑改速度；必要时启停。
+
+```text
+2505 SET_AUDIO_STREAM_SPEED_WITH_TRANSITION
+in: self, speed, timeMs
+```
+
+```lua
+setAudioStreamSpeedWithTransition(stream, 0.5, 300)
+```
+
+```js
+AudioStream.setSpeedWithTransition(self, speed, timeMs)
+```
+</Opcode>
+
+<Opcode id="2506" name="SET_AUDIO_STREAM_SOURCE_SIZE" member="AudioStream3D.SetSourceSize">
+3D 声源空间尺寸。
+
+```text
+2506 SET_AUDIO_STREAM_SOURCE_SIZE
+in: self, radius
+```
+
+```lua
+setAudioStreamSourceSize(s3d, 15.0)
+```
+
+```js
+AudioStream3D.setSourceSize(self, radius)
+```
+</Opcode>
+
+## 进度 / 类型
+
+<Opcode id="2507" name="GET_AUDIO_STREAM_PROGRESS" member="AudioStream.GetProgress">
+播放进度 0.0–1.0。
+
+```text
+2507 GET_AUDIO_STREAM_PROGRESS
+in: self
+out: progress
+```
+
+```lua
+local p = getAudioStreamProgress(stream)
+```
+
+```js
+const progress = AudioStream.getProgress(self)
+```
+</Opcode>
+
+<Opcode id="2508" name="SET_AUDIO_STREAM_PROGRESS" member="AudioStream.SetProgress">
+设播放进度 0.0–1.0。
+
+```text
+2508 SET_AUDIO_STREAM_PROGRESS
+in: self, progress
+```
+
+```lua
+setAudioStreamProgress(stream, 0.0)
+```
+
+```js
+AudioStream.setProgress(self, progress)
+```
+</Opcode>
+
+<Opcode id="2509" name="GET_AUDIO_STREAM_TYPE" member="AudioStream.GetType">
+取流类型（音乐/SFX 等）。
+
+```text
+2509 GET_AUDIO_STREAM_TYPE
+in: self
+out: type
+```
+
+```lua
+local t = getAudioStreamType(stream)
+```
+
+```js
+const type = AudioStream.getType(self)
+```
+</Opcode>
+
+<Opcode id="250A" name="SET_AUDIO_STREAM_TYPE" member="AudioStream.SetType">
+设流类型。
+
+```text
+250A SET_AUDIO_STREAM_TYPE
+in: self, type
+```
+
+```lua
+setAudioStreamType(stream, type)
+```
+
+```js
+AudioStream.setType(self, type)
+```
+</Opcode>
+
+<Opcode id="250B" name="GET_AUDIO_STREAM_PROGRESS_SECONDS" member="AudioStream.GetProgressSeconds">
+进度秒数（不受 2505 速度影响）。
+
+```text
+250B GET_AUDIO_STREAM_PROGRESS_SECONDS
+in: self
+out: progress
+```
+
+```lua
+local sec = getAudioStreamProgressSeconds(stream)
+```
+
+```js
+const progress = AudioStream.getProgressSeconds(self)
+```
+</Opcode>
+
+<Opcode id="250C" name="SET_AUDIO_STREAM_PROGRESS_SECONDS" member="AudioStream.SetProgressSeconds">
+设进度秒数（不受速度影响）。
+
+```text
+250C SET_AUDIO_STREAM_PROGRESS_SECONDS
+in: self, progress
+```
+
+```lua
+setAudioStreamProgressSeconds(stream, 12.5)
+```
+
+```js
+AudioStream.setProgressSeconds(self, progress)
+```
+</Opcode>

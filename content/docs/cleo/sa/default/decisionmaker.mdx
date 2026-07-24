@@ -1,0 +1,48 @@
+---
+title: 决策器 DecisionMaker
+description: 决策器删除与存在
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 2 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 删除
+
+<Opcode id="065C" name="REMOVE_DECISION_MAKER" member="DecisionMaker.Remove">
+删除决策器。
+
+```text
+065C REMOVE_DECISION_MAKER
+in: self
+```
+
+```lua
+removeDecisionMaker(self)
+```
+
+```js
+DecisionMaker.remove(self)
+```
+</Opcode>
+
+## 是否存在
+
+<Opcode id="09F2" name="DOES_DECISION_MAKER_EXIST" member="DecisionMaker.DoesExist">
+handle 是否是有效决策器。用在 `if` 里。
+
+```text
+09F2 DOES_DECISION_MAKER_EXIST
+in: handle
+```
+
+```lua
+if doesDecisionMakerExist(handle) then
+end
+```
+
+```js
+if (DecisionMaker.doesExist(handle)) {
+}
+```
+</Opcode>

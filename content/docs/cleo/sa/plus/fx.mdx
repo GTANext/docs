@@ -1,0 +1,79 @@
+---
+title: 特效 Fx
+description: FX 系统地址、加粒子与按名查询
+---
+
+`sa` · 扩展 `CLEO+` · 需 CLEO + CLEO+
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 系统指针
+
+<Opcode id="0EBF" name="GET_FX_SYSTEM_POINTER" member="Fx.GetAddress">
+particle 对应的 FX 系统地址；句柄无效为 0。用在 `if` 里。
+
+```text
+0EBF GET_FX_SYSTEM_POINTER
+in: particle
+out: address
+```
+
+```lua
+local addr = getFxSystemPointer(particle)
+```
+
+```js
+const address = Fx.getAddress(particle)
+```
+</Opcode>
+
+## 加粒子
+
+<Opcode id="0EC0" name="ADD_FX_SYSTEM_PARTICLE" member="Fx.AddParticle">
+往 FX 系统加一个粒子：位置、速度、大小、亮度、RGBA、`lastFactor`。
+
+```text
+0EC0 ADD_FX_SYSTEM_PARTICLE
+in: particle, posX, posY, posZ, velX, velY, velZ, size, brightness, r, g, b, a, lastFactor
+```
+
+```lua
+addFxSystemParticle(
+  particle,
+  px, py, pz,
+  0.0, 0.0, 0.1,
+  1.0, 1.0,
+  1.0, 1.0, 1.0, 1.0,
+  0.0
+)
+```
+
+```js
+Fx.addParticle(
+  particle,
+  posX, posY, posZ, velX, velY, velZ,
+  size, brightness, r, g, b, a, lastFactor
+)
+```
+</Opcode>
+
+## 按名可用
+
+<Opcode id="0EC1" name="IS_FX_SYSTEM_AVAILABLE_WITH_NAME" member="Fx.IsAvailableWithName">
+是否存在该名字的 FX 系统。用在 `if` 里。
+
+```text
+0EC1 IS_FX_SYSTEM_AVAILABLE_WITH_NAME
+in: name
+```
+
+```lua
+if isFxSystemAvailableWithName("smoke") then
+end
+```
+
+```js
+if (Fx.isAvailableWithName(name)) {
+}
+```
+</Opcode>

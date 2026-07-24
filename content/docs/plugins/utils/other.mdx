@@ -1,0 +1,210 @@
+---
+title: 杂项工具
+description: Other.h 控制台、随机、字符串与插值
+---
+
+`Other.h` · 命名空间 `plugin`
+
+## 打开控制台
+
+<Api name="OpenConsole">
+分配控制台并 freopen stdin/out，便于调试。
+
+```cpp
+void OpenConsole();
+```
+
+```cpp
+plugin::Events::initRwEvent += [] {
+    plugin::OpenConsole();
+};
+```
+</Api>
+
+## 随机数
+
+<Api name="RandomNumberInRange / Random">
+基于 `mt19937`。`Random()` 为 0..999。
+
+```cpp
+template <typename T = int32_t>
+T RandomNumberInRange(T min, T max);
+
+template <typename T = int32_t>
+T Random();
+```
+
+```cpp
+int dmg = plugin::RandomNumberInRange<int>(10, 50);
+float t = plugin::RandomNumberInRange<float>(0.0f, 1.0f);
+int r = plugin::Random();
+```
+</Api>
+
+## 检测按键（无边沿）
+
+<Api name="KeyPressed">
+当前是否按下。需要边沿时用 [KeyCheck](/docs/plugins/extensions/keycheck)。
+
+```cpp
+bool KeyPressed(unsigned int keyCode);
+```
+
+```cpp
+if (plugin::KeyPressed(VK_SHIFT)) {
+}
+```
+</Api>
+
+## 查同目录 ASI
+
+```cpp
+bool IsPluginInstalled(const TCHAR* pluginName);
+```
+
+```cpp
+if (plugin::IsPluginInstalled(_T("modloader.asi"))) {
+}
+```
+
+## 窄宽字符串互转
+
+```cpp
+std::wstring AtoW(std::string const& str);
+std::string WtoA(std::wstring const& str);
+std::wstring ToWString(const std::string& str);
+std::string ToString(const std::wstring& wstr);
+```
+
+```cpp
+std::wstring w = plugin::AtoW("hello");
+std::string a = plugin::WtoA(w);
+```
+
+## 从文件或内存解码图
+
+解码到 `Image*`，失败返回 `false`。成功后需 `Release`。见 [图片与精灵](/docs/plugins/utils/image-sprite)。
+
+```cpp
+bool CreateImageFromFile(std::string const& path, Image*& img);
+bool CreateImageFromMemory(std::string const& name, void* data, unsigned long size, Image*& img);
+```
+
+```cpp
+#include "Other.h"
+#include "Image.h"
+#include "extensions/Paths.h"
+
+plugin::Image* img = nullptr;
+if (!plugin::CreateImageFromFile(PLUGIN_PATH("a.png"), img)) {
+    return;
+}
+img->Release();
+```
+
+## 扫目录文件
+
+不要每帧调用。
+
+```cpp
+std::vector<std::string> GetAllFilesInFolder(
+    std::string const& path,
+    std::string const& ext,
+    bool includePath = false);
+```
+
+```cpp
+auto files = plugin::GetAllFilesInFolder(PLUGIN_PATH("samples"), ".wav", true);
+```
+
+## 格式化字符串
+
+`FormatStatic` 使用轮转静态缓冲，不要长期保存返回指针。
+
+```cpp
+template <typename... ArgTypes>
+char* FormatStatic(const std::string& format, ArgTypes... args);
+
+template <typename... ArgTypes>
+std::string Format(const std::string& format, ArgTypes... args);
+```
+
+```cpp
+char* msg = plugin::FormatStatic("hp=%.1f", 100.0f);
+std::string s = plugin::Format("x=%d", 1);
+```
+
+## 大小写与路径裁剪
+
+```cpp
+std::string ToUpper(std::string const& str, int32_t offset);
+std::string ToLower(std::string const& str, int32_t offset);
+std::string RemoveExtension(std::string const& str);
+std::string RemovePath(std::string const& str);
+```
+
+```cpp
+std::string name = plugin::RemovePath("a\\b\\c.png"); // c.png
+std::string base = plugin::RemoveExtension(name);    // c
+```
+
+## 角度弧度
+
+```cpp
+template <typename T> T DegToRad(T x);
+template <typename T> T RadToDeg(T x);
+// 宏 DEGTORAD / RADTODEG
+```
+
+```cpp
+float rad = plugin::DegToRad(90.0f);
+float deg = plugin::RadToDeg(rad);
+```
+
+## 限幅与插值
+
+`f` 一般在 0..1。
+
+```cpp
+template <typename T, typename T2, typename T3>
+T Clamp(T v, T2 low, T3 high);
+
+float InterpF(float a, float b, float f);
+CVector2D InterpV2D(CVector2D a, CVector2D b, float f);
+```
+
+```cpp
+float v = plugin::Clamp(hp, 0.0f, 100.0f);
+float x = plugin::InterpF(0.0f, 1.0f, 0.5f);
+CVector2D p = plugin::InterpV2D({0,0}, {10,10}, 0.25f);
+```
+
+## 帧步归一与浮点近似
+
+按 `CTimer::ms_fTimeStep` 归一，适合帧率相关位移。
+
+```cpp
+float GetTimeStepFix();
+bool IsNearlyEqualF(float a, float b, float t);
+```
+
+```cpp
+float step = plugin::GetTimeStepFix();
+pos.x += speed * step;
+if (plugin::IsNearlyEqualF(a, b, 0.001f)) {
+}
+```
+
+## 文件存在与可用内存
+
+```cpp
+bool FileExists(const char* name);
+uint64_t GetAvailableMemory(); // 物理内存 MB
+```
+
+```cpp
+if (!plugin::FileExists(PLUGIN_PATH("cfg.ini"))) {
+    return;
+}
+uint64_t mb = plugin::GetAvailableMemory();
+```

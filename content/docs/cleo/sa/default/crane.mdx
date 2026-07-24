@@ -1,0 +1,117 @@
+---
+title: 吊车 Crane
+description: 起重机进入 / 控制
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 6 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 港区起重机
+
+<Opcode id="079D" name="PLAYER_ENTERED_DOCK_CRANE" member="Crane.PlayerEnteredDockCrane">
+玩家进入圣辉港区起重机。
+
+```text
+079D PLAYER_ENTERED_DOCK_CRANE
+```
+
+```lua
+playerEnteredDockCrane()
+```
+
+```js
+Crane.playerEnteredDockCrane()
+```
+</Opcode>
+
+## 工地起重机
+
+<Opcode id="079E" name="PLAYER_ENTERED_BUILDINGSITE_CRANE" member="Crane.PlayerEnteredBuildingsiteCrane">
+玩家进入圣辉工地起重机。
+
+```text
+079E PLAYER_ENTERED_BUILDINGSITE_CRANE
+```
+
+```lua
+playerEnteredBuildingsiteCrane()
+```
+
+```js
+Crane.playerEnteredBuildingsiteCrane()
+```
+</Opcode>
+
+## 离开起重机
+
+<Opcode id="079F" name="PLAYER_LEFT_CRANE" member="Crane.PlayerLeftCrane">
+玩家离开当前起重机。
+
+```text
+079F PLAYER_LEFT_CRANE
+```
+
+```lua
+playerLeftCrane()
+```
+
+```js
+Crane.playerLeftCrane()
+```
+</Opcode>
+
+## 矿场起重机
+
+<Opcode id="07F9" name="PLAYER_ENTERED_QUARRY_CRANE" member="Crane.PlayerEnteredQuarryCrane">
+玩家进入矿场起重机。
+
+```text
+07F9 PLAYER_ENTERED_QUARRY_CRANE
+```
+
+```lua
+playerEnteredQuarryCrane()
+```
+
+```js
+Crane.playerEnteredQuarryCrane()
+```
+</Opcode>
+
+## 拉斯维加斯起重机
+
+<Opcode id="07FA" name="PLAYER_ENTERED_LAS_VEGAS_CRANE" member="Crane.PlayerEnteredLasVegasCrane">
+玩家进入拉斯维加斯工地起重机。
+
+```text
+07FA PLAYER_ENTERED_LAS_VEGAS_CRANE
+```
+
+```lua
+playerEnteredLasVegasCrane()
+```
+
+```js
+Crane.playerEnteredLasVegasCrane()
+```
+</Opcode>
+
+## 开关控制
+
+<Opcode id="0898" name="ENABLE_CRANE_CONTROLS" member="Crane.EnableControls">
+开关起重机各控制（升 / 降 / 放）。
+
+```text
+0898 ENABLE_CRANE_CONTROLS
+in: up, down, release
+```
+
+```lua
+enableCraneControls(up, down, release)
+```
+
+```js
+Crane.enableControls(up, down, release)
+```
+</Opcode>

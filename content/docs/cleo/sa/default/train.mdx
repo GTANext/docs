@@ -1,0 +1,264 @@
+---
+title: 火车 Train
+description: 任务列车
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 13 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 创建
+
+<Opcode id="06D8" name="CREATE_MISSION_TRAIN" member="Train.Create">
+按类型建任务列车（长度 / 车厢由类型定）并设行驶方向。
+
+```text
+06D8 CREATE_MISSION_TRAIN
+in: type, x, y, z, direction
+out: handle
+```
+
+```lua
+local handle = createMissionTrain(type, x, y, z, direction)
+```
+
+```js
+const handle = Train.create(type, x, y, z, direction)
+```
+</Opcode>
+
+## 速度
+
+<Opcode id="06DC" name="SET_TRAIN_SPEED" member="Train.SetSpeed">
+设列车速度 / 加速度类参数。
+
+```text
+06DC SET_TRAIN_SPEED
+in: self, speed
+```
+
+```lua
+setTrainSpeed(self, speed)
+```
+
+```js
+Train.setSpeed(self, speed)
+```
+</Opcode>
+
+## 巡航速度
+
+<Opcode id="06DD" name="SET_TRAIN_CRUISE_SPEED" member="Train.SetCruiseSpeed">
+设巡航速度。
+
+```text
+06DD SET_TRAIN_CRUISE_SPEED
+in: self, speed
+```
+
+```lua
+setTrainCruiseSpeed(self, speed)
+```
+
+```js
+Train.setCruiseSpeed(self, speed)
+```
+</Opcode>
+
+## 守车
+
+<Opcode id="06DE" name="GET_TRAIN_CABOOSE" member="Train.GetCaboose">
+取最后一节车厢（守车）。
+
+```text
+06DE GET_TRAIN_CABOOSE
+in: self
+out: caboose
+```
+
+```lua
+local caboose = getTrainCaboose(self)
+```
+
+```js
+const caboose = Train.getCaboose(self)
+```
+</Opcode>
+
+## 第 n 节
+
+<Opcode id="078A" name="GET_TRAIN_CARRIAGE" member="Train.GetCarriage">
+取第 n 节车厢。
+
+```text
+078A GET_TRAIN_CARRIAGE
+in: self, number
+out: carriage
+```
+
+```lua
+local carriage = getTrainCarriage(self, number)
+```
+
+```js
+const carriage = Train.getCarriage(self, number)
+```
+</Opcode>
+
+## 删除
+
+<Opcode id="07BD" name="DELETE_MISSION_TRAIN" member="Train.Delete">
+删除脚本列车。
+
+```text
+07BD DELETE_MISSION_TRAIN
+in: self
+```
+
+```lua
+deleteMissionTrain(self)
+```
+
+```js
+Train.delete(self)
+```
+</Opcode>
+
+## 标记可清理
+
+<Opcode id="07BE" name="MARK_MISSION_TRAIN_AS_NO_LONGER_NEEDED" member="Train.MarkAsNoLongerNeeded">
+标记脚本列车可被游戏清理。
+
+```text
+07BE MARK_MISSION_TRAIN_AS_NO_LONGER_NEEDED
+in: self
+```
+
+```lua
+markMissionTrainAsNoLongerNeeded(self)
+```
+
+```js
+Train.markAsNoLongerNeeded(self)
+```
+</Opcode>
+
+## 贴轨坐标
+
+<Opcode id="07C7" name="SET_MISSION_TRAIN_COORDINATES" member="Train.SetCoordinates">
+放到离坐标最近的铁轨上。
+
+```text
+07C7 SET_MISSION_TRAIN_COORDINATES
+in: self, x, y, z
+```
+
+```lua
+setMissionTrainCoordinates(self, x, y, z)
+```
+
+```js
+Train.setCoordinates(self, x, y, z)
+```
+</Opcode>
+
+## 是否脱轨
+
+<Opcode id="0981" name="HAS_TRAIN_DERAILED" member="Train.HasDerailed">
+是否脱轨（常因过快）。用在 `if` 里。
+
+```text
+0981 HAS_TRAIN_DERAILED
+in: self
+```
+
+```lua
+if hasTrainDerailed(self) then
+end
+```
+
+```js
+if (Train.hasDerailed(self)) {
+}
+```
+</Opcode>
+
+## 每站减速
+
+<Opcode id="09CF" name="SET_TRAIN_FORCED_TO_SLOW_DOWN" member="Train.SetForcedToSlowDown">
+是否每站减速 / 停靠。
+
+```text
+09CF SET_TRAIN_FORCED_TO_SLOW_DOWN
+in: self, state
+```
+
+```lua
+setTrainForcedToSlowDown(self, state)
+```
+
+```js
+Train.setForcedToSlowDown(self, state)
+```
+</Opcode>
+
+## 行驶方向
+
+<Opcode id="09E3" name="FIND_TRAIN_DIRECTION" member="Train.FindDirection">
+是否沿圣安地列斯环线顺时针。用在 `if` 里。
+
+```text
+09E3 FIND_TRAIN_DIRECTION
+in: self
+```
+
+```lua
+if findTrainDirection(self) then
+end
+```
+
+```js
+if (Train.findDirection(self)) {
+}
+```
+</Opcode>
+
+## 下一站可达
+
+<Opcode id="0A06" name="IS_NEXT_STATION_ALLOWED" member="Train.IsNextStationAllowed">
+下一站是否已解锁可达。用在 `if` 里。
+
+```text
+0A06 IS_NEXT_STATION_ALLOWED
+in: self
+```
+
+```lua
+if isNextStationAllowed(self) then
+end
+```
+
+```js
+if (Train.isNextStationAllowed(self)) {
+}
+```
+</Opcode>
+
+## 跳下一站
+
+<Opcode id="0A07" name="SKIP_TO_NEXT_ALLOWED_STATION" member="Train.SkipToNextAllowedStation">
+跳到下一座允许的车站。
+
+```text
+0A07 SKIP_TO_NEXT_ALLOWED_STATION
+in: self
+```
+
+```lua
+skipToNextAllowedStation(self)
+```
+
+```js
+Train.skipToNextAllowedStation(self)
+```
+</Opcode>

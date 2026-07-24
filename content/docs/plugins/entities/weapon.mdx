@@ -1,0 +1,111 @@
+---
+title: 武器 CWeapon
+description: Ped 武器槽实例与开火入口
+---
+
+`CWeapon.h`
+
+挂在 Ped 武器槽上的实例（类型、弹匣、状态）。全局表见 [world-state](/docs/plugins/entities/world-state) 的 `CWeaponInfo`。
+
+## 槽位字段
+
+<Api name="m_eWeaponType / m_nAmmoInClip / m_nAmmoTotal">
+
+```cpp
+eWeaponType m_eWeaponType;
+eWeaponState m_nState;
+unsigned int m_nAmmoInClip;
+unsigned int m_nAmmoTotal;
+unsigned int m_nTimeForNextShot;
+```
+
+```cpp
+// CWeapon& w = ped->m_aWeapons[slot]; // 槽布局以 CPed 为准
+// w.m_nAmmoTotal = 999;
+```
+</Api>
+
+## 武器状态枚举
+
+<Api name="eWeaponState">
+
+```cpp
+enum eWeaponState : unsigned int {
+    WEAPONSTATE_READY,
+    WEAPONSTATE_FIRING,
+    WEAPONSTATE_RELOADING,
+    WEAPONSTATE_OUT_OF_AMMO,
+    WEAPONSTATE_MELEE_MADECONTACT
+};
+```
+</Api>
+
+## 类型判断
+
+<Api name="IsTypeMelee / IsType2Handed / IsTypeProjectile">
+
+```cpp
+bool IsTypeMelee();
+bool IsType2Handed();
+bool IsTypeProjectile();
+bool HasWeaponAmmoToBeUsed();
+```
+
+```cpp
+if (w.IsTypeMelee()) {
+}
+```
+</Api>
+
+## 初始化与装填
+
+<Api name="Initialise / Reload / Shutdown">
+
+```cpp
+void Initialise(eWeaponType weaponType, int ammo, CPed* owner);
+void Reload(CPed* owner);
+void Shutdown();
+```
+
+```cpp
+// 给枪优先 ped->GiveWeapon；直接 Initialise 要自己维护槽
+```
+</Api>
+
+## 开火入口
+
+<Api name="Fire / FireProjectile / FireInstantHit">
+参数多，错用易崩。
+
+```cpp
+bool Fire(CEntity* firingEntity, CVector* origin, CVector* muzzlePosn,
+    CEntity* targetEntity, CVector* target, CVector* originForDriveBy);
+bool FireProjectile(CEntity* firingEntity, CVector* origin,
+    CEntity* targetEntity, CVector* target, float force);
+bool FireInstantHit(CEntity* firingEntity, CVector* origin, CVector* muzzlePosn,
+    CEntity* targetEntity, CVector* target, CVector* originForDriveBy, bool arg6, bool muzzle);
+void FireFromCar(CVehicle* vehicle, bool leftSide, bool rightSide);
+```
+
+```cpp
+// 脚本/任务侧更稳；ASI 作弊优先改弹药 + GiveWeapon
+```
+</Api>
+
+## 全局辅助
+
+<Api name="GenerateDamageEvent / ProcessLineOfSight">
+
+```cpp
+static void GenerateDamageEvent(CPed* victim, CEntity* creator, eWeaponType weaponType,
+    int damageFactor, ePedPieceTypes pedPiece, int direction);
+static bool ProcessLineOfSight(CVector const& startPoint, CVector const& endPoint,
+    CColPoint& outColPoint, CEntity*& outEntity, eWeaponType weaponType, CEntity* arg5,
+    bool buildings, bool vehicles, bool peds, bool objects, bool dummies, bool arg11, bool doIgnoreCameraCheck);
+static bool CanBeUsedFor2Player(eWeaponType weaponType);
+```
+</Api>
+
+## 与武器表
+
+`CWeaponInfo::GetWeaponInfo(type, skill)` 改射程 / 伤害等全局。实例弹药在 `CWeapon`，表在 Info。

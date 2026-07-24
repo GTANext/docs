@@ -1,0 +1,124 @@
+---
+title: 物理 CPhysical
+description: 速度、力、附着与免疫
+---
+
+`CPhysical.h` · 继承 `CEntity`
+
+Ped / Vehicle / Object 的物理基类。逻辑帧改速度力；drawing 只读。
+
+## 线速度与角速度
+
+<Api name="m_vecMoveSpeed / m_vecTurnSpeed">
+
+```cpp
+CVector m_vecMoveSpeed;
+CVector m_vecTurnSpeed;
+```
+
+```cpp
+auto* ph = static_cast<CPhysical*>(veh);
+ph->m_vecMoveSpeed = CVector(0.0f, 0.5f, 0.0f);
+```
+</Api>
+
+## 质量与阻力
+
+<Api name="m_fMass / m_fTurnMass / m_fAirResistance">
+
+```cpp
+float m_fMass;
+float m_fTurnMass;
+float m_fAirResistance;
+float m_fElasticity;
+float m_fBuoyancyConstant;
+```
+
+```cpp
+// 改质量影响碰撞，谨慎
+```
+</Api>
+
+## 施加力
+
+<Api name="ApplyMoveForce / ApplyTurnForce / ApplyForce">
+
+```cpp
+void ApplyMoveForce(CVector force);
+void ApplyTurnForce(CVector dir, CVector velocity);
+void ApplyForce(CVector dir, CVector velocity, bool bUpdateTurnSpeed);
+void ApplyGravity();
+```
+
+```cpp
+ph->ApplyMoveForce(CVector(0.0f, 0.0f, 0.1f));
+```
+</Api>
+
+## 附着实体
+
+<Api name="AttachEntityToEntity / DettachEntityFromEntity">
+
+```cpp
+void AttachEntityToEntity(CEntity* entity, CVector offset, CVector rotation);
+void AttachEntityToEntity(CEntity* entity, CVector* offset, RtQuat* rotation);
+void DettachEntityFromEntity(float x, float y, float z, bool useCollision);
+CPhysical* m_pAttachedTo;
+```
+
+```cpp
+// ph->AttachEntityToEntity(other, offset, rot);
+// ph->DettachEntityFromEntity(0, 0, 0, true);
+```
+</Api>
+
+## 免疫标志
+
+<Api name="bBulletProof / bFireProof / bInvulnerable">
+
+```cpp
+bool bBulletProof : 1;
+bool bFireProof : 1;
+bool bCollisionProof : 1;
+bool bMeleeProof : 1;
+bool bExplosionProof : 1;
+bool bInvulnerable : 1;
+```
+
+```cpp
+ph->bBulletProof = true;
+ph->bFireProof = true;
+```
+</Api>
+
+## 重力与碰撞开关
+
+<Api name="bApplyGravity / bCollidable / bDisableMoveForce">
+
+```cpp
+bool bApplyGravity : 1;
+bool bCollidable : 1;
+bool bDisableMoveForce : 1;
+bool bDontApplySpeed : 1;
+```
+
+```cpp
+// ph->bApplyGravity = false; // 飘
+```
+</Api>
+
+## 相对放置
+
+<Api name="PlacePhysicalRelativeToOtherPhysical">
+
+```cpp
+static void PlacePhysicalRelativeToOtherPhysical(
+    CPhysical* physical1, CPhysical* physical2, CVector offset);
+```
+
+```cpp
+// CPhysical::PlacePhysicalRelativeToOtherPhysical(a, b, offset);
+```
+</Api>
+
+基类位置 / 模型见 [CEntity](/docs/plugins/entities/entity)。

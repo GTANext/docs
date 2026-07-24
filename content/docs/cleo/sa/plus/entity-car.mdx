@@ -1,0 +1,612 @@
+---
+title: 载具实体 Entity Car
+description: 载具透明度、扩展变量、拖车碰撞与所有权
+---
+
+`sa` · 扩展 `CLEO+` · 需 CLEO + CLEO+
+
+载具相关。入口见 [entity](/docs/cleo/sa/plus/entity)。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 外观 / 车窗
+
+<Opcode id="0D0F" name="SET_CAR_MODEL_ALPHA" member="Car.SetModelAlpha">
+设载具模型透明度 0–255。
+
+```text
+0D0F SET_CAR_MODEL_ALPHA
+in: self, alpha
+```
+
+```lua
+setCarModelAlpha(car, 128)
+```
+
+```js
+Car.setModelAlpha(self, alpha)
+```
+</Opcode>
+
+<Opcode id="0D33" name="SET_CAR_DOOR_WINDOW_STATE" member="Car.SetDoorWindowState">
+设车门车窗开合状态。
+
+```text
+0D33 SET_CAR_DOOR_WINDOW_STATE
+in: self, door, state
+```
+
+```lua
+setCarDoorWindowState(car, door, true)
+```
+
+```js
+Car.setDoorWindowState(self, door, state)
+```
+</Opcode>
+
+## 报警 / 刷车点 / 控制
+
+<Opcode id="0E00" name="GET_CAR_ALARM" member="Car.GetAlarm">
+取载具报警器状态。
+
+```text
+0E00 GET_CAR_ALARM
+in: self
+out: status
+```
+
+```lua
+local status = getCarAlarm(car)
+```
+
+```js
+const status = Car.getAlarm(self)
+```
+</Opcode>
+
+<Opcode id="0E02" name="SET_CAR_GENERATOR_NO_SAVE" member="CarGenerator.SetNoSave">
+标记刷车点不随存档。
+
+```text
+0E02 SET_CAR_GENERATOR_NO_SAVE
+in: self
+```
+
+```lua
+setCarGeneratorNoSave(gen)
+```
+
+```js
+CarGenerator.setNoSave(self)
+```
+</Opcode>
+
+<Opcode id="0E08" name="IS_CAR_SCRIPT_CONTROLLED" member="Car.IsScriptControlled">
+载具是否脚本控制。用在 `if` 里。
+
+```text
+0E08 IS_CAR_SCRIPT_CONTROLLED
+in: self
+```
+
+```lua
+if isCarScriptControlled(car) then
+end
+```
+
+```js
+if (Car.isScriptControlled(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0E09" name="MARK_CAR_AS_NEEDED" member="Car.MarkAsNeeded">
+标记载具为脚本控制。
+
+```text
+0E09 MARK_CAR_AS_NEEDED
+in: self
+```
+
+```lua
+markCarAsNeeded(car)
+```
+
+```js
+Car.markAsNeeded(self)
+```
+</Opcode>
+
+## 子类 / 扩展变量
+
+<Opcode id="0E12" name="GET_VEHICLE_SUBCLASS" member="Car.GetSubclass">
+取载具子类（摩托/自行车/挂车等）。
+
+```text
+0E12 GET_VEHICLE_SUBCLASS
+in: self
+out: subclass
+```
+
+```lua
+local sub = getVehicleSubclass(car)
+```
+
+```js
+const subclass = Car.getSubclass(self)
+```
+</Opcode>
+
+<Opcode id="0E17" name="INIT_EXTENDED_CAR_VARS" member="Car.InitExtendedVars">
+给载具挂扩展变量。用在 `if` 里。
+
+```text
+0E17 INIT_EXTENDED_CAR_VARS
+in: self, identifier, totalVars
+```
+
+```lua
+initExtendedCarVars(car, "AUTO", 4)
+```
+
+```js
+Car.initExtendedVars(self, identifier, totalVars)
+```
+</Opcode>
+
+<Opcode id="0E18" name="SET_EXTENDED_CAR_VAR" member="Car.SetExtendedVar">
+写载具扩展变量。用在 `if` 里。
+
+```text
+0E18 SET_EXTENDED_CAR_VAR
+in: self, identifier, varNumber, value
+```
+
+```lua
+setExtendedCarVar(car, "AUTO", 0, 99)
+```
+
+```js
+Car.setExtendedVar(self, identifier, varNumber, value)
+```
+</Opcode>
+
+<Opcode id="0E19" name="GET_EXTENDED_CAR_VAR" member="Car.GetExtendedCarVar">
+读载具扩展变量。用在 `if` 里。
+
+```text
+0E19 GET_EXTENDED_CAR_VAR
+in: self, identifier, varNumber
+out: value
+```
+
+```lua
+local v = getExtendedCarVar(car, "AUTO", 0)
+```
+
+```js
+const value = Car.getExtendedCarVar(self, identifier, varNumber)
+```
+</Opcode>
+
+## 拖车 / dummy / 喇叭
+
+<Opcode id="0E59" name="GET_TRAILER_FROM_CAR" member="Car.GetTrailer">
+取被这辆车拖着的拖车句柄。用在 `if` 里。
+
+```text
+0E59 GET_TRAILER_FROM_CAR
+in: self
+out: trailer
+```
+
+```lua
+local trailer = getTrailerFromCar(car)
+```
+
+```js
+const trailer = Car.getTrailer(self)
+```
+</Opcode>
+
+<Opcode id="0E5A" name="GET_CAR_FROM_TRAILER" member="Car.GetTractor">
+取拖着本车的牵引车句柄。用在 `if` 里。
+
+```text
+0E5A GET_CAR_FROM_TRAILER
+in: self
+out: tractor
+```
+
+```lua
+local tractor = getCarFromTrailer(trailer)
+```
+
+```js
+const tractor = Car.getTractor(self)
+```
+</Opcode>
+
+<Opcode id="0E5B" name="GET_CAR_DUMMY_COORD" member="Car.GetDummyCoord">
+取载具 dummy 点坐标；可选世界系、反转 X。用在 `if` 里。
+
+```text
+0E5B GET_CAR_DUMMY_COORD
+in: self, vehicleDummy, worldCoords, invertX
+out: x, y, z
+```
+
+```lua
+local x, y, z = getCarDummyCoord(car, dummy, true, false)
+```
+
+```js
+const { x, y, z } = Car.getDummyCoord(self, vehicleDummy, worldCoords, invertX)
+```
+</Opcode>
+
+<Opcode id="0E5F" name="CAR_HORN" member="Car.PlayHorn">
+触发喇叭（玩家驾驶时的那套效果）。
+
+```text
+0E5F CAR_HORN
+in: self
+```
+
+```lua
+carHorn(car)
+```
+
+```js
+Car.playHorn(self)
+```
+</Opcode>
+
+<Opcode id="0E61" name="SET_CAR_ALARM" member="Car.SetAlarm">
+设报警器状态（与 `0E00` 配对）。
+
+```text
+0E61 SET_CAR_ALARM
+in: self, status
+```
+
+```lua
+setCarAlarm(car, status)
+```
+
+```js
+Car.setAlarm(self, status)
+```
+</Opcode>
+
+## 碰撞
+
+<Opcode id="0E65" name="GET_CAR_COLLISION_INTENSITY" member="Car.GetCollisionIntensity">
+取最近一次碰撞强度。用在 `if` 里。
+
+```text
+0E65 GET_CAR_COLLISION_INTENSITY
+in: self
+out: intensity
+```
+
+```lua
+local i = getCarCollisionIntensity(car)
+```
+
+```js
+const intensity = Car.getCollisionIntensity(self)
+```
+</Opcode>
+
+<Opcode id="0E66" name="GET_CAR_COLLISION_COORDINATES" member="Car.GetCollisionCoordinates">
+取最近一次碰撞坐标。
+
+```text
+0E66 GET_CAR_COLLISION_COORDINATES
+in: self
+out: x, y, z
+```
+
+```lua
+local x, y, z = getCarCollisionCoordinates(car)
+```
+
+```js
+const { x, y, z } = Car.getCollisionCoordinates(self)
+```
+</Opcode>
+
+<Opcode id="0E82" name="DOES_CAR_HAVE_PART_NODE" member="Car.DoesHavePartNode">
+载具是否有指定 carNode 部件。用在 `if` 里。
+
+```text
+0E82 DOES_CAR_HAVE_PART_NODE
+in: self, carNode
+```
+
+```lua
+if doesCarHavePartNode(car, carNode) then
+end
+```
+
+```js
+if (Car.doesHavePartNode(self, carNode)) {
+}
+```
+</Opcode>
+
+<Opcode id="0E90" name="GET_CAR_COLLISION_SURFACE" member="Car.GetCollisionSurface">
+取载具碰撞表面类型。
+
+```text
+0E90 GET_CAR_COLLISION_SURFACE
+in: self
+out: surfaceType
+```
+
+```lua
+local surf = getCarCollisionSurface(car)
+```
+
+```js
+const surfaceType = Car.getCollisionSurface(self)
+```
+</Opcode>
+
+<Opcode id="0E91" name="GET_CAR_COLLISION_LIGHTING" member="Car.GetCollisionLighting">
+取载具碰撞处光照。
+
+```text
+0E91 GET_CAR_COLLISION_LIGHTING
+in: self
+out: lighting
+```
+
+```lua
+local light = getCarCollisionLighting(car)
+```
+
+```js
+const lighting = Car.getCollisionLighting(self)
+```
+</Opcode>
+
+## 空中 / 抗性 / 坐标
+
+<Opcode id="0E93" name="IS_CAR_REALLY_IN_AIR" member="Car.IsReallyInAir">
+载具是否真在空中（船浮在水面不算）。用在 `if` 里。
+
+```text
+0E93 IS_CAR_REALLY_IN_AIR
+in: self
+```
+
+```lua
+if isCarReallyInAir(car) then
+end
+```
+
+```js
+if (Car.isReallyInAir(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0EAD" name="GET_CAR_PROOFS" member="Car.GetProofs">
+取载具伤害抗性。
+
+```text
+0EAD GET_CAR_PROOFS
+in: self
+out: bullet, fire, explosion, collision, melee
+```
+
+```lua
+local b, f, e, c, m = getCarProofs(car)
+```
+
+```js
+const { bullet, fire, explosion, collision, melee } = Car.getProofs(self)
+```
+</Opcode>
+
+<Opcode id="0EB4" name="SET_CAR_COORDINATES_SIMPLE" member="Car.SetCoordinatesSimple">
+直接写载具坐标，不做常规传送异常处理。
+
+```text
+0EB4 SET_CAR_COORDINATES_SIMPLE
+in: self, x, y, z
+```
+
+```lua
+setCarCoordinatesSimple(car, x, y, z)
+```
+
+```js
+Car.setCoordinatesSimple(self, x, y, z)
+```
+</Opcode>
+
+<Opcode id="0EB6" name="GET_CAR_WEAPON_DAMAGE_LAST_FRAME" member="Car.GetWeaponDamageLastFrame">
+上一帧武器对车造成的伤害；无伤害时失败。用在 `if` 里。
+
+```text
+0EB6 GET_CAR_WEAPON_DAMAGE_LAST_FRAME
+in: self
+out: char, weaponType, intensity
+```
+
+```lua
+local who, weap, inten = getCarWeaponDamageLastFrame(car)
+```
+
+```js
+const { char, weaponType, intensity } = Car.getWeaponDamageLastFrame(self)
+```
+</Opcode>
+
+## 生命周期 / 所有权
+
+<Opcode id="0EC9" name="GET_CAR_RANDOM_SEED" member="Car.GetRandomSeed">
+取载具 randomSeed。
+
+```text
+0EC9 GET_CAR_RANDOM_SEED
+in: self
+out: randomSeed
+```
+
+```lua
+local seed = getCarRandomSeed(car)
+```
+
+```js
+const randomSeed = Car.getRandomSeed(self)
+```
+</Opcode>
+
+<Opcode id="0ECD" name="DONT_DELETE_CAR_UNTIL_TIME" member="Car.DontDeleteUntilTime">
+在 `msFromNow` 毫秒内不删载具。
+
+```text
+0ECD DONT_DELETE_CAR_UNTIL_TIME
+in: self, msFromNow
+```
+
+```lua
+dontDeleteCarUntilTime(car, 5000)
+```
+
+```js
+Car.dontDeleteUntilTime(self, msFromNow)
+```
+</Opcode>
+
+<Opcode id="0ECF" name="GET_TIME_CAR_IS_DEAD" member="Car.GetTimeIsDead">
+载具“死亡”已过多久（ms）。
+
+```text
+0ECF GET_TIME_CAR_IS_DEAD
+in: self
+out: timeIsDead
+```
+
+```lua
+local t = getTimeCarIsDead(car)
+```
+
+```js
+const timeIsDead = Car.getTimeIsDead(self)
+```
+</Opcode>
+
+<Opcode id="0EF5" name="IS_CAR_OWNED_BY_PLAYER" member="Car.IsOwnedByPlayer">
+载具是否玩家所有。用在 `if` 里。
+
+```text
+0EF5 IS_CAR_OWNED_BY_PLAYER
+in: self
+```
+
+```lua
+if isCarOwnedByPlayer(car) then
+end
+```
+
+```js
+if (Car.isOwnedByPlayer(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0EF6" name="SET_CAR_OWNED_BY_PLAYER" member="Car.SetOwnedByPlayer">
+设/清玩家所有标记。
+
+```text
+0EF6 SET_CAR_OWNED_BY_PLAYER
+in: self, ownedByPlayer
+```
+
+```lua
+setCarOwnedByPlayer(car, true)
+```
+
+```js
+Car.setOwnedByPlayer(self, ownedByPlayer)
+```
+</Opcode>
+
+## 动画 / 属性
+
+<Opcode id="0EF9" name="GET_CAR_ANIMGROUP" member="Car.GetAnimGroup">
+取载具动画组。
+
+```text
+0EF9 GET_CAR_ANIMGROUP
+in: self
+out: carAnimGroup
+```
+
+```lua
+local g = getCarAnimgroup(car)
+```
+
+```js
+const carAnimGroup = Car.getAnimGroup(self)
+```
+</Opcode>
+
+<Opcode id="0EFB" name="IS_CAR_CONVERTIBLE" member="Car.IsConvertible">
+是否敞篷。用在 `if` 里。
+
+```text
+0EFB IS_CAR_CONVERTIBLE
+in: self
+```
+
+```lua
+if isCarConvertible(car) then
+end
+```
+
+```js
+if (Car.isConvertible(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0EFC" name="GET_CAR_VALUE" member="Car.GetValue">
+取载具估价（货币值）。
+
+```text
+0EFC GET_CAR_VALUE
+in: self
+out: value
+```
+
+```lua
+local value = getCarValue(car)
+```
+
+```js
+const value = Car.getValue(self)
+```
+</Opcode>
+
+<Opcode id="0EFD" name="GET_CAR_PEDALS" member="Car.GetPedals">
+取油门 / 刹车踏板量。
+
+```text
+0EFD GET_CAR_PEDALS
+in: self
+out: gas, brake
+```
+
+```lua
+local gas, brake = getCarPedals(car)
+```
+
+```js
+const { gas, brake } = Car.getPedals(self)
+```
+</Opcode>

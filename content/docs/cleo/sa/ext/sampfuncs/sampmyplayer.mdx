@@ -1,0 +1,61 @@
+---
+title: 本地玩家 SampMyPlayer
+description: 本地玩家重生与昵称
+---
+
+`sa` · 扩展 `SAMPFUNCS` · 仅 SA-MP；需 SAMPFUNCS
+
+共 3 条。调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 重生 / 昵称 / 状态
+
+<Opcode id="0AF6" name="SAMP_FORCE_SPAWN_MY_PLAYER" member="SampMyPlayer.ForceSpawn">
+向服务器发送 SampRpc.Spawn，并传送本地角色到出生点。
+
+```text
+0AF6 SAMP_FORCE_SPAWN_MY_PLAYER
+```
+
+```lua
+sampForceSpawnMyPlayer()
+```
+
+```js
+SampMyPlayer.ForceSpawn()
+```
+</Opcode>
+
+<Opcode id="0B29" name="SAMP_SET_MY_NICKNAME" member="SampMyPlayer.SetNickname">
+修改本地昵称（仅视觉）。
+
+```text
+0B29 SAMP_SET_MY_NICKNAME
+in: nickname
+```
+
+```lua
+sampSetMyNickname(nickname)
+```
+
+```js
+SampMyPlayer.SetNickname(nickname)
+```
+</Opcode>
+
+<Opcode id="0B61" name="SAMP_IS_MY_PLAYER_SPAWNED" member="SampMyPlayer.IsSpawned">
+若本地玩家已重生/入场则为真。
+
+```text
+0B61 SAMP_IS_MY_PLAYER_SPAWNED
+```
+
+```lua
+if sampIsMyPlayerSpawned() then
+end
+```
+
+```js
+if (SampMyPlayer.IsSpawned()) {
+}
+```
+</Opcode>

@@ -1,0 +1,10 @@
+{
+  "title": "技能",
+  "root": true,
+  "icon": "Sparkles",
+  "pages": [
+    "index",
+    "plugins-dev",
+    "cleo-dev"
+  ]
+}

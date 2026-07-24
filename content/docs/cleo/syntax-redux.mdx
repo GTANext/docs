@@ -1,0 +1,65 @@
+---
+title: Redux 语法
+description: JS 调用形态与 native 边界
+---
+
+Redux **不是**另一套 opcode 表。
+
+和 OP / CLEO Lua 一样，命令来自 SBL `sa.json`（Script）。SBL 站点的「适用于 CLEO Redux」下载就是 `sa.json` + `enums.js`。
+
+运行时细节以 [CLEO Redux](https://re.cleo.li/) / 官方仓库为准；本站只写 **调用形态** 与表入口。
+
+## 和 OP / Lua 的关系
+
+| | OP | Lua | Redux |
+|---|---|---|---|
+| 源 | `sa.json` | 同左 | 同左 |
+| 名 | `CREATE_CAR` + `00A5` | `createCar` | `Car.Create` / `native("CREATE_CAR", ...)` |
+| 本站 | `text` 块 | `lua` 块 | `js` 块 |
+
+## 调用规则（对齐 SBL `cleo_redux`）
+
+| 情况 | 写法 |
+|---|---|
+| 有 `class` + `member`，静态 / 构造 | `Class.Member(args...)`（Member 首字母大写） |
+| 有 `class` + `member`，实例 | `Class.member(self, ...)`（本站可读写法；SBL UI 有时写 `[Class].member`） |
+| 无 class | `native("COMMAND_NAME", args...)` |
+| 多返回值 | `const { a, b } = ...` |
+| 条件 | `if (expr) { }` |
+| 枚举 | 用 SBL 导出的 `enums.js`（按游戏） |
+
+```js
+const car = Car.Create(modelId, x, y, z)
+wait(0)
+if (Char.IsAlive(char)) {
+}
+const base = native("SAMP_GET_BASE_ADDRESS")
+```
+
+## 最小脚本（示意）
+
+```js
+// 具体入口/循环 API 以你装的 Redux 版本文档为准
+while (true) {
+  wait(0)
+  // ...
+}
+```
+
+## 不要和这些混
+
+| 东西 | 说明 |
+|---|---|
+| CLEO Lua | 本站 `lua` 块；camelCase 函数 |
+| Sanny `0@` | snippet 参考，不贴进 Redux |
+| **native.json** | SBL **Code** 视图（地址 `0x...` / `Memory.Fn.*`）。本站 **不收全文** |
+| ImGuiRedux | 另一插件名，不是 CLEO Redux 引擎 |
+
+## 表入口
+
+| 表 | 页 |
+|---|---|
+| CLEO 类型 | [综述](/docs/cleo) |
+| 后续 | default / CLEO+ / 扩展 / SAMPFUNCS |
+
+完整在线库：[library.sannybuilder.com](https://library.sannybuilder.com/#/sa)（可切 Redux 语法页签）。

@@ -1,0 +1,1490 @@
+---
+title: 框架 Sf
+description: 坐标、数学、内存、字符串与输入
+---
+
+`sa` · 扩展 `SAMPFUNCS` · 仅 SA-MP；需 SAMPFUNCS
+
+共 82 条。命令参数、坐标转换、数学、内存/串、模块与剪贴板。调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 命令 / 坐标 / 输入
+
+<Opcode id="0B35" name="SF_GET_PARAMS_OF_LAST_TRIGGERED_COMMAND" member="Sf.GetCmdParams">
+返回指向字符串的指针，内容为控制台或 SAMP 聊天最后一条命令的参数。
+
+```text
+0B35 SF_GET_PARAMS_OF_LAST_TRIGGERED_COMMAND
+out: pointer
+```
+
+```lua
+local pointer = sfGetParamsOfLastTriggeredCommand()
+```
+
+```js
+const pointer = Sf.GetCmdParams()
+```
+</Opcode>
+
+<Opcode id="0B43" name="SF_COMMAND_RETURN" member="Sf.CmdRet">
+标记命令回调结束，用作其返回语句。
+
+```text
+0B43 SF_COMMAND_RETURN
+```
+
+```lua
+sfCommandReturn()
+```
+
+```js
+Sf.CmdRet()
+```
+</Opcode>
+
+<Opcode id="0B55" name="SF_WORLD_COORDS_TO_WINDOW_SCREEN_COORDS" member="Sf.From3DTo2DCoords">
+把世界 3D 坐标转为窗口屏幕坐标（像素）。
+
+```text
+0B55 SF_WORLD_COORDS_TO_WINDOW_SCREEN_COORDS
+in: worldCoordX, worldCoordY, worldCoordZ
+out: screenCoordX, screenCoordY
+```
+
+```lua
+local screenCoordX, screenCoordY = sfWorldCoordsToWindowScreenCoords(worldCoordX, worldCoordY, worldCoordZ)
+```
+
+```js
+const { screenCoordX, screenCoordY } = Sf.From3DTo2DCoords(worldCoordX, worldCoordY, worldCoordZ)
+```
+</Opcode>
+
+<Opcode id="0B56" name="SF_SET_BUTTON" member="Sf.SetButton">
+设置游戏按键（非键盘键）的按下状态。
+
+```text
+0B56 SF_SET_BUTTON
+in: buttonId, behaviorValue
+```
+
+```lua
+sfSetButton(buttonId, behaviorValue)
+```
+
+```js
+Sf.SetButton(buttonId, behaviorValue)
+```
+</Opcode>
+
+<Opcode id="0B5A" name="SF_GET_SCREEN_RESOLUTION" member="Sf.GetScreenRes">
+返回当前窗口分辨率（像素）。
+
+```text
+0B5A SF_GET_SCREEN_RESOLUTION
+out: width, height
+```
+
+```lua
+local width, height = sfGetScreenResolution()
+```
+
+```js
+const { width, height } = Sf.GetScreenRes()
+```
+</Opcode>
+
+<Opcode id="0B5E" name="SF_GET_CURSOR_COORD" member="Sf.GetCursorCoord">
+返回鼠标在窗口上的坐标（像素）。
+
+```text
+0B5E SF_GET_CURSOR_COORD
+out: windowScreenCoordX, windowScreenCoordY
+```
+
+```lua
+local windowScreenCoordX, windowScreenCoordY = sfGetCursorCoord()
+```
+
+```js
+const { windowScreenCoordX, windowScreenCoordY } = Sf.GetCursorCoord()
+```
+</Opcode>
+
+<Opcode id="0B5F" name="SF_WINDOW_SCREEN_COORDS_TO_GAME_SCREEN_COORDS" member="Sf.FromWindowToGameScreenCoords">
+把窗口屏幕坐标转为对应的游戏屏幕坐标。
+
+```text
+0B5F SF_WINDOW_SCREEN_COORDS_TO_GAME_SCREEN_COORDS
+in: windowScreenCoordX, windowScreenCoordY
+out: gameScreenCoordX, gameScreenCoordY
+```
+
+```lua
+local gameScreenCoordX, gameScreenCoordY = sfWindowScreenCoordsToGameScreenCoords(windowScreenCoordX, windowScreenCoordY)
+```
+
+```js
+const { gameScreenCoordX, gameScreenCoordY } = Sf.FromWindowToGameScreenCoords(windowScreenCoordX, windowScreenCoordY)
+```
+</Opcode>
+
+<Opcode id="0B60" name="SF_GAME_SCREEN_COORDS_TO_WINDOW_SCREEN_COORDS" member="Sf.FromGameToWindowScreenCoords">
+把游戏屏幕坐标转为对应的窗口屏幕坐标。
+
+```text
+0B60 SF_GAME_SCREEN_COORDS_TO_WINDOW_SCREEN_COORDS
+in: gameScreenCoordX, gameScreenCoordY
+out: windowScreenCoordX, windowScreenCoordY
+```
+
+```lua
+local windowScreenCoordX, windowScreenCoordY = sfGameScreenCoordsToWindowScreenCoords(gameScreenCoordX, gameScreenCoordY)
+```
+
+```js
+const { windowScreenCoordX, windowScreenCoordY } = Sf.FromGameToWindowScreenCoords(gameScreenCoordX, gameScreenCoordY)
+```
+</Opcode>
+
+<Opcode id="0B66" name="SF_HEX_TO_ARGB" member="Sf.HexToArgb">
+把 `0xAARRGGBB` 颜色拆成各通道。
+
+```text
+0B66 SF_HEX_TO_ARGB
+in: color
+out: alpha, red, green, blue
+```
+
+```lua
+local alpha, red, green, blue = sfHexToArgb(color)
+```
+
+```js
+const { alpha, red, green, blue } = Sf.HexToArgb(color)
+```
+</Opcode>
+
+<Opcode id="0B67" name="SF_ARGB_TO_HEX" member="Sf.ArgbToHex">
+把 ARGB 通道合成 `0xAARRGGBB`。
+
+```text
+0B67 SF_ARGB_TO_HEX
+in: alpha, red, green, blue
+out: color
+```
+
+```lua
+local color = sfArgbToHex(alpha, red, green, blue)
+```
+
+```js
+const color = Sf.ArgbToHex(alpha, red, green, blue)
+```
+</Opcode>
+
+<Opcode id="0B8F" name="SF_WINDOW_SCREEN_COORDS_TO_WORLD_COORDS" member="Sf.From2DTo3DCoords">
+按指定深度把窗口屏幕坐标（像素）转为世界 3D 坐标。
+
+```text
+0B8F SF_WINDOW_SCREEN_COORDS_TO_WORLD_COORDS
+in: screenCoordX, screenCoordY, depth
+out: worldCoordX, worldCoordY, worldCoordZ
+```
+
+```lua
+local worldCoordX, worldCoordY, worldCoordZ = sfWindowScreenCoordsToWorldCoords(screenCoordX, screenCoordY, depth)
+```
+
+```js
+const { worldCoordX, worldCoordY, worldCoordZ } = Sf.From2DTo3DCoords(screenCoordX, screenCoordY, depth)
+```
+</Opcode>
+
+## 脚本 / 计时 / 射线
+
+<Opcode id="0BDE" name="SF_PAUSE_SCRIPT" member="Sf.PauseScript">
+把指定脚本的 `isActive` 设为 0。
+
+```text
+0BDE SF_PAUSE_SCRIPT
+in: scriptId
+```
+
+```lua
+sfPauseScript(scriptId)
+```
+
+```js
+Sf.PauseScript(scriptId)
+```
+</Opcode>
+
+<Opcode id="0BDF" name="SF_RESUME_SCRIPT" member="Sf.ResumeScript">
+把指定脚本的 `isActive` 设为 1。
+
+```text
+0BDF SF_RESUME_SCRIPT
+in: scriptId
+```
+
+```lua
+sfResumeScript(scriptId)
+```
+
+```js
+Sf.ResumeScript(scriptId)
+```
+</Opcode>
+
+<Opcode id="0BFA" name="SF_PUSH_LOCAL_VARIABLES" member="Sf.PushLocalVars">
+把当前脚本（主脚本或函数）全部局部变量压栈保存，可用 `SF_POP_LOCAL_VARIABLES` 恢复。
+
+```text
+0BFA SF_PUSH_LOCAL_VARIABLES
+```
+
+```lua
+sfPushLocalVariables()
+```
+
+```js
+Sf.PushLocalVars()
+```
+</Opcode>
+
+<Opcode id="0BFB" name="SF_POP_LOCAL_VARIABLES" member="Sf.PopLocalVars">
+用 `SF_PUSH_LOCAL_VARIABLES` 保存的值恢复当前脚本局部变量。
+
+```text
+0BFB SF_POP_LOCAL_VARIABLES
+```
+
+```lua
+sfPopLocalVariables()
+```
+
+```js
+Sf.PopLocalVars()
+```
+</Opcode>
+
+<Opcode id="0BFE" name="SF_GET_TICK_COUNT" member="Sf.GetTickCount">
+返回系统已运行毫秒数。需要精确计时时代替 `TIMERA`/`TIMERB`。
+
+```text
+0BFE SF_GET_TICK_COUNT
+out: tickCount
+```
+
+```lua
+local tickCount = sfGetTickCount()
+```
+
+```js
+const tickCount = Sf.GetTickCount()
+```
+</Opcode>
+
+<Opcode id="0BFF" name="SF_PROCESS_LINE_OF_SIGHT" member="Sf.ProcessLineOfSight">
+按标志从向量起点到终点做碰撞检测。
+
+```text
+0BFF SF_PROCESS_LINE_OF_SIGHT
+in: fromCoordX, fromCoordY, fromCoordZ, toCoordX, toCoordY, toCoordZ, checkBuildings, checkCars, checkChars, checkObjects, checkParticles, seeThrough, ignoreCameras
+out: colPointPtr, entityPtr
+```
+
+```lua
+local colPointPtr, entityPtr = sfProcessLineOfSight(fromCoordX, fromCoordY, fromCoordZ, toCoordX, toCoordY, toCoordZ, checkBuildings, checkCars, checkChars, checkObjects, checkParticles, seeThrough, ignoreCameras)
+```
+
+```js
+const { colPointPtr, entityPtr } = Sf.ProcessLineOfSight(fromCoordX, fromCoordY, fromCoordZ, toCoordX, toCoordY, toCoordZ, checkBuildings, checkCars, checkChars, checkObjects, checkParticles, seeThrough, ignoreCameras)
+```
+</Opcode>
+
+## 数学
+
+<Opcode id="0C00" name="SF_ABS" member="Sf.Abs">
+返回数值绝对值（浮点或整数）。
+
+```text
+0C00 SF_ABS
+in: number
+out: result
+```
+
+```lua
+local result = sfAbs(number)
+```
+
+```js
+const result = Sf.Abs(number)
+```
+</Opcode>
+
+<Opcode id="0C01" name="SF_RADIANS_TO_DEGREES" member="Sf.RadToDeg">
+弧度转角度。
+
+```text
+0C01 SF_RADIANS_TO_DEGREES
+in: radians
+out: degrees
+```
+
+```lua
+local degrees = sfRadiansToDegrees(radians)
+```
+
+```js
+const degrees = Sf.RadToDeg(radians)
+```
+</Opcode>
+
+<Opcode id="0C02" name="SF_DEGREES_TO_RADIANS" member="Sf.DegToRad">
+角度转弧度。
+
+```text
+0C02 SF_DEGREES_TO_RADIANS
+in: degrees
+out: radians
+```
+
+```lua
+local radians = sfDegreesToRadians(degrees)
+```
+
+```js
+const radians = Sf.DegToRad(degrees)
+```
+</Opcode>
+
+<Opcode id="0C03" name="SF_SIN" member="Sf.Sin">
+返回指定弧度的正弦。
+
+```text
+0C03 SF_SIN
+in: radians
+out: ratio
+```
+
+```lua
+local ratio = sfSin(radians)
+```
+
+```js
+const ratio = Sf.Sin(radians)
+```
+</Opcode>
+
+<Opcode id="0C04" name="SF_ASIN" member="Sf.ASin">
+返回指定比值的反正弦（弧度）。
+
+```text
+0C04 SF_ASIN
+in: ratio
+out: radians
+```
+
+```lua
+local radians = sfAsin(ratio)
+```
+
+```js
+const radians = Sf.ASin(ratio)
+```
+</Opcode>
+
+<Opcode id="0C05" name="SF_COS" member="Sf.Cos">
+返回指定弧度的余弦。
+
+```text
+0C05 SF_COS
+in: radians
+out: ratio
+```
+
+```lua
+local ratio = sfCos(radians)
+```
+
+```js
+const ratio = Sf.Cos(radians)
+```
+</Opcode>
+
+<Opcode id="0C06" name="SF_ACOS" member="Sf.ACos">
+返回指定比值的反余弦（弧度）。
+
+```text
+0C06 SF_ACOS
+in: ratio
+out: radians
+```
+
+```lua
+local radians = sfAcos(ratio)
+```
+
+```js
+const radians = Sf.ACos(ratio)
+```
+</Opcode>
+
+<Opcode id="0C07" name="SF_TAN" member="Sf.Tan">
+返回指定弧度的正切。
+
+```text
+0C07 SF_TAN
+in: radians
+out: ratio
+```
+
+```lua
+local ratio = sfTan(radians)
+```
+
+```js
+const ratio = Sf.Tan(radians)
+```
+</Opcode>
+
+<Opcode id="0C08" name="SF_ATAN" member="Sf.ATan">
+返回指定比值的反正切（弧度）。
+
+```text
+0C08 SF_ATAN
+in: ratio
+out: radians
+```
+
+```lua
+local radians = sfAtan(ratio)
+```
+
+```js
+const radians = Sf.ATan(ratio)
+```
+</Opcode>
+
+<Opcode id="0C09" name="SF_POW" member="Sf.Pow">
+求幂。
+
+```text
+0C09 SF_POW
+in: coefficient, exponent
+out: power
+```
+
+```lua
+local power = sfPow(coefficient, exponent)
+```
+
+```js
+const power = Sf.Pow(coefficient, exponent)
+```
+</Opcode>
+
+<Opcode id="0C0A" name="SF_CEIL" member="Sf.Ceil">
+向上取整。
+
+```text
+0C0A SF_CEIL
+in: number
+out: result
+```
+
+```lua
+local result = sfCeil(number)
+```
+
+```js
+const result = Sf.Ceil(number)
+```
+</Opcode>
+
+<Opcode id="0C0B" name="SF_FLOOR" member="Sf.Floor">
+向下取整。
+
+```text
+0C0B SF_FLOOR
+in: number
+out: result
+```
+
+```lua
+local result = sfFloor(number)
+```
+
+```js
+const result = Sf.Floor(number)
+```
+</Opcode>
+
+## 内存 / 数组
+
+<Opcode id="0C0C" name="SF_READ_MEMORY_WITH_OFFSET" member="Sf.ReadMemoryWithOffset">
+按偏移从内存地址读取指定大小的值。
+
+```text
+0C0C SF_READ_MEMORY_WITH_OFFSET
+in: address, offset, size
+out: value
+```
+
+```lua
+local value = sfReadMemoryWithOffset(address, offset, size)
+```
+
+```js
+const value = Sf.ReadMemoryWithOffset(address, offset, size)
+```
+</Opcode>
+
+<Opcode id="0C0D" name="SF_WRITE_MEMORY_WITH_OFFSET" member="Sf.WriteMemoryWithOffset">
+按偏移向内存地址写入指定大小的值。用在 `if` 里。
+
+```text
+0C0D SF_WRITE_MEMORY_WITH_OFFSET
+in: address, offset, size, value
+```
+
+```lua
+if sfWriteMemoryWithOffset(address, offset, size, value) then
+end
+```
+
+```js
+if (Sf.WriteMemoryWithOffset(address, offset, size, value)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C0E" name="SF_READ_ELEMENT_OF_4BYTES_ARRAY" member="Sf.ReadElementOf4BytesArray">
+读取数组指定下标元素的值。
+
+```text
+0C0E SF_READ_ELEMENT_OF_4BYTES_ARRAY
+in: array, index
+out: value
+```
+
+```lua
+local value = sfReadElementOf4bytesArray(array, index)
+```
+
+```js
+const value = Sf.ReadElementOf4BytesArray(array, index)
+```
+</Opcode>
+
+<Opcode id="0C0F" name="SF_WRITE_ELEMENT_OF_4BYTES_ARRAY" member="Sf.WriteElementOf4BytesArray">
+向数组指定下标写入值。用在 `if` 里。
+
+```text
+0C0F SF_WRITE_ELEMENT_OF_4BYTES_ARRAY
+in: array, index, value
+```
+
+```lua
+if sfWriteElementOf4bytesArray(array, index, value) then
+end
+```
+
+```js
+if (Sf.WriteElementOf4BytesArray(array, index, value)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C10" name="SF_MEMCPY" member="Sf.MemCpy">
+按大小从源地址拷贝内存块到目标地址。用在 `if` 里。
+
+```text
+0C10 SF_MEMCPY
+in: destination, source, size
+```
+
+```lua
+if sfMemcpy(destination, source, size) then
+end
+```
+
+```js
+if (Sf.MemCpy(destination, source, size)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C11" name="SF_MEMFILL" member="Sf.MemFill">
+按字节用 value 填充指定大小内存块。用在 `if` 里。
+
+```text
+0C11 SF_MEMFILL
+in: address, byteValue, size
+```
+
+```lua
+if sfMemfill(address, byteValue, size) then
+end
+```
+
+```js
+if (Sf.MemFill(address, byteValue, size)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C12" name="SF_MEMEQ" member="Sf.MemEq">
+两块内存内容是否相同。用在 `if` 里。
+
+```text
+0C12 SF_MEMEQ
+in: addressA, addressB, size
+```
+
+```lua
+if sfMemeq(addressA, addressB, size) then
+end
+```
+
+```js
+if (Sf.MemEq(addressA, addressB, size)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C1D" name="SF_READ_ELEMENT_OF_SIZED_ARRAY" member="Sf.ReadElementOfSizedArray">
+读取定长数组下标元素，每元素大小限 1–4 字节。
+
+```text
+0C1D SF_READ_ELEMENT_OF_SIZED_ARRAY
+in: array, index, size
+out: value
+```
+
+```lua
+local value = sfReadElementOfSizedArray(array, index, size)
+```
+
+```js
+const value = Sf.ReadElementOfSizedArray(array, index, size)
+```
+</Opcode>
+
+<Opcode id="0C1E" name="SF_WRITE_ELEMENT_OF_SIZED_ARRAY" member="Sf.WriteElementOfSizedArray">
+向定长数组指定下标写入值，每元素大小限 1–4。用在 `if` 里。
+
+```text
+0C1E SF_WRITE_ELEMENT_OF_SIZED_ARRAY
+in: array, index, size, value
+```
+
+```lua
+if sfWriteElementOfSizedArray(array, index, size, value) then
+end
+```
+
+```js
+if (Sf.WriteElementOfSizedArray(array, index, size, value)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C1F" name="SF_GET_ELEMENT_POINTER_OF_BUFFER_ARRAY" member="Sf.GetElementPointerOfBufferArray">
+返回定长缓冲数组中指定下标元素的指针。
+
+```text
+0C1F SF_GET_ELEMENT_POINTER_OF_BUFFER_ARRAY
+in: array, index, size
+out: address
+```
+
+```lua
+local address = sfGetElementPointerOfBufferArray(array, index, size)
+```
+
+```js
+const address = Sf.GetElementPointerOfBufferArray(array, index, size)
+```
+</Opcode>
+
+<Opcode id="0C20" name="SF_WRITE_STRING_TO_ELEMENT_OF_BUFFER_ARRAY" member="Sf.WriteStringToElementOfBufferArray">
+向定长缓冲数组指定下标写入字符串。
+
+```text
+0C20 SF_WRITE_STRING_TO_ELEMENT_OF_BUFFER_ARRAY
+in: array, index, size, string
+```
+
+```lua
+sfWriteStringToElementOfBufferArray(array, index, size, string)
+```
+
+```js
+Sf.WriteStringToElementOfBufferArray(array, index, size, string)
+```
+</Opcode>
+
+## 字符串
+
+<Opcode id="0C13" name="SF_STRCPY" member="Sf.StrCpy">
+把字符串从源拷到目标。
+
+```text
+0C13 SF_STRCPY
+in: destination, source
+```
+
+```lua
+sfStrcpy(destination, source)
+```
+
+```js
+Sf.StrCpy(destination, source)
+```
+</Opcode>
+
+<Opcode id="0C14" name="SF_STREQ" member="Sf.StrEq">
+两字符串区分大小写是否相等。用在 `if` 里。
+
+```text
+0C14 SF_STREQ
+in: stringA, stringB
+```
+
+```lua
+if sfStreq(stringA, stringB) then
+end
+```
+
+```js
+if (Sf.StrEq(stringA, stringB)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C15" name="SF_STRCAT" member="Sf.StrCat">
+把 `appendedString` 追加到 `stringBuffer` 末尾。
+
+```text
+0C15 SF_STRCAT
+in: stringBuffer, appendedString
+```
+
+```lua
+sfStrcat(stringBuffer, appendedString)
+```
+
+```js
+Sf.StrCat(stringBuffer, appendedString)
+```
+</Opcode>
+
+<Opcode id="0C16" name="SF_STRTOK" member="Sf.StrTok">
+在 `stringBuffer` 中找分隔符，首次命中处写 null 并返回下一 token 指针。用作条件时未找到为假。
+
+```text
+0C16 SF_STRTOK
+in: stringBuffer, delimiters
+out: token
+```
+
+```lua
+local token = sfStrtok(stringBuffer, delimiters)
+```
+
+```js
+const token = Sf.StrTok(stringBuffer, delimiters)
+```
+</Opcode>
+
+<Opcode id="0C17" name="SF_STRLEN" member="Sf.StrLen">
+返回字符串长度。
+
+```text
+0C17 SF_STRLEN
+in: string
+out: length
+```
+
+```lua
+local length = sfStrlen(string)
+```
+
+```js
+const length = Sf.StrLen(string)
+```
+</Opcode>
+
+<Opcode id="0C18" name="SF_STRSTR" member="Sf.StrStr">
+返回源字符串中首次出现子串的指针。
+
+```text
+0C18 SF_STRSTR
+in: source, subString
+out: matchAddress
+```
+
+```lua
+local matchAddress = sfStrstr(source, subString)
+```
+
+```js
+const matchAddress = Sf.StrStr(source, subString)
+```
+</Opcode>
+
+<Opcode id="0C19" name="SF_STRCSPN" member="Sf.StrCspn">
+在字符串中查找 `characterList` 任一字符，返回首次出现下标；无匹配时返回字符串长度。
+
+```text
+0C19 SF_STRCSPN
+in: source, characterList
+out: index
+```
+
+```lua
+local index = sfStrcspn(source, characterList)
+```
+
+```js
+const index = Sf.StrCspn(source, characterList)
+```
+</Opcode>
+
+<Opcode id="0C1A" name="SF_ATOI" member="Sf.AtoI">
+把 ascii 字符串转为十进制整数。
+
+```text
+0C1A SF_ATOI
+in: ascii
+out: integer
+```
+
+```lua
+local integer = sfAtoi(ascii)
+```
+
+```js
+const integer = Sf.AtoI(ascii)
+```
+</Opcode>
+
+<Opcode id="0C1B" name="SF_ATOF" member="Sf.AtoF">
+把 ascii 字符串转为浮点数。
+
+```text
+0C1B SF_ATOF
+in: ascii
+out: float
+```
+
+```lua
+local float = sfAtof(ascii)
+```
+
+```js
+const float = Sf.AtoF(ascii)
+```
+</Opcode>
+
+<Opcode id="0C1C" name="SF_ITOA" member="Sf.ItoA">
+把 baseN 整数转为 ascii 字符串写入 `stringBuffer`。
+
+```text
+0C1C SF_ITOA
+in: integer, radix
+out: stringBuffer
+```
+
+```lua
+local stringBuffer = sfItoa(integer, radix)
+```
+
+```js
+const stringBuffer = Sf.ItoA(integer, radix)
+```
+</Opcode>
+
+<Opcode id="0C21" name="SF_STRIEQ" member="Sf.StriEq">
+两字符串不区分大小写是否相等。用在 `if` 里。
+
+```text
+0C21 SF_STRIEQ
+in: stringA, stringB
+```
+
+```lua
+if sfStrieq(stringA, stringB) then
+end
+```
+
+```js
+if (Sf.StriEq(stringA, stringB)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C22" name="SF_BIN_TO_HEX" member="Sf.BintoHex">
+二进制转十六进制文本写入 `stringBuffer`。缓冲不够时条件为假。
+
+```text
+0C22 SF_BIN_TO_HEX
+in: binaryString, stringBuffer, bufferSize
+```
+
+```lua
+if sfBinToHex(binaryString, stringBuffer, bufferSize) then
+end
+```
+
+```js
+if (Sf.BintoHex(binaryString, stringBuffer, bufferSize)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C23" name="SF_HEX_TO_BIN" member="Sf.HextoBin">
+十六进制文本转二进制写入 `stringBuffer`。缓冲不够时条件为假。
+
+```text
+0C23 SF_HEX_TO_BIN
+in: hexString, stringBuffer, bufferSize
+```
+
+```lua
+if sfHexToBin(hexString, stringBuffer, bufferSize) then
+end
+```
+
+```js
+if (Sf.HextoBin(hexString, stringBuffer, bufferSize)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C24" name="SF_STRNCPY" member="Sf.StrnCpy">
+安全拷贝字符串到 `stringBuffer`，超出 `bufferSize` 会截断。
+
+```text
+0C24 SF_STRNCPY
+in: stringBuffer, source, bufferSize
+```
+
+```lua
+sfStrncpy(stringBuffer, source, bufferSize)
+```
+
+```js
+Sf.StrnCpy(stringBuffer, source, bufferSize)
+```
+</Opcode>
+
+<Opcode id="0C25" name="SF_STRNEQ" member="Sf.StrnEq">
+两区分大小写字符串前 `length` 个字符是否相同。用在 `if` 里。
+
+```text
+0C25 SF_STRNEQ
+in: stringA, stringB, length
+```
+
+```lua
+if sfStrneq(stringA, stringB, length) then
+end
+```
+
+```js
+if (Sf.StrnEq(stringA, stringB, length)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C26" name="SF_STRUPR" member="Sf.StrUpr">
+把源字符串字母转为大写写入目标。
+
+```text
+0C26 SF_STRUPR
+in: source
+out: destination
+```
+
+```lua
+local destination = sfStrupr(source)
+```
+
+```js
+const destination = Sf.StrUpr(source)
+```
+</Opcode>
+
+<Opcode id="0C27" name="SF_STRNCAT" member="Sf.StrnCat">
+安全把 `appendedString` 追加到 `stringBuffer`，总长超 `bufferSize` 会截断。
+
+```text
+0C27 SF_STRNCAT
+in: stringBuffer, appendedString, bufferSize
+```
+
+```lua
+sfStrncat(stringBuffer, appendedString, bufferSize)
+```
+
+```js
+Sf.StrnCat(stringBuffer, appendedString, bufferSize)
+```
+</Opcode>
+
+<Opcode id="0C28" name="SF_STRLWR" member="Sf.StrLwr">
+把源字符串字母转为小写写入目标。
+
+```text
+0C28 SF_STRLWR
+in: source
+out: destination
+```
+
+```lua
+local destination = sfStrlwr(source)
+```
+
+```js
+const destination = Sf.StrLwr(source)
+```
+</Opcode>
+
+<Opcode id="0C29" name="SF_STRISTR" member="Sf.StriStr">
+返回源字符串中首次不区分大小写出现子串的指针。
+
+```text
+0C29 SF_STRISTR
+in: source, subString
+out: matchAddress
+```
+
+```lua
+local matchAddress = sfStristr(source, subString)
+```
+
+```js
+const matchAddress = Sf.StriStr(source, subString)
+```
+</Opcode>
+
+<Opcode id="0C2A" name="SF_STRCHR" member="Sf.StrChr">
+返回源字符串中首次出现指定 ascii 字符的指针。
+
+```text
+0C2A SF_STRCHR
+in: source, character
+out: matchAddress
+```
+
+```lua
+local matchAddress = sfStrchr(source, character)
+```
+
+```js
+const matchAddress = Sf.StrChr(source, character)
+```
+</Opcode>
+
+<Opcode id="0C2B" name="SF_STRPBRK" member="Sf.StrPBrk">
+在源字符串中查找 `characterList` 任一字符，返回首次出现指针。
+
+```text
+0C2B SF_STRPBRK
+in: source, characterList
+out: matchAddress
+```
+
+```lua
+local matchAddress = sfStrpbrk(source, characterList)
+```
+
+```js
+const matchAddress = Sf.StrPBrk(source, characterList)
+```
+</Opcode>
+
+<Opcode id="0C2C" name="SF_STRRCHR" member="Sf.StrRChr">
+返回源字符串中最后一次出现指定 ascii 字符的指针。
+
+```text
+0C2C SF_STRRCHR
+in: source, character
+out: matchAddress
+```
+
+```lua
+local matchAddress = sfStrrchr(source, character)
+```
+
+```js
+const matchAddress = Sf.StrRChr(source, character)
+```
+</Opcode>
+
+<Opcode id="0C2D" name="SF_STRREV" member="Sf.StrRev">
+反转源字符串字符顺序并写入目标。
+
+```text
+0C2D SF_STRREV
+in: source
+out: destination
+```
+
+```lua
+local destination = sfStrrev(source)
+```
+
+```js
+const destination = Sf.StrRev(source)
+```
+</Opcode>
+
+<Opcode id="0C2E" name="SF_STRSPN" member="Sf.StrSpn">
+查找源字符串中首个不在 `characterList` 中的字符下标；全匹配则返回串长。
+
+```text
+0C2E SF_STRSPN
+in: source, characterList
+out: index
+```
+
+```lua
+local index = sfStrspn(source, characterList)
+```
+
+```js
+const index = Sf.StrSpn(source, characterList)
+```
+</Opcode>
+
+<Opcode id="0C2F" name="SF_STRTOL" member="Sf.StrTol">
+跳过源串前导空白，按 baseN 解析长整数；遇非数字停止，未扫描地址写入 `unscannedAddress`。
+
+```text
+0C2F SF_STRTOL
+in: source, radix
+out: unscannedAddress, longInteger
+```
+
+```lua
+local unscannedAddress, longInteger = sfStrtol(source, radix)
+```
+
+```js
+const { unscannedAddress, longInteger } = Sf.StrTol(source, radix)
+```
+</Opcode>
+
+## 矩阵 / 四元数
+
+<Opcode id="0C30" name="SF_MATRIX_TO_QUAT" member="Sf.MatrixToQuat">
+把矩阵结构转为四元数写入 `quaternionBuffer`。
+
+```text
+0C30 SF_MATRIX_TO_QUAT
+in: matrix
+out: quaternionBuffer
+```
+
+```lua
+local quaternionBuffer = sfMatrixToQuat(matrix)
+```
+
+```js
+const quaternionBuffer = Sf.MatrixToQuat(matrix)
+```
+</Opcode>
+
+<Opcode id="0C31" name="SF_QUAT_TO_MATRIX" member="Sf.QuatToMatrix">
+把四元数结构转为矩阵写入 `matrixBuffer`。
+
+```text
+0C31 SF_QUAT_TO_MATRIX
+in: quaternion
+out: matrixBuffer
+```
+
+```lua
+local matrixBuffer = sfQuatToMatrix(quaternion)
+```
+
+```js
+const matrixBuffer = Sf.QuatToMatrix(quaternion)
+```
+</Opcode>
+
+<Opcode id="0C32" name="SF_AXES_TO_QUAT" member="Sf.AxesToQuat">
+把旋转矩阵基向量转为四元数值。
+
+```text
+0C32 SF_AXES_TO_QUAT
+in: pitchVectorX, pitchVectorY, pitchVectorZ, rollVectorX, rollVectorY, rollVectorZ, yawVectorX, yawVectorY, yawVectorZ
+out: quaternionW, quaternionX, quaternionY, quaternionZ
+```
+
+```lua
+local quaternionW, quaternionX, quaternionY, quaternionZ = sfAxesToQuat(pitchVectorX, pitchVectorY, pitchVectorZ, rollVectorX, rollVectorY, rollVectorZ, yawVectorX, yawVectorY, yawVectorZ)
+```
+
+```js
+const { quaternionW, quaternionX, quaternionY, quaternionZ } = Sf.AxesToQuat(pitchVectorX, pitchVectorY, pitchVectorZ, rollVectorX, rollVectorY, rollVectorZ, yawVectorX, yawVectorY, yawVectorZ)
+```
+</Opcode>
+
+<Opcode id="0C33" name="SF_QUAT_TO_AXES" member="Sf.MathQuatToMatrixVectors">
+把四元数值转为旋转矩阵基向量。
+
+```text
+0C33 SF_QUAT_TO_AXES
+in: quaternionW, quaternionX, quaternionY, pitchVectorZ
+out: pitchVectorX, pitchVectorY, pitchVectorZ, rollVectorX, rollVectorY, rollVectorZ, yawVectorX, yawVectorY, yawVectorZ
+```
+
+```lua
+local pitchVectorX, pitchVectorY, pitchVectorZ, rollVectorX, rollVectorY, rollVectorZ, yawVectorX, yawVectorY, yawVectorZ = sfQuatToAxes(quaternionW, quaternionX, quaternionY, pitchVectorZ)
+```
+
+```js
+const { pitchVectorX, pitchVectorY, pitchVectorZ, rollVectorX, rollVectorY, rollVectorZ, yawVectorX, yawVectorY, yawVectorZ } = Sf.MathQuatToMatrixVectors(quaternionW, quaternionX, quaternionY, pitchVectorZ)
+```
+</Opcode>
+
+## 系统 / 模块 / 键 / 剪贴板
+
+<Opcode id="0C3A" name="SF_STRING_POINTER" member="Sf.StrPtr">
+把指定字符串指针存入变量。
+
+```text
+0C3A SF_STRING_POINTER
+in: variable, string, unused
+```
+
+```lua
+sfStringPointer(variable, string, unused)
+```
+
+```js
+Sf.StrPtr(variable, string, unused)
+```
+</Opcode>
+
+<Opcode id="0C67" name="SF_STORE_OS_ENVIRONMENT_VARIABLE" member="Sf.GetOsEnv">
+把 Windows 环境变量内容写入 buffer。用在 `if` 里。
+
+```text
+0C67 SF_STORE_OS_ENVIRONMENT_VARIABLE
+in: varName, stringBuffer, buffersize
+```
+
+```lua
+if sfStoreOsEnvironmentVariable(varName, stringBuffer, buffersize) then
+end
+```
+
+```js
+if (Sf.GetOsEnv(varName, stringBuffer, buffersize)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C68" name="SF_UNICODE_TO_ANSI" member="Sf.UnicodeToAnsi">
+把 Unicode 转成 ANSI 写入 `ansiStringBuffer`。用在 `if` 里。
+
+```text
+0C68 SF_UNICODE_TO_ANSI
+in: unicodeString, ansiStringBuffer, bufferSize
+```
+
+```lua
+if sfUnicodeToAnsi(unicodeString, ansiStringBuffer, bufferSize) then
+end
+```
+
+```js
+if (Sf.UnicodeToAnsi(unicodeString, ansiStringBuffer, bufferSize)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C69" name="SF_ANSI_TO_UNICODE" member="Sf.AnsiToUnicode">
+ANSI 转 Unicode 写入缓冲。用在 `if` 里。
+
+```text
+0C69 SF_ANSI_TO_UNICODE
+in: ansiString, unicodeStringBuffer, buffersize
+```
+
+```lua
+if sfAnsiToUnicode(ansiString, unicodeStringBuffer, buffersize) then
+end
+```
+
+```js
+if (Sf.AnsiToUnicode(ansiString, unicodeStringBuffer, buffersize)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C70" name="SF_GET_LOADED_MODULE" member="Sf.GetModule">
+返回已加载模块 `moduleName` 的句柄。
+
+```text
+0C70 SF_GET_LOADED_MODULE
+in: moduleName
+out: handle
+```
+
+```lua
+local handle = sfGetLoadedModule(moduleName)
+```
+
+```js
+const handle = Sf.GetModule(moduleName)
+```
+</Opcode>
+
+<Opcode id="0C71" name="SF_GET_MODULE_PROCEDURE" member="Sf.GetModuleProc">
+返回 `moduleHandle` 中 `functionName` 的函数指针。
+
+```text
+0C71 SF_GET_MODULE_PROCEDURE
+in: moduleHandle, functionName
+out: functionPtr
+```
+
+```lua
+local functionPtr = sfGetModuleProcedure(moduleHandle, functionName)
+```
+
+```js
+const functionPtr = Sf.GetModuleProc(moduleHandle, functionName)
+```
+</Opcode>
+
+<Opcode id="0C72" name="SF_SET_KEY_STATUS" member="Sf.SetKeyStatus">
+设置指定虚拟键码是否按下。
+
+```text
+0C72 SF_SET_KEY_STATUS
+in: keyCode, isPressed
+```
+
+```lua
+sfSetKeyStatus(keyCode, isPressed)
+```
+
+```js
+Sf.SetKeyStatus(keyCode, isPressed)
+```
+</Opcode>
+
+<Opcode id="0C73" name="SF_SET_CHARACTER_KEY_STATUS" member="Sf.SetCharKeyStatus">
+设置以 ASCII 字符表示的虚拟键是否按下。
+
+```text
+0C73 SF_SET_CHARACTER_KEY_STATUS
+in: ascii, isPressed
+```
+
+```lua
+sfSetCharacterKeyStatus(ascii, isPressed)
+```
+
+```js
+Sf.SetCharKeyStatus(ascii, isPressed)
+```
+</Opcode>
+
+<Opcode id="0C89" name="SF_KEY_JUST_PRESSED" member="Sf.KeyJustPressed">
+若指定虚拟键码刚被按下则为真。
+
+```text
+0C89 SF_KEY_JUST_PRESSED
+in: keyCode
+```
+
+```lua
+if sfKeyJustPressed(keyCode) then
+end
+```
+
+```js
+if (Sf.KeyJustPressed(keyCode)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C8D" name="SF_WRITE_TEXT_TO_CLIPBOARD" member="Sf.ClipboardWriteText">
+把文本写入剪贴板。
+
+```text
+0C8D SF_WRITE_TEXT_TO_CLIPBOARD
+in: text
+```
+
+```lua
+sfWriteTextToClipboard(text)
+```
+
+```js
+Sf.ClipboardWriteText(text)
+```
+</Opcode>
+
+<Opcode id="0C8E" name="SF_READ_DATA_FROM_CLIPBOARD" member="Sf.ClipboardReadData">
+从剪贴板复制原始二进制或文本到 buffer。用在 `if` 里。
+
+```text
+0C8E SF_READ_DATA_FROM_CLIPBOARD
+in: buffer, size
+```
+
+```lua
+if sfReadDataFromClipboard(buffer, size) then
+end
+```
+
+```js
+if (Sf.ClipboardReadData(buffer, size)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C92" name="SF_GET_CLEO_LIBRARY_VERSION" member="Sf.GetCleoLibVer">
+返回已安装的 CLEO 版本。
+
+```text
+0C92 SF_GET_CLEO_LIBRARY_VERSION
+out: version
+```
+
+```lua
+local version = sfGetCleoLibraryVersion()
+```
+
+```js
+const version = Sf.GetCleoLibVer()
+```
+</Opcode>
+
+<Opcode id="1337" name="SF_MAKE_SCRIPT_PRIVATE" member="Sf.MakeScriptPrivate">
+使执行本命令的脚本对其它脚本不可见。
+
+```text
+1337 SF_MAKE_SCRIPT_PRIVATE
+in: isPrivate
+```
+
+```lua
+sfMakeScriptPrivate(isPrivate)
+```
+
+```js
+Sf.MakeScriptPrivate(isPrivate)
+```
+</Opcode>

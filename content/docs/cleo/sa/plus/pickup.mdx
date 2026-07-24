@@ -1,0 +1,90 @@
+---
+title: 拾取物 Pickup
+description: 坐标查拾取物、模型类型与指针
+---
+
+`sa` · 扩展 `CLEO+` · 需 CLEO + CLEO+
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 坐标取拾取
+
+<Opcode id="0E33" name="GET_PICKUP_THIS_COORD" member="World.GetPickupThisCoord">
+指定坐标处拾取物句柄。`onlyValid` 只认有效拾取。用在 `if` 里。
+
+```text
+0E33 GET_PICKUP_THIS_COORD
+in: x, y, z, onlyValid
+out: handle
+```
+
+```lua
+local p = getPickupThisCoord(x, y, z, true)
+if p then
+end
+```
+
+```js
+const handle = World.getPickupThisCoord(x, y, z, onlyValid)
+```
+</Opcode>
+
+## 模型
+
+<Opcode id="0E34" name="GET_PICKUP_MODEL" member="Pickup.GetModel">
+拾取物模型 id。用在 `if` 里。
+
+```text
+0E34 GET_PICKUP_MODEL
+in: self
+out: modelId
+```
+
+```lua
+local mid = getPickupModel(pickup)
+```
+
+```js
+const modelId = Pickup.getModel(self)
+```
+</Opcode>
+
+## 指针
+
+<Opcode id="0E38" name="GET_PICKUP_POINTER" member="Pickup.GetPointer">
+拾取物结构指针。用在 `if` 里。
+
+```text
+0E38 GET_PICKUP_POINTER
+in: self
+out: pointer
+```
+
+```lua
+local ptr = getPickupPointer(pickup)
+```
+
+```js
+const pointer = Pickup.getPointer(self)
+```
+</Opcode>
+
+## 类型
+
+<Opcode id="0E39" name="GET_PICKUP_TYPE" member="Pickup.GetType">
+拾取类型。
+
+```text
+0E39 GET_PICKUP_TYPE
+in: self
+out: type
+```
+
+```lua
+local t = getPickupType(pickup)
+```
+
+```js
+const type = Pickup.getType(self)
+```
+</Opcode>

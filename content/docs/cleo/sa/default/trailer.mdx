@@ -1,0 +1,67 @@
+---
+title: 拖车 Trailer
+description: 挂车挂接
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 3 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 是否已挂
+
+<Opcode id="07AB" name="IS_TRAILER_ATTACHED_TO_CAB" member="Trailer.IsAttachedToCab">
+挂车是否挂在牵引车上。用在 `if` 里。
+
+```text
+07AB IS_TRAILER_ATTACHED_TO_CAB
+in: self, cab
+```
+
+```lua
+if isTrailerAttachedToCab(self, cab) then
+end
+```
+
+```js
+if (Trailer.isAttachedToCab(self, cab)) {
+}
+```
+</Opcode>
+
+## 卸下
+
+<Opcode id="07AC" name="DETACH_TRAILER_FROM_CAB" member="Trailer.DetachFromCab">
+从牵引车上卸下挂车。
+
+```text
+07AC DETACH_TRAILER_FROM_CAB
+in: self, cab
+```
+
+```lua
+detachTrailerFromCab(self, cab)
+```
+
+```js
+Trailer.detachFromCab(self, cab)
+```
+</Opcode>
+
+## 挂上
+
+<Opcode id="0893" name="ATTACH_TRAILER_TO_CAB" member="Trailer.AttachToCab">
+把挂车挂到牵引车上。
+
+```text
+0893 ATTACH_TRAILER_TO_CAB
+in: self, cab
+```
+
+```lua
+attachTrailerToCab(self, cab)
+```
+
+```js
+Trailer.attachToCab(self, cab)
+```
+</Opcode>

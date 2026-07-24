@@ -1,0 +1,140 @@
+---
+title: 控制台 SfConsole
+description: SAMPFUNCS 控制台日志与命令
+---
+
+`sa` · 扩展 `SAMPFUNCS` · 仅 SA-MP；需 SAMPFUNCS
+
+共 7 条。调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 日志 / 执行
+
+<Opcode id="0B78" name="SF_LOG_TO_CONSOLE" member="SfConsole.Log">
+向 SAMPFUNCS 控制台追加一行并记录日志。
+
+```text
+0B78 SF_LOG_TO_CONSOLE
+in: format, args
+```
+
+```lua
+sfLogToConsole(format, args)
+```
+
+```js
+SfConsole.Log(format, args)
+```
+</Opcode>
+
+<Opcode id="0C62" name="SF_EXECUTE_CONSOLE_COMMAND" member="SfConsole.ExecCmd">
+在 SAMPFUNCS 控制台执行指定命令。
+
+```text
+0C62 SF_EXECUTE_CONSOLE_COMMAND
+in: command
+```
+
+```lua
+sfExecuteConsoleCommand(command)
+```
+
+```js
+SfConsole.ExecCmd(command)
+```
+</Opcode>
+
+## 注册命令
+
+<Opcode id="0C63" name="SF_REGISTER_CONSOLE_COMMAND" member="SfConsole.RegisterCmd">
+注册 SAMPFUNCS 控制台命令回调（命令最长 64 字符）。用在 `if` 里。
+
+```text
+0C63 SF_REGISTER_CONSOLE_COMMAND
+in: command, callback
+```
+
+```lua
+if sfRegisterConsoleCommand(command, callback) then
+end
+```
+
+```js
+if (SfConsole.RegisterCmd(command, callback)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C64" name="SF_UNREGISTER_CONSOLE_COMMAND" member="SfConsole.UnregisterCmd">
+移除已注册的控制台命令；未注册时无操作，作条件时为假。
+
+```text
+0C64 SF_UNREGISTER_CONSOLE_COMMAND
+in: command
+```
+
+```lua
+if sfUnregisterConsoleCommand(command) then
+end
+```
+
+```js
+if (SfConsole.UnregisterCmd(command)) {
+}
+```
+</Opcode>
+
+## 状态 / 说明
+
+<Opcode id="0C7E" name="SF_IS_CONSOLE_OPEN" member="SfConsole.IsOpen">
+若 SAMPFUNCS 控制台已打开则为真。
+
+```text
+0C7E SF_IS_CONSOLE_OPEN
+```
+
+```lua
+if sfIsConsoleOpen() then
+end
+```
+
+```js
+if (SfConsole.IsOpen()) {
+}
+```
+</Opcode>
+
+<Opcode id="0C80" name="SF_SET_CONSOLE_COMMAND_DESCRIPTION" member="SfConsole.SetCmdDesc">
+设置控制台命令的说明文字。
+
+```text
+0C80 SF_SET_CONSOLE_COMMAND_DESCRIPTION
+in: command, description
+```
+
+```lua
+sfSetConsoleCommandDescription(command, description)
+```
+
+```js
+SfConsole.SetCmdDesc(command, description)
+```
+</Opcode>
+
+<Opcode id="0C91" name="SF_IS_CONSOLE_COMMAND_REGISTERED" member="SfConsole.IsCmdRegistered">
+若指定控制台命令已注册则为真。
+
+```text
+0C91 SF_IS_CONSOLE_COMMAND_REGISTERED
+in: command
+```
+
+```lua
+if sfIsConsoleCommandRegistered(command) then
+end
+```
+
+```js
+if (SfConsole.IsCmdRegistered(command)) {
+}
+```
+</Opcode>

@@ -1,0 +1,196 @@
+---
+title: 时钟 Clock
+description: 游戏时间 / 流速 / 日期
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 10 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 取时分
+
+<Opcode id="00BF" name="GET_TIME_OF_DAY" member="Clock.GetTimeOfDay">
+取当天时:分（从午夜起算）。
+
+```text
+00BF GET_TIME_OF_DAY
+out: hours, minutes
+```
+
+```lua
+local hours, minutes = getTimeOfDay()
+```
+
+```js
+const { hours, minutes } = Clock.getTimeOfDay()
+```
+</Opcode>
+
+## 设时分
+
+<Opcode id="00C0" name="SET_TIME_OF_DAY" member="Clock.SetTimeOfDay">
+设游戏内时间。
+
+```text
+00C0 SET_TIME_OF_DAY
+in: hours, minutes
+```
+
+```lua
+setTimeOfDay(hours, minutes)
+```
+
+```js
+Clock.setTimeOfDay(hours, minutes)
+```
+</Opcode>
+
+## 距目标分钟
+
+<Opcode id="00C1" name="GET_MINUTES_TO_TIME_OF_DAY" member="Clock.GetMinutesToTimeOfDay">
+距指定时:分还差多少分钟。
+
+```text
+00C1 GET_MINUTES_TO_TIME_OF_DAY
+in: hours, minutes
+out: minutesLeft
+```
+
+```lua
+local minutesLeft = getMinutesToTimeOfDay(hours, minutes)
+```
+
+```js
+const minutesLeft = Clock.getMinutesToTimeOfDay(hours, minutes)
+```
+</Opcode>
+
+## 时间流速
+
+<Opcode id="015D" name="SET_TIME_SCALE" member="Clock.SetTimeScale">
+设时间流速倍率。
+
+```text
+015D SET_TIME_SCALE
+in: scale
+```
+
+```lua
+setTimeScale(scale)
+```
+
+```js
+Clock.setTimeScale(scale)
+```
+</Opcode>
+
+## 游戏计时器
+
+<Opcode id="01BD" name="GET_GAME_TIMER" member="Clock.GetGameTimer">
+开局以来毫秒数。
+
+```text
+01BD GET_GAME_TIMER
+out: time
+```
+
+```lua
+local time = getGameTimer()
+```
+
+```js
+const time = Clock.getGameTimer()
+```
+</Opcode>
+
+## 暂存时钟
+
+<Opcode id="0253" name="STORE_CLOCK" member="Clock.Store">
+暂存当前游戏时间。
+
+```text
+0253 STORE_CLOCK
+```
+
+```lua
+storeClock()
+```
+
+```js
+Clock.store()
+```
+</Opcode>
+
+## 恢复时钟
+
+<Opcode id="0254" name="RESTORE_CLOCK" member="Clock.Restore">
+恢复到 `0253` 存的时间。
+
+```text
+0254 RESTORE_CLOCK
+```
+
+```lua
+restoreClock()
+```
+
+```js
+Clock.restore()
+```
+</Opcode>
+
+## 星期几
+
+<Opcode id="07D0" name="GET_CURRENT_DAY_OF_WEEK" member="Clock.GetCurrentDayOfWeek">
+游戏内星期几（整型）。
+
+```text
+07D0 GET_CURRENT_DAY_OF_WEEK
+out: day
+```
+
+```lua
+local day = getCurrentDayOfWeek()
+```
+
+```js
+const day = Clock.getCurrentDayOfWeek()
+```
+</Opcode>
+
+## 日 / 月
+
+<Opcode id="0835" name="GET_CURRENT_DATE" member="Clock.GetCurrentDate">
+游戏内日、月。
+
+```text
+0835 GET_CURRENT_DATE
+out: day, month
+```
+
+```lua
+local day, month = getCurrentDate()
+```
+
+```js
+const { day, month } = Clock.getCurrentDate()
+```
+</Opcode>
+
+## 推进一天
+
+<Opcode id="088E" name="SET_TIME_ONE_DAY_FORWARD" member="Clock.SetTimeOneDayForward">
+推进到下一天。
+
+```text
+088E SET_TIME_ONE_DAY_FORWARD
+```
+
+```lua
+setTimeOneDayForward()
+```
+
+```js
+Clock.setTimeOneDayForward()
+```
+</Opcode>

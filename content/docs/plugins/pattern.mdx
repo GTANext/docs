@@ -1,0 +1,92 @@
+---
+title: 特征码 Pattern
+description: 特征码搜索与匹配后读内存
+---
+
+`shared/Pattern.h` · `plugin::pattern`
+
+用十六进制字节串在模块里定位地址。空格分隔，`?` 表示通配。结果会缓存；找不到时返回 `0`。
+
+```text
+"89 86 ? ? ? ? 8B 0D"
+```
+
+<Callout type="info" title="用法">
+搜到的地址通常交给 `CallDyn*` 或 `plugin::patch`。调用前务必判断非零。
+</Callout>
+
+## 主模块搜索
+
+<Api name="Get" header="plugin::pattern">
+在主模块中搜索特征串。`offset` 加在匹配起始地址上（可用来跳到指令中部或相对偏移处）。
+
+```cpp
+static uintptr_t Get(std::string_view const& bytes, int32_t offset = 0);
+```
+
+```cpp
+uintptr_t addr = plugin::pattern::Get("53 8B D9 83 EC 08", 0);
+if (!addr) {
+    return;
+}
+plugin::CallDyn(addr);
+```
+</Api>
+
+## 指定模块搜索
+
+<Api name="GetExternal" header="plugin::pattern">
+在指定模块映像中搜索，例如外部 DLL。
+
+```cpp
+static uintptr_t GetExternal(void* module, std::string_view const& bytes, int32_t offset = 0);
+```
+
+```cpp
+#include <Windows.h>
+
+HMODULE mod = GetModuleHandleA("d3d9.dll");
+if (!mod) {
+    return;
+}
+uintptr_t addr = plugin::pattern::GetExternal(mod, "8B FF 55 8B EC", 0);
+```
+</Api>
+
+## 匹配后读内存
+
+<Api name="Read / ReadExternal" header="plugin::pattern">
+先按特征定位，再从 `offset` 处按类型读取（常见：读绝对地址 / 函数指针）。
+
+```cpp
+template <typename T = void*>
+static auto Read(std::string_view const& bytes, int32_t offset = 0);
+
+template <typename T = void*>
+static auto ReadExternal(void* module, std::string_view const& bytes, int32_t offset = 0);
+```
+
+```cpp
+auto fn = plugin::pattern::Read<void(*)()>("A1 ? ? ? ? C3", 1);
+if (fn) {
+    fn();
+}
+auto p = plugin::pattern::ReadExternal<void*>(mod, "A1 ? ? ? ?", 1);
+```
+</Api>
+
+## 宏简写
+
+<Api name="gpattern / gpatternt" header="宏">
+常用简写：`gpattern` 等价 `Get(..., 0)`；`gpatternt` 等价 `Read`。
+
+```cpp
+#define gpattern(bytes) plugin::pattern::Get(bytes, 0)
+#define gpatternt(t, bytes, offset) plugin::pattern::Read<t>(bytes, offset)
+```
+
+```cpp
+uintptr_t addr = gpattern("53 8B D9");
+auto fn = gpatternt(void(*)(), "A1 ? ? ? ? C3", 1);
+```
+</Api>

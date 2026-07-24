@@ -1,0 +1,48 @@
+---
+title: 武器 Weapon
+description: 武器类型 → 模型 / 槽位
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 2 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 类型 → 模型
+
+<Opcode id="0781" name="GET_WEAPONTYPE_MODEL" member="Weapon.GetModel">
+武器类型 → 模型 ID。
+
+```text
+0781 GET_WEAPONTYPE_MODEL
+in: weaponType
+out: modelId
+```
+
+```lua
+local modelId = getWeapontypeModel(weaponType)
+```
+
+```js
+const modelId = Weapon.getModel(weaponType)
+```
+</Opcode>
+
+## 类型 → 槽位
+
+<Opcode id="0782" name="GET_WEAPONTYPE_SLOT" member="Weapon.GetSlot">
+武器类型 → 武器槽位。
+
+```text
+0782 GET_WEAPONTYPE_SLOT
+in: weaponType
+out: slot
+```
+
+```lua
+local slot = getWeapontypeSlot(weaponType)
+```
+
+```js
+const slot = Weapon.getSlot(weaponType)
+```
+</Opcode>

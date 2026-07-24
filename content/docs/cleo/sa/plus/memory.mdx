@@ -1,0 +1,176 @@
+---
+title: 内存 Memory
+description: 结构体读写、NOP 与自定义脚本地址
+---
+
+`sa` · 扩展 `CLEO+` · 需 CLEO + CLEO+
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 拷贝
+
+<Opcode id="0D27" name="COPY_MEMORY" member="Memory.Copy">
+从 `src` 拷 `size` 字节到 `dest`。
+
+```text
+0D27 COPY_MEMORY
+in: src, dest, size
+```
+
+```lua
+copyMemory(src, dest, 16)
+```
+
+```js
+Memory.copy(src, dest, size)
+```
+</Opcode>
+
+## 结构体下标
+
+<Opcode id="0D37" name="WRITE_STRUCT_PARAM" member="Memory.WriteStructParam">
+按下标写结构体 dword：`address + index*4`。
+
+```text
+0D37 WRITE_STRUCT_PARAM
+in: address, index, value
+```
+
+```lua
+writeStructParam(base, 2, 0x1234)
+```
+
+```js
+Memory.writeStructParam(address, index, value)
+```
+</Opcode>
+
+<Opcode id="0D38" name="READ_STRUCT_PARAM" member="Memory.ReadStructParam">
+按下标读结构体 dword。
+
+```text
+0D38 READ_STRUCT_PARAM
+in: address, index
+out: value
+```
+
+```lua
+local v = readStructParam(base, 2)
+```
+
+```js
+const value = Memory.readStructParam(address, index)
+```
+</Opcode>
+
+## 偏移读写
+
+<Opcode id="0D4E" name="READ_STRUCT_OFFSET" member="Memory.ReadStructOffset">
+从 `address+offset` 按 `size` 读值。
+
+```text
+0D4E READ_STRUCT_OFFSET
+in: address, offset, size
+out: result
+```
+
+```lua
+local v = readStructOffset(base, 0x14, 4)
+```
+
+```js
+const result = Memory.readStructOffset(address, offset, size)
+```
+</Opcode>
+
+<Opcode id="0E28" name="WRITE_STRUCT_OFFSET" member="Memory.WriteStructOffset">
+往 `address+offset` 按 `size` 写值（与 `0D4E` 配对；下标版见 `0D37`）。
+
+```text
+0E28 WRITE_STRUCT_OFFSET
+in: address, offset, size, value
+```
+
+```lua
+writeStructOffset(base, 0x14, 4, 1)
+```
+
+```js
+Memory.writeStructOffset(address, offset, size, value)
+```
+</Opcode>
+
+## NOP
+
+<Opcode id="0E6A" name="MAKE_NOP" member="Memory.MakeNop">
+从 `address` 起写 `size` 个 `0x90`。
+
+```text
+0E6A MAKE_NOP
+in: address, size
+```
+
+```lua
+makeNop(0x123456, 5)
+```
+
+```js
+Memory.makeNop(address, size)
+```
+</Opcode>
+
+## 最近自定义脚本
+
+<Opcode id="0E70" name="GET_LAST_CREATED_CUSTOM_SCRIPT" member="Memory.GetLastCreatedCustomScript">
+最近一次创建的自定义脚本地址。用在 `if` 里。
+
+```text
+0E70 GET_LAST_CREATED_CUSTOM_SCRIPT
+out: address
+```
+
+```lua
+local addr = getLastCreatedCustomScript()
+```
+
+```js
+const address = Memory.getLastCreatedCustomScript()
+```
+</Opcode>
+
+## 连续多值
+
+<Opcode id="0EE2" name="READ_STRUCT_OFFSET_MULTI" member="Memory.ReadStructOffsetMulti">
+从 `address+offset` 按 `size` 连续读 `count` 个值（数组/向量）。
+
+```text
+0EE2 READ_STRUCT_OFFSET_MULTI
+in: address, offset, count, size
+out: results
+```
+
+```lua
+local a, b, c = readStructOffsetMulti(base, 0, 3, 4)
+```
+
+```js
+const results = Memory.readStructOffsetMulti(address, offset, count, size)
+```
+</Opcode>
+
+<Opcode id="0EE3" name="WRITE_STRUCT_OFFSET_MULTI" member="Memory.WriteStructOffsetMulti">
+往 `address+offset` 连续写多个值。
+
+```text
+0EE3 WRITE_STRUCT_OFFSET_MULTI
+in: address, offset, count, size, params
+```
+
+```lua
+writeStructOffsetMulti(base, 0, 3, 4, v1, v2, v3)
+```
+
+```js
+Memory.writeStructOffsetMulti(address, offset, count, size, ...params)
+```
+</Opcode>

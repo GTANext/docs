@@ -1,0 +1,95 @@
+---
+title: 贴图字典 CTxdStore
+description: 贴图字典槽加载与引用
+---
+
+`CTxdStore.h`
+
+贴图字典槽。加载自定义 UI 贴图常用：`AddTxdSlot` → `LoadTxd` → `AddRef` → `SetCurrentTxd`。
+
+## 分配槽
+
+<Api name="AddTxdSlot / FindTxdSlot / RemoveTxdSlot">
+
+```cpp
+static int AddTxdSlot(char const* name);
+static int FindTxdSlot(char const* name);
+static int FindTxdSlot(unsigned int hash);
+static void RemoveTxdSlot(int index);
+```
+
+```cpp
+int slot = CTxdStore::FindTxdSlot("myui");
+if (slot == -1) {
+    slot = CTxdStore::AddTxdSlot("myui");
+}
+```
+</Api>
+
+## 从文件加载
+
+<Api name="LoadTxd / Create">
+
+```cpp
+static bool LoadTxd(int index, char const* filename);
+static bool LoadTxd(int index, RwStream* stream);
+static void Create(int index);
+```
+
+```cpp
+CTxdStore::LoadTxd(slot, "models\\myui.txd"); // 路径以实际为准
+```
+</Api>
+
+## 引用计数
+
+<Api name="AddRef / RemoveRef / GetNumRefs">
+引用到 0 会删。
+
+```cpp
+static TxdDef* AddRef(int index);
+static void RemoveRef(int index);
+static TxdDef* RemoveRefWithoutDelete(int index);
+static unsigned int GetNumRefs(int index);
+```
+
+```cpp
+CTxdStore::AddRef(slot);
+// 不用时
+// CTxdStore::RemoveRef(slot);
+```
+</Api>
+
+## 设当前 TXD
+
+<Api name="SetCurrentTxd / PushCurrentTxd / PopCurrentTxd">
+`SetTexture` 前要先设当前。
+
+```cpp
+static void SetCurrentTxd(int index);
+static void PushCurrentTxd();
+static void PopCurrentTxd();
+```
+
+```cpp
+CTxdStore::PushCurrentTxd();
+CTxdStore::SetCurrentTxd(slot);
+// sprite.SetTexture("icon");
+CTxdStore::PopCurrentTxd();
+```
+</Api>
+
+## 移除 TXD 数据
+
+<Api name="RemoveTxd">
+
+```cpp
+static void RemoveTxd(int index);
+```
+
+```cpp
+CTxdStore::RemoveTxd(slot);
+```
+</Api>
+
+设备丢失时配合 `d3dLost` / `d3dReset` 重载，或用 `SpriteLoader` / `DynamicResource`。

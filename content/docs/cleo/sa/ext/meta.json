@@ -1,0 +1,20 @@
+{
+  "title": "SA 扩展",
+  "pages": [
+    "index",
+    "audio",
+    "bitwise",
+    "clipboard",
+    "debug",
+    "file",
+    "ini",
+    "input",
+    "math",
+    "memory",
+    "text",
+    "sphere",
+    "newopcodes",
+    "imgui",
+    "sampfuncs"
+  ]
+}

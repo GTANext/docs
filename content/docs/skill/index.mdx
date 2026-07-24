@@ -1,0 +1,31 @@
+---
+title: 综述
+description: Cursor / IDE 用 gtamodx skill 路由与边界
+---
+
+面向 **写代码的 agent / 开发者**：约束 API 边界、选对文档分区。
+
+源文件：`E:\GTA\dev\.cursor\skills\gtamodx\`。
+
+## 子 skill
+
+| 页 | 场景 |
+|---|---|
+| [插件开发](/docs/skill/plugins-dev) | ASI · `plugin::` · Events · Patch · Pattern · 实体 C++ |
+| [CLEO 开发](/docs/skill/cleo-dev) | opcode · Lua · Redux · CLEO+ / default / ext |
+
+## 硬边界
+
+| 需求 | 正确分区 | 别混 |
+|---|---|---|
+| 脚本 opcode（`0A8C`、`createCar`） | [CLEO](/docs/cleo) | 当 C++ 能编进 ASI |
+| C++ 调 SCM | [Command](/docs/plugins/commands) | 把 Lua/JS 贴进 `.cpp` |
+| 调游戏函数 / 补丁 / 事件 | [插件](/docs/plugins) | 用 opcode 表替代 Call |
+| 实体挂数据 | [Extender](/docs/plugins/extender) | 和 CLEO handle 混用 |
+
+## 文档入口
+
+- 插件：[综述](/docs/plugins)
+- CLEO：[综述](/docs/cleo)
+
+方法名与签名 **以对应文档页为准**，禁止臆造。

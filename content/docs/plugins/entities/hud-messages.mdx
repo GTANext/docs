@@ -1,0 +1,115 @@
+---
+title: HUD 消息 CHud / CMessages
+description: 帮助信息、大字与 Brief 消息
+---
+
+`CHud.h` · `CMessages.h`
+
+UI 字与帮助信息。文本指针生命周期要稳（别传临时栈 buffer 长期挂着）。
+
+## 帮助信息
+
+<Api name="CHud::SetHelpMessage">
+
+```cpp
+static void SetHelpMessage(char const* text, bool quickMessage, bool permanent, bool addToBrief);
+static void SetHelpMessageWithNumber(char const* text, int number, bool quickMessage, bool permanent);
+```
+
+```cpp
+CHud::SetHelpMessage("HELLO", true, false, false);
+```
+</Api>
+
+## 大字与字幕
+
+<Api name="SetBigMessage / SetMessage / SetZoneName">
+
+```cpp
+static void SetBigMessage(char* text, unsigned short style);
+static void SetMessage(char* text);
+static void SetZoneName(char* name, unsigned char displayState);
+static void SetVehicleName(char* name);
+```
+
+```cpp
+// CHud::SetBigMessage(buf, 0);
+```
+</Api>
+
+## 隐藏雷达 / HUD
+
+<Api name="bScriptDontDisplayRadar / m_Wants_To_Draw_Hud">
+
+```cpp
+static bool& bScriptDontDisplayRadar;
+static bool& m_Wants_To_Draw_Hud;
+static bool& bScriptDontDisplayAreaName;
+static bool& bScriptDontDisplayVehicleName;
+```
+
+```cpp
+CHud::bScriptDontDisplayRadar = true;
+```
+</Api>
+
+## 清 HUD 消息
+
+<Api name="GetRidOfAllHudMessages / ResetWastedText">
+
+```cpp
+static void GetRidOfAllHudMessages(unsigned char arg0);
+static void ResetWastedText();
+```
+
+```cpp
+CHud::GetRidOfAllHudMessages(0);
+```
+</Api>
+
+## 底部 Brief 消息
+
+<Api name="CMessages::AddMessage / AddMessageJumpQ">
+
+```cpp
+static void AddMessage(const char* text, unsigned int time, unsigned short flag, bool bPreviousBrief = true);
+static void AddMessageJumpQ(const char* text, unsigned int time, unsigned short flag, bool bPreviousBrief = true);
+static void ClearMessages(bool flag);
+static void ClearAllMessagesDisplayedByGame();
+```
+
+```cpp
+CMessages::AddMessageJumpQ("TEST", 2000, 0, true);
+```
+</Api>
+
+## 大字队列
+
+<Api name="AddBigMessage / AddBigMessageQ">
+
+```cpp
+static void AddBigMessage(const char* text, unsigned int time, unsigned short style);
+static void AddBigMessageQ(const char* text, unsigned int time, unsigned short style);
+// STYLE_MIDDLE, STYLE_BOTTOM_RIGHT, ...
+```
+
+```cpp
+CMessages::AddBigMessage("OK", 3000, STYLE_MIDDLE);
+```
+</Api>
+
+## 带数字的消息
+
+<Api name="AddMessageWithNumber / AddBigMessageWithNumber">
+
+```cpp
+static void AddMessageWithNumber(const char* text, unsigned int time, unsigned short flag,
+    int n1, int n2, int n3, int n4, int n5, int n6, bool bPreviousBrief = true);
+static void AddBigMessageWithNumber(const char* text, unsigned int time, unsigned short style,
+    int n1, int n2, int n3, int n4, int n5, int n6);
+```
+
+```cpp
+// GXT 里 ~1~ 类占位用数字填充
+```
+</Api>

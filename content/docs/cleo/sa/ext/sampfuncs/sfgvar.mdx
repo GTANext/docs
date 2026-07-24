@@ -1,0 +1,105 @@
+---
+title: 全局变量 SfGVar
+description: 自定义全局变量
+---
+
+`sa` · 扩展 `SAMPFUNCS` · 仅 SA-MP；需 SAMPFUNCS
+
+共 5 条。调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 读写 / 存在
+
+<Opcode id="0BFC" name="SF_SET_CUSTOM_GLOBAL_VARIABLE" member="SfGVar.Set">
+设置指定名称自定义全局变量的值。用在 `if` 里。
+
+```text
+0BFC SF_SET_CUSTOM_GLOBAL_VARIABLE
+in: name, value
+```
+
+```lua
+if sfSetCustomGlobalVariable(name, value) then
+end
+```
+
+```js
+if (SfGVar.Set(name, value)) {
+}
+```
+</Opcode>
+
+<Opcode id="0BFD" name="SF_GET_CUSTOM_GLOBAL_VARIABLE" member="SfGVar.Get">
+返回指定名称自定义全局变量的值。
+
+```text
+0BFD SF_GET_CUSTOM_GLOBAL_VARIABLE
+in: name
+out: value
+```
+
+```lua
+local value = sfGetCustomGlobalVariable(name)
+```
+
+```js
+const value = SfGVar.Get(name)
+```
+</Opcode>
+
+<Opcode id="0C5F" name="SF_DOES_CUSTOM_GLOBAL_VARIABLE_EXIST" member="SfGVar.DoesExist">
+若指定名称的自定义全局变量存在则为真。
+
+```text
+0C5F SF_DOES_CUSTOM_GLOBAL_VARIABLE_EXIST
+in: name
+```
+
+```lua
+if sfDoesCustomGlobalVariableExist(name) then
+end
+```
+
+```js
+if (SfGVar.DoesExist(name)) {
+}
+```
+</Opcode>
+
+## 权限
+
+<Opcode id="0C60" name="SF_SET_CUSTOM_GLOBAL_VARIABLE_SCOPE" member="SfGVar.SetScope">
+设置指定脚本对自定义全局变量的读写权限。用在 `if` 里。
+
+```text
+0C60 SF_SET_CUSTOM_GLOBAL_VARIABLE_SCOPE
+in: gVarName, scriptPtr, canRead, canWrite
+```
+
+```lua
+if sfSetCustomGlobalVariableScope(gVarName, scriptPtr, canRead, canWrite) then
+end
+```
+
+```js
+if (SfGVar.SetScope(gVarName, scriptPtr, canRead, canWrite)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C61" name="SF_GET_CUSTOM_GLOBAL_VARIABLE_SCOPE" member="SfGVar.GetScope">
+返回指定脚本对自定义全局变量的读写权限。
+
+```text
+0C61 SF_GET_CUSTOM_GLOBAL_VARIABLE_SCOPE
+in: gVarName, scriptPtr
+out: canRead, canWrite
+```
+
+```lua
+local canRead, canWrite = sfGetCustomGlobalVariableScope(gVarName, scriptPtr)
+```
+
+```js
+const { canRead, canWrite } = SfGVar.GetScope(gVarName, scriptPtr)
+```
+</Opcode>

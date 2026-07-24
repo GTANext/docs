@@ -1,0 +1,50 @@
+---
+title: 数学 Math
+description: 幂与对数
+---
+
+`gta3` · 扩展 `CLEO` · 需 CLEO
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 幂
+
+<Opcode id="0AEE" name="POW" member="Math.Pow">
+幂。经典别名 `05F3`。
+
+```text
+0AEE POW
+in: number, power
+out: result
+// 经典别名 05F3
+```
+
+```lua
+local r = pow(2.0, 8.0)
+```
+
+```js
+const result = Math.pow(number, power)
+```
+</Opcode>
+
+## 对数
+
+<Opcode id="0AEF" name="LOG" member="Math.Log">
+对数。经典别名 `05F4`。
+
+```text
+0AEF LOG
+in: number, base
+out: result
+// 经典别名 05F4
+```
+
+```lua
+local r = log(100.0, 10.0)
+```
+
+```js
+const result = Math.log(number, base)
+```
+</Opcode>

@@ -1,0 +1,160 @@
+---
+title: 组件 Atomic
+description: 部件父节点、RpAtomic 显隐与材质
+---
+
+`sa` · 扩展 `NewOpcodes` · 需 CLEO + NewOpcodes
+
+部件父节点、RpAtomic 显隐与材质。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## Component
+
+<Opcode id="0D74" name="GET_COMPONENT_PARENT_COMPONENT" member="Component.GetParentComponent">
+取部件的父 frame。
+
+```text
+0D74 GET_COMPONENT_PARENT_COMPONENT
+in: self
+out: parentComponent
+```
+
+```lua
+local parent = getComponentParentComponent(comp)
+```
+
+```js
+const parentComponent = Component.getParentComponent(self)
+```
+</Opcode>
+
+<Opcode id="0D75" name="GET_COMPONENT_NUM_OBJECTS" member="Component.GetNumObjects">
+取部件下 RpAtomic 数量。
+
+```text
+0D75 GET_COMPONENT_NUM_OBJECTS
+in: self
+out: numObjects
+```
+
+```lua
+local n = getComponentNumObjects(comp)
+```
+
+```js
+const numObjects = Component.getNumObjects(self)
+```
+</Opcode>
+
+<Opcode id="0D76" name="GET_COMPONENT_OBJECT">
+按索引取部件下的 atomic。用在 `if` 里。
+
+```text
+0D76 GET_COMPONENT_OBJECT
+in: component, object
+out: componentObject
+```
+
+```lua
+if getComponentObject(comp, 0) then
+end
+```
+
+```js
+if (native(0x0D76, component, object)) {
+}
+```
+</Opcode>
+
+## Atomic 显隐 / 材质
+
+<Opcode id="0D77" name="HIDE_OBJECT_ATOMIC">
+隐藏(1) / 显示(0) atomic（改 render flags）。
+
+```text
+0D77 HIDE_OBJECT_ATOMIC
+in: objectAtomic, hide
+```
+
+```lua
+hideObjectAtomic(atomic, true)
+```
+
+```js
+native(0x0D77, objectAtomic, hide)
+```
+</Opcode>
+
+<Opcode id="0D78" name="GET_OBJECT_ATOMIC_FLAG">
+读 atomic 上某可见性 flag。
+
+```text
+0D78 GET_OBJECT_ATOMIC_FLAG
+in: object, atomicFlag
+out: state
+```
+
+```lua
+local on = getObjectAtomicFlag(obj, flag)
+```
+
+```js
+const state = native(0x0D78, object, atomicFlag)
+```
+</Opcode>
+
+<Opcode id="0D79" name="SET_OBJECT_ATOMIC_FLAG">
+设 / 清 atomic 可见性 flag。
+
+```text
+0D79 SET_OBJECT_ATOMIC_FLAG
+in: object, atomicFlag, state
+```
+
+```lua
+setObjectAtomicFlag(obj, flag, true)
+```
+
+```js
+native(0x0D79, object, atomicFlag, state)
+```
+</Opcode>
+
+<Opcode id="0D7A" name="GET_OBJECT_ATOMIC_NUM_MATERIALS">
+取 atomic geometry 材质数。用在 `if` 里。
+
+```text
+0D7A GET_OBJECT_ATOMIC_NUM_MATERIALS
+in: object
+out: numMaterials
+```
+
+```lua
+if getObjectAtomicNumMaterials(atomic) then
+end
+```
+
+```js
+if (native(0x0D7A, object)) {
+}
+```
+</Opcode>
+
+<Opcode id="0D7B" name="GET_OBJECT_ATOMIC_MATERIAL_TEXTURE">
+按材质下标取贴图指针。用在 `if` 里。
+
+```text
+0D7B GET_OBJECT_ATOMIC_MATERIAL_TEXTURE
+in: object, material
+out: texture
+```
+
+```lua
+if getObjectAtomicMaterialTexture(atomic, 0) then
+end
+```
+
+```js
+if (native(0x0D7B, object, material)) {
+}
+```
+</Opcode>

@@ -1,0 +1,114 @@
+---
+title: 物体 CObject
+description: 物体血量、伤害、绳索与门
+---
+
+`CObject.h` · 继承 `CPhysical`
+
+逻辑帧改；drawing 只读。
+
+## 创建与类型
+
+<Api name="CObject / m_nObjectType">
+也可用 Command 创建后 `CPools::GetObject`。
+
+```cpp
+CObject();
+CObject(int32_t modelId, bool bCreate);
+unsigned char m_nObjectType; // OBJECT_MISSION 等
+```
+
+```cpp
+// 推荐：Command CREATE_OBJECT 再 GetObject(handle)
+```
+</Api>
+
+## 血量与缩放
+
+<Api name="m_fHealth / m_fScale">
+
+```cpp
+float m_fHealth;
+float m_fScale;
+// m_nObjectFlags bitfield
+```
+
+```cpp
+obj->m_fHealth = 1000.0f;
+obj->m_fScale = 1.0f;
+```
+</Api>
+
+## 伤害与爆炸
+
+<Api name="ObjectDamage / Explode / TryToExplode">
+
+```cpp
+void ObjectDamage(float damage, CVector* fxOrigin, CVector* fxDirection, CEntity* damager, eWeaponType weaponType);
+void Explode();
+bool TryToExplode();
+void ObjectFireDamage(float damage, CEntity* damager);
+```
+
+```cpp
+obj->ObjectDamage(50.0f, nullptr, nullptr, nullptr, WEAPONTYPE_UNARMED);
+```
+</Api>
+
+## 可锁定目标
+
+<Api name="SetObjectTargettable / CanBeTargetted">
+
+```cpp
+void SetObjectTargettable(unsigned char targetable);
+bool CanBeTargetted();
+```
+
+```cpp
+obj->SetObjectTargettable(1);
+```
+</Api>
+
+## 门行为
+
+<Api name="LockDoor / ResetDoorAngle">
+
+```cpp
+void LockDoor();
+void ResetDoorAngle();
+float m_fDoorStartAngle;
+```
+
+```cpp
+obj->LockDoor();
+```
+</Api>
+
+## 绳索
+
+<Api name="GetRopeHeight / SetRopeHeight">
+
+```cpp
+float GetRopeHeight();
+void SetRopeHeight(float height);
+CEntity* GetObjectCarriedWithRope();
+void ReleaseObjectCarriedWithRope();
+```
+
+```cpp
+float h = obj->GetRopeHeight();
+```
+</Api>
+
+## 重映射贴图
+
+<Api name="SetRemapTexture">
+
+```cpp
+void SetRemapTexture(RwTexture* remapTexture, short txdIndex);
+```
+
+```cpp
+// obj->SetRemapTexture(tex, txdIndex);
+```
+</Api>

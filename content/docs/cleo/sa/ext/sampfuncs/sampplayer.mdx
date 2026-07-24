@@ -1,0 +1,359 @@
+---
+title: 玩家 SampPlayer
+description: 远程玩家状态、数据与 NPC
+---
+
+`sa` · 扩展 `SAMPFUNCS` · 仅 SA-MP；需 SAMPFUNCS
+
+共 19 条。远程玩家句柄 / 血甲 / 昵称 / 同步缓冲。调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 句柄 / 连接
+
+<Opcode id="0B20" name="SAMP_GET_PLAYER_CHAR_BY_ID" member="SampPlayer.GetChar">
+按玩家 ID 返回角色句柄；不在流送区则返回 -1。
+
+```text
+0B20 SAMP_GET_PLAYER_CHAR_BY_ID
+in: self
+out: handle
+```
+
+```lua
+local handle = sampGetPlayerCharById(self)
+```
+
+```js
+const handle = SampPlayer.getChar(self)
+```
+</Opcode>
+
+<Opcode id="0B23" name="SAMP_IS_REMOTE_PLAYER_CONNECTED" member="SampPlayer.IsRemotelyConnected">
+若指定 ID 的远程玩家已连接则为真。
+
+```text
+0B23 SAMP_IS_REMOTE_PLAYER_CONNECTED
+in: self
+```
+
+```lua
+if sampIsRemotePlayerConnected(self) then
+end
+```
+
+```js
+if (SampPlayer.isRemotelyConnected(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0B24" name="SAMP_GET_PLAYER_POINTER" member="SampPlayer.GetPtr">
+返回该玩家的 SA-MP 结构体指针；未连接则返回 0。
+
+```text
+0B24 SAMP_GET_PLAYER_POINTER
+in: self
+out: address
+```
+
+```lua
+local address = sampGetPlayerPointer(self)
+```
+
+```js
+const address = SampPlayer.getPtr(self)
+```
+</Opcode>
+
+## 状态
+
+<Opcode id="0B25" name="SAMP_GET_PLAYER_HEALTH" member="SampPlayer.GetHealth">
+返回指定玩家的生命值。
+
+```text
+0B25 SAMP_GET_PLAYER_HEALTH
+in: self
+out: health
+```
+
+```lua
+local health = sampGetPlayerHealth(self)
+```
+
+```js
+const health = SampPlayer.getHealth(self)
+```
+</Opcode>
+
+<Opcode id="0B26" name="SAMP_GET_PLAYER_ARMOR" member="SampPlayer.GetArmor">
+返回指定玩家的护甲值。
+
+```text
+0B26 SAMP_GET_PLAYER_ARMOR
+in: self
+out: armor
+```
+
+```lua
+local armor = sampGetPlayerArmor(self)
+```
+
+```js
+const armor = SampPlayer.getArmor(self)
+```
+</Opcode>
+
+<Opcode id="0B2A" name="SAMP_GET_PLAYER_PING" member="SampPlayer.GetPing">
+返回指定玩家的 ping。
+
+```text
+0B2A SAMP_GET_PLAYER_PING
+in: self
+out: ping
+```
+
+```lua
+local ping = sampGetPlayerPing(self)
+```
+
+```js
+const ping = SampPlayer.getPing(self)
+```
+</Opcode>
+
+<Opcode id="0B2F" name="SAMP_GET_STREAMED_OUT_PLAYER_COORDS" member="SampPlayer.GetStreamedOutCoords">
+若服务器允许，返回流送区外玩家的三维坐标。
+
+```text
+0B2F SAMP_GET_STREAMED_OUT_PLAYER_COORDS
+in: self
+out: x, y, z
+```
+
+```lua
+local x, y, z = sampGetStreamedOutPlayerCoords(self)
+```
+
+```js
+const { x, y, z } = SampPlayer.getStreamedOutCoords(self)
+```
+</Opcode>
+
+<Opcode id="0B36" name="SAMP_GET_PLAYER_NICKNAME" member="SampPlayer.GetName">
+返回指定玩家昵称的指针。
+
+```text
+0B36 SAMP_GET_PLAYER_NICKNAME
+in: self
+out: nickname
+```
+
+```lua
+local nickname = sampGetPlayerNickname(self)
+```
+
+```js
+const nickname = SampPlayer.getName(self)
+```
+</Opcode>
+
+<Opcode id="0B37" name="SAMP_GET_PLAYER_COLOR" member="SampPlayer.GetColor">
+以 `0xAARRGGBB` 格式返回指定玩家颜色。
+
+```text
+0B37 SAMP_GET_PLAYER_COLOR
+in: self
+out: color
+```
+
+```lua
+local color = sampGetPlayerColor(self)
+```
+
+```js
+const color = SampPlayer.getColor(self)
+```
+</Opcode>
+
+<Opcode id="0B57" name="SAMP_GET_PLAYER_ANIMATION" member="SampPlayer.GetAnim">
+返回指定玩家当前播放动画的 SA-MP ID。
+
+```text
+0B57 SAMP_GET_PLAYER_ANIMATION
+in: self
+out: animId
+```
+
+```lua
+local animId = sampGetPlayerAnimation(self)
+```
+
+```js
+const animId = SampPlayer.getAnim(self)
+```
+</Opcode>
+
+<Opcode id="0B5C" name="SAMP_IS_PLAYER_PAUSED" member="SampPlayer.IsPaused">
+若指定玩家处于暂停/AFK 则为真。
+
+```text
+0B5C SAMP_IS_PLAYER_PAUSED
+in: self
+```
+
+```lua
+if sampIsPlayerPaused(self) then
+end
+```
+
+```js
+if (SampPlayer.isPaused(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0B62" name="SAMP_GET_PLAYER_SPECIAL_ACTION" member="SampPlayer.GetSpecialAction">
+返回指定玩家的特殊动作 ID。
+
+```text
+0B62 SAMP_GET_PLAYER_SPECIAL_ACTION
+in: self
+out: specialActionId
+```
+
+```lua
+local specialActionId = sampGetPlayerSpecialAction(self)
+```
+
+```js
+const specialActionId = SampPlayer.getSpecialAction(self)
+```
+</Opcode>
+
+<Opcode id="0B64" name="SAMP_IS_PLAYER_NPC" member="SampPlayer.IsNpc">
+检查指定玩家是否为 NPC。
+
+```text
+0B64 SAMP_IS_PLAYER_NPC
+in: self
+```
+
+```lua
+if sampIsPlayerNpc(self) then
+end
+```
+
+```js
+if (SampPlayer.isNpc(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0B65" name="SAMP_GET_PLAYER_SCORE" member="SampPlayer.GetScore">
+返回指定玩家当前分数。
+
+```text
+0B65 SAMP_GET_PLAYER_SCORE
+in: self
+out: score
+```
+
+```lua
+local score = sampGetPlayerScore(self)
+```
+
+```js
+const score = SampPlayer.getScore(self)
+```
+</Opcode>
+
+## 同步缓冲
+
+<Opcode id="0BBA" name="SAMP_STORE_PLAYER_ONFOOT_DATA" member="SampPlayer.StoreOnFootData">
+把该玩家当前 onFootData 结构写入 buffer。
+
+```text
+0BBA SAMP_STORE_PLAYER_ONFOOT_DATA
+in: self
+out: buffer
+```
+
+```lua
+local buffer = sampStorePlayerOnfootData(self)
+```
+
+```js
+const buffer = SampPlayer.storeOnFootData(self)
+```
+</Opcode>
+
+<Opcode id="0BBB" name="SAMP_STORE_PLAYER_DRIVING_DATA" member="SampPlayer.StoreDrivingData">
+把该玩家当前 inCarData 结构写入 buffer。
+
+```text
+0BBB SAMP_STORE_PLAYER_DRIVING_DATA
+in: self
+out: buffer
+```
+
+```lua
+local buffer = sampStorePlayerDrivingData(self)
+```
+
+```js
+const buffer = SampPlayer.storeDrivingData(self)
+```
+</Opcode>
+
+<Opcode id="0BBC" name="SAMP_STORE_PLAYER_PASSENGER_DATA" member="SampPlayer.StorePassengerData">
+把该玩家当前 passengerData 结构写入 buffer。
+
+```text
+0BBC SAMP_STORE_PLAYER_PASSENGER_DATA
+in: self
+out: buffer
+```
+
+```lua
+local buffer = sampStorePlayerPassengerData(self)
+```
+
+```js
+const buffer = SampPlayer.storePassengerData(self)
+```
+</Opcode>
+
+<Opcode id="0BBD" name="SAMP_STORE_PLAYER_TRAILER_DATA" member="SampPlayer.StoreTrailerData">
+把该玩家当前 trailerData 结构写入 buffer。
+
+```text
+0BBD SAMP_STORE_PLAYER_TRAILER_DATA
+in: self
+out: buffer
+```
+
+```lua
+local buffer = sampStorePlayerTrailerData(self)
+```
+
+```js
+const buffer = SampPlayer.storeTrailerData(self)
+```
+</Opcode>
+
+<Opcode id="0BBE" name="SAMP_STORE_PLAYER_AIM_DATA" member="SampPlayer.StoreAimData">
+把指定玩家 aimData 结构写入 buffer。
+
+```text
+0BBE SAMP_STORE_PLAYER_AIM_DATA
+in: self
+out: buffer
+```
+
+```lua
+local buffer = sampStorePlayerAimData(self)
+```
+
+```js
+const buffer = SampPlayer.storeAimData(self)
+```
+</Opcode>

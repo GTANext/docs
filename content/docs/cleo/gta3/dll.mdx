@@ -1,0 +1,67 @@
+---
+title: 动态库 DynamicLibrary
+description: 加载 DLL 与取导出地址
+---
+
+`gta3` · 扩展 `CLEO` · 需 CLEO
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 加载动态库
+
+<Opcode id="0AA2" name="LOAD_DYNAMIC_LIBRARY" member="DynamicLibrary.Load">
+加载 DLL。
+
+```text
+0AA2 LOAD_DYNAMIC_LIBRARY
+in: fileName
+out: handle
+```
+
+```lua
+local mod = loadDynamicLibrary("kernel32.dll")
+```
+
+```js
+const handle = DynamicLibrary.load(fileName)
+```
+</Opcode>
+
+## 卸载动态库
+
+<Opcode id="0AA3" name="FREE_DYNAMIC_LIBRARY" member="DynamicLibrary.Free">
+卸载。
+
+```text
+0AA3 FREE_DYNAMIC_LIBRARY
+in: self
+```
+
+```lua
+freeDynamicLibrary(mod)
+```
+
+```js
+DynamicLibrary.free(self)
+```
+</Opcode>
+
+## 取导出过程地址
+
+<Opcode id="0AA4" name="GET_DYNAMIC_LIBRARY_PROCEDURE" member="DynamicLibrary.GetProcedure">
+取导出地址。
+
+```text
+0AA4 GET_DYNAMIC_LIBRARY_PROCEDURE
+in: procName, self
+out: address
+```
+
+```lua
+local addr = getDynamicLibraryProcedure("GetTickCount", mod)
+```
+
+```js
+const address = DynamicLibrary.getProcedure(procName, self)
+```
+</Opcode>

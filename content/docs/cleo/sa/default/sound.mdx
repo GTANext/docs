@@ -1,0 +1,46 @@
+---
+title: 音效 Sound
+description: 一次性音效
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 2 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 播一次
+
+<Opcode id="018C" name="ADD_ONE_OFF_SOUND" member="Sound.AddOneOffSound">
+在坐标播一次指定 ID 音效。
+
+```text
+018C ADD_ONE_OFF_SOUND
+in: x, y, z, soundId
+```
+
+```lua
+addOneOffSound(x, y, z, soundId)
+```
+
+```js
+Sound.addOneOffSound(x, y, z, soundId)
+```
+</Opcode>
+
+## 移除
+
+<Opcode id="018E" name="REMOVE_SOUND" member="Sound.Remove">
+停掉 / 释放该音效实例。
+
+```text
+018E REMOVE_SOUND
+in: self
+```
+
+```lua
+removeSound(self)
+```
+
+```js
+Sound.remove(self)
+```
+</Opcode>

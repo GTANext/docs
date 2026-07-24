@@ -1,0 +1,89 @@
+---
+title: 音频引擎 CAudioEngine
+description: 前端音效、电台与主音量
+---
+
+`CAudioEngine.h` · 全局 `AudioEngine`
+
+前端音效、电台、主音量。细粒度 `CAE*` 实体本页不展开。
+
+## 前端音效
+
+<Api name="ReportFrontendAudioEvent">
+id / volume / speed。
+
+```cpp
+CReference* ReportFrontendAudioEvent(int id, float volume, float speed);
+```
+
+```cpp
+AudioEngine.ReportFrontendAudioEvent(id, 0.0f, 1.0f);
+// id 见游戏音频事件表 / eAudioEvents 相关
+```
+</Api>
+
+## 任务音频事件
+
+<Api name="ReportMissionAudioEvent">
+
+```cpp
+void ReportMissionAudioEvent(eAudioEvents audioEvent, CVector const* coords);
+```
+
+```cpp
+CVector p = ped->GetPosition();
+AudioEngine.ReportMissionAudioEvent(eventId, &p);
+```
+</Api>
+
+## 音量
+
+<Api name="SetEffectsMasterVolume / SetMusicMasterVolume">
+
+```cpp
+void SetEffectsMasterVolume(char volume);
+void SetMusicMasterVolume(char volume);
+void SetMusicFaderScalingFactor(float value);
+void SetEffectsFaderScalingFactor(float value);
+```
+
+```cpp
+// AudioEngine.SetEffectsMasterVolume(vol);
+```
+</Api>
+
+## 电台
+
+<Api name="StartRadio / StopRadio / GetCurrentRadioStationID">
+
+```cpp
+void StartRadio(int radioStation, char arg);
+void StopRadio(tVehicleAudioSettings* settings, bool arg);
+void RetuneRadio(char stationId);
+char GetCurrentRadioStationID();
+bool IsRadioOn();
+bool IsVehicleRadioActive();
+```
+
+```cpp
+char st = AudioEngine.GetCurrentRadioStationID();
+```
+</Api>
+
+## 状态查询
+
+<Api name="IsLoadingTuneActive / IsRadioRetuneInProgress">
+
+```cpp
+bool IsLoadingTuneActive();
+bool IsRadioRetuneInProgress();
+bool IsAmbienceTrackActive();
+```
+</Api>
+
+## 注意
+
+| 点 | 说明 |
+|---|---|
+| 简单音效 | 也可用 [Utils 音频](/docs/plugins/utils/audio) |
+| 底层 | `CAE*` 管理器众多，按需查头文件 |

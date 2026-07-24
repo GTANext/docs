@@ -1,0 +1,114 @@
+---
+title: 载具 Vehicle
+description: 车灯损伤、车类、dummy 点、抛射物
+---
+
+`sa` · 扩展 `NewOpcodes` · 需 CLEO + NewOpcodes
+
+车灯损伤、车类、dummy 点、抛射物。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 车灯损伤
+
+<Opcode id="0D5C" name="GET_CAR_LIGHT_DAMAGE_STATUS">
+读指定车灯（大灯/尾灯等）是否损坏。
+
+```text
+0D5C GET_CAR_LIGHT_DAMAGE_STATUS
+in: car, light
+out: damageState
+```
+
+```lua
+local broken = getCarLightDamageStatus(car, light)
+```
+
+```js
+const damageState = native(0x0D5C, car, light)
+```
+</Opcode>
+
+<Opcode id="0D5D" name="SET_CAR_LIGHT_DAMAGE_STATUS">
+写指定车灯损坏状态。
+
+```text
+0D5D SET_CAR_LIGHT_DAMAGE_STATUS
+in: car, light, damageState
+```
+
+```lua
+setCarLightDamageStatus(car, light, true)
+```
+
+```js
+native(0x0D5D, car, light, damageState)
+```
+</Opcode>
+
+## 车类 / dummy
+
+<Opcode id="0D5E" name="GET_VEHICLE_CLASS_AND_SUBCLASS">
+取载具 class / subclass。
+
+```text
+0D5E GET_VEHICLE_CLASS_AND_SUBCLASS
+in: vehicle
+out: class, subclass
+```
+
+```lua
+local cls, sub = getVehicleClassAndSubclass(car)
+```
+
+```js
+const { class: vehicleClass, subclass } = native(0x0D5E, vehicle)
+```
+</Opcode>
+
+<Opcode id="0D5F" name="GET_VEHICLE_DUMMY_POSN">
+取车 dummy 点坐标（世界或局部，由 `position` / `invertX` 控制）。用在 `if` 里。
+
+```text
+0D5F GET_VEHICLE_DUMMY_POSN
+in: vehicle, dummyElement, position, invertX
+out: x, y, z
+```
+
+```lua
+if getVehicleDummyPosn(car, dummy, posType, false) then
+end
+```
+
+```js
+if (native(0x0D5F, vehicle, dummyElement, position, invertX)) {
+}
+```
+</Opcode>
+
+## 抛射物
+
+<Opcode id="0D60" name="CREATE_PROJECTILE">
+从实体向目标点/实体创建抛射物（导弹等）。用在 `if` 里。
+
+```text
+0D60 CREATE_PROJECTILE
+in: type, launchedFromEntity, originX, originY, originZ, targetX, targetY, targetZ, targetEntity, force
+```
+
+```lua
+if createProjectile(ptype, from, ox, oy, oz, tx, ty, tz, target, force) then
+end
+```
+
+```js
+if (
+  native(
+    0x0D60,
+    type, launchedFromEntity,
+    originX, originY, originZ,
+    targetX, targetY, targetZ,
+    targetEntity, force
+  )
+) {
+}
+```
+</Opcode>

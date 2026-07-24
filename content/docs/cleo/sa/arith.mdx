@@ -1,0 +1,111 @@
+---
+title: 算术
+description: 整数与浮点基本运算 opcode
+---
+
+`sa` · 扩展 `CLEO` · 需 CLEO
+
+整数 / 浮点基本运算。Lua 里多数可直接用 `+ - * /`；下列为对应 opcode。
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 整数加
+
+<Opcode id="0A8E" name="INT_ADD">
+两整数相加。
+
+```text
+0A8E INT_ADD
+in: a, b
+out: result
+```
+
+```lua
+local r = intAdd(1, 2)
+-- 或 r = 1 + 2
+```
+
+```js
+const result = native("INT_ADD", a, b)
+```
+</Opcode>
+
+## 整数减
+
+<Opcode id="0A8F" name="INT_SUB">
+整数减法。
+
+```text
+0A8F INT_SUB
+in: a, b
+out: result
+```
+
+```lua
+local r = intSub(5, 3)
+```
+
+```js
+const result = native("INT_SUB", a, b)
+```
+</Opcode>
+
+## 整数乘
+
+<Opcode id="0A90" name="INT_MUL">
+整数乘法。
+
+```text
+0A90 INT_MUL
+in: a, b
+out: result
+```
+
+```lua
+local r = intMul(3, 4)
+```
+
+```js
+const result = native("INT_MUL", a, b)
+```
+</Opcode>
+
+## 整数除
+
+<Opcode id="0A91" name="INT_DIV">
+整数除法。
+
+```text
+0A91 INT_DIV
+in: a, b
+out: result
+```
+
+```lua
+local r = intDiv(10, 2)
+```
+
+```js
+const result = native("INT_DIV", a, b)
+```
+</Opcode>
+
+## 浮点乘
+
+<Opcode id="290B" name="FLOAT_MUL">
+两浮点相乘。
+
+```text
+290B FLOAT_MUL
+in: a, b
+out: result
+```
+
+```lua
+local r = floatMul(1.5, 2.0)
+```
+
+```js
+const result = native("FLOAT_MUL", a, b)
+```
+</Opcode>

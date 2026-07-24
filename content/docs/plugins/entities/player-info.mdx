@@ -1,0 +1,133 @@
+---
+title: 玩家信息 CPlayerInfo
+description: 钱、最大血甲、免累与玩家状态
+---
+
+`CPlayerInfo.h` · 数组 `CWorld::Players`
+
+钱、最大血甲、免累、状态。逻辑帧改。
+
+## 取玩家信息
+
+<Api name="CWorld::Players / GetPlayerInfoForThisPlayerPed">
+
+```cpp
+// CWorld::Players[playerId]
+static CPlayerInfo* Players;
+CPlayerInfo* GetPlayerInfoForThisPlayerPed(); // CPlayerPed
+```
+
+```cpp
+CPlayerInfo& info = CWorld::Players[0];
+// 或 FindPlayerPed()->GetPlayerInfoForThisPlayerPed()
+```
+</Api>
+
+## 改钱
+
+<Api name="m_nMoney / m_nDisplayMoney">
+显示钱可慢慢追上。
+
+```cpp
+int m_nMoney;
+int m_nDisplayMoney;
+```
+
+```cpp
+info.m_nMoney += 10000;
+info.m_nDisplayMoney = info.m_nMoney;
+```
+</Api>
+
+## 最大血甲
+
+<Api name="m_nMaxHealth / m_nMaxArmour">
+与 ped 当前血分开。
+
+```cpp
+unsigned char m_nMaxHealth;
+unsigned char m_nMaxArmour;
+```
+
+```cpp
+info.m_nMaxHealth = 200;
+info.m_nMaxArmour = 100;
+```
+</Api>
+
+## 作弊向开关
+
+<Api name="m_bDoesNotGetTired / m_bFastReload / m_bFireProof">
+
+```cpp
+bool m_bDoesNotGetTired;
+bool m_bFastReload;
+bool m_bFireProof;
+bool m_bCanDoDriveBy;
+```
+
+```cpp
+info.m_bDoesNotGetTired = true;
+info.m_bFastReload = true;
+```
+</Api>
+
+## 玩家状态
+
+<Api name="m_nPlayerState">
+
+```cpp
+unsigned char m_nPlayerState;
+// PLAYERSTATE_PLAYING, HASDIED, HASBEENARRESTED, FAILEDMISSION, LEFTGAME
+```
+
+```cpp
+if (info.m_nPlayerState == PLAYERSTATE_PLAYING) {
+}
+```
+</Api>
+
+## 远程车
+
+<Api name="m_pRemoteVehicle">
+RC 车指针。
+
+```cpp
+CVehicle* m_pRemoteVehicle;
+```
+
+```cpp
+if (info.m_pRemoteVehicle) {
+}
+```
+</Api>
+
+## 安全区
+
+<Api name="MakePlayerSafe">
+半径内清威胁（脚本常用语义）。
+
+```cpp
+void MakePlayerSafe(bool safe, float radius);
+```
+
+```cpp
+info.MakePlayerSafe(true, 10000.0f);
+```
+</Api>
+
+## ped 指针
+
+<Api name="m_pPed">
+应对应当前玩家 ped。
+
+```cpp
+CPlayerPed* m_pPed;
+```
+
+```cpp
+if (!info.m_pPed) {
+    return;
+}
+```
+</Api>

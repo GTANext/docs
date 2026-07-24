@@ -1,0 +1,122 @@
+---
+title: 跳过 Skip
+description: 行程跳过
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 6 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 配置跳过
+
+<Opcode id="0950" name="SET_UP_SKIP" member="Skip.SetUp">
+配置行程跳过：淡出并传送玩家到坐标 / 朝向。
+
+```text
+0950 SET_UP_SKIP
+in: x, y, z, heading
+```
+
+```lua
+setUpSkip(x, y, z, heading)
+```
+
+```js
+Skip.setUp(x, y, z, heading)
+```
+</Opcode>
+
+## 清除跳过
+
+<Opcode id="0951" name="CLEAR_SKIP" member="Skip.Clear">
+清除当前行程跳过配置。
+
+```text
+0951 CLEAR_SKIP
+```
+
+```lua
+clearSkip()
+```
+
+```js
+Skip.clear()
+```
+</Opcode>
+
+## 任务后跳过
+
+<Opcode id="09AF" name="SET_UP_SKIP_AFTER_MISSION" member="Skip.SetUpAfterMission">
+任务后跳过：淡出并传送到坐标 / 朝向。
+
+```text
+09AF SET_UP_SKIP_AFTER_MISSION
+in: x, y, z, heading
+```
+
+```lua
+setUpSkipAfterMission(x, y, z, heading)
+```
+
+```js
+Skip.setUpAfterMission(x, y, z, heading)
+```
+</Opcode>
+
+## 指定车跳过
+
+<Opcode id="09E0" name="SET_UP_SKIP_FOR_SPECIFIC_VEHICLE" member="Skip.SetUpForSpecificVehicle">
+在指定车内时跳过：传送并设朝向。
+
+```text
+09E0 SET_UP_SKIP_FOR_SPECIFIC_VEHICLE
+in: x, y, z, heading, handle
+```
+
+```lua
+setUpSkipForSpecificVehicle(x, y, z, heading, handle)
+```
+
+```js
+Skip.setUpForSpecificVehicle(x, y, z, heading, handle)
+```
+</Opcode>
+
+## 车内脚本收尾
+
+<Opcode id="0A35" name="SET_UP_SKIP_FOR_VEHICLE_FINISHED_BY_SCRIPT" member="Skip.SetUpForVehicleFinishedByScript">
+车内跳过由脚本收尾淡入（传送后等脚本淡入）。
+
+```text
+0A35 SET_UP_SKIP_FOR_VEHICLE_FINISHED_BY_SCRIPT
+in: x, y, z, heading, vehicle
+```
+
+```lua
+setUpSkipForVehicleFinishedByScript(x, y, z, heading, vehicle)
+```
+
+```js
+Skip.setUpForVehicleFinishedByScript(x, y, z, heading, vehicle)
+```
+</Opcode>
+
+## 等脚本淡入
+
+<Opcode id="0A36" name="IS_SKIP_WAITING_FOR_SCRIPT_TO_FADE_IN" member="Skip.IsWaitingForScriptToFadeIn">
+`0A35` 传送完是否在等脚本淡入。用在 `if` 里。
+
+```text
+0A36 IS_SKIP_WAITING_FOR_SCRIPT_TO_FADE_IN
+```
+
+```lua
+if isSkipWaitingForScriptToFadeIn() then
+end
+```
+
+```js
+if (Skip.isWaitingForScriptToFadeIn()) {
+}
+```
+</Opcode>

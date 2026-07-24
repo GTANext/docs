@@ -1,0 +1,114 @@
+---
+title: 室内门 CEntryExitManager
+description: 室内门、进出栈与区域码
+---
+
+`CEntryExitManager.h`
+
+室内门、进出栈、区域码。传送室内 / 调试门用。
+
+## 活动入口
+
+<Api name="mp_Active / WeAreInInteriorTransition">
+
+```cpp
+static CEntryExit*& mp_Active;
+static int& ms_exitEnterState;
+static bool WeAreInInteriorTransition();
+```
+
+```cpp
+if (CEntryExitManager::WeAreInInteriorTransition()) {
+    return;
+}
+```
+</Api>
+
+## 查找
+
+<Api name="FindNearestEntryExit / GetEntryExit">
+
+```cpp
+static int FindNearestEntryExit(CVector2D const& position, float range, int ignoreArea);
+static CEntryExit* GetEntryExit(int index);
+static int GetEntryExitIndex(char const* name, unsigned short enabledFlags, unsigned short disabledFlags);
+static CEntity* FindNearestDoor(CEntryExit const& entryExit, float range);
+```
+
+```cpp
+int idx = CEntryExitManager::FindNearestEntryExit(CVector2D(x, y), 10.0f, -1);
+CEntryExit* ee = CEntryExitManager::GetEntryExit(idx);
+```
+</Api>
+
+## 启用开关
+
+<Api name="SetEnabled / SetEnabledByName">
+
+```cpp
+static void SetEnabled(int index, bool enable);
+static void SetEnabledByName(char const* name, bool enable);
+static void SetEntryExitFlag(char const* name, unsigned int flag, bool enable);
+static bool& ms_bDisabled;
+```
+
+```cpp
+CEntryExitManager::SetEnabledByName("name", false);
+```
+</Api>
+
+## 跳转
+
+<Api name="GotoEntryExit / GotoNextEntryExit">
+调试传送。
+
+```cpp
+static void GotoEntryExit(CEntryExit* entryExit);
+static void GotoEntryExitVC(char const* name);
+static void GotoNextEntryExit();
+static void GotoPreviousEntryExit();
+```
+
+```cpp
+// CEntryExitManager::GotoEntryExit(ee);
+```
+</Api>
+
+## 添加删除
+
+<Api name="AddOne / DeleteOne">
+参数多，对照头文件。
+
+```cpp
+static int AddOne(float entranceX, float entranceY, float entranceZ, float entranceAngle,
+    float entranceRangeX, float entranceRangeY, int unused, float exitX, float exitY, float exitZ,
+    float exitAngle, int area, int flags, int skyColor, int timeOn, int timeOff, int numberOfPeds, char const* name);
+static void DeleteOne(int index);
+```
+</Api>
+
+## 池与栈
+
+<Api name="mp_poolEntryExits / ms_entryExitStack">
+
+```cpp
+static CPool<CEntryExit>*& mp_poolEntryExits;
+static CEntryExit* (&ms_entryExitStack)[4];
+static int& ms_entryExitStackPosn;
+```
+</Api>
+
+## 世界坐标修正
+
+<Api name="GetPositionRelativeToOutsideWorld">
+室内点映到外部世界坐标。
+
+```cpp
+static void GetPositionRelativeToOutsideWorld(CVector& positionInOut);
+```
+
+```cpp
+CVector p = ped->GetPosition();
+CEntryExitManager::GetPositionRelativeToOutsideWorld(p);
+```
+</Api>

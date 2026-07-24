@@ -1,0 +1,128 @@
+---
+title: 脚本 CTheScripts
+description: 脚本线程、全局开关与清理
+---
+
+`CTheScripts.h`
+
+脚本线程、全局开关、任务清理。改全局标志要备份；别乱杀 `pActiveScripts`。
+
+## 脚本线程
+
+<Api name="pActiveScripts / pIdleScripts">
+活动链表头。
+
+```cpp
+static CRunningScript*& pActiveScripts;
+static CRunningScript*& pIdleScripts;
+static CRunningScript* ScriptsArray; // [96]
+```
+
+```cpp
+// 遍历活动脚本（只读排查）
+// for (CRunningScript* s = CTheScripts::pActiveScripts; s; s = s->m_pNext) ...
+```
+</Api>
+
+## 脚本空间
+
+<Api name="ScriptSpace / MissionBlock / ScriptParams">
+
+```cpp
+static char* ScriptSpace;   // ~200000
+static char* MissionBlock;  // ~69000
+static tScriptParam* LocalVariablesForCurrentMission;
+extern int (&ScriptParams)[32];
+```
+
+```cpp
+// 读 main.scm 全局变量偏移要对照 Sanny / 反编译；乱写会炸任务
+```
+</Api>
+
+## HUD / 雷达脚本开关
+
+<Api name="bDisplayHud / HideAllFrontEndMapBlips">
+
+```cpp
+static bool& bDisplayHud;
+static bool& HideAllFrontEndMapBlips;
+static bool& RadarShowBlipOnAllLevels;
+static unsigned char& RadarZoomValue;
+static bool& bPlayerIsOffTheMap;
+```
+
+```cpp
+// bool old = CTheScripts::bDisplayHud;
+// CTheScripts::bDisplayHud = false;
+```
+</Api>
+
+## 任务状态
+
+<Api name="OnAMissionFlag / bAlreadyRunningAMissionScript">
+
+```cpp
+static int& OnAMissionFlag;
+static bool& bAlreadyRunningAMissionScript;
+static char& FailCurrentMission;
+static unsigned int& LastMissionPassedTime;
+```
+
+```cpp
+bool onMission = CTheScripts::OnAMissionFlag != 0;
+```
+</Api>
+
+## 清理
+
+<Api name="MissionCleanUp / CleanUpThisPed">
+
+```cpp
+static CMissionCleanup& MissionCleanUp;
+static void CleanUpThisPed(CPed* ped);
+static void CleanUpThisVehicle(CVehicle* pVehicle);
+static void CleanUpThisObject(CObject* pObject);
+```
+
+```cpp
+// 脚本创建实体进清理表；ASI 自己 CREATE 的要自己 DESTROY
+```
+</Api>
+
+## 建筑交换 / 隐身
+
+<Api name="BuildingSwapArray / InvisibilitySettingArray">
+
+```cpp
+static tBuildingSwap* BuildingSwapArray;
+static void AddToBuildingSwapArray(CBuilding* a1, int newModelId, int oldModelId);
+static CEntity** InvisibilitySettingArray;
+static void AddToInvisibilitySwapArray(CEntity* a2, bool bVisible);
+```
+
+```cpp
+// 任务换模、临时隐建筑用；结束后应还原
+```
+</Api>
+
+## 脚本绘制缓冲
+
+<Api name="IntroTextLines / ScriptSprites">
+帧内文本 / 矩形。
+
+```cpp
+static tScriptText (&IntroTextLines)[96];
+static tScriptRectangle (&IntroRectangles)[128];
+static CSprite2d (&ScriptSprites)[128];
+static eUseTextCommandState& UseTextCommands;
+```
+
+```cpp
+// 自绘优先 CFont / CSprite2d + drawingEvent，别抢脚本缓冲除非你知道生命周期
+```
+</Api>
+
+## 与 Command
+
+日常刷车、任务逻辑优先 `plugin::Command` / [commands](/docs/plugins/commands)。本页管**全局态与线程**。

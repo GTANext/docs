@@ -1,0 +1,28 @@
+---
+title: 角色 Char
+description: 角色句柄 → SA-MP 玩家 ID
+---
+
+`sa` · 扩展 `SAMPFUNCS` · 仅 SA-MP；需 SAMPFUNCS
+
+共 1 条。调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 玩家 ID
+
+<Opcode id="0B2B" name="SAMP_GET_PLAYER_ID" member="Char.GetSampId">
+返回控制该角色句柄的 SA-MP 玩家 ID；无人控制则返回 -1。
+
+```text
+0B2B SAMP_GET_PLAYER_ID
+in: self
+out: idAsHandle
+```
+
+```lua
+local idAsHandle = sampGetPlayerId(self)
+```
+
+```js
+const idAsHandle = Char.getSampId(self)
+```
+</Opcode>

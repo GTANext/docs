@@ -1,0 +1,441 @@
+---
+title: 文字绘制 SampTextDraw
+description: TextDraw 创建、样式与读写
+---
+
+`sa` · 扩展 `SAMPFUNCS` · 仅 SA-MP；需 SAMPFUNCS
+
+共 23 条。TextDraw 创建 / 样式 / get-set。调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 创建 / 删除
+
+<Opcode id="0C48" name="SAMP_CREATE_TEXTDRAW" member="SampTextDraw.Create">
+按参数修改 TextDraw；不存在则创建。用在 `if` 里。
+
+```text
+0C48 SAMP_CREATE_TEXTDRAW
+in: id, text, coordX, coordY
+```
+
+```lua
+if sampCreateTextdraw(id, text, coordX, coordY) then
+end
+```
+
+```js
+if (SampTextDraw.Create(id, text, coordX, coordY)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C5D" name="SAMP_DOES_TEXTDRAW_EXIST" member="SampTextDraw.DoesExist">
+若指定 TextDraw 存在则为真。
+
+```text
+0C5D SAMP_DOES_TEXTDRAW_EXIST
+in: self
+```
+
+```lua
+if sampDoesTextdrawExist(self) then
+end
+```
+
+```js
+if (SampTextDraw.doesExist(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C5E" name="SAMP_DELETE_TEXTDRAW" member="SampTextDraw.Delete">
+删除指定 TextDraw。用在 `if` 里。
+
+```text
+0C5E SAMP_DELETE_TEXTDRAW
+in: self
+```
+
+```lua
+if sampDeleteTextdraw(self) then
+end
+```
+
+```js
+if (SampTextDraw.delete(self)) {
+}
+```
+</Opcode>
+
+## 设置
+
+<Opcode id="0C49" name="SAMP_SET_TEXTDRAW_BOX" member="SampTextDraw.SetBox">
+设置 TextDraw 的 box（矩形）参数。用在 `if` 里。
+
+```text
+0C49 SAMP_SET_TEXTDRAW_BOX
+in: self, isVisible, color, width, height
+```
+
+```lua
+if sampSetTextdrawBox(self, isVisible, color, width, height) then
+end
+```
+
+```js
+if (SampTextDraw.setBox(self, isVisible, color, width, height)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C4A" name="SAMP_SET_TEXTDRAW_ALIGNMENT" member="SampTextDraw.SetAlignment">
+设置 TextDraw 文本对齐。用在 `if` 里。
+
+```text
+0C4A SAMP_SET_TEXTDRAW_ALIGNMENT
+in: self, alignment
+```
+
+```lua
+if sampSetTextdrawAlignment(self, alignment) then
+end
+```
+
+```js
+if (SampTextDraw.setAlignment(self, alignment)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C4B" name="SAMP_SET_TEXTDRAW_PROPORTIONALITY" member="SampTextDraw.SetProportionality">
+设置 TextDraw 是否等比缩放。用在 `if` 里。
+
+```text
+0C4B SAMP_SET_TEXTDRAW_PROPORTIONALITY
+in: self, isProportional
+```
+
+```lua
+if sampSetTextdrawProportionality(self, isProportional) then
+end
+```
+
+```js
+if (SampTextDraw.setProportionality(self, isProportional)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C4C" name="SAMP_SET_TEXTDRAW_STYLE" member="SampTextDraw.SetStyle">
+设置 TextDraw 样式。用在 `if` 里。
+
+```text
+0C4C SAMP_SET_TEXTDRAW_STYLE
+in: self, style
+```
+
+```lua
+if sampSetTextdrawStyle(self, style) then
+end
+```
+
+```js
+if (SampTextDraw.setStyle(self, style)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C4D" name="SAMP_SET_TEXTDRAW_SHADOW" member="SampTextDraw.SetShadow">
+设置 TextDraw 阴影。用在 `if` 里。
+
+```text
+0C4D SAMP_SET_TEXTDRAW_SHADOW
+in: self, tickness, color
+```
+
+```lua
+if sampSetTextdrawShadow(self, tickness, color) then
+end
+```
+
+```js
+if (SampTextDraw.setShadow(self, tickness, color)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C4E" name="SAMP_SET_TEXTDRAW_OUTLINE" member="SampTextDraw.SetOutline">
+设置 TextDraw 描边。用在 `if` 里。
+
+```text
+0C4E SAMP_SET_TEXTDRAW_OUTLINE
+in: self, tickness, color
+```
+
+```lua
+if sampSetTextdrawOutline(self, tickness, color) then
+end
+```
+
+```js
+if (SampTextDraw.setOutline(self, tickness, color)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C4F" name="SAMP_SET_TEXTDRAW_MODEL" member="SampTextDraw.SetModel">
+为 style 5 的 TextDraw 设置模型（物体/载具等）。用在 `if` 里。
+
+```text
+0C4F SAMP_SET_TEXTDRAW_MODEL
+in: self, model, rotPitch, rotRoll, rotYaw, camZoomRange, primaryColor, secondaryColor
+```
+
+```lua
+if sampSetTextdrawModel(self, model, rotPitch, rotRoll, rotYaw, camZoomRange, primaryColor, secondaryColor) then
+end
+```
+
+```js
+if (SampTextDraw.setModel(self, model, rotPitch, rotRoll, rotYaw, camZoomRange, primaryColor, secondaryColor)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C50" name="SAMP_SET_TEXTDRAW_TEXT" member="SampTextDraw.SetText">
+设置 TextDraw 文本。用在 `if` 里。
+
+```text
+0C50 SAMP_SET_TEXTDRAW_TEXT
+in: self, text
+```
+
+```lua
+if sampSetTextdrawText(self, text) then
+end
+```
+
+```js
+if (SampTextDraw.setText(self, text)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C51" name="SAMP_SET_TEXTDRAW_COORDS" member="SampTextDraw.SetCoords">
+设置 TextDraw 屏幕坐标。用在 `if` 里。
+
+```text
+0C51 SAMP_SET_TEXTDRAW_COORDS
+in: self, coordX, coordY
+```
+
+```lua
+if sampSetTextdrawCoords(self, coordX, coordY) then
+end
+```
+
+```js
+if (SampTextDraw.setCoords(self, coordX, coordY)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C52" name="SAMP_SET_TEXTDRAW_CHARACTER_PROPERTIES" member="SampTextDraw.SetCharProps">
+设置 TextDraw 全部字符的尺寸与颜色。用在 `if` 里。
+
+```text
+0C52 SAMP_SET_TEXTDRAW_CHARACTER_PROPERTIES
+in: self, width, height, color
+```
+
+```lua
+if sampSetTextdrawCharacterProperties(self, width, height, color) then
+end
+```
+
+```js
+if (SampTextDraw.setCharProps(self, width, height, color)) {
+}
+```
+</Opcode>
+
+## 读取
+
+<Opcode id="0C53" name="SAMP_GET_TEXTDRAW_BOX" member="SampTextDraw.GetBox">
+返回指定 TextDraw 的 box（矩形）参数。
+
+```text
+0C53 SAMP_GET_TEXTDRAW_BOX
+in: self
+out: isVisible, color, width, height
+```
+
+```lua
+local isVisible, color, width, height = sampGetTextdrawBox(self)
+```
+
+```js
+const { isVisible, color, width, height } = SampTextDraw.getBox(self)
+```
+</Opcode>
+
+<Opcode id="0C54" name="SAMP_GET_TEXTDRAW_ALIGNMENT" member="SampTextDraw.GetAlignment">
+返回 TextDraw 文本对齐方式。
+
+```text
+0C54 SAMP_GET_TEXTDRAW_ALIGNMENT
+in: self
+out: alignment
+```
+
+```lua
+local alignment = sampGetTextdrawAlignment(self)
+```
+
+```js
+const alignment = SampTextDraw.getAlignment(self)
+```
+</Opcode>
+
+<Opcode id="0C55" name="SAMP_GET_TEXTDRAW_PROPORTIONALITY" member="SampTextDraw.GetProportionality">
+若 TextDraw 等比缩放开启则为真。
+
+```text
+0C55 SAMP_GET_TEXTDRAW_PROPORTIONALITY
+in: self
+out: isProportional
+```
+
+```lua
+local isProportional = sampGetTextdrawProportionality(self)
+```
+
+```js
+const isProportional = SampTextDraw.getProportionality(self)
+```
+</Opcode>
+
+<Opcode id="0C56" name="SAMP_GET_TEXTDRAW_STYLE" member="SampTextDraw.GetStyle">
+返回 TextDraw 样式。
+
+```text
+0C56 SAMP_GET_TEXTDRAW_STYLE
+in: self
+out: style
+```
+
+```lua
+local style = sampGetTextdrawStyle(self)
+```
+
+```js
+const style = SampTextDraw.getStyle(self)
+```
+</Opcode>
+
+<Opcode id="0C57" name="SAMP_GET_TEXTDRAW_SHADOW" member="SampTextDraw.GetShadow">
+返回 TextDraw 阴影的粗细与颜色。
+
+```text
+0C57 SAMP_GET_TEXTDRAW_SHADOW
+in: self
+out: tickness, color
+```
+
+```lua
+local tickness, color = sampGetTextdrawShadow(self)
+```
+
+```js
+const { tickness, color } = SampTextDraw.getShadow(self)
+```
+</Opcode>
+
+<Opcode id="0C58" name="SAMP_GET_TEXTDRAW_OUTLINE" member="SampTextDraw.GetOutline">
+返回 TextDraw 描边的粗细与颜色。
+
+```text
+0C58 SAMP_GET_TEXTDRAW_OUTLINE
+in: self
+out: tickness, color
+```
+
+```lua
+local tickness, color = sampGetTextdrawOutline(self)
+```
+
+```js
+const { tickness, color } = SampTextDraw.getOutline(self)
+```
+</Opcode>
+
+<Opcode id="0C59" name="SAMP_GET_TEXTDRAW_MODEL" member="SampTextDraw.GetModel">
+返回 style 5 TextDraw 的模型相关属性。
+
+```text
+0C59 SAMP_GET_TEXTDRAW_MODEL
+in: self
+out: model, rotPitch, rotRoll, rotYaw, camZoomRange, primaryColor, secondaryColor
+```
+
+```lua
+local model, rotPitch, rotRoll, rotYaw, camZoomRange, primaryColor, secondaryColor = sampGetTextdrawModel(self)
+```
+
+```js
+const { model, rotPitch, rotRoll, rotYaw, camZoomRange, primaryColor, secondaryColor } = SampTextDraw.getModel(self)
+```
+</Opcode>
+
+<Opcode id="0C5A" name="SAMP_STORE_TEXTDRAW_TEXT" member="SampTextDraw.StoreText">
+把 TextDraw 文本写入 stringBuffer。
+
+```text
+0C5A SAMP_STORE_TEXTDRAW_TEXT
+in: self
+out: stringBuffer
+```
+
+```lua
+local stringBuffer = sampStoreTextdrawText(self)
+```
+
+```js
+const stringBuffer = SampTextDraw.storeText(self)
+```
+</Opcode>
+
+<Opcode id="0C5B" name="SAMP_GET_TEXTDRAW_COORDS" member="SampTextDraw.GetCoords">
+返回 TextDraw 屏幕坐标。
+
+```text
+0C5B SAMP_GET_TEXTDRAW_COORDS
+in: self
+out: coordX, coordY
+```
+
+```lua
+local coordX, coordY = sampGetTextdrawCoords(self)
+```
+
+```js
+const { coordX, coordY } = SampTextDraw.getCoords(self)
+```
+</Opcode>
+
+<Opcode id="0C5C" name="SAMP_GET_TEXTDRAW_CHARACTER_PROPERTIES" member="SampTextDraw.GetCharProps">
+返回 TextDraw 全部字符的尺寸与颜色。
+
+```text
+0C5C SAMP_GET_TEXTDRAW_CHARACTER_PROPERTIES
+in: self
+out: width, height, color
+```
+
+```lua
+local width, height, color = sampGetTextdrawCharacterProperties(self)
+```
+
+```js
+const { width, height, color } = SampTextDraw.getCharProps(self)
+```
+</Opcode>

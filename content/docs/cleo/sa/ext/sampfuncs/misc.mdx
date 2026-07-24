@@ -1,0 +1,190 @@
+---
+title: 杂项 Misc
+description: 底层 D3D 图元与纹理绑定
+---
+
+`sa` · 扩展 `SAMPFUNCS` · 仅 SA-MP；需 SAMPFUNCS
+
+共 10 条。底层 D3D 绘制；与 [sfd3d](/docs/cleo/sa/ext/sampfuncs/sfd3d) 互补。调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 图元
+
+<Opcode id="0C3B" name="SF_D3D_BEGIN">
+开始指定类型的 D3D 图元绘制。
+
+```text
+0C3B SF_D3D_BEGIN
+in: primitiveType
+```
+
+```lua
+sfD3dBegin(primitiveType)
+```
+
+```js
+native("SF_D3D_BEGIN", primitiveType)
+```
+</Opcode>
+
+<Opcode id="0C3C" name="SF_D3D_END">
+调用 D3D EndScene。
+
+```text
+0C3C SF_D3D_END
+```
+
+```lua
+sfD3dEnd()
+```
+
+```js
+native("SF_D3D_END")
+```
+</Opcode>
+
+<Opcode id="0C3D" name="SF_D3D_COLOR">
+设置 D3D 当前绘制颜色。
+
+```text
+0C3D SF_D3D_COLOR
+in: color
+```
+
+```lua
+sfD3dColor(color)
+```
+
+```js
+native("SF_D3D_COLOR", color)
+```
+</Opcode>
+
+<Opcode id="0C3E" name="SF_D3D_VERTEX">
+按 `SF_D3D_BEGIN` 指定的图元类型设置顶点。
+
+```text
+0C3E SF_D3D_VERTEX
+in: startVertex, primitiveCount
+```
+
+```lua
+sfD3dVertex(startVertex, primitiveCount)
+```
+
+```js
+native("SF_D3D_VERTEX", startVertex, primitiveCount)
+```
+</Opcode>
+
+## 纹理
+
+<Opcode id="0C3F" name="SF_D3D_SET_TEXTURE_COORDS">
+设置 D3D 图元的纹理坐标。
+
+```text
+0C3F SF_D3D_SET_TEXTURE_COORDS
+in: coordX, coordY
+```
+
+```lua
+sfD3dSetTextureCoords(coordX, coordY)
+```
+
+```js
+native("SF_D3D_SET_TEXTURE_COORDS", coordX, coordY)
+```
+</Opcode>
+
+<Opcode id="0C40" name="SF_D3D_BIND_TEXTURE">
+把纹理绑定到当前 D3D 图元。用在 `if` 里。
+
+```text
+0C40 SF_D3D_BIND_TEXTURE
+in: textureObjAdress
+```
+
+```lua
+if sfD3dBindTexture(textureObjAdress) then
+end
+```
+
+```js
+if (native("SF_D3D_BIND_TEXTURE", textureObjAdress)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C41" name="SF_D3D_TEXTURE_STRUCT">
+SF 作者未提供文档。用在 `if` 里。
+
+```text
+0C41 SF_D3D_TEXTURE_STRUCT
+in: unknown1, unknown2
+```
+
+```lua
+if sfD3dTextureStruct(unknown1, unknown2) then
+end
+```
+
+```js
+if (native("SF_D3D_TEXTURE_STRUCT", unknown1, unknown2)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C42" name="SF_D3D_TEXTURE_SPRITE">
+SF 作者未提供文档。用在 `if` 里。
+
+```text
+0C42 SF_D3D_TEXTURE_SPRITE
+in: unknown1, unknown2
+```
+
+```lua
+if sfD3dTextureSprite(unknown1, unknown2) then
+end
+```
+
+```js
+if (native("SF_D3D_TEXTURE_SPRITE", unknown1, unknown2)) {
+}
+```
+</Opcode>
+
+<Opcode id="0C43" name="SF_D3D_GET_TEXTURE_SIZE">
+返回纹理结构占用的宽高。
+
+```text
+0C43 SF_D3D_GET_TEXTURE_SIZE
+in: textureObjAdress
+out: width, height
+```
+
+```lua
+local width, height = sfD3dGetTextureSize(textureObjAdress)
+```
+
+```js
+const { width, height } = native("SF_D3D_GET_TEXTURE_SIZE", textureObjAdress)
+```
+</Opcode>
+
+## 渲染状态
+
+<Opcode id="0C44" name="SF_D3D_SET_RENDER_STATE">
+设置 D3D 图元类型的渲染状态。
+
+```text
+0C44 SF_D3D_SET_RENDER_STATE
+in: primitiveType, state
+```
+
+```lua
+sfD3dSetRenderState(primitiveType, state)
+```
+
+```js
+native("SF_D3D_SET_RENDER_STATE", primitiveType, state)
+```
+</Opcode>

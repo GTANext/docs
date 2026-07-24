@@ -1,0 +1,92 @@
+---
+title: 爆炸 CExplosion
+description: 爆炸槽表添加与查询
+---
+
+`CExplosion.h`
+
+逻辑帧。与 `CWorld::TriggerExplosion` 不同：这是爆炸槽表。
+
+## 添加爆炸
+
+<Api name="AddExplosion">
+`eExplosionType` 见头文件。
+
+```cpp
+static bool AddExplosion(CEntity* victim, CEntity* creator, eExplosionType explosionType,
+    CVector posn, unsigned int time, unsigned char makeSound, float camShake, unsigned char visibility);
+```
+
+```cpp
+CVector p = FindPlayerCoors();
+CExplosion::AddExplosion(nullptr, nullptr, EXPLOSION_GRENADE, p, 0, 1, 1.0f, 1);
+```
+</Api>
+
+## 爆炸类型
+
+<Api name="eExplosionType">
+手雷、燃烧瓶、火箭、车、船、飞机、小爆炸等。
+
+```cpp
+// EXPLOSION_GRENADE, EXPLOSION_MOLOTOV, EXPLOSION_ROCKET,
+// EXPLOSION_CAR, EXPLOSION_BOAT, EXPLOSION_AIRCRAFT,
+// EXPLOSION_SMALL, EXPLOSION_RC_VEHICLE, ...
+```
+</Api>
+
+## 清爆炸
+
+<Api name="ClearAllExplosions / RemoveAllExplosionsInArea">
+
+```cpp
+static void ClearAllExplosions();
+static void RemoveAllExplosionsInArea(CVector posn, float radius);
+```
+
+```cpp
+CExplosion::RemoveAllExplosionsInArea(p, 50.0f);
+```
+</Api>
+
+## 区域是否有爆炸
+
+<Api name="TestForExplosionInArea">
+
+```cpp
+static bool TestForExplosionInArea(eExplosionType explosionType,
+    float x1, float y1, float z1, float x2, float y2, float z2);
+```
+
+```cpp
+if (CExplosion::TestForExplosionInArea(EXPLOSION_CAR, x1, y1, z1, x2, y2, z2)) {
+}
+```
+</Api>
+
+## 读槽信息
+
+<Api name="GetExplosionType / GetExplosionPosition">
+
+```cpp
+static unsigned int GetExplosionType(unsigned char explosionId);
+static CVector* GetExplosionPosition(unsigned char explosionId);
+static unsigned char GetExplosionActiveCounter(unsigned char explosionId);
+```
+
+```cpp
+// id 0..MAX_EXPLOSIONS-1（默认 16）
+```
+</Api>
+
+## 全局表
+
+<Api name="aExplosions / MAX_EXPLOSIONS">
+
+```cpp
+extern unsigned int MAX_EXPLOSIONS; // 16
+extern CExplosion* aExplosions;
+```
+</Api>
+
+也可用 `CWorld::TriggerExplosion` 做世界伤害扩散，见 [世界](/docs/plugins/entities/world)。

@@ -1,0 +1,205 @@
+---
+title: 自定义脚本
+description: 启停脚本、CLEO_CALL 与共享变量
+---
+
+`vc` · 扩展 `CLEO` · 需 CLEO
+
+启动/结束自定义脚本、CLEO_CALL、共享变量。
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 流式加载自定义脚本
+
+<Opcode id="0A92" name="STREAM_CUSTOM_SCRIPT">
+加载路径上的编译 SCM，跑一条新自定义脚本。可跟变长参数。经典亦有 `0600` / `05DE`。
+
+```text
+0A92 STREAM_CUSTOM_SCRIPT
+in: scriptFileName, args...
+// 经典相关 0600 STREAM_CUSTOM_SCRIPT / 05DE START_CUSTOM_SCRIPT
+```
+
+```lua
+streamCustomScript("./helper.s", 1, 2)
+```
+
+```js
+native("STREAM_CUSTOM_SCRIPT", scriptFileName, ...args)
+```
+</Opcode>
+
+## 结束当前自定义脚本
+
+<Opcode id="0A93" name="TERMINATE_THIS_CUSTOM_SCRIPT">
+结束当前自定义脚本。经典别名 `05DC`。
+
+```text
+0A93 TERMINATE_THIS_CUSTOM_SCRIPT
+// 经典别名 05DC
+```
+
+```lua
+terminateThisCustomScript()
+```
+
+```js
+native("TERMINATE_THIS_CUSTOM_SCRIPT")
+```
+</Opcode>
+
+## 按名结束自定义脚本
+
+<Opcode id="0ABA" name="TERMINATE_ALL_CUSTOM_SCRIPTS_WITH_THIS_NAME">
+结束指定名字的全部自定义脚本。经典别名 `05DD`。
+
+```text
+0ABA TERMINATE_ALL_CUSTOM_SCRIPTS_WITH_THIS_NAME
+in: name
+// 经典别名 05DD
+```
+
+```lua
+terminateAllCustomScriptsWithThisName("helper")
+```
+
+```js
+native("TERMINATE_ALL_CUSTOM_SCRIPTS_WITH_THIS_NAME", name)
+```
+</Opcode>
+
+## CLEO 调用
+
+<Opcode id="0AB1" name="CLEO_CALL">
+调 SCM 子程序并传参；用 `0AB2` 返回。经典别名 `05F5`。
+
+```text
+0AB1 CLEO_CALL
+in: label, numArgs, args...
+// 经典别名 05F5
+```
+
+```lua
+-- 视 CLEO Lua 绑定；参数顺序同 opcode
+cleoCall(myLabel, 2, a, b)
+```
+
+```js
+native("CLEO_CALL", label, numArgs, ...args)
+```
+</Opcode>
+
+## CLEO 返回
+
+<Opcode id="0AB2" name="CLEO_RETURN">
+从 `CLEO_CALL` 返回，可带回返回值。经典别名 `05F6`。
+
+```text
+0AB2 CLEO_RETURN
+in: numRet, retParams...
+// 经典别名 05F6
+```
+
+```lua
+cleoReturn(1, result)
+```
+
+```js
+native("CLEO_RETURN", numRet, ...retParams)
+```
+</Opcode>
+
+## 写共享变量
+
+<Opcode id="0AB3" name="SET_CLEO_SHARED_VAR">
+写 CLEO 全局共享数组（下标 0–65534）。
+
+```text
+0AB3 SET_CLEO_SHARED_VAR
+in: index, value
+```
+
+```lua
+setCleoSharedVar(0, 123)
+```
+
+```js
+native("SET_CLEO_SHARED_VAR", index, value)
+```
+</Opcode>
+
+## 读共享变量
+
+<Opcode id="0AB4" name="GET_CLEO_SHARED_VAR">
+读 CLEO 全局共享数组。
+
+```text
+0AB4 GET_CLEO_SHARED_VAR
+in: index
+out: result
+```
+
+```lua
+local v = getCleoSharedVar(0)
+```
+
+```js
+const result = native("GET_CLEO_SHARED_VAR", index)
+```
+</Opcode>
+
+## 假则 gosub
+
+<Opcode id="0AA0" name="GOSUB_IF_FALSE">
+条件为假时当子程序跳到 label。
+
+```text
+0AA0 GOSUB_IF_FALSE
+in: label
+```
+
+```lua
+-- 多为 SCM 流控制；Lua 里用 if 即可
+```
+
+```js
+native("GOSUB_IF_FALSE", label)
+```
+</Opcode>
+
+## 假则 return
+
+<Opcode id="0AA1" name="RETURN_IF_FALSE">
+条件为假时从当前子程序返回。
+
+```text
+0AA1 RETURN_IF_FALSE
+```
+
+```lua
+-- 同上，Lua 侧少用
+```
+
+```js
+native("RETURN_IF_FALSE")
+```
+</Opcode>
+
+## 真则跳转
+
+<Opcode id="004C" name="GOTO_IF_TRUE">
+条件为真时跳转 label（VC CLEO 扩展表收录）。
+
+```text
+004C GOTO_IF_TRUE
+in: label
+```
+
+```lua
+-- SCM 分支；Lua 用 if
+```
+
+```js
+native("GOTO_IF_TRUE", label)
+```
+</Opcode>

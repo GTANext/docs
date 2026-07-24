@@ -1,0 +1,140 @@
+---
+title: 重生点 Restart
+description: 医院 / 警局重生点
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 7 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 医院重生
+
+<Opcode id="016C" name="ADD_HOSPITAL_RESTART" member="Restart.AddHospital">
+加医院重生点（死亡后选最近的）。
+
+```text
+016C ADD_HOSPITAL_RESTART
+in: x, y, z, heading, citiesPassed
+```
+
+```lua
+addHospitalRestart(x, y, z, heading, citiesPassed)
+```
+
+```js
+Restart.addHospital(x, y, z, heading, citiesPassed)
+```
+</Opcode>
+
+## 警局重生
+
+<Opcode id="016D" name="ADD_POLICE_RESTART" member="Restart.AddPolice">
+加警局重生点（被捕后选最近的）。
+
+```text
+016D ADD_POLICE_RESTART
+in: x, y, z, heading, citiesPassed
+```
+
+```lua
+addPoliceRestart(x, y, z, heading, citiesPassed)
+```
+
+```js
+Restart.addPolice(x, y, z, heading, citiesPassed)
+```
+</Opcode>
+
+## 覆盖下次重生
+
+<Opcode id="016E" name="OVERRIDE_NEXT_RESTART" member="Restart.OverrideNext">
+强制下一次重生到此坐标。
+
+```text
+016E OVERRIDE_NEXT_RESTART
+in: x, y, z, heading
+```
+
+```lua
+overrideNextRestart(x, y, z, heading)
+```
+
+```js
+Restart.overrideNext(x, y, z, heading)
+```
+</Opcode>
+
+## 取消覆盖
+
+<Opcode id="01F6" name="CANCEL_OVERRIDE_RESTART" member="Restart.CancelOverride">
+取消 `016E` 覆盖重生。
+
+```text
+01F6 CANCEL_OVERRIDE_RESTART
+```
+
+```lua
+cancelOverrideRestart()
+```
+
+```js
+Restart.cancelOverride()
+```
+</Opcode>
+
+## 额外医院点
+
+<Opcode id="08DF" name="SET_EXTRA_HOSPITAL_RESTART_POINT" member="Restart.SetExtraHospitalRestartPoint">
+额外医院重生点（带半径）。
+
+```text
+08DF SET_EXTRA_HOSPITAL_RESTART_POINT
+in: x, y, z, radius, heading
+```
+
+```lua
+setExtraHospitalRestartPoint(x, y, z, radius, heading)
+```
+
+```js
+Restart.setExtraHospitalRestartPoint(x, y, z, radius, heading)
+```
+</Opcode>
+
+## 额外警局点
+
+<Opcode id="08E0" name="SET_EXTRA_POLICE_STATION_RESTART_POINT" member="Restart.SetExtraPoliceStationRestartPoint">
+额外警局重生点（带半径）。
+
+```text
+08E0 SET_EXTRA_POLICE_STATION_RESTART_POINT
+in: x, y, z, radius, heading
+```
+
+```lua
+setExtraPoliceStationRestartPoint(x, y, z, radius, heading)
+```
+
+```js
+Restart.setExtraPoliceStationRestartPoint(x, y, z, radius, heading)
+```
+</Opcode>
+
+## 任务期间重生
+
+<Opcode id="09FF" name="SET_RESPAWN_POINT_FOR_DURATION_OF_MISSION" member="Restart.SetRespawnPointForDurationOfMission">
+任务期间覆盖重生点。
+
+```text
+09FF SET_RESPAWN_POINT_FOR_DURATION_OF_MISSION
+in: x, y, z
+```
+
+```lua
+setRespawnPointForDurationOfMission(x, y, z)
+```
+
+```js
+Restart.setRespawnPointForDurationOfMission(x, y, z)
+```
+</Opcode>

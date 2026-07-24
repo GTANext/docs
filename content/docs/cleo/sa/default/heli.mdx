@@ -1,0 +1,351 @@
+---
+title: 直升机 Heli
+description: 直升机飞向 / 绞盘 / 攻击
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 18 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 飞向坐标
+
+<Opcode id="04A2" name="HELI_GOTO_COORDS" member="Heli.GotoCoords">
+直升机飞向坐标，高度夹在 min/max。
+
+```text
+04A2 HELI_GOTO_COORDS
+in: self, x, y, z, minAltitude, maxAltitude
+```
+
+```lua
+heliGotoCoords(self, x, y, z, minAltitude, maxAltitude)
+```
+
+```js
+Heli.gotoCoords(self, x, y, z, minAltitude, maxAltitude)
+```
+</Opcode>
+
+## 强制朝向
+
+<Opcode id="04D0" name="SET_HELI_ORIENTATION" member="Heli.SetOrientation">
+强制机头相对北向角。
+
+```text
+04D0 SET_HELI_ORIENTATION
+in: self, angle
+```
+
+```lua
+setHeliOrientation(self, angle)
+```
+
+```js
+Heli.setOrientation(self, angle)
+```
+</Opcode>
+
+## 取消朝向
+
+<Opcode id="04D1" name="CLEAR_HELI_ORIENTATION" member="Heli.ClearOrientation">
+取消 `04D0` 强制朝向。
+
+```text
+04D1 CLEAR_HELI_ORIENTATION
+in: self
+```
+
+```lua
+clearHeliOrientation(self)
+```
+
+```js
+Heli.clearOrientation(self)
+```
+</Opcode>
+
+## 稳定器
+
+<Opcode id="04DF" name="SET_HELI_STABILISER" member="Heli.SetStabiliser">
+限制倾斜幅度。
+
+```text
+04DF SET_HELI_STABILISER
+in: self, state
+```
+
+```lua
+setHeliStabiliser(self, state)
+```
+
+```js
+Heli.setStabiliser(self, state)
+```
+</Opcode>
+
+## 猎手火炮
+
+<Opcode id="0541" name="FIRE_HUNTER_GUN" member="Heli.FireHunterGun">
+猎手直升机开火炮。
+
+```text
+0541 FIRE_HUNTER_GUN
+in: self
+```
+
+```lua
+fireHunterGun(self)
+```
+
+```js
+Heli.fireHunterGun(self)
+```
+</Opcode>
+
+## 模拟坠毁
+
+<Opcode id="0564" name="MAKE_HELI_COME_CRASHING_DOWN" member="Heli.MakeComeCrashingDown">
+模拟坠毁；高空途中可能爆炸。
+
+```text
+0564 MAKE_HELI_COME_CRASHING_DOWN
+in: self
+```
+
+```lua
+makeHeliComeCrashingDown(self)
+```
+
+```js
+Heli.makeComeCrashingDown(self)
+```
+</Opcode>
+
+## 攻击玩家
+
+<Opcode id="0724" name="HELI_ATTACK_PLAYER" member="Heli.AttackPlayer">
+在半径内追打当前玩家。
+
+```text
+0724 HELI_ATTACK_PLAYER
+in: self, handle, radius
+```
+
+```lua
+heliAttackPlayer(self, handle, radius)
+```
+
+```js
+Heli.attackPlayer(self, handle, radius)
+```
+</Opcode>
+
+## 跟随实体
+
+<Opcode id="0726" name="HELI_FOLLOW_ENTITY" member="Heli.FollowEntity">
+空中跟随角色或载具。
+
+```text
+0726 HELI_FOLLOW_ENTITY
+in: self, char, vehicle, radius
+```
+
+```lua
+heliFollowEntity(self, char, vehicle, radius)
+```
+
+```js
+Heli.followEntity(self, char, vehicle, radius)
+```
+</Opcode>
+
+## 警用追逐
+
+<Opcode id="0727" name="POLICE_HELI_CHASE_ENTITY" member="Heli.ChaseEntity">
+警用直升机在半径内猎杀角色 / 载具。
+
+```text
+0727 POLICE_HELI_CHASE_ENTITY
+in: self, char, vehicle, radius
+```
+
+```lua
+policeHeliChaseEntity(self, char, vehicle, radius)
+```
+
+```js
+Heli.chaseEntity(self, char, vehicle, radius)
+```
+</Opcode>
+
+## 着陆
+
+<Opcode id="0743" name="HELI_LAND_AT_COORDS" member="Heli.LandAtCoords">
+在坐标着陆，高度限幅。
+
+```text
+0743 HELI_LAND_AT_COORDS
+in: self, x, y, z, minAltitude, maxAltitude
+```
+
+```lua
+heliLandAtCoords(self, x, y, z, minAltitude, maxAltitude)
+```
+
+```js
+Heli.landAtCoords(self, x, y, z, minAltitude, maxAltitude)
+```
+</Opcode>
+
+## 保持视野
+
+<Opcode id="0780" name="HELI_KEEP_ENTITY_IN_VIEW" member="Heli.KeepEntityInView">
+保持目标角色 / 载具在视野内。
+
+```text
+0780 HELI_KEEP_ENTITY_IN_VIEW
+in: self, char, vehicle, minAltitude, maxAltitude
+```
+
+```lua
+heliKeepEntityInView(self, char, vehicle, minAltitude, maxAltitude)
+```
+
+```js
+Heli.keepEntityInView(self, char, vehicle, minAltitude, maxAltitude)
+```
+</Opcode>
+
+## 绞盘
+
+<Opcode id="0788" name="ATTACH_WINCH_TO_HELI" member="Heli.AttachWinch">
+挂 / 卸绞盘。
+
+```text
+0788 ATTACH_WINCH_TO_HELI
+in: self, state
+```
+
+```lua
+attachWinchToHeli(self, state)
+```
+
+```js
+Heli.attachWinch(self, state)
+```
+</Opcode>
+
+## 释放绞盘
+
+<Opcode id="0789" name="RELEASE_ENTITY_FROM_WINCH" member="Heli.ReleaseEntityFromWinch">
+释放绞盘上的实体。
+
+```text
+0789 RELEASE_ENTITY_FROM_WINCH
+in: self
+```
+
+```lua
+releaseEntityFromWinch(self)
+```
+
+```js
+Heli.releaseEntityFromWinch(self)
+```
+</Opcode>
+
+## 取绞盘实体
+
+<Opcode id="078B" name="GRAB_ENTITY_ON_WINCH" member="Heli.GrabEntityOnWinch">
+取磁铁 / 绞盘上挂着的人 / 车 / 物。
+
+```text
+078B GRAB_ENTITY_ON_WINCH
+in: self
+out: char, vehicle, object
+```
+
+```lua
+local char, vehicle, object = grabEntityOnWinch(self)
+```
+
+```js
+const { char, vehicle, object } = Heli.grabEntityOnWinch(self)
+```
+</Opcode>
+
+## 额外推力
+
+<Opcode id="07BB" name="ACTIVATE_HELI_SPEED_CHEAT" member="Heli.ActivateSpeedCheat">
+额外推力。
+
+```text
+07BB ACTIVATE_HELI_SPEED_CHEAT
+in: self, power
+```
+
+```lua
+activateHeliSpeedCheat(self, power)
+```
+
+```js
+Heli.activateSpeedCheat(self, power)
+```
+</Opcode>
+
+## 旋翼满速
+
+<Opcode id="0825" name="SET_HELI_BLADES_FULL_SPEED" member="Heli.SetBladesFullSpeed">
+旋翼立刻满速。
+
+```text
+0825 SET_HELI_BLADES_FULL_SPEED
+in: self
+```
+
+```lua
+setHeliBladesFullSpeed(self)
+```
+
+```js
+Heli.setBladesFullSpeed(self)
+```
+</Opcode>
+
+## 到达距离
+
+<Opcode id="0853" name="SET_HELI_REACHED_TARGET_DISTANCE" member="Heli.SetReachedTargetDistance">
+设到达目标判定距离。
+
+```text
+0853 SET_HELI_REACHED_TARGET_DISTANCE
+in: self, distance
+```
+
+```lua
+setHeliReachedTargetDistance(self, distance)
+```
+
+```js
+Heli.setReachedTargetDistance(self, distance)
+```
+</Opcode>
+
+## 静音
+
+<Opcode id="0A1C" name="DISABLE_HELI_AUDIO" member="Heli.DisableAudio">
+静音直升机音效。
+
+```text
+0A1C DISABLE_HELI_AUDIO
+in: self, state
+```
+
+```lua
+disableHeliAudio(self, state)
+```
+
+```js
+Heli.disableAudio(self, state)
+```
+</Opcode>

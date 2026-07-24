@@ -1,0 +1,102 @@
+---
+title: 字体 SfD3DFont
+description: D3D 字体创建与文本测量
+---
+
+`sa` · 扩展 `SAMPFUNCS` · 仅 SA-MP；需 SAMPFUNCS
+
+共 5 条。调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 尺寸
+
+<Opcode id="0B6B" name="SF_D3D_GET_DRAW_WIDTH_OF_TEXT_WITH_FONT" member="SfD3DFont.GetDrawWidth">
+返回使用该字体绘制文本所占像素宽度。
+
+```text
+0B6B SF_D3D_GET_DRAW_WIDTH_OF_TEXT_WITH_FONT
+in: self, text
+out: width
+```
+
+```lua
+local width = sfD3dGetDrawWidthOfTextWithFont(self, text)
+```
+
+```js
+const width = SfD3DFont.getDrawWidth(self, text)
+```
+</Opcode>
+
+<Opcode id="0B6C" name="SF_D3D_GET_FONT_DRAW_HEIGHT" member="SfD3DFont.GetDrawHeight">
+返回使用该字体时文本所占像素高度。
+
+```text
+0B6C SF_D3D_GET_FONT_DRAW_HEIGHT
+in: self
+out: height
+```
+
+```lua
+local height = sfD3dGetFontDrawHeight(self)
+```
+
+```js
+const height = SfD3DFont.getDrawHeight(self)
+```
+</Opcode>
+
+## 生命周期 / 绘制
+
+<Opcode id="0B6D" name="SF_D3D_CREATE_FONT" member="SfD3DFont.Create">
+创建 D3DFont 对象。
+
+```text
+0B6D SF_D3D_CREATE_FONT
+in: fontName, size, styleFlags
+out: handle
+```
+
+```lua
+local handle = sfD3dCreateFont(fontName, size, styleFlags)
+```
+
+```js
+const handle = SfD3DFont.Create(fontName, size, styleFlags)
+```
+</Opcode>
+
+<Opcode id="0B6E" name="SF_D3D_DELETE_FONT" member="SfD3DFont.Delete">
+销毁指定字体对象并释放内存。用在 `if` 里。
+
+```text
+0B6E SF_D3D_DELETE_FONT
+in: self
+```
+
+```lua
+if sfD3dDeleteFont(self) then
+end
+```
+
+```js
+if (SfD3DFont.delete(self)) {
+}
+```
+</Opcode>
+
+<Opcode id="0B6F" name="SF_D3D_DRAW_TEXT_WITH_FONT" member="SfD3DFont.DrawText">
+用指定字体绘制文本。
+
+```text
+0B6F SF_D3D_DRAW_TEXT_WITH_FONT
+in: self, text, coordX, coordY, color
+```
+
+```lua
+sfD3dDrawTextWithFont(self, text, coordX, coordY, color)
+```
+
+```js
+SfD3DFont.drawText(self, text, coordX, coordY, color)
+```
+</Opcode>

@@ -1,0 +1,85 @@
+---
+title: 检查点 Checkpoint
+description: 竞速检查点
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 4 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 创建
+
+<Opcode id="06D5" name="CREATE_CHECKPOINT" member="Checkpoint.Create">
+创建竞速 / 飞行风格的红色检查点。
+
+```text
+06D5 CREATE_CHECKPOINT
+in: type, x, y, z, pointX, pointY, pointZ, radius
+out: handle
+```
+
+```lua
+local handle = createCheckpoint(type, x, y, z, pointX, pointY, pointZ, radius)
+```
+
+```js
+const handle = Checkpoint.create(type, x, y, z, pointX, pointY, pointZ, radius)
+```
+</Opcode>
+
+## 删除
+
+<Opcode id="06D6" name="DELETE_CHECKPOINT" member="Checkpoint.Delete">
+删除检查点。
+
+```text
+06D6 DELETE_CHECKPOINT
+in: self
+```
+
+```lua
+deleteCheckpoint(self)
+```
+
+```js
+Checkpoint.delete(self)
+```
+</Opcode>
+
+## 改坐标
+
+<Opcode id="07F3" name="SET_CHECKPOINT_COORDS" member="Checkpoint.SetCoords">
+改检查点坐标。
+
+```text
+07F3 SET_CHECKPOINT_COORDS
+in: self, x, y, z
+```
+
+```lua
+setCheckpointCoords(self, x, y, z)
+```
+
+```js
+Checkpoint.setCoords(self, x, y, z)
+```
+</Opcode>
+
+## 朝向
+
+<Opcode id="0996" name="SET_CHECKPOINT_HEADING" member="Checkpoint.SetHeading">
+设检查点朝向。
+
+```text
+0996 SET_CHECKPOINT_HEADING
+in: self, heading
+```
+
+```lua
+setCheckpointHeading(self, heading)
+```
+
+```js
+Checkpoint.setHeading(self, heading)
+```
+</Opcode>

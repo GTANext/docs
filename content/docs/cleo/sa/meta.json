@@ -1,0 +1,18 @@
+{
+  "title": "SA",
+  "pages": [
+    "---CLEO---",
+    "memory",
+    "arith",
+    "script",
+    "file",
+    "dll",
+    "game",
+    "entity",
+    "math",
+    "misc",
+    "plus",
+    "ext",
+    "default"
+  ]
+}

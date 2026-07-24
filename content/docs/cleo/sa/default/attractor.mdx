@@ -1,0 +1,66 @@
+---
+title: 吸引点 Attractor
+description: 行人吸引点
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 3 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 添加
+
+<Opcode id="061D" name="ADD_ATTRACTOR" member="Attractor.Add">
+添加行人吸引点（位置、朝向、关联序列）。
+
+```text
+061D ADD_ATTRACTOR
+in: x, y, z, angle, _p5, sequence
+out: handle
+```
+
+```lua
+local handle = addAttractor(x, y, z, angle, _p5, sequence)
+```
+
+```js
+const handle = Attractor.add(x, y, z, angle, _p5, sequence)
+```
+</Opcode>
+
+## 清除
+
+<Opcode id="061E" name="CLEAR_ATTRACTOR" member="Attractor.Clear">
+清除吸引点。
+
+```text
+061E CLEAR_ATTRACTOR
+in: self
+```
+
+```lua
+clearAttractor(self)
+```
+
+```js
+Attractor.clear(self)
+```
+</Opcode>
+
+## 允许 ped 类型
+
+<Opcode id="0680" name="ADD_PEDTYPE_AS_ATTRACTOR_USER" member="Attractor.AddPedTypeAsUser">
+指定哪种 ped 类型可使用该吸引点。
+
+```text
+0680 ADD_PEDTYPE_AS_ATTRACTOR_USER
+in: self, pedType
+```
+
+```lua
+addPedtypeAsAttractorUser(self, pedType)
+```
+
+```js
+Attractor.addPedTypeAsUser(self, pedType)
+```
+</Opcode>

@@ -1,0 +1,28 @@
+---
+title: 物体 Object
+description: 物体句柄 → SA-MP 物体 ID
+---
+
+`sa` · 扩展 `SAMPFUNCS` · 仅 SA-MP；需 SAMPFUNCS
+
+共 1 条。调用见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 物体 ID
+
+<Opcode id="0B52" name="SAMP_GET_OBJECT_ID" member="Object.GetSampId">
+按物体句柄返回 SA-MP 物体 ID。
+
+```text
+0B52 SAMP_GET_OBJECT_ID
+in: self
+out: id
+```
+
+```lua
+local id = sampGetObjectId(self)
+```
+
+```js
+const id = Object.getSampId(self)
+```
+</Opcode>

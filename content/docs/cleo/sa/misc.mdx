@@ -1,0 +1,24 @@
+---
+title: 杂项
+description: 无独立 class 或占位 opcode
+---
+
+`sa` · 扩展 `CLEO` · 需 CLEO
+
+无独立 class 或占位类 op。若 JSON 里还有 `none` class 条目，补进本页。
+
+写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## NOP / 占位
+
+部分环境用空指令垫对齐；无业务效果。具体 opcode 以你装的 CLEO 版本为准。
+
+```lua
+-- 一般不需要主动调用
+wait(0)
+```
+
+```js
+// 无统一 Redux 符号；按具体 opcode 用 native("…")
+wait(0)
+```

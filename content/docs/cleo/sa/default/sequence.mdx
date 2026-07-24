@@ -1,0 +1,84 @@
+---
+title: 序列 Sequence
+description: 任务序列
+---
+
+`sa` · 扩展 `default` · SCM 原生命令
+
+共 4 条。写法见 [Lua](/docs/cleo/syntax) / [Redux](/docs/cleo/syntax-redux)。
+
+## 打开
+
+<Opcode id="0615" name="OPEN_SEQUENCE_TASK" member="Sequence.Open">
+打开任务序列（最多约 8 步）。
+
+```text
+0615 OPEN_SEQUENCE_TASK
+out: handle
+```
+
+```lua
+local handle = openSequenceTask()
+```
+
+```js
+const handle = Sequence.open()
+```
+</Opcode>
+
+## 关闭
+
+<Opcode id="0616" name="CLOSE_SEQUENCE_TASK" member="Sequence.Close">
+结束并封上序列。
+
+```text
+0616 CLOSE_SEQUENCE_TASK
+in: self
+```
+
+```lua
+closeSequenceTask(self)
+```
+
+```js
+Sequence.close(self)
+```
+</Opcode>
+
+## 清空
+
+<Opcode id="061B" name="CLEAR_SEQUENCE_TASK" member="Sequence.Clear">
+清空序列。
+
+```text
+061B CLEAR_SEQUENCE_TASK
+in: self
+```
+
+```lua
+clearSequenceTask(self)
+```
+
+```js
+Sequence.clear(self)
+```
+</Opcode>
+
+## 循环
+
+<Opcode id="0643" name="SET_SEQUENCE_TO_REPEAT" member="Sequence.SetToRepeat">
+序列是否循环执行。
+
+```text
+0643 SET_SEQUENCE_TO_REPEAT
+in: self, state
+```
+
+```lua
+setSequenceToRepeat(self, state)
+```
+
+```js
+Sequence.setToRepeat(self, state)
+```
+</Opcode>

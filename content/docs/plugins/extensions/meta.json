@@ -1,0 +1,12 @@
+{
+  "title": "扩展",
+  "pages": [
+    "index",
+    "paths",
+    "screen",
+    "config",
+    "font",
+    "keycheck",
+    "pool-iterator"
+  ]
+}
