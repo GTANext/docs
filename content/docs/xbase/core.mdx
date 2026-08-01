@@ -1,0 +1,42 @@
+---
+title: Core
+description: 初始化、世界就绪检测。
+---
+
+`include/XBase/Core.h` · `XBase::Core`
+
+## 初始化与领域所有权
+
+```cpp
+void Init(DomainMask enabledDomains = 0);
+void SetEnabledDomains(DomainMask enabledDomains);
+DomainMask GetEnabledDomains();
+bool IsDomainEnabled(Domain domain);
+```
+
+`Init()` 默认不启用任何领域。宿主必须显式移交领域；掩码会过滤当前静态库不支持的领域。`SetEnabledDomains()` 支持运行时增减所有权：撤销领域时先执行该领域的 `Shutdown()`，晚启用 Player 且游戏已初始化时会补发初始化通知。
+
+## Process
+
+```cpp
+void Process();
+```
+
+宿主每帧调用一次。Core 只向已启用且已完成后端实现的领域分发，宿主不得再并行调用同一领域的 `Process()`。
+
+## 世界就绪
+
+```cpp
+bool IsWorldReady();
+```
+
+检测当前游戏世界是否已创建本地玩家对象。SA 后端使用真实世界状态；VC/III portable 后端不访问游戏内存，由宿主提供的生命周期顺序作为就绪门槛。
+
+## 新游戏、读档与关闭
+
+```cpp
+void NotifyGameInit();
+void Shutdown();
+```
+
+`NotifyGameInit()` 用于新游戏或读档：领域丢弃旧对象快照，不把旧存档状态写回新对象。`Shutdown()` 在卸载或领域撤销时恢复由 XBase 管理的运行时效果，并清理内部状态。

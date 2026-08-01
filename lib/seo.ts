@@ -37,6 +37,10 @@ export function seoPartsFromSlug(slug: string[] | undefined, pageTitle: string):
     return { title: title || 'CLEO', type: 'CLEO' };
   }
 
+  if (parts[0] === 'xbase') {
+    return { title: title || 'XBase', type: 'XBase' };
+  }
+
   if (parts[0] === 'skill') {
     return { title: title || '技能', type: '技能' };
   }

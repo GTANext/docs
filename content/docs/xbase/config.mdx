@@ -1,0 +1,28 @@
+---
+title: Config
+description: 基于 JSON 文件的持久化配置管理器。
+---
+
+`include/XBase/Config.h` · `XBase::Config`
+
+```cpp
+void Init(const std::string& filePath = "");  // 默认 <模块目录>\XBase\config.json
+void Save();
+const std::string& GetFilePath();
+
+std::string GetString(const std::string& key, const std::string& def = "");
+int GetInt(const std::string& key, int def = 0);
+float GetFloat(const std::string& key, float def = 0.0f);
+bool GetBool(const std::string& key, bool def = false);
+
+void SetString(const std::string& key, const std::string& value);
+void SetInt(const std::string& key, int value);
+void SetFloat(const std::string& key, float value);
+void SetBool(const std::string& key, bool value);
+
+bool HasKey(const std::string& key);
+```
+
+支持点号分隔的嵌套键：`"player.godMode"`、`"vehicle.nitro"`。仅在值有改动时写盘。
+
+- `GetFilePath` — 返回配置文件的当前路径

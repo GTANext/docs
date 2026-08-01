@@ -1,0 +1,38 @@
+---
+title: Json
+description: 手写递归下降 JSON 解析器 + 序列化器。
+---
+
+`include/XBase/Json.h` · `XBase::Json`
+
+```cpp
+struct Value {
+    enum Type { Null, Bool, Number, String, Array, Object };
+
+    static Value Parse(const std::string& text);
+    static Value Load(const std::string& filePath);
+    static bool Save(const Value& val, const std::string& filePath);
+
+    std::string Serialize(bool pretty = true, int indent = 0) const;
+    bool AsBool(bool def = false) const;
+    double AsNumber(double def = 0.0) const;
+    int AsInt(int def = 0) const;
+    std::string AsString(const std::string& def = "") const;
+
+    const Value& operator[](const std::string& key) const;
+    const Value& operator[](size_t index) const;
+    Value& Set(const std::string& key, const Value& val);
+    void Push(const Value& val);
+};
+```
+
+便捷构造函数：
+
+```cpp
+Json::Value(true);              // Bool
+Json::Value(42);                // Number (int)
+Json::Value(3.14);              // Number (double)
+Json::Value("hello");           // String
+Json::Value obj;                // construct Object via Set()
+Json::Value arr;                // construct Array via Push()
+```

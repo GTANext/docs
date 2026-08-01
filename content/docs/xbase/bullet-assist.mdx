@@ -1,0 +1,15 @@
+---
+title: BulletAssist
+description: 子弹辅助瞄准（自动锁定最近敌人）。
+---
+
+`include/XBase/BulletAssist.h` · `XBase::BulletAssist`
+
+```cpp
+void Init();
+void Process();
+void Draw();
+bool ShouldSuppressPedFire(PedId ped);
+```
+
+`Init()`、`Process()` 和 `Draw()` 由 XBase 集成层按领域生命周期管理，宿主不得在自己的每帧循环中重复调用 `Process()`。`ShouldSuppressPedFire()` 接收不透明 `PedId`，只提供开火抑制判断，不暴露 `CPed*`；Ped 分类和配置由对应领域负责。

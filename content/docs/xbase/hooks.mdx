@@ -1,0 +1,57 @@
+---
+title: Hooks
+description: D3D9 Hook（kiero）+ ImGui 引导。
+---
+
+`include/XBase/Hooks.h` · `XBase::Hooks`
+
+```cpp
+enum class RuntimeState {
+    Uninitialized,
+    Hooked,
+    RenderReady,
+    ShuttingDown,
+    Failed,
+};
+
+bool Init();
+void Shutdown();
+RuntimeState GetState();
+bool IsInitialized();
+bool IsReady();
+bool HadInitFailure();
+const char* GetStatusText();
+
+void SetDrawCallback(std::function<void()> callback);
+void SetMenuVisible(bool visible);
+bool IsMenuVisible();
+void ToggleMenu();
+
+void SetBackgroundInputActive(bool active);
+bool IsBackgroundInputActive();
+void SetBackgroundRenderActive(bool active);
+bool IsBackgroundRenderActive();
+void MaintainInputState();
+float ConsumeWheelDelta();
+```
+
+<Callout type="info">
+构建时通过 `XBASE_WITH_KIERO` 宏控制开启/关闭。依赖 `include/kiero/` 和 `include/imgui/`，完全自包含。
+</Callout>
+
+经典用法：
+
+```cpp
+XBase::Hooks::Init();
+XBase::Hooks::SetDrawCallback([] {
+    XBase::UI::Window("main", "My Window", [] {
+        XBase::UI::Text("Hello from XBase!");
+    });
+});
+```
+
+宿主不取得 D3D 设备，也不直接管理 ImGui；设备、Context、Win32/DX9 backend、WndProc、输入屏蔽和 Reset/Shutdown 生命周期全部属于 XBase。
+
+`Init()` 成功表示 EndScene/Reset Hook 已安装，状态进入 `Hooked`；第一次取得有效设备并完成 ImGui backend 初始化后进入 `RenderReady`。`Shutdown()` 先进入 `ShuttingDown`，恢复 WndProc 和游戏输入，再销毁 ImGui backend 与 kiero，最终回到 `Uninitialized`。
+
+Reset 必须先失效 ImGui 设备对象，再调用原始 D3D Reset；只有原始 Reset 成功时才重建设备对象。

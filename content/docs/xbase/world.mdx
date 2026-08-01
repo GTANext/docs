@@ -1,0 +1,97 @@
+---
+title: World
+description: 天气、时间、游戏速度、重力、Pickup。
+---
+
+`include/XBase/World.h` · `XBase::World`
+
+> World 的游戏对象访问、地址写入、天气锁定、时间锁定和 Pickup 会话由 XBase 管理。XMenu 只转换参数并消费结果；支持情况必须通过 `FeatureCapability` 判断。
+
+## 天气
+
+```cpp
+void SetWeather(int id, bool lock);
+void ReleaseWeather();
+bool IsWeatherLocked();
+```
+
+## 时间
+
+```cpp
+void SetTime(int hour, int minute);
+void GetTime(int& hour, int& minute);
+void SyncTimeWithSystemClock();
+```
+
+## 时间控制
+
+```cpp
+void SetFreezeTime(bool enable);   // 冻结时间流逝
+bool IsTimeFrozen();
+void SetFasterClock(bool enable);  // 加速时间流逝
+bool IsFasterClock();
+```
+
+## 系统控制
+
+```cpp
+void SetDisableReplay(bool enable);      // 禁止重播
+bool IsReplayDisabled();
+void SetDisableCheats(bool enable);      // 禁用所有作弊
+bool AreCheatsDisabled();
+void SetForbiddenAreaWanted(bool enable); // 禁区通缉
+bool IsForbiddenAreaWanted();
+void SetFreePayNSpray(bool enable);      // 免费喷漆
+bool IsFreePayNSpray();
+void SetNoWaterPhysics(bool enable);     // 无水物理
+bool IsNoWaterPhysics();
+```
+
+## 天气特效
+
+```cpp
+float GetRain();            void SetRain(float rain);
+float GetFoggyness();       void SetFoggyness(float fog);
+float GetCloudCoverage();   void SetCloudCoverage(float clouds);
+float GetWind();            void SetWind(float wind);
+float GetSandstorm();       void SetSandstorm(float sandstorm);
+float GetExtraSunnyness();  void SetExtraSunnyness(float sun);
+float GetWetRoads();        void SetWetRoads(float wet);
+```
+
+取值范围通常 0.0~1.0。
+
+## 游戏速度与重力
+
+```cpp
+void SetGameSpeed(float speed);
+float GetGameSpeed();
+int GetFpsLimit();
+void SetFpsLimit(int limit);
+float GetGravity();
+void SetGravity(float gravity);
+```
+
+`SetGameSpeed(0.0f)` 即暂停游戏。
+
+## Pickup
+
+```cpp
+int SpawnPickup(const Types::PickupOptions& options);
+bool RemoveTrackedPickups();
+```
+
+```cpp
+XBase::World::SpawnPickup({ .modelId = 1240, .type = 3 });
+```
+
+## 全局清除
+
+```cpp
+void DestroyAllVehicles();  // 炸毁所有载具
+void DestroyAllPeds();      // 击杀所有 Ped（玩家除外）
+```
+
+## 生命周期
+
+`World::Process()` 由 `Core::Process()` 唯一调用，负责天气、时间和运行时状态维护。宿主不得直接调用。

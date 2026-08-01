@@ -1,0 +1,175 @@
+---
+title: Vehicle
+description: 修复、生成、引擎、灯光、锁定、防护、特效。
+---
+
+`include/XBase/Vehicle.h` · `XBase::Vehicle`
+
+## 当前状态
+
+Vehicle 的通用游戏功能已移交 XBase。XMenu 只保留菜单输入、交通密度、自动驾驶和版本专属作弊/视觉策略；Vehicle 的唯一持续处理入口是 `XBase::Core::Process()`。
+
+| 功能组 | SA | VC | III |
+|---|---:|---:|---:|
+| 当前载具、修理、启停、引擎、翻正 | 已实现 | 已实现 | 已实现 |
+| 生命、灯光、锁定、proof、可见性 | 已实现 | 已实现 | 已实现 |
+| 基础颜色 | 已实现 | 已实现（前两色） | 已实现（前两色） |
+| 生成、座位、速度 | 已实现 | 已实现 | 已实现 |
+| 生成会话、限流、旧车清理 | 已实现 | 已实现 | 已实现 |
+| 生成结果、结构化事件 | 已实现 | 已实现 | 已实现 |
+| 开门 | 已实现 | 已实现 | 已实现 |
+| 弹门 | 已实现 | 不支持 | 不支持 |
+| Paintjob、Upgrades、SA 特效 | 能力支持 | 不支持 | 不支持 |
+
+## 当前对象与生命周期
+
+```cpp
+struct VehicleSnapshot {
+    VehicleId id;
+    unsigned int modelId;
+    float health;
+    Colors colors;
+    bool lights;
+    bool locked;
+    bool visible;
+    Types::ProofState proofs;
+};
+
+VehicleId GetCurrentId();
+VehicleSnapshot GetSnapshot();
+void Process();
+void NotifyGameInit();
+void Shutdown();
+```
+
+`GetCurrentId()` 返回玩家当前载具的不透明 ID；无载具时返回无效 ID。`GetSnapshot()` 在一次领域查询中返回页面和 Overlay 所需的纯值状态，`id` 无效时其余字段保持默认值。宿主不能从 ID 或快照获取 `CVehicle*`，对象生命周期和 pool 校验由 XBase 管理。`Process()` 只应由启用了 Vehicle 领域的 Core 每帧调用。`NotifyGameInit()` 会丢弃上一局的生成车辆快照、限流窗口和事件队列；`Shutdown()` 会恢复运行时状态并清理同一会话状态。
+
+## 生成会话
+
+```cpp
+struct SpawnOptions {
+    bool asDriver = true;
+    bool aircraftInAir = true;
+    bool cleanupPrevious = true;
+};
+
+struct SpawnPolicy {
+    unsigned int windowMs = 3000;
+    unsigned int maxSpawns = 2;
+};
+
+SpawnResult SpawnEx(unsigned int modelId, const SpawnOptions& options);
+void SetSpawnPolicy(const SpawnPolicy& policy);
+bool PollEvent(VehicleEvent& event);
+```
+
+`SpawnEx()` 先验证模型，再消耗限流配额。生成成功后，XBase 追踪当前生成车辆；启用 `cleanupPrevious` 时清理上一辆仍在 pool 中且未被玩家使用的 XBase 车辆。玩家正在使用旧车、对象已离开 pool 或后端拒绝删除时，不强制删除，并通过 `VehicleEvent` 报告结果。XBase 不依赖 XMenu UI；宿主消费事件后负责日志和提示。
+
+## 基础操作
+
+```cpp
+void Repair();
+void Start();
+void Stop();
+void SetEngine(bool enable);
+void Unflip();
+void SetHeavy(bool enable);
+void SetWatertight(bool enable);
+```
+
+## 车门与座位
+
+```cpp
+void OpenDoor(int doorIndex);   // 打开车门（0-5）
+void PopDoor(int doorIndex);    // 卸掉车门
+void WarpToSeat(int seatIndex); // 传送到座位（0=驾驶，1+=乘客）
+```
+
+## 血量
+
+```cpp
+float GetHealth();
+void SetHealth(float health);
+```
+
+## 灯光与锁定
+
+```cpp
+bool GetLights();     void SetLights(bool enable);
+bool GetLocked();     void SetLocked(bool enable);
+```
+
+## 防护
+
+```cpp
+Types::ProofState GetProofState();
+void SetProofState(const Types::ProofState& state);
+```
+
+## 可见性
+
+```cpp
+bool GetVisible();    void SetVisible(bool enable);
+```
+
+## 特殊属性
+
+```cpp
+bool GetAlwaysSkidMarks();        void SetAlwaysSkidMarks(bool enable);
+bool GetDriverTargetable();       void SetDriverTargetable(bool enable);
+bool GetHeatSeekingTargetable();  void SetHeatSeekingTargetable(bool enable);
+bool GetPetrolTankWeakPoint();    void SetPetrolTankWeakPoint(bool enable);
+bool GetSirenOrAlarm();           void SetSirenOrAlarm(bool enable);
+bool GetTakeLessDamage();         void SetTakeLessDamage(bool enable);
+```
+
+## 颜色与涂装
+
+```cpp
+int  GetPrimaryColor();
+int  GetSecondaryColor();
+void SetPrimaryColor(int color);
+void SetSecondaryColor(int color);
+int  GetPaintjob();         // -1 = none
+bool SetPaintjob(int paintjob);  // 0, 1, 2
+```
+
+颜色值使用 SA 标准颜色索引（0-255）。
+
+## 改装
+
+```cpp
+void AddUpgrade(unsigned int modelId);
+void RemoveUpgrade(unsigned int modelId);
+void RemoveAllUpgrades();
+int  GetUpgrade(int slot);  // 0-14, -1 = empty
+```
+
+高强度示例：
+
+```cpp
+auto vehicle = XBase::Vehicle::GetCurrentId();
+if (vehicle) {
+    XBase::Vehicle::AddUpgrade(1010); // 氮气
+    XBase::Vehicle::AddUpgrade(1085); // 尾翼
+    XBase::Vehicle::SetPrimaryColor(36); // 金属蓝
+    XBase::Vehicle::SetPaintjob(1);
+}
+```
+
+## 交通控制
+
+```cpp
+void SetTrafficDensity(float density);           // 交通密度（0.0-1.0）
+bool GetDisableParticles();   void SetDisableParticles(bool enable);
+void ApplySpeedLock(float speed);                // 速度上限
+void ApplyTargetSpeed(float speed);              // 巡航速度
+void RestoreTargetSpeed();                       // 恢复巡航
+```
+
+## 全局操作
+
+```cpp
+void BlowUpAll();
+bool Spawn(unsigned int modelId);
+```

@@ -1,0 +1,46 @@
+---
+title: Theme
+description: 主题配色与样式管理。
+---
+
+`include/XBase/Theme.h` · `XBase::Theme`
+
+Theme 模块通过 XBase 自有值类型管理配色与字体。ImGui 类型和字体指针只存在于 XBase 私有实现。
+
+## 初始化与预设
+
+```cpp
+void Init();
+void ApplyPreset(Preset preset);
+```
+
+- `Init()` — 应用 Dark 预设
+- `Preset` 枚举: `Dark`, `Light`, `ClassicBlue`, `Custom`
+
+## 自定义配色
+
+```cpp
+struct ColorSet {
+    ColorF primary;       // 主色（勾选、滑块）
+    ColorF accent;        // 强调色（按钮激活）
+    ColorF background;    // 窗口背景
+    ColorF surface;       // 控件背景
+    ColorF text;          // 文字
+    ColorF textDisabled;  // 禁用文字
+    ColorF border;        // 边框
+    ColorF highlight;     // 高亮
+};
+
+void ApplyCustom(const ColorSet& colors);
+ColorSet GetColors();
+```
+
+## 字体
+
+```cpp
+FontId LoadFont(const char* path, float size);
+bool SetDefaultFont(FontId font);
+```
+
+- `LoadFont` — 从 TTF 文件加载字体；成功返回不透明 `FontId`，失败返回无效 ID
+- `SetDefaultFont` — 按 ID 选择默认字体；XBase 在内部验证 ID，不向宿主暴露 `ImFont*`

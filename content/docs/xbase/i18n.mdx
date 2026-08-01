@@ -1,0 +1,27 @@
+---
+title: I18n
+description: 多语言字符串翻译系统。
+---
+
+`include/XBase/I18n.h` · `XBase::I18n`
+
+```cpp
+void Init(const std::string& directory = "");
+void SetLanguage(const std::string& code);
+std::string GetCurrentLanguage();
+std::vector<LanguageInfo> GetAvailableLanguages();
+const char* T(const char* key);       // 翻译
+const char* Translate(const char* key);
+```
+
+语言文件结构（目录扫描）：
+
+```
+XBase/i18n/
+  zh/index.json    { "name": "简体中文", "files": ["zh.json"] }
+  zh/zh.json       { "menu.player": "玩家", "menu.vehicle": "载具", ... }
+  en/index.json    { "name": "English", "files": ["en.json"] }
+  en/en.json       { "menu.player": "Player", ... }
+```
+
+查找链：当前语言 → 备用中文 → 返回原始 key。

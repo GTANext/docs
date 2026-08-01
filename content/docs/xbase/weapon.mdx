@@ -1,0 +1,43 @@
+---
+title: Weapon
+description: 给予武器、清空、丢弃、无限弹药。
+---
+
+`include/XBase/Weapon.h` · `XBase::Weapon`
+
+> Weapon 的游戏对象操作和持续状态由 XBase 管理。XMenu 只负责菜单输入和能力判断；VC/III 未确认的 Weapon 能力保持禁用，不提供可链接空桩来伪装支持。
+
+## 生命周期
+
+`Weapon::Process()` 由 `Core::Process()` 唯一调用，用于维护无限弹药和快速装填状态。宿主不得直接调用。
+
+## 批量操作
+
+```cpp
+void GiveAll();     // 给予玩家全部武器（99999 弹药）
+void ClearAll();    // 清空玩家所有武器
+void MaxWeaponSkills();  // 满武器技能
+```
+
+## 给予武器
+
+```cpp
+void Give(unsigned int weaponType, unsigned int ammo);
+void GiveModel(unsigned int weaponModel, unsigned int ammo);
+```
+
+## 丢弃武器
+
+```cpp
+void DropWeapon();      // 当前武器丢到地上
+void DropCurrent();     // 移除当前武器
+int  RemoveTrackedPickups();
+```
+
+## 武器增强
+
+```cpp
+void SetInfiniteAmmo(bool enable);
+void SetFastReload(bool enable);
+void ResetStats();
+```

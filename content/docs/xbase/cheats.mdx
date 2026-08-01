@@ -1,0 +1,21 @@
+---
+title: Cheats
+description: 游戏全局作弊开关合集。
+---
+
+`include/XBase/Cheats.h` · `XBase::Cheats`
+
+```cpp
+void FlyingCars(bool enable);       bool IsFlyingCars();
+void AllCarsHaveNitro(bool enable); bool IsAllCarsHaveNitro();
+void PerfectHandling(bool enable);  bool IsPerfectHandling();
+void GreenLights(bool enable);      bool IsGreenLights();
+void Riot(bool enable);             bool IsRiot();
+```
+
+每个作弊开关使用 SA 内置的 `m_aCheatsActive[]` 标志位数组（基址 `0x969130`）。
+```cpp
+XBase::Cheats::FlyingCars(true);
+XBase::Cheats::AllCarsHaveNitro(true);
+XBase::Cheats::PerfectHandling(true);  // 满抓地力
+```

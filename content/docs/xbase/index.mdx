@@ -1,0 +1,115 @@
+---
+title: 综述
+description: XBase 是 GTA SA 插件开发的轻量基础库。大道至简。
+---
+
+XBase 是一个按游戏版本隔离的 **静态库**，为 GTA SA、GTA Vice City 和 GTA III 分别生成 `XBaseSA.lib`、`XBaseVC.lib`、`XBaseIII.lib`。公共 API 形状一致，但每个库只允许使用对应游戏的 plugin-sdk ABI。
+
+当前版本后端状态：
+
+| 库 | 游戏 | 状态 |
+|---|---|---|
+| `XBaseSA.lib` | GTA San Andreas | Player 已移交；SA 其他控制器仍待收口 |
+| `XBaseVC.lib` | GTA Vice City | Player 已移交；Vehicle 基础 backend 待真实构建验收 |
+| `XBaseIII.lib` | GTA III | Player 已移交；Vehicle 基础 backend 待真实构建验收 |
+
+公共符号可链接不等于功能已实现。页面必须使用 `FeatureCapability` 判断细粒度支持；未移交领域仍由 XMenu 持有，不能因 XBase 提供兼容桩而启用。
+
+VC/III 库不会复用 SA 地址或 SA 类布局。尚未实现的域通过 `XBase::HasCapability()` 返回 `false`，而不是伪造成功。
+<Callout type="info" title="设计哲学">
+一行 `#include <XBase/XBase.h>`，通过 `XBase::` 命名空间直接调用全部功能。
+</Callout>
+
+## 控制器一览
+
+### 基础设施
+
+| 控制器 | 命名空间 | 职责 |
+|---|---|---|
+| **Log** | `XBase::Log` | 线程安全日志，文件输出+内存环缓存 |
+| **Json** | `XBase::Json` | 递归下降 JSON 解析/序列化 |
+| **Config** | `XBase::Config` | JSON 持久化配置，点号嵌套键 |
+| **I18n** | `XBase::I18n` | 多语言翻译，目录扫描+fallback 链 |
+| **Hooks** | `XBase::Hooks` | kiero D3D9 钩子 + ImGui 集成 |
+
+### 控制器
+
+| 控制器 | 命名空间 | 职责 |
+|---|---|---|
+| **Core** | `XBase::Core` | 初始化、世界就绪检测、全局 Process 分发 |
+| **Player** | `XBase::Player` | 血量/护甲/金钱/通缉/皮肤/技能/无敌/隐身/硬核/自由飞行 |
+| **Ped** | `XBase::Ped` | Ped 生成、Elvis/武装/暴动等作弊、帮派控制 |
+| **Vehicle** | `XBase::Vehicle` | 修复/生成/引擎/灯光/锁定/防护/车门/速度锁定/巡航 |
+| **World** | `XBase::World` | 天气/时间/游戏速度/重力/冻结时间/加速时钟/物理控制 |
+| **Weapon** | `XBase::Weapon` | 给予/清空/丢弃/无限弹药/快速装填/技能 |
+| **Teleport** | `XBase::Teleport` | 坐标/标记点/地图传送 |
+| **Scene** | `XBase::Scene` | 动画/粒子/过场动画/任务控制/战斗行走风格 |
+| **Visual** | `XBase::Visual` | HUD/雷达显示控制、后处理滤镜 |
+| **BulletAssist** | `XBase::BulletAssist` | 子弹辅助瞄准、最近目标锁定 |
+| **Overlay** | `XBase::Overlay` | 屏幕信息覆盖层（FPS/坐标/面板） |
+| **Cheats** | `XBase::Cheats` | 飞车/氮气/完美操控/绿灯/暴动 |
+
+### UI 层
+
+| 模块 | 命名空间 | 职责 |
+|---|---|---|
+| **Theme** | `XBase::Theme` | 主题配色、样式预设、字体管理 |
+| **UI** | `XBase::UI` | 窗口管理、Tab 系统、基础组件封装 |
+
+### 其他
+
+| 控制器 | 命名空间 | 职责 |
+|---|---|---|
+| **Version** | `XBase` | 游戏版本检测 |
+| **Types** | `XBase::Types` | 共享数据结构（ProofState/PedSpawnOptions 等） |
+
+## 版本能力查询
+
+```cpp
+#include <XBase/XBase.h>
+
+if (XBase::HasCapability(XBase::Capability::Vehicle)) {
+    XBase::Vehicle::Repair();
+}
+```
+
+能力查询属于当前静态库的编译目标，不是运行时猜测。宿主必须链接与游戏目标对应的库；禁止将 `XBaseSA.lib` 链接到 VC 或 III。
+
+## 宿主生命周期
+
+XBase 作为 XMenu 等宿主的静态库时，由宿主负责调用：
+
+```cpp
+XBase::Core::Init(); // 默认不启用任何领域
+// 只启用已从宿主旧逻辑移交的领域
+XBase::Core::SetEnabledDomains(
+    XBase::Core::DomainBit(XBase::Core::Domain::Player));
+// initGame 后调用
+XBase::Core::NotifyGameInit();
+// 每帧调用
+XBase::Core::Process();
+// 卸载前恢复状态并清理领域
+XBase::Core::Shutdown();
+```
+
+## 用法
+
+```cpp
+#include <XBase/XBase.h>
+
+XBase::Player::Heal();
+XBase::Player::GiveMoney(100000);
+XBase::Vehicle::Spawn(411);       // Infernus
+XBase::Vehicle::Repair();
+XBase::World::SetWeather(0, true); // 锁定晴天
+XBase::Weapon::GiveAll();
+```
+
+## 构建
+
+- C++20 / Win32 (x86) / MBCS / static runtime
+- Premake5 生成 VS2022 解决方案
+- `XBaseSA.lib` 使用 `plugin_sa`
+- `XBaseVC.lib` 使用 `plugin_vc`，当前未实现域通过能力查询拒绝调用
+- `XBaseIII.lib` 使用 `plugin_III`，当前未实现域通过能力查询拒绝调用
+- `Setup.bat` 生成项目文件，`Build.bat` 编译三个目标

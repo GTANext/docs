@@ -1,0 +1,95 @@
+---
+title: Ped
+description: Ped 生成、作弊、帮派控制。
+---
+
+`include/XBase/Ped.h` · `XBase::Ped`
+
+> Ped 的生成、删除、属性和持续状态由 XBase 管理。XMenu 只负责参数转换和 UI；VC/III 只启用已确认 backend 与能力矩阵支持的对象级能力，不能把可链接桩当作支持。
+
+## 生命周期
+
+`Ped::Process()` 由 `Core::Process()` 唯一调用，宿主不得直接调用。`NotifyGameInit()` 会清理上一局的对象追踪状态；`Shutdown()` 会恢复由 XBase 管理的持续状态并清理生成会话。
+
+```cpp
+void NotifyGameInit();
+void Shutdown();
+```
+
+## 安全控制
+
+```cpp
+void SetNoFire(bool enable);
+bool GetNoFire();
+void SetSpawnLimits(bool limitPolice, bool limitGangs, int maxPolice, int maxGangs);
+```
+
+- `SetNoFire` — 禁止所有 Ped 开火
+- `SetSpawnLimits` — 限制警察/帮派最大生成数量
+
+## 生成与删除
+
+```cpp
+struct PedSnapshot {
+    bool valid;
+    PedId id;
+    unsigned int modelId;
+    Vec3 position;
+    float health;
+    float armour;
+    bool player;
+    bool mission;
+    bool cop;
+    bool gang;
+};
+
+PedId GetLastSpawnedId();
+PedSnapshot GetLastSpawnedSnapshot();
+bool SpawnNearPlayer(unsigned int modelId, const Types::PedSpawnOptions& options);
+bool SpawnAtMarker(unsigned int modelId, const Types::PedSpawnOptions& options);
+void DeleteLastSpawned();
+```
+
+`GetLastSpawnedId()` 返回 XBase 的强类型 `PedId`。默认构造值或 `value == 0` 表示无效对象；XMenu 不保存游戏对象指针，也不参与 pool 生命周期管理。
+
+`GetLastSpawnedSnapshot()` 在 XBase 内验证 pool 生命周期，返回模型、位置、生命、护甲和分类等纯值数据。对象不存在或已失效时返回 `valid == false` 的默认快照。
+
+- `SpawnNearPlayer` — 在玩家面前 3 米生成 Ped，支持选项（血量、护甲、武器、敌对）
+- `SpawnAtMarker` — 在雷达标记点位置生成 Ped（需放置标记）
+- `DeleteLastSpawned` — 删除上次生成的 Ped
+
+## 帮派控制
+
+```cpp
+void SetGangsControl(bool enable);      // 帮派控制街道
+bool IsGangsControl();
+void SetGangsEverywhere(bool enable);   // 帮派无处不在
+bool IsGangsEverywhere();
+void SetGangWarsActive(bool enable);    // 开启/关闭帮派战争
+bool IsGangWarsActive();
+void StartGangWar(bool offensive);      // 主动/防守触发帮战
+void EndGangWar();
+
+int  GetGangZoneDensity(int gangId);         // 获取帮派区域密度
+void SetGangZoneDensity(int gangId, int density);
+unsigned int GetGangMemberModel(unsigned int gangId, unsigned int slot);
+void SetGangMemberModel(unsigned int gangId, unsigned int slot, unsigned int modelId);
+void ResetGangModels();
+void SetGangWeapons(unsigned int gangId, int weapon1, int weapon2, int weapon3);
+```
+
+## Ped 作弊
+
+```cpp
+void SetElvisEverywhere(bool enable);  bool IsElvisEverywhere();
+void SetEveryoneArmed(bool enable);    bool IsEveryoneArmed();
+void SetPedsMayhem(bool enable);       bool IsPedsMayhem();
+void SetPedsAtkRocket(bool enable);    bool IsPedsAtkRocket();
+void SetSlutMagnet(bool enable);       bool IsSlutMagnet();
+void SetBigHead(bool enable);          bool IsBigHead();
+void SetThinBody(bool enable);         bool IsThinBody();
+void SetNastyLimbs(bool enable);       bool IsNastyLimbs();
+void SetNoProstitutes(bool enable);    bool IsNoProstitutes();
+```
+
+`Ped::Process()` 维护由 XBase 接管的持续状态；XMenu 不得在页面或控制器中每帧重复写入游戏对象。

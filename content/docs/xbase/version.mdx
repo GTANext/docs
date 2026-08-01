@@ -1,0 +1,58 @@
+---
+title: Version
+description: 游戏版本检测与版本名称。
+---
+
+`include/XBase/Version.h` · `XBase::Version`
+
+## GameVersion 枚举
+
+```cpp
+enum GameVersion {
+    SA,  // Grand Theft Auto: San Andreas
+    VC,  // Grand Theft Auto: Vice City
+    III  // Grand Theft Auto III
+};
+```
+
+定义支持的 GTA 游戏版本枚举值。
+
+## GetGameVersion
+
+```cpp
+GameVersion GetGameVersion();
+```
+
+返回当前游戏对应的 `GameVersion` 枚举值。
+
+## IsSA
+
+```cpp
+bool IsSA();
+```
+
+检测当前游戏是否为 Grand Theft Auto: San Andreas。
+
+## IsVC
+
+```cpp
+bool IsVC();
+```
+
+检测当前游戏是否为 Grand Theft Auto: Vice City。
+
+## IsIII
+
+```cpp
+bool IsIII();
+```
+
+检测当前游戏是否为 Grand Theft Auto III。
+
+## GetVersionName
+
+```cpp
+std::string GetVersionName();
+```
+
+返回当前游戏版本的名称字符串（例如 `"SA"`、`"VC"`、`"III"`）。

@@ -1,0 +1,163 @@
+---
+title: Player
+description: 血量、护甲、金钱、通缉、皮肤、技能。
+---
+
+`include/XBase/Player.h` · `XBase::Player`
+
+## 版本支持
+
+| 功能组 | SA | VC | III |
+|---|---:|---:|---:|
+| 血量、护甲、金钱、通缉 | 支持 | 支持 | 支持 |
+| Proof 与可见性状态 | 支持 | 支持 | 支持 |
+| 相对移动 | 支持 | 支持 | 支持 |
+| 皮肤、服装、Stat | 支持 | 不支持 | 不支持 |
+| SA Cheat 标志 | 支持 | 不支持 | 不支持 |
+| 保留死亡/被捕物品 | 支持 | 不支持 | 不支持 |
+| 随处存档请求 | 支持 | 不支持 | 不支持 |
+
+使用 `FeatureCapability::PlayerBasicState`、`PlayerRuntimeEffects`、`PlayerProofs`、`PlayerMovement`、`PlayerKeepStuff`、`PlayerSaveGame` 等细粒度能力决定 UI 是否可用。VC/III 不支持的操作返回 `false` 或保持无操作，但宿主必须先通过能力查询禁用入口，不能把无操作当作成功；任何版本都不会访问其他版本地址。
+
+## 可用性
+
+```cpp
+struct PlayerSnapshot {
+    bool valid;
+    Vec3 position;
+    float health;
+    float armour;
+    int money;
+    int wantedLevel;
+    Types::ProofState proofs;
+};
+
+bool IsAvailable();
+PlayerSnapshot GetSnapshot();
+```
+
+`IsAvailable()` 只报告当前玩家对象是否可用。`GetSnapshot()` 在一次领域查询中返回位置和基础状态；`valid == false` 时其余字段保持默认值。XBase 不向宿主暴露 `CPlayerPed*` 或无类型指针。
+
+## 基础操作
+
+```cpp
+void Heal();
+void GiveArmour();
+void GiveMoney(int amount);
+void Kill();
+```
+
+## 通缉
+
+```cpp
+int  GetWantedLevel();
+void SetWantedLevel(int level);    // 0-6
+void ClearWantedLevel();
+```
+
+## 金钱
+
+```cpp
+int  GetMoney();
+void SetMoney(int amount);
+```
+
+## 血量与护甲
+
+```cpp
+float GetHealth();
+void  SetHealth(float value);
+float GetArmour();
+void  SetArmour(float value);
+```
+
+## 抗性
+
+```cpp
+Types::ProofState GetProofState();
+void SetProofState(const Types::ProofState& state);
+```
+
+## 外观
+
+```cpp
+bool SetSkin(unsigned int modelId);
+bool ApplyClothes(int textureId, int modelId, int bodyPart);
+```
+
+## 新功能标注
+
+```cpp
+bool SetCustomSkin(const char* txdName);
+```
+
+从 `models/txd/` 加载自定义 TXD 皮肤文件并应用到玩家。
+
+## 运行状态契约
+
+宿主每帧先把 UI 状态转换为 `RuntimeOptions`，再由启用了 Player 领域的 `Core::Process()` 唯一执行游戏状态写入：
+
+```cpp
+XBase::Player::RuntimeOptions options;
+options.godMode = menuState.godMode;
+options.autoHeal = menuState.autoHeal;
+options.hardMode = menuState.hardMode;
+options.freezeWantedLevel = menuState.freezeWantedLevel;
+options.wantedLevel = menuState.wantedLevel;
+options.freeFlyProtection = inputState.freeFlyActive;
+XBase::Player::SetRuntimeOptions(options);
+
+XBase::Core::Process();
+```
+
+数据流固定为 `MenuState → RuntimeOptions → Player::Process()`。宿主负责热键与方向输入；XBase 负责 proof、可见性、生命、护甲、通缉和死亡位置状态机。
+
+## 模式
+
+以下模式由 Player 状态机每帧维护，并在关闭功能、玩家对象切换或 `Player::Shutdown()` 时按属性恢复快照。未被 XBase 修改的生命、护甲、proof 或可见性不会被无差别回滚。宿主只有在移除旧 Player Process 后，才能启用 `Core::Domain::Player`，否则会产生两个状态写入者。
+
+```cpp
+void SetNeverWanted(bool enable);    // 永远不被通缉（SA）
+void SetGodMode(bool enable);        // proof 与生命保护
+bool IsGodMode();
+void SetInvisible(bool enable);      // 隐身模式
+bool IsInvisible();
+void SetHardMode(bool enable);       // 生命上限 50、护甲归零，关闭时恢复快照
+bool IsHardMode();
+void SetFreeFly(bool enable);        // 自由移动防护；方向输入仍由宿主提供
+bool IsFreeFly();
+```
+
+## 实用工具
+
+```cpp
+void CopyCoordinates();              // 复制玩家坐标到剪贴板
+bool RequestSaveGame();              // 触发存档请求
+void MoveForward(float distance);    // 朝面前移动
+void MoveUp(float distance);         // 向上移动
+void MoveDown(float distance);       // 向下移动
+void ApplyAimSkinChanger();          // 瞄准时自动切换皮肤
+```
+
+## 属性
+
+```cpp
+void SetInfiniteSprint(bool enable);
+void SetKeepStuff(bool enable);
+void SetFreeHealthcare(bool enable);
+bool GetFreeHealthcare();
+void SetFreeJail(bool enable);
+bool GetFreeJail();
+void MaxVehicleSkills();
+bool SetStat(int statId, float value);
+```
+
+## 超级能力
+
+```cpp
+void SuperJump(bool enable);
+void SuperPunch(bool enable);
+void UnderwaterBreathing(bool enable);
+```
+
+均通过 SA 内置 Cheat 标志位实现。VC/III 的对应调用保持无操作，调用前应检查 `FeatureCapability::PlayerCheats`。

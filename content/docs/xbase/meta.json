@@ -1,0 +1,35 @@
+{
+  "title": "XBase",
+  "root": true,
+  "icon": "Blocks",
+  "pages": [
+    "index",
+    "---基础设施---",
+    "log",
+    "json",
+    "config",
+    "i18n",
+    "hooks",
+    "host-integration",
+    "---控制器---",
+
+    "core",
+    "player",
+    "ped",
+    "vehicle",
+    "world",
+    "weapon",
+    "teleport",
+    "scene",
+    "visual",
+    "bullet-assist",
+    "overlay",
+    "cheats",
+    "---UI 层---",
+    "theme",
+    "ui",
+    "---其他---",
+    "version",
+    "types"
+  ]
+}

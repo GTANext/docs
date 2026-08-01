@@ -1,0 +1,75 @@
+---
+title: UI
+description: 窗口管理、Tab 系统、基础 UI 组件。
+---
+
+`include/XBase/UI.h` · `XBase::UI`
+
+UI 模块在 ImGui 之上提供窗口管理器、Tab 系统和常用组件封装。
+
+## 生命周期
+
+```cpp
+void Init(const std::string& title = "XBase");
+void Process();
+void Shutdown();
+```
+
+`Init()` 自动调用 `Theme::Init()` 和 `Hooks::SetDrawCallback`，接管绘制循环。
+
+## 窗口管理
+
+```cpp
+void AddWindow(const std::string& name, std::function<void()> drawFn, bool defaultOpen = false, ImGuiWindowFlags flags = 0);
+void RemoveWindow(const std::string& name);
+void SetWindowVisible(const std::string& name, bool visible);
+bool IsWindowVisible(const std::string& name);
+void ToggleWindow(const std::string& name);
+```
+
+示例：
+
+```cpp
+XBase::UI::AddWindow("信息", [] {
+    ImGui::Text("Hello XBase!");
+});
+XBase::UI::ToggleWindow("信息");
+```
+
+## Tab 系统
+
+```cpp
+void BeginTabBar(const std::string& name);
+void AddTab(const std::string& label, std::function<void()> drawFn);
+bool RenderTabBar(float height = 0.0f);
+void EndTabBar();
+```
+
+- `BeginTabBar` / `EndTabBar` — 在窗口内容中使用
+- `RenderTabBar` — 独立渲染 TabBar（带可选高度约束）
+
+示例：
+
+```cpp
+XBase::UI::BeginTabBar("main");
+XBase::UI::AddTab("玩家", [] { ImGui::Text("玩家信息"); });
+XBase::UI::AddTab("载具", [] { ImGui::Text("载具信息"); });
+bool changed = XBase::UI::RenderTabBar();
+```
+
+## 组件
+
+```cpp
+void CenterText(const char* text);
+void SeparatorText(const char* label);
+bool StyledButton(const char* label, ImVec2 size = ImVec2(0, 0));
+void BeginGroupBox(const char* label, ImVec2 size = ImVec2(0, 0));
+void EndGroupBox();
+void HelpMarker(const char* desc);
+```
+
+- `CenterText` — 居中显示文本
+- `SeparatorText` — 带标签的分隔线
+- `StyledButton` — 使用主题主色的按钮
+- `BeginGroupBox` / `EndGroupBox` — 带标题的编组框（基于 BeginChild）
+- `HelpMarker` — 问号悬浮提示

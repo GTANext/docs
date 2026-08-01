@@ -1,0 +1,62 @@
+---
+title: Overlay
+description: 屏幕信息覆盖层，显示 FPS、坐标、血量、护甲、金钱、通缉、时间、室内编号。
+---
+
+`include/XBase/Overlay.h` · `XBase::Overlay`
+
+## Init
+
+```cpp
+void Init();
+```
+
+初始化覆盖层，默认为隐藏状态。
+
+## Process
+
+```cpp
+void Process();
+```
+
+每帧维护更新覆盖层内部状态。
+
+## Draw
+
+```cpp
+void Draw();
+```
+
+绘制覆盖层文本信息，在 `drawingEvent` 中调用。
+
+## SetVisible
+
+```cpp
+void SetVisible(bool enable);
+```
+
+显示或隐藏覆盖层。
+
+## IsVisible
+
+```cpp
+bool IsVisible();
+```
+
+返回覆盖层当前是否可见。
+
+## Toggle
+
+```cpp
+void Toggle();
+```
+
+切换覆盖层的显示与隐藏状态。
+
+## SetPosition
+
+```cpp
+void SetPosition(bool topLeft, bool topRight, bool bottomLeft, bool bottomRight);
+```
+
+设置覆盖层在屏幕上显示的位置。目前仅实现左上角，其余位置参数预留。

@@ -1,0 +1,58 @@
+---
+title: Scene
+description: 动画、粒子、过场动画。
+---
+
+`include/XBase/Scene.h` · `XBase::Scene`
+
+> Scene 的游戏对象访问和生命周期由 XBase 持有。XMenu 只负责菜单参数转换、通知和能力判断；当前静态库不支持的版本必须通过 `FeatureCapability` 禁用。
+
+## 动画
+
+```cpp
+bool PlayAnimation(const char* group, const char* name, bool loop);
+void StopAnimation();
+```
+
+## 粒子
+
+```cpp
+bool PlayParticle(const char* name);
+void RemoveAllParticles();      // 清除所有通过 XBase 创建的粒子
+void RemoveLatestParticle();    // 清除最近创建的粒子
+```
+
+## 过场动画
+
+```cpp
+bool StartCutscene(const char* name);
+void StopCutscene();
+bool IsCutsceneRunning();
+```
+
+## 任务
+
+```cpp
+const char* GetMissionStatus(); // 返回 "No Mission" / "On Mission" / "Passed" / "Failed"
+void FailMission();             // 失败当前任务
+void StartMission(int missionId); // 启动指定任务
+```
+
+## 角色风格
+
+```cpp
+void SetFightingStyle(int style);  // 设置战斗风格（0=普通, 1=拳击, ...）
+void SetWalkingStyle(int style);   // 设置走路风格
+```
+
+战斗风格对应 GTA SA opcode 0x0730，行走风格对应 0x0747。
+
+## 生命周期
+
+`Scene::Process()` 由 `Core::Process()` 唯一调用，用于清理已结束粒子和延迟释放动画组。宿主不得直接调用它。
+
+```cpp
+void Shutdown();
+```
+
+`Shutdown()` 清理 XBase 创建的粒子、动画组状态和待释放任务。

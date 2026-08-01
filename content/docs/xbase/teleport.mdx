@@ -1,0 +1,24 @@
+---
+title: Teleport
+description: 坐标传送、标记点传送、地图传送。
+---
+
+`include/XBase/Teleport.h` · `XBase::Teleport`
+
+`GetCurrentPosition()` 返回当前玩家位置，失败时返回安全默认值；其余动作接口由 XBase 按对应版本 backend 执行。当前能力由 `FeatureCapability::TeleportBasic` 控制，宿主不应直接调用 `Teleport::Process()`。
+
+```cpp
+Vec3 GetCurrentPosition();
+void To(float x, float y, float z, int interior = 0);
+void Forward(float distance);
+void MapPosition(float x, float y, bool spawnUnderwater = false);
+void Marker(bool spawnUnderwater = false);
+void Center();
+```
+
+`Teleport::Process()` 没有宿主可见的持续策略；如果领域启用，仍由 `Core::Process()` 统一调度，宿主不要直接调用。
+- `To` — 传送到指定坐标
+- `Forward` — 朝面前方向移动指定距离
+- `MapPosition` — 传送到地图坐标（x，y → 自动计算地面 z）
+- `Marker` — 传送到当前标记点（雷达上设置的坐标）
+- `Center` — 传送到世界原点 (0, 0, 3)

@@ -1,0 +1,32 @@
+---
+title: Log
+description: 线程安全的日志系统，同时写入文件和内存缓存。
+---
+
+`include/XBase/Log.h` · `XBase::Log`
+
+```cpp
+void Init(const char* filePath = nullptr);  // 默认 <模块目录>\XBase\logs\xbase.log
+void Shutdown();
+bool IsInitialized();
+
+void Write(Level level, const char* message);
+void Write(Level level, const std::string& message);
+void Info(const char* message);
+void Warn(const char* message);
+void Error(const char* message);
+void Debug(const char* message);
+void Info(const std::string& message);
+void Warn(const std::string& message);
+void Error(const std::string& message);
+void Debug(const std::string& message);
+
+std::vector<Entry> GetEntries();    // 最近 600 条
+std::size_t GetTotalCount();
+std::string GetText();              // 完整文本
+std::string GetLogFilePath();
+```
+
+- `Level` 枚举: `Debug`, `Info`, `Warn`, `Error`
+- `Entry` 结构: `Level level`, `std::string message`, `std::chrono::system_clock::time_point timestamp`
+- 线程安全，写入 `[YYYY-MM-DD HH:MM:SS] [LEVEL] message` 格式日志。

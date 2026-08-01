@@ -1,0 +1,63 @@
+---
+title: Types
+description: 共享数据结构定义。
+---
+
+`include/XBase/ValueTypes.h` · `XBase`
+
+公共值类型不依赖 plugin-sdk、ImGui、D3D 或 Windows 类型。游戏对象只通过强类型 ID 表示，宿主不能由 ID 还原 SDK 指针。
+
+## 基础值类型
+
+```cpp
+struct Vec2 { float x; float y; };
+struct Vec3 { float x; float y; float z; };
+struct Rect { float left; float top; float right; float bottom; };
+struct Color { std::uint8_t r; std::uint8_t g; std::uint8_t b; std::uint8_t a; };
+struct ColorF { float r; float g; float b; float a; };
+```
+
+`Color` 用于 8 位颜色通道，`ColorF` 用于归一化浮点颜色。第三方向量和颜色类型只允许在 XBase 私有实现中转换。
+
+## 不透明 ID
+
+```cpp
+struct EntityId { std::uint32_t value; };
+struct PedId { std::uint32_t value; };
+struct VehicleId { std::uint32_t value; };
+struct FontId { std::uint32_t value; };
+struct TextureId { std::uint64_t value; };
+```
+
+不同领域的 ID 是不同类型，不能互相隐式传递。`value == 0` 表示无效 ID；使用显式布尔转换检查有效性。ID 只表达对象身份，实际 pool 生命周期验证由 XBase 完成。
+
+`include/XBase/Types.h` · `XBase::Types`
+
+## ProofState
+
+```cpp
+struct ProofState {
+    bool bullet;
+    bool fire;
+    bool explosion;
+    bool collision;
+    bool melee;
+    bool nonPlayer;
+};
+```
+
+防护状态结构体，表示各类伤害类型的免疫状态。
+
+## PedSpawnOptions
+
+```cpp
+struct PedSpawnOptions {
+    int pedType = 4;
+    float health = 100.0f;
+    float armour = 0.0f;
+    unsigned int weaponModel = 0;
+    bool hostile = false;
+};
+```
+
+生成 Ped 时的选项结构体。`pedType` 默认值为 4，`weaponModel` 为 0 时表示赤手空拳。

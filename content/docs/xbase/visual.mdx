@@ -1,0 +1,20 @@
+---
+title: Visual
+description: 显示/隐藏 HUD、雷达。
+---
+
+`include/XBase/Visual.h` · `XBase::Visual`
+
+> Visual 状态由 XBase 管理。XMenu 只同步菜单状态；支持情况必须通过 `FeatureCapability::VisualHudRadar` 或 `FeatureCapability::VisualFilter` 判断。
+
+```cpp
+void DisplayHud(bool enable);
+void DisplayRadar(bool enable);
+void SetFilter(int id, float strength);
+```
+
+`Visual::Process()` 由 `Core::Process()` 唯一调用，用于维护持续视觉状态；宿主不得直接调用。
+
+- `DisplayHud` — 显示或隐藏 HUD
+- `DisplayRadar` — 显示或隐藏雷达
+- `SetFilter` — 设置画面滤镜效果
