@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: {
     absolute: siteTitle,
   },
-  description: 'GTA 插件开发文档 · plugin-sdk ASI 与 CLEO opcode（III / VC / SA）',
+  description: 'GTA 三部曲开发文档 · XBase、plugin-sdk、CLEO 与 Agent Skill（III / VC / SA）',
 };
 
 export default function Layout({ children }: LayoutProps<'/'>) {

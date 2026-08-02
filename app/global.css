@@ -10,3 +10,21 @@ html > body[data-scroll-locked] {
   margin-right: 0px !important;
   --removed-body-scroll-bar-size: 0px !important;
 }
+
+.gta-city-grid {
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--color-fd-foreground) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--color-fd-foreground) 5%, transparent) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: linear-gradient(to bottom, black, transparent 92%);
+}
+
+.gta-road-lines {
+  background-image: repeating-linear-gradient(
+    118deg,
+    transparent 0 38px,
+    color-mix(in oklab, var(--color-fd-foreground) 4%, transparent) 38px 39px,
+    transparent 39px 76px
+  );
+  mask-image: linear-gradient(to bottom right, transparent, black 45%, transparent);
+}

@@ -12,6 +12,7 @@ export const terms = {
   /** 任意分区 / 全站的入口概览页 */
   overview: '综述',
   /** 文档大区 */
+  xbase: 'XBase',
   plugins: '插件',
   cleo: 'CLEO',
   skill: '技能',

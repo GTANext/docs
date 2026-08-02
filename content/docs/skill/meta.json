@@ -5,6 +5,7 @@
   "pages": [
     "index",
     "plugins-dev",
+    "xbase-dev",
     "cleo-dev"
   ]
 }

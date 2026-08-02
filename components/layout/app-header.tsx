@@ -22,7 +22,7 @@ const iconLinkClassName = cn(
   'text-fd-muted-foreground',
 );
 
-/** 文档二级 · root 分区（插件 / CLEO / 技能） */
+/** 文档二级 · root 分区（XBase / 插件 / CLEO / 技能） */
 export function DocsSectionNav({
   items,
   className,

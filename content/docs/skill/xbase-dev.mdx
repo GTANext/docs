@@ -1,0 +1,36 @@
+---
+title: XBase
+description: XBase 开发 Skill · 公共 API、能力矩阵与版本后端边界
+---
+
+对应 Skill 文件：`gtamodx/xbase-dev.md`。
+
+使用 **XBase 公共 API、Core 生命周期、Host / Runtime / Platform、UI DSL 或三版本后端** 时，先读本页再编写代码。
+
+## 文档落点
+
+| 主题 | 文档 |
+|---|---|
+| 架构与能力 | [XBase 综述](/docs/xbase) |
+| Core 生命周期 | [Core](/docs/xbase/core) |
+| 公共值类型与 ID | [Types](/docs/xbase/types) |
+| 宿主与版本后端 | [宿主接入](/docs/xbase/host-integration) |
+| UI 与主题 | [UI](/docs/xbase/ui) · [Theme](/docs/xbase/theme) |
+| Hook 边界 | [Hooks](/docs/xbase/hooks) |
+| 玩家、载具与世界 | [Player](/docs/xbase/player) · [Vehicle](/docs/xbase/vehicle) · [World](/docs/xbase/world) |
+
+## 硬规则
+
+- 宿主只使用 `XBase/*.h` 公共接口，不包含私有 backend 或第三方 SDK 头
+- 调用功能前检查对应能力；不支持的版本必须安全禁用或返回可观察失败
+- III、VC、SA 的地址、ABI、脚本命令和对象布局严格隔离
+- 生命周期和游戏状态由 XBase Core 统一调度，宿主不得建立第二套状态源
+- 公共边界只暴露值类型、强类型 ID、快照、结果与回调
+
+## 使用范围
+
+- 编排 XBase 功能或接入 XMenu：只加载 XBase Skill
+- 实现 XBase 私有游戏后端：同时加载 [插件 Skill](/docs/skill/plugins-dev)
+- 对照脚本命令语义：同时加载 [CLEO Skill](/docs/skill/cleo-dev)
+
+入口：[XBase 综述](/docs/xbase)。

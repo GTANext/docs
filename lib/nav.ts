@@ -3,9 +3,14 @@ import { terms } from './terms';
 
 /**
  * 文档内页二级 · root 分区导航
- * 一级顶栏不放这些，只出现在 docs secondary
+ * XBase、插件、CLEO 与技能只出现在 docs secondary
  */
 export const sectionNavLinks = [
+  {
+    text: terms.xbase,
+    url: `${docsRoute}/xbase`,
+    active: 'nested-url' as const,
+  },
   {
     text: terms.plugins,
     url: `${docsRoute}/plugins`,
