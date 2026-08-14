@@ -44,3 +44,15 @@ bool SetDefaultFont(FontId font);
 
 - `LoadFont` — 从 TTF 文件加载字体；成功返回不透明 `FontId`，失败返回无效 ID
 - `SetDefaultFont` — 按 ID 选择默认字体；XBase 在内部验证 ID，不向宿主暴露 `ImFont*`
+
+## 预设持久化
+
+```cpp
+void SavePreset(const std::string& name);
+bool LoadPreset(const std::string& name);
+```
+
+- `SavePreset` — 将当前 `ColorSet` 保存到 `Config` 系统，调用 `Config::Save()` 持久化到磁盘
+- `LoadPreset` — 从 `Config` 加载指定名称的主题并应用；如不存在返回 `false`
+
+保存的键格式为 `theme.<name>.*`，例如 `theme.myBlue.primary.r`。

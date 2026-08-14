@@ -61,15 +61,53 @@ bool changed = XBase::UI::RenderTabBar();
 
 ```cpp
 void CenterText(const char* text);
+void Separator();
 void SeparatorText(const char* label);
-bool StyledButton(const char* label, ImVec2 size = ImVec2(0, 0));
-void BeginGroupBox(const char* label, ImVec2 size = ImVec2(0, 0));
+void Tooltip(const char* text);
+void HelpMarker(const char* desc, bool* hold = nullptr);
+bool Button(const char* label, Vec2 size = {});
+bool StyledButton(const char* label, Vec2 size = {});
+void BeginGroupBox(const char* label, Vec2 size = {});
 void EndGroupBox();
-void HelpMarker(const char* desc);
+bool Checkbox(const char* label, bool& value);
 ```
 
 - `CenterText` — 居中显示文本
+- `Separator` — 分隔线
 - `SeparatorText` — 带标签的分隔线
+- `Tooltip` — 悬浮提示（依赖 `IsItemHovered`）
+- `HelpMarker` — 问号悬浮提示，`hold`接收鼠标按住状态
+- `Button` — 基础按钮
 - `StyledButton` — 使用主题主色的按钮
-- `BeginGroupBox` / `EndGroupBox` — 带标题的编组框（基于 BeginChild）
-- `HelpMarker` — 问号悬浮提示
+- `BeginGroupBox` / `EndGroupBox` — 带边框的编组框
+
+## 通知 / Toast
+
+```cpp
+struct NotificationSpec {
+    const char* message = "";
+    float duration = 3.0f;
+    Color color = {};
+};
+
+void Notify(NotificationSpec spec);
+void RenderNotifications(Vec2 screenPosition = {});
+```
+
+- `Notify` — 排队一条Toast消息
+- `RenderNotifications` — 在背景绘制层渲染所有活跃Toast（可选屏幕位置，默认左上角）
+
+## Canvas 绘图
+
+```cpp
+namespace Canvas {
+void Line(Vec2 from, Vec2 to, Color color, float thickness = 1.0f);
+void Rect(Vec2 min, Vec2 max, Color color, float thickness = 1.0f);
+void RectFilled(Vec2 min, Vec2 max, Color color);
+void Circle(Vec2 center, float radius, Color color, float thickness = 1.0f);
+void CircleFilled(Vec2 center, float radius, Color color);
+void Arc(Vec2 center, float radius, float startAngle, float endAngle, Color color, float thickness = 1.0f);
+void Polyline(const Vec2* points, std::size_t count, Color color, float thickness = 1.0f);
+void Text(Vec2 position, Color color, const char* text);
+}
+```
