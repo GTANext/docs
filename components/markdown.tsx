@@ -12,7 +12,7 @@ import {
   useDeferredValue,
 } from 'react';
 import { Fragment, jsx, jsxs } from 'react/jsx-runtime';
-import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock';
+import { CodeBlock, Pre as CodePre } from 'fumadocs-ui/components/codeblock';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { visit } from 'unist-util-visit';
 import type { ElementContent, Root, RootContent } from 'hast';
@@ -77,8 +77,8 @@ function createProcessor(): Processor {
   };
 }
 
-function Pre(props: ComponentProps<'pre'>) {
-  const code = Children.only(props.children) as ReactElement;
+function Pre({ children, ...props }: ComponentProps<'pre'>) {
+  const code = Children.only(children) as ReactElement;
   const codeProps = code.props as ComponentProps<'code'>;
   const content = codeProps.children;
   if (typeof content !== 'string') return null;
@@ -91,7 +91,12 @@ function Pre(props: ComponentProps<'pre'>) {
 
   if (lang === 'mdx') lang = 'md';
 
-  return <DynamicCodeBlock lang={lang} code={content.trimEnd()} />;
+  // 问 AI 的回答按纯代码块渲染，避免把整包语法高亮打进产物
+  return (
+    <CodeBlock title={lang} {...props}>
+      <CodePre>{content.trimEnd()}</CodePre>
+    </CodeBlock>
+  );
 }
 
 const processor = createProcessor();

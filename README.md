@@ -17,12 +17,12 @@ pnpm dev
 pnpm deploy:pack
 ```
 
-该命令先构建再整理产物，构建时预渲染全部文档页与 Markdown 文本，问 AI、搜索与 OG 图走运行时服务端渲染。
+该命令先构建再整理产物。构建时只预渲染首页、分区入口与 LLM 文本，文档正文、问 AI、搜索与 OG 图走运行时服务端渲染，产物里不会留下每页的 HTML 与 data。
 
 | 目录 | 内容 | 用途 |
 |---|---|---|
 | `server/` | 清单入口、启动文件、环境文件 | 项目内启动结构 |
-| `deploy/` | `public/` 静态资源、`server/` 服务端、`package.json` | 整体上传的部署目录 |
+| `deploy/` | `public/` 静态资源、`server/` 服务端、`package.json`、`.env.example` | 整体上传的部署目录 |
 
 项目内启动：
 
@@ -30,12 +30,29 @@ pnpm deploy:pack
 pnpm start
 ```
 
-部署时上传 `deploy/` 整体，在目标机安装依赖后启动，启动目录需能读到时环境文件与 `node_modules`：
+### 自动构建
+
+任意分支的推送都会跑类型检查与打包；推送 `main` 或手动触发 `Deploy website` 工作流（`.github/workflows/deploy-website.yml`）时，产物 `deploy/` 会强推到 `website` 分支。该分支只保留一次提交，不存历史。
+
+部署机首次准备：
 
 ```bash
+git clone -b website https://github.com/GTANext/docs.git site
+cd site
 pnpm install --prod
-node server/server.mjs
+cp .env.example server/.env
 ```
+
+更新产物，未跟踪的 `server/.env` 不会被覆盖：
+
+```bash
+git fetch origin website
+git reset --hard origin/website
+```
+
+启动 `node server/server.mjs`，端口由 `server/.env` 的 `PORT` 决定。
+
+站点是服务端渲染，需要常驻 Node 进程；`website` 分支是产物分支，不能直接当 GitHub Pages 的静态站点用。
 
 ## 环境变量
 

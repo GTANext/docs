@@ -1,0 +1,63 @@
+name: Deploy website
+
+on:
+  push:
+  workflow_dispatch:
+
+concurrency:
+  group: website-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 12
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm types:check
+
+      - name: Build
+        run: pnpm deploy:pack
+
+      # 任意分支的提交都跑构建，只有 main 与手动触发才更新产物分支
+      - name: Push to website branch
+        if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          site="$RUNNER_TEMP/website"
+          rm -rf "$site"
+          mkdir -p "$site"
+          cp -r deploy/. "$site/"
+
+          # 部署机的密钥不进分支，产物里只给示例
+          rm -f "$site/server/.env"
+
+          cd "$site"
+          git init -q
+          git checkout -q -b website
+          git add -A
+          git -c user.name="github-actions[bot]" \
+              -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit -q -m "build: ${GITHUB_SHA::7}"
+          git push -f "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" website

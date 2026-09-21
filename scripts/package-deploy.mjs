@@ -47,6 +47,11 @@ mkdirSync(deployDir, { recursive: true });
 cpSync(join(buildDir, 'client'), join(deployDir, 'public'), { recursive: true });
 cpSync(serverDir, join(deployDir, 'server'), { recursive: true });
 
+// 示例文件单独放，目标机自己生成 server/.env，升级产物不会覆盖密钥
+if (existsSync(join(root, '.env.example'))) {
+    copyFileSync(join(root, '.env.example'), join(deployDir, '.env.example'));
+}
+
 // 清单只保留运行期依赖与启动脚本，避免目标机执行构建钩子
 const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'));
 writeFileSync(
