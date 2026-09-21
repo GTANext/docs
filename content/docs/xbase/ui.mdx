@@ -1,11 +1,11 @@
 ---
 title: UI
-description: 窗口管理、Tab 系统、基础 UI 组件。
+description: 窗口管理、Tab 系统、MenuSurface 与基础 UI 组件。
 ---
 
 `include/XBase/UI.h` · `XBase::UI`
 
-UI 模块在 ImGui 之上提供窗口管理器、Tab 系统和常用组件封装。
+UI 模块在 ImGui 之上提供窗口管理器、Tab 系统、MenuSurface 列表菜单和常用组件封装。宿主只包含 XBase 公共头，不直接引用 ImGui。
 
 ## 生命周期
 
@@ -15,87 +15,177 @@ void Process();
 void Shutdown();
 ```
 
-`Init()` 自动调用 `Theme::Init()` 和 `Hooks::SetDrawCallback`，接管绘制循环。
+- `Init()` 通过 `Hooks::RegisterDrawCallback()` 注册绘制循环，失败时记录错误并保持未初始化。
+- `Process()` 为空实现：所有 ImGui 声明只在渲染钩子内执行。
+- `Shutdown()` 注销绘制回调并清空窗口、Tab 与 MenuSurface 状态。
 
 ## 窗口管理
 
 ```cpp
-void AddWindow(const std::string& name, std::function<void()> drawFn, bool defaultOpen = false, ImGuiWindowFlags flags = 0);
+void AddWindow(const std::string& name, DrawFn drawFn, bool defaultOpen = false, WindowFlags flags = 0);
 void RemoveWindow(const std::string& name);
 void SetWindowVisible(const std::string& name, bool visible);
 bool IsWindowVisible(const std::string& name);
 void ToggleWindow(const std::string& name);
+
+void SetNextWindowPosition(Vec2 position, bool always = false);
+void SetNextWindowSize(Vec2 size, bool firstUseOnly = false);
+void SetNextWindowBackgroundAlpha(float alpha);
 ```
 
-示例：
+```cpp
+XBase::UI::AddWindow("info", [] {
+    XBase::UI::Text("Hello XBase!");
+});
+XBase::UI::ToggleWindow("info");
+```
+
+窗口标志使用值类型 `WindowFlag` 与 `Flag()` 组合：
 
 ```cpp
-XBase::UI::AddWindow("信息", [] {
-    ImGui::Text("Hello XBase!");
-});
-XBase::UI::ToggleWindow("信息");
+XBase::UI::Window("main", "我的菜单", drawFn,
+    nullptr, XBase::UI::Flag(XBase::UI::WindowFlag::NoCollapse));
+```
+
+## 容器与分组
+
+```cpp
+void Window(const char* id, const char* title, const DrawFn& drawFn, bool* open = nullptr, WindowFlags flags = 0);
+void Child(const char* id, const DrawFn& drawFn, Vec2 size = {}, bool border = false);
+void ChildNoScroll(const char* id, const DrawFn& drawFn, Vec2 size = {}, bool border = false);
+void Disabled(bool disabled, const DrawFn& drawFn);
+void Indented(const DrawFn& drawFn, float width = 0.0f);
+void Group(const char* label, const DrawFn& drawFn, Vec2 size = {});
+void Tree(const char* label, const DrawFn& drawFn, bool defaultOpen = false);
+void OpenModal(const char* id);
+void Modal(const char* id, const DrawFn& drawFn, Vec2 size = {}, bool autoResize = false);
+void CloseModal();
+```
+
+## 表格
+
+```cpp
+struct TableColumn {
+    const char* label = "";
+    float weight = 1.0f;
+};
+
+void Table(const char* id, const TableColumn* columns, std::size_t columnCount, const DrawFn& drawFn, Vec2 size = {});
+void TableNextRow();
+void TableNextCell();
 ```
 
 ## Tab 系统
 
 ```cpp
+void Tabs(const char* id, const DrawFn& drawFn);
+void Tab(const char* id, const char* label, const DrawFn& drawFn);
+
 void BeginTabBar(const std::string& name);
-void AddTab(const std::string& label, std::function<void()> drawFn);
+void AddTab(const std::string& label, DrawFn drawFn);
 bool RenderTabBar(float height = 0.0f);
 void EndTabBar();
 ```
 
-- `BeginTabBar` / `EndTabBar` — 在窗口内容中使用
-- `RenderTabBar` — 独立渲染 TabBar（带可选高度约束）
+`Tabs` / `Tab` 是作用域式写法，菜单页面优先使用；`BeginTabBar` 系列用于需要独立控制渲染时机的场景。
 
-示例：
+## MenuSurface 列表菜单
 
 ```cpp
-XBase::UI::BeginTabBar("main");
-XBase::UI::AddTab("玩家", [] { ImGui::Text("玩家信息"); });
-XBase::UI::AddTab("载具", [] { ImGui::Text("载具信息"); });
-bool changed = XBase::UI::RenderTabBar();
+struct MenuSurfaceState {
+    int selectedIndex = 0;
+    int itemCount = 0;
+};
+
+struct MenuSurfaceResult {
+    bool backRequested = false;
+    bool selectionCanAdjust = false;
+};
+
+MenuSurfaceResult MenuSurface(
+    const char* id,
+    const char* title,
+    const char* subtitle,
+    MenuSurfaceState& state,
+    bool allowMouse,
+    bool showBackHint,
+    const DrawFn& drawFn);
+
+bool MenuSurfaceButton(const char* label);
+bool MenuSurfaceCheckbox(const char* label, bool& value);
+bool MenuSurfaceCollapsingSection(const char* label, bool& open);
+bool MenuSurfaceSlider(const char* label, float& value, float minValue, float maxValue, const char* format = "%.1f");
+bool MenuSurfaceSlider(const char* label, int& value, int minValue, int maxValue);
+bool MenuSurfaceInput(const char* label, float& value, float step = 1.0f, float fastStep = 10.0f, const char* format = "%.1f");
+bool MenuSurfaceInput(const char* label, int& value, int step = 1, int fastStep = 10);
+void MenuSurfaceSection(const char* label);
 ```
 
-## 组件
+- 导航、滚动、指针命中和视觉反馈由 XBase 持有；`state` 只保存宿主侧持久选中项。
+- `MenuSurfaceInput` 按 `step` 调整，按住 `Shift` 时使用 `fastStep`；`MenuSurfaceSlider` 按量程自动选择步长。
+- `MenuSurfaceResult::backRequested` 表示玩家请求返回上一级，由宿主决定页面切换。
+
+## 基础控件
 
 ```cpp
-void CenterText(const char* text);
-void Separator();
-void SeparatorText(const char* label);
-void Tooltip(const char* text);
-void HelpMarker(const char* desc, bool* hold = nullptr);
 bool Button(const char* label, Vec2 size = {});
 bool StyledButton(const char* label, Vec2 size = {});
 void BeginGroupBox(const char* label, Vec2 size = {});
 void EndGroupBox();
 bool Checkbox(const char* label, bool& value);
+bool Choice(const char* label, int& selectedValue, int value);
+bool Slider(const char* label, float& value, float minValue, float maxValue, const char* format = "%.1f");
+bool Slider(const char* label, int& value, int minValue, int maxValue);
+bool Input(const char* label, float& value, float step = 1.0f, float fastStep = 10.0f, const char* format = "%.1f");
+bool Input(const char* label, int& value, int step = 1, int fastStep = 10);
+bool InputText(const char* label, char* value, std::size_t capacity, const char* hint = nullptr, bool readOnly = false, bool submitOnEnter = false);
+bool InputTextMultiline(const char* label, char* value, std::size_t capacity, Vec2 size = {}, bool readOnly = false);
+bool Selectable(const char* label, bool selected = false, Vec2 size = {});
+bool SelectableCentered(const char* label, bool selected = false, Vec2 size = {});
+void Combo(const char* label, const char* preview, const DrawFn& drawFn);
+bool MenuItem(const char* label, bool selected = false, bool enabled = true);
+bool CollapsingHeader(const char* label, bool defaultOpen = false);
+bool CollapsingSection(const char* label, bool& open);
+bool InvisibleButton(const char* id, Vec2 size);
+void SetClipboardText(const char* text);
+void FocusLastItemByDefault();
 ```
 
-- `CenterText` — 居中显示文本
-- `Separator` — 分隔线
-- `SeparatorText` — 带标签的分隔线
-- `Tooltip` — 悬浮提示（依赖 `IsItemHovered`）
-- `HelpMarker` — 问号悬浮提示，`hold`接收鼠标按住状态
-- `Button` — 基础按钮
-- `StyledButton` — 使用主题主色的按钮
-- `BeginGroupBox` / `EndGroupBox` — 带边框的编组框
-
-## 通知 / Toast
+## 文本与布局
 
 ```cpp
-struct NotificationSpec {
-    const char* message = "";
-    float duration = 3.0f;
-    Color color = {};
-};
+void Text(const char* text);
+void TextWrapped(const char* text);
+void TextDisabled(const char* text);
+void Spacing();
+void Separator();
+void SeparatorText(const char* label);
+void CenterText(const char* text);
+void Tooltip(const char* text);
+void HelpMarker(const char* desc, bool* hold = nullptr);
+float GetFrameRate();
 
-void Notify(NotificationSpec spec);
-void RenderNotifications(Vec2 screenPosition = {});
+void SameLine();
+void Columns(int count, const char* id = nullptr, bool border = false);
+void NextColumn();
+void PushItemWidth(float width);
+void PopItemWidth();
+Vec2 GridItemSize(int columns = 1, bool includeSpacing = true);
 ```
 
-- `Notify` — 排队一条Toast消息
-- `RenderNotifications` — 在背景绘制层渲染所有活跃Toast（可选屏幕位置，默认左上角）
+`Text`、`TextWrapped`、`TextDisabled` 提供 `const char*`、`int`、`float` 混合重载，用于格式化显示。
+
+## 鼠标与光标
+
+```cpp
+bool IsLastItemHovered();
+bool IsMouseDown(MouseButton button);
+Vec2 GetMousePosition();
+Vec2 GetCursorScreenPosition();
+void SetCursorScreenPos(Vec2 position);
+Vec2 GetContentAvailable();
+Vec2 GetDisplaySize();
+```
 
 ## Canvas 绘图
 
@@ -111,3 +201,19 @@ void Polyline(const Vec2* points, std::size_t count, Color color, float thicknes
 void Text(Vec2 position, Color color, const char* text);
 }
 ```
+
+## 通知 / Toast
+
+```cpp
+struct NotificationSpec {
+    const char* message = "";
+    float duration = 3.0f;
+    Color color = {};
+};
+
+void Notify(NotificationSpec spec);
+void RenderNotifications(Vec2 screenPosition = {});
+```
+
+- `Notify` — 排队一条 Toast 消息
+- `RenderNotifications` — 在背景绘制层渲染所有活跃 Toast（可选屏幕位置，默认左上角）

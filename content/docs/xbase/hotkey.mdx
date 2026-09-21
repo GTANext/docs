@@ -1,0 +1,90 @@
+---
+title: Hotkey
+description: 按键绑定、Toggle/Hold/Once 模式与持久化。
+---
+
+`include/XBase/Hotkey.h` · `XBase::Hotkey`
+
+> 热键模块只处理按键到回调的映射与状态机。宿主负责每帧调用 `Process()`，并根据 `Hooks::IsKeyboardCaptureActive()` 决定是否暂停派发。
+
+## 类型
+
+```cpp
+enum class Key : std::uint16_t;   // Windows 虚拟键编码，含鼠标键
+
+struct Modifiers {
+    bool ctrl = false;
+    bool shift = false;
+    bool alt = false;
+    bool win = false;
+};
+
+enum class Mode {
+    Toggle,   // 按下切换状态
+    Hold,     // 按住生效，松开失效
+    Once      // 仅触发一次
+};
+
+struct Binding {
+    std::string id;
+    Key key = Key::None;
+    Modifiers mods;
+    Mode mode = Mode::Toggle;
+    std::function<void(bool)> onChange;
+    bool state = false;
+    bool prevPressed = false;
+};
+```
+
+修饰键为包含语义：绑定要求 `ctrl` 时，按住 `Ctrl+Alt` 仍然触发。
+
+## 生命周期与注册
+
+```cpp
+void Init();
+void Process();
+
+bool Register(const std::string& id, Key key, Modifiers mods, Mode mode, std::function<void(bool)> callback);
+bool Unregister(const std::string& id);
+Binding* Get(const std::string& id);
+std::vector<Binding*> GetAll();
+```
+
+- `Process()` 每帧调用一次：轮询按键状态并派发 `onChange`。不调用 `Process()` 时绑定不会触发。
+- `Toggle` 在按下沿切换 `state` 并回调新状态；`Hold` 在状态变化时回调；`Once` 只在按下沿回调一次 `true`。
+- 相同 `id` 重复 `Register()` 会替换原绑定，已加载的持久化键位优先生效。
+
+```cpp
+XBase::Hotkey::Register("menu.toggle", XBase::Hotkey::Key::F4,
+    {}, XBase::Hotkey::Mode::Toggle, [](bool enabled) {
+        XBase::Hooks::SetMenuVisible(enabled);
+    });
+```
+
+## 状态查询
+
+```cpp
+bool IsPressed(Key key);   // 当前帧的按下沿
+bool IsKeyDown(Key key);   // 当前是否按住
+bool IsToggled(Key key);   // 任一 Toggle 绑定处于激活状态
+```
+
+`IsPressed()` 在 `Process()` 更新后有效，适合驱动一次性动作；持续状态用 `IsKeyDown()`。
+
+## 持久化
+
+```cpp
+void SaveBindings(const std::string& filePath = "");
+void LoadBindings(const std::string& filePath = "");
+std::string KeyToString(Key key);
+Key StringToKey(const std::string& str);
+```
+
+- 默认路径为 `XBase\hotkeys.json`；文件保存 `key`、`ctrl`、`shift`、`alt`、`win`、`mode`。
+- `LoadBindings()` 会在绑定已存在时立即应用键位，对之后注册的同 `id` 绑定同样生效。
+- `KeyToString()` 优先返回名称（`F5`、`Space`、`LMB`），未知键返回 `VK_0xNN`；`StringToKey()` 同时接受名称、十进制与 `0x` 前缀编码。
+
+## 边界
+
+- 热键基于全局按键轮询，与 ImGui 文本输入不互斥。菜单处于文本输入状态时，宿主应跳过 `Process()` 或忽略冲突绑定。
+- 绑定回调在游戏主线程执行，回调内不要做阻塞 IO。

@@ -1,6 +1,6 @@
 ---
 title: Player
-description: 血量、护甲、金钱、通缉、皮肤、技能。
+description: 血量、护甲、金钱、通缉、皮肤、技能与运行时状态机。
 ---
 
 `include/XBase/Player.h` · `XBase::Player`
@@ -37,6 +37,16 @@ PlayerSnapshot GetSnapshot();
 ```
 
 `IsAvailable()` 只报告当前玩家对象是否可用。`GetSnapshot()` 在一次领域查询中返回位置和基础状态；`valid == false` 时其余字段保持默认值。XBase 不向宿主暴露 `CPlayerPed*` 或无类型指针。
+
+## 生命周期
+
+```cpp
+void Process();
+void NotifyGameInit();
+void Shutdown();
+```
+
+`Process()` 只由启用了 Player 领域的 `Core::Process()` 调用，负责持续效果、proof 与死亡位置状态机。`NotifyGameInit()` 丢弃上一局的快照；`Shutdown()` 按属性恢复被 XBase 修改的状态。
 
 ## 基础操作
 
@@ -82,23 +92,34 @@ void SetProofState(const Types::ProofState& state);
 
 ```cpp
 bool SetSkin(unsigned int modelId);
+bool SetCustomSkin(const char* txdName);
 bool ApplyClothes(int textureId, int modelId, int bodyPart);
 ```
 
-## 新功能标注
+`SetCustomSkin()` 从 `models/txd/` 加载自定义 TXD 皮肤文件并应用到玩家。
+
+## 运行时选项
 
 ```cpp
-bool SetCustomSkin(const char* txdName);
+struct RuntimeOptions {
+    bool godMode = false;
+    bool invisible = false;
+    bool hardMode = false;
+    bool autoHeal = false;
+    bool respawnAtDeathPosition = false;
+    bool freezeWantedLevel = false;
+    int wantedLevel = 0;
+    bool freeFlyProtection = false;
+};
+
+void SetRuntimeOptions(const RuntimeOptions& options);
+RuntimeOptions GetRuntimeOptions();
 ```
-
-从 `models/txd/` 加载自定义 TXD 皮肤文件并应用到玩家。
-
-## 运行状态契约
 
 宿主每帧先把 UI 状态转换为 `RuntimeOptions`，再由启用了 Player 领域的 `Core::Process()` 唯一执行游戏状态写入：
 
 ```cpp
-XBase::Player::RuntimeOptions options;
+XBase::Player::RuntimeOptions options = XBase::Player::GetRuntimeOptions();
 options.godMode = menuState.godMode;
 options.autoHeal = menuState.autoHeal;
 options.hardMode = menuState.hardMode;
@@ -117,7 +138,7 @@ XBase::Core::Process();
 以下模式由 Player 状态机每帧维护，并在关闭功能、玩家对象切换或 `Player::Shutdown()` 时按属性恢复快照。未被 XBase 修改的生命、护甲、proof 或可见性不会被无差别回滚。宿主只有在移除旧 Player Process 后，才能启用 `Core::Domain::Player`，否则会产生两个状态写入者。
 
 ```cpp
-void SetNeverWanted(bool enable);    // 永远不被通缉（SA）
+bool SetNeverWanted(bool enable);    // 永远不被通缉（SA）
 void SetGodMode(bool enable);        // proof 与生命保护
 bool IsGodMode();
 void SetInvisible(bool enable);      // 隐身模式
@@ -128,36 +149,44 @@ void SetFreeFly(bool enable);        // 自由移动防护；方向输入仍由�
 bool IsFreeFly();
 ```
 
+## 超级能力
+
+```cpp
+bool SuperJump(bool enable);
+bool SuperPunch(bool enable);
+bool UnderwaterBreathing(bool enable);
+bool SetCycleJump(bool enable);
+bool SetNeverHungry(bool enable);
+bool SetFastSprint(bool enable);
+bool SetSprintEverywhere(bool enable);
+bool SetDrunkEffect(bool enable);
+```
+
+均通过 SA 内置 Cheat 标志位实现。VC/III 返回 `false`，调用前应检查 `FeatureCapability::PlayerSuperJump`、`PlayerSuperPunch`、`PlayerUnderwaterBreathing`、`PlayerCycleJump`、`PlayerNeverHungry`、`PlayerFastSprint`、`PlayerSprintEverywhere`、`PlayerDrunkEffect`。
+
 ## 实用工具
 
 ```cpp
 void CopyCoordinates();              // 复制玩家坐标到剪贴板
 bool RequestSaveGame();              // 触发存档请求
+bool MoveRelative(float forward, float right, float up);
 void MoveForward(float distance);    // 朝面前移动
 void MoveUp(float distance);         // 向上移动
 void MoveDown(float distance);       // 向下移动
-void ApplyAimSkinChanger();          // 瞄准时自动切换皮肤
+bool ApplyAimSkinChanger();          // 瞄准时自动切换皮肤
 ```
+
+`MoveRelative()` 由自由飞行等宿主模式调用，返回是否成功写入。
 
 ## 属性
 
 ```cpp
 void SetInfiniteSprint(bool enable);
-void SetKeepStuff(bool enable);
+bool SetKeepStuff(bool enable);
 void SetFreeHealthcare(bool enable);
 bool GetFreeHealthcare();
 void SetFreeJail(bool enable);
 bool GetFreeJail();
-void MaxVehicleSkills();
+bool MaxVehicleSkills();
 bool SetStat(int statId, float value);
 ```
-
-## 超级能力
-
-```cpp
-void SuperJump(bool enable);
-void SuperPunch(bool enable);
-void UnderwaterBreathing(bool enable);
-```
-
-均通过 SA 内置 Cheat 标志位实现。VC/III 的对应调用保持无操作，调用前应检查 `FeatureCapability::PlayerCheats`。

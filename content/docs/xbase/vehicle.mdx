@@ -7,7 +7,7 @@ description: 修复、生成、引擎、灯光、锁定、防护、特效。
 
 ## 当前状态
 
-Vehicle 的通用游戏功能已移交 XBase。XMenu 只保留菜单输入、交通密度、自动驾驶和版本专属作弊/视觉策略；Vehicle 的唯一持续处理入口是 `XBase::Core::Process()`。
+Vehicle 的通用游戏功能已移交 XBase。XMenu 只保留菜单输入和生成策略的 UI 编排；交通密度、自动驾驶等策略由 XBase 提供入口。Vehicle 的唯一持续处理入口是 `XBase::Core::Process()`。
 
 | 功能组 | SA | VC | III |
 |---|---:|---:|---:|
@@ -20,6 +20,7 @@ Vehicle 的通用游戏功能已移交 XBase。XMenu 只保留菜单输入、交
 | 开门 | 已实现 | 已实现 | 已实现 |
 | 弹门 | 已实现 | 不支持 | 不支持 |
 | Paintjob、Upgrades、SA 特效 | 能力支持 | 不支持 | 不支持 |
+| 交通密度、自动驾驶 | 已实现 | 不支持 | 不支持 |
 
 ## 当前对象与生命周期
 
@@ -44,6 +45,23 @@ void Shutdown();
 
 `GetCurrentId()` 返回玩家当前载具的不透明 ID；无载具时返回无效 ID。`GetSnapshot()` 在一次领域查询中返回页面和 Overlay 所需的纯值状态，`id` 无效时其余字段保持默认值。宿主不能从 ID 或快照获取 `CVehicle*`，对象生命周期和 pool 校验由 XBase 管理。`Process()` 只应由启用了 Vehicle 领域的 Core 每帧调用。`NotifyGameInit()` 会丢弃上一局的生成车辆快照、限流窗口和事件队列；`Shutdown()` 会恢复运行时状态并清理同一会话状态。
 
+## 运行时选项
+
+```cpp
+struct RuntimeOptions {
+    bool noDamage = false;
+    bool autoUnflip = false;
+    bool heavy = false;
+    bool watertight = false;
+    bool speedLock = false;
+    float speed = 60.0f;
+};
+
+void SetRuntimeOptions(const RuntimeOptions& options);
+```
+
+宿主每帧把菜单状态转换为 `RuntimeOptions`，由 `Process()` 统一应用到当前载具；`noDamage` 会保存并恢复进入前的 proof 状态，`speedLock` 只在加速时钳制速度。
+
 ## 生成会话
 
 ```cpp
@@ -60,10 +78,13 @@ struct SpawnPolicy {
 
 SpawnResult SpawnEx(unsigned int modelId, const SpawnOptions& options);
 void SetSpawnPolicy(const SpawnPolicy& policy);
+SpawnPolicy GetSpawnPolicy();
 bool PollEvent(VehicleEvent& event);
 ```
 
 `SpawnEx()` 先验证模型，再消耗限流配额。生成成功后，XBase 追踪当前生成车辆；启用 `cleanupPrevious` 时清理上一辆仍在 pool 中且未被玩家使用的 XBase 车辆。玩家正在使用旧车、对象已离开 pool 或后端拒绝删除时，不强制删除，并通过 `VehicleEvent` 报告结果。XBase 不依赖 XMenu UI；宿主消费事件后负责日志和提示。
+
+`VehicleEvent::type` 使用 `VehicleEventType`：`SpawnRejected`、`Spawned`、`PreviousVehicleCleaned`、`PreviousVehicleCleanupSkipped`；失败原因通过 `SpawnFailureReason` 表达：`None`、`SpawnInProgress`、`RateLimited`、`InvalidModel`、`BackendRejected`。
 
 ## 基础操作
 
@@ -115,17 +136,29 @@ bool GetVisible();    void SetVisible(bool enable);
 ## 特殊属性
 
 ```cpp
-bool GetAlwaysSkidMarks();        void SetAlwaysSkidMarks(bool enable);
-bool GetDriverTargetable();       void SetDriverTargetable(bool enable);
-bool GetHeatSeekingTargetable();  void SetHeatSeekingTargetable(bool enable);
-bool GetPetrolTankWeakPoint();    void SetPetrolTankWeakPoint(bool enable);
-bool GetSirenOrAlarm();           void SetSirenOrAlarm(bool enable);
-bool GetTakeLessDamage();         void SetTakeLessDamage(bool enable);
+bool TryGetAlwaysSkidMarks(bool& value);        bool SetAlwaysSkidMarks(bool enable);
+bool TryGetDisableParticles(bool& value);       bool SetDisableParticles(bool enable);
+bool TryGetDriverTargetable(bool& value);       bool SetDriverTargetable(bool enable);
+bool TryGetHeatSeekingTargetable(bool& value);  bool SetHeatSeekingTargetable(bool enable);
+bool TryGetPetrolTankWeakPoint(bool& value);    bool SetPetrolTankWeakPoint(bool enable);
+bool TryGetSirenOrAlarm(bool& value);           bool SetSirenOrAlarm(bool enable);
+bool TryGetTakeLessDamage(bool& value);         bool SetTakeLessDamage(bool enable);
 ```
+
+读取使用 `TryGet` 前缀：没有有效载具或后端不支持时返回 `false`，`value` 保持不变。这些属性只在 SA 后端有真实实现。
 
 ## 颜色与涂装
 
 ```cpp
+struct Colors {
+    int primary = 0;
+    int secondary = 0;
+    int tertiary = 0;
+    int quaternary = 0;
+};
+
+Colors GetColors();
+void SetColors(const Colors& colors);
 int  GetPrimaryColor();
 int  GetSecondaryColor();
 void SetPrimaryColor(int color);
@@ -134,7 +167,7 @@ int  GetPaintjob();         // -1 = none
 bool SetPaintjob(int paintjob);  // 0, 1, 2
 ```
 
-颜色值使用 SA 标准颜色索引（0-255）。
+颜色值使用 SA 标准颜色索引（0-255）。VC/III 只应用前两色。
 
 ## 改装
 
@@ -160,16 +193,20 @@ if (vehicle) {
 ## 交通控制
 
 ```cpp
-void SetTrafficDensity(float density);           // 交通密度（0.0-1.0）
-bool GetDisableParticles();   void SetDisableParticles(bool enable);
+bool SetTrafficDensity(float density);           // 交通密度（0.0-1.0）
+bool SetAutoDriveToWaypoint(bool enable);        // 自动驶向雷达标记点
+bool TryGetDisableParticles(bool& value);        bool SetDisableParticles(bool enable);
 void ApplySpeedLock(float speed);                // 速度上限
 void ApplyTargetSpeed(float speed);              // 巡航速度
 void RestoreTargetSpeed();                       // 恢复巡航
 ```
+
+`SetAutoDriveToWaypoint()` 只在 SA 实现：启用后持续驶向雷达标记点，标记点消失时自动停止。
 
 ## 全局操作
 
 ```cpp
 void BlowUpAll();
 bool Spawn(unsigned int modelId);
+bool Spawn(unsigned int modelId, const SpawnOptions& options);
 ```

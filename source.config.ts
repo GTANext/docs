@@ -8,6 +8,8 @@ export const docs = defineDocs({
   dir: 'content/docs',
   docs: {
     schema: pageSchema,
+    // 正文按需编译：文档量大，dev 启动与 SSR 首屏不必等全量 MDX
+    async: true,
     postprocess: {
       includeProcessedMarkdown: true,
     },

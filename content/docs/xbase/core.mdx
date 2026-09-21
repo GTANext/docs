@@ -14,6 +14,28 @@ DomainMask GetEnabledDomains();
 bool IsDomainEnabled(Domain domain);
 ```
 
+领域定义（每个领域一个位）：
+
+```cpp
+enum class Domain : std::uint32_t {
+    Player = 1u << 0,
+    Ped = 1u << 1,
+    Vehicle = 1u << 2,
+    World = 1u << 3,
+    Weapon = 1u << 4,
+    Teleport = 1u << 5,
+    Scene = 1u << 6,
+    Visual = 1u << 7,
+    BulletAssist = 1u << 8,
+    Overlay = 1u << 9,
+    Camera = 1u << 10,
+    Cheats = 1u << 11,
+    VehicleEffects = 1u << 12,
+};
+
+constexpr DomainMask DomainBit(Domain domain);
+```
+
 `Init()` 默认不启用任何领域。宿主必须显式移交领域；掩码会过滤当前静态库不支持的领域。`SetEnabledDomains()` 支持运行时增减所有权：撤销领域时先执行该领域的 `Shutdown()`，晚启用 Player 且游戏已初始化时会补发初始化通知。
 
 ## Process
@@ -30,7 +52,7 @@ void Process();
 bool IsWorldReady();
 ```
 
-检测当前游戏世界是否已创建本地玩家对象。SA 后端使用真实世界状态；VC/III portable 后端不访问游戏内存，由宿主提供的生命周期顺序作为就绪门槛。
+检测当前游戏世界是否已创建本地玩家对象。SA 后端使用真实世界状态；VC/III 通过 `Player::IsAvailable()` 验证玩家池与本地玩家是否可用，portable 后端同样访问真实游戏对象。
 
 ## 新游戏、读档与关闭
 

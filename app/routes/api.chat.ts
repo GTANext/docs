@@ -1,10 +1,3 @@
-/**
- * SSR 模式备份：问 AI 聊天 API。
- * 启用方式：
- * 1. next.config 去掉 output: 'export'（或改回 standalone）
- * 2. 将本文件重命名/复制为 route.ts
- * 3. 恢复 layout 中对 AISearch 的引用（若需要）
- */
 import { createLLMGateway } from '@llmgateway/ai-sdk-provider';
 import {
   convertToModelMessages,
@@ -15,9 +8,10 @@ import {
   toUIMessageStream,
 } from 'ai';
 import { z } from 'zod';
-import { source } from '@/lib/source';
 import { Document, type DocumentData } from 'flexsearch';
-import type { ChatUIMessage, SearchTool } from '../../../components/ai/search';
+import type { Route } from './+types/api.chat';
+import { source } from '@/lib/source';
+import type { ChatUIMessage, SearchTool } from '@/components/ai/search';
 
 interface CustomDocument extends DocumentData {
   url: string;
@@ -78,8 +72,8 @@ const systemPrompt = [
   '搜不到就明确说不知道，并给出更好的检索词。用简洁中文回答，代码保持原样。',
 ].join('\n');
 
-export async function POST(req: Request) {
-  const reqJson = await req.json();
+export async function action({ request }: Route.ActionArgs) {
+  const reqJson = await request.json();
   const modelId = process.env.LLM_GATEWAY_MODEL ?? 'anthropic/claude-3.5-sonnet';
 
   const result = streamText({

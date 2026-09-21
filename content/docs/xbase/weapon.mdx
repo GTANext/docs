@@ -1,43 +1,82 @@
 ---
 title: Weapon
-description: 给予武器、清空、丢弃、无限弹药。
+description: 给予武器、清空、丢弃、无限弹药与属性覆盖。
 ---
 
 `include/XBase/Weapon.h` · `XBase::Weapon`
 
-> Weapon 的游戏对象操作和持续状态由 XBase 管理。XMenu 只负责菜单输入和能力判断；VC/III 未确认的 Weapon 能力保持禁用，不提供可链接空桩来伪装支持。
+> Weapon 的游戏对象操作和持续状态由 XBase 管理。XMenu 只负责菜单输入和能力判断；未实现的动作返回 `false`，宿主不得当作成功。
 
 ## 生命周期
 
-`Weapon::Process()` 由 `Core::Process()` 唯一调用，用于维护无限弹药和快速装填状态。宿主不得直接调用。
+```cpp
+void NotifyGameInit();
+void Process();
+void Shutdown();
+```
+
+`Weapon::Process()` 由 `Core::Process()` 唯一调用，用于维护无限弹药、快速装填和属性覆盖状态。宿主不得直接调用。
 
 ## 批量操作
 
 ```cpp
-void GiveAll();     // 给予玩家全部武器（99999 弹药）
-void ClearAll();    // 清空玩家所有武器
-void MaxWeaponSkills();  // 满武器技能
+bool GiveAll();     // 给予玩家全部武器（99999 弹药）
+bool ClearAll();    // 清空玩家所有武器
+bool MaxWeaponSkills();  // 满武器技能
 ```
 
 ## 给予武器
 
 ```cpp
-void Give(unsigned int weaponType, unsigned int ammo);
-void GiveModel(unsigned int weaponModel, unsigned int ammo);
+bool Give(unsigned int weaponType, unsigned int ammo);
+bool GiveModel(unsigned int weaponModel, unsigned int ammo);
 ```
+
+按武器类型 ID 或模型 ID 给予，两条路径都会做有效性校验并返回结果。
 
 ## 丢弃武器
 
 ```cpp
-void DropWeapon();      // 当前武器丢到地上
-void DropCurrent();     // 移除当前武器
-int  RemoveTrackedPickups();
+bool DropWeapon();      // 当前武器丢到地上
+bool DropCurrent();     // 移除当前武器
+int  RemoveTrackedPickups(); // 清理 XBase 记录的掉落武器 pickup
 ```
 
 ## 武器增强
 
 ```cpp
-void SetInfiniteAmmo(bool enable);
-void SetFastReload(bool enable);
-void ResetStats();
+bool SetInfiniteAmmo(bool enable);
+bool SetFastReload(bool enable);
+bool ResetStats();
 ```
+
+## 属性覆盖
+
+```cpp
+struct StatOverrides {
+    bool hugeDamage = false;
+    bool longRange = false;
+    bool rapidFire = false;
+    bool dualWield = false;
+    bool moveAim = false;
+    bool moveFire = false;
+    bool noSpread = false;
+    bool customFireRate = false;
+    float fireRate = 1.0f;
+    bool autoAim = false;
+};
+
+void SetStatOverrides(const StatOverrides& overrides);
+```
+
+`fireRate` 由 `customFireRate` 控制是否生效；覆盖状态在 `Process()` 中持续应用，`Shutdown()` 时恢复原始武器数据。
+
+## 版本能力
+
+| FeatureCapability | SA | VC | III |
+|---|:-:|:-:|:-:|
+| WeaponBasic / Give / Drop | ✅ | ✅ | ✅ |
+| WeaponRuntimeEffects / StatOverrides | ✅ | ✅ | ✅ |
+| WeaponSkills | ✅ | ✖ | ✖ |
+
+VC/III 的属性覆盖当前只应用 `hugeDamage`、`longRange`、`noSpread`、`customFireRate`；页面应逐项查询 `FeatureCapability`，不要因为领域可用就启用全部开关。

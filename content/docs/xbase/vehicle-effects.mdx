@@ -1,0 +1,56 @@
+---
+title: VehicleEffects
+description: 载具渲染期特效（霓虹等）。
+---
+
+`include/XBase/VehicleEffects.h` · `XBase::VehicleEffects`
+
+> 特效只修改呈现层，由版本后端在渲染事件中绘制；宿主只传值类型设置，不接触 RenderWare 或纹理指针。
+
+## 霓虹
+
+```cpp
+struct NeonSettings {
+    bool enabled = false;
+    int red = 255;
+    int green = 0;
+    int blue = 0;
+    bool pulsing = false;
+};
+
+bool ApplyCurrentNeon(const NeonSettings& settings);
+```
+
+- 作用于玩家当前载具；没有有效载具时返回 `false`。
+- 颜色通道自动收敛到 0~255。
+- `pulsing` 开启时霓虹范围在 0~0.3 之间呼吸变化。
+- 载具翻覆时本帧不绘制；退出时关闭保存的霓虹状态。
+
+```cpp
+XBase::VehicleEffects::ApplyCurrentNeon({
+    .enabled = true,
+    .red = 0,
+    .green = 120,
+    .blue = 255,
+    .pulsing = true,
+});
+```
+
+## 生命周期
+
+```cpp
+void Init();
+void NotifyGameInit();
+void Process();
+void Shutdown();
+```
+
+`Init()` 订阅载具渲染事件（挂载幂等）；`Process()` 为空实现，绘制完全由渲染事件驱动；`NotifyGameInit()` 与 `Shutdown()` 清理当前载具的特效状态。
+
+## 版本能力
+
+| FeatureCapability | SA | VC | III |
+|---|:-:|:-:|:-:|
+| VehicleEffectsNeon | ✅ | ✖ | ✖ |
+
+VC/III 返回 `false`，页面应通过 `FeatureCapability` 禁用入口。

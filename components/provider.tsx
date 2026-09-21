@@ -1,7 +1,5 @@
-'use client';
-
 import type { ReactNode } from 'react';
-import { RootProvider } from 'fumadocs-ui/provider/next';
+import { RootProvider } from 'fumadocs-ui/provider/react-router';
 import SearchDialog from '@/components/search';
 
 /** Client Provider：可传入 SearchDialog 等函数型配置 */

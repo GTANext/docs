@@ -22,10 +22,13 @@ void Shutdown();
 void SetNoFire(bool enable);
 bool GetNoFire();
 void SetSpawnLimits(bool limitPolice, bool limitGangs, int maxPolice, int maxGangs);
+void SetSmokingEffect(bool enable);
+void SetFliesEffect(bool enable);
 ```
 
 - `SetNoFire` — 禁止所有 Ped 开火
 - `SetSpawnLimits` — 限制警察/帮派最大生成数量
+- `SetSmokingEffect` / `SetFliesEffect` — 在玩家身上循环播放香烟/苍蝇特效；仅 SA 实现，能力项为 `PedSmokeFlies`
 
 ## 生成与删除
 
@@ -85,6 +88,7 @@ void SetElvisEverywhere(bool enable);  bool IsElvisEverywhere();
 void SetEveryoneArmed(bool enable);    bool IsEveryoneArmed();
 void SetPedsMayhem(bool enable);       bool IsPedsMayhem();
 void SetPedsAtkRocket(bool enable);    bool IsPedsAtkRocket();
+void SetPedsRiot(bool enable);         bool IsPedsRiot();
 void SetSlutMagnet(bool enable);       bool IsSlutMagnet();
 void SetBigHead(bool enable);          bool IsBigHead();
 void SetThinBody(bool enable);         bool IsThinBody();

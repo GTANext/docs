@@ -21,23 +21,43 @@ XBase 按 GTA 版本生成独立静态库：
 
 ```cpp
 XBase::Log::Init();
+
+void OnGameInit() {
+    XBase::Core::NotifyGameInit();
+}
+
+void OnProcess() {
+    XBase::Core::Process();
+}
+
+// 安装宿主事件回调；同时启用当前版本的运行时保护
+XBase::Host::Install({OnGameInit, OnProcess});
+
 const auto domains =
     XBase::Core::DomainBit(XBase::Core::Domain::Player) |
     XBase::Core::DomainBit(XBase::Core::Domain::Ped) |
     XBase::Core::DomainBit(XBase::Core::Domain::Vehicle);
 
-// SA 可按能力启用额外领域；VC/III 只启用当前库真实支持的领域。
+// 掩码会过滤当前库不支持的领域
 XBase::Core::Init(domains);
 
-// 游戏完成 initGame 后；会重置领域对象快照和运行时状态。
-XBase::Core::NotifyGameInit();
-
-// 每帧只调用 Core，一次性分发到已启用领域。
-XBase::Core::Process();
-
-// 卸载前恢复控制器状态。
+// 卸载前恢复控制器状态
 XBase::Core::Shutdown();
+XBase::Host::Shutdown();
 ```
+
+`Host::Install()` 安装 `initGameEvent` 与进程事件订阅；`Host::Shutdown()` 会等待在途回调结束再解除订阅，并按逆序卸载运行时保护。
+
+```cpp
+bool Install(const Callbacks& callbacks);
+void Shutdown();
+bool IsInstalled();
+bool ShowMessage(const char* message);
+```
+
+`ShowMessage()` 在当前版本用游戏内置帮助消息输出 UTF-8 文本；VC/III 内部转换为宽字符，不经过 ImGui。
+
+运行时保护只在对应版本安装：VC 增加剧情资源目录纠正（`CDirectory::ReadDirFile`）与空文件句柄保护（`CFileMgr::Read` / `CloseFile`）；SA/VC 同时维护剧情期安全门，供 `BulletAssist` 在剧情、相机过渡与玩家不可用状态下停止对象访问。
 
 如果宿主自己负责 D3D/ImGui，则不要同时调用 `XBase::Hooks::Init()` 和 `XBase::UI::Init()`，避免重复安装 Hook 或创建第二套 ImGui context。
 
@@ -52,9 +72,9 @@ if (!XBase::HasCapability(XBase::FeatureCapability::PlayerBasicState)) {
 }
 ```
 
-Player、Ped、Vehicle 的对象级基础能力当前由对应版本后端分别报告。World、Weapon、Scene、Teleport、Visual、BulletAssist 的已迁移能力目前只在 SA 报告可用；VC/III 未确认的能力必须保持 `false`。能力为 `false` 时，宿主不得继续调用对应功能。
+各版本的实际支持情况以 `Capabilities.cpp` 与 README 能力矩阵为准；运行时行为以能力返回值唯一为准。SA 已收口全部领域；VC/III 只报告已实现的能力，未实现的能力保持 `false`。
 
-VC/III 对未确认的功能不应被启用。若构建中仍包含兼容性桩，它们只用于保持公共头文件的链接边界，不能被当作功能实现；能力查询是唯一支持性依据。VC/III 的 `SetEnabledDomains()` 会过滤未支持领域，`GetEnabledDomains()` 返回实际生效掩码。
+能力为 `false` 时宿主不得继续调用对应功能。VC/III 的 `SetEnabledDomains()` 会过滤未支持领域，`GetEnabledDomains()` 返回实际生效掩码。
 
 ## XMenu 集成边界
 
@@ -83,4 +103,4 @@ flowchart LR
 
 
 
-freecam、ESP、霓虹和随机作弊等 XMenu 专属扩展可以保留在 XMenu，但不得让 XBase 依赖 `MenuState`。
+自由视角、俯视相机、霓虹、随机作弊等曾属于宿主的功能已由 `Camera`、`VehicleEffects`、`Cheats` 提供，宿主不要重新引入对象访问；XMenu 只保留菜单状态、页面编排和输入转换，XBase 不依赖 `MenuState`。

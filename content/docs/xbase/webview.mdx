@@ -1,0 +1,86 @@
+---
+title: WebView
+description: 通过系统 WebView2 在游戏窗口内渲染网页。
+---
+
+`include/XBase/WebView.h` · `XBase::WebView`
+
+> 网页由系统 WebView2 渲染在游戏窗口内的独立子窗口里；XBase 负责生命周期、面板位置、输入焦点与状态查询，宿主只提交 URL、可见性和尺寸。
+
+## 运行时要求
+
+- Windows 10/11 安装 WebView2 运行时（Evergreen）。
+- 载荷目录存在 `WebView2Loader.dll`，构建流程会把它和 payload 一起输出。
+- 入口先用 `IsRuntimeAvailable()` 判断，不可用时不要启用相关 UI。
+
+## API
+
+```cpp
+struct State {
+    bool initialized;
+    bool visible;
+    bool loading;
+    bool canGoBack;
+    bool canGoForward;
+    int lastError;
+    std::string url;
+    std::string title;
+};
+
+bool IsRuntimeAvailable();
+bool Init();
+bool IsInitialized();
+void NotifyGameInit();
+void Process();
+void Shutdown();
+
+bool Navigate(const std::string& url);
+bool SetHtml(const std::string& html);
+void Reload();
+bool GoBack();
+bool GoForward();
+void SetZoom(float factor);
+
+void SetVisible(bool visible);
+bool IsVisible();
+void SetBounds(const Rect& bounds);
+State GetState();
+
+bool UsesCaptureMode();
+void DrawPanel(const Rect& bounds);
+void ForwardPanelInput(const Rect& bounds, Vec2 mouse, bool mouseDown, float wheelDelta);
+
+void SetStateCallback(StateCallback callback);
+```
+
+## 全屏抓帧模式
+
+独占全屏时 DWM 不合成子窗口，HWND 覆盖层永远不可见，此时 `UsesCaptureMode()` 返回真，宿主改用抓帧贴图：
+- `DrawPanel()` 在 `SetBounds()` 提交的同一矩形内绘制最新一帧（抓帧解码后上传 D3D9 贴图），宿主在占位控件之后调用即可。
+- `ForwardPanelInput()` 把鼠标位置换算成页面坐标，转发悬停、点击与滚轮（`UI::IsLastItemHovered()` + `UI::GetMousePosition()` + `Hooks::ConsumeWheelDelta()`）。
+- 抓帧与面板同尺寸，1:1 显示不缩放；静止时用 PNG 保证清晰度，交互时改用 JPEG 把抓帧间隔压到 120ms，空闲间隔 500ms，点击与滚轮后立即重抓。
+- 抓帧模式不抢焦点，游戏与菜单热键保持可用；受限于位图转发，页面内的文本输入与输入法不可用，帧率也低于原生渲染。
+- 想要原生渲染与文字输入时，让游戏进入窗口或无边框模式（`Hooks::SetWindowMode(WindowMode::Borderless)`）；窗口由 DWM 合成后本页自动回落到原生覆盖层，抓帧模式随之关闭。
+
+## 生命周期与边界
+
+- `Init()` 只检查运行时并登记请求，不会立刻创建浏览器；真正的环境与控制器创建延迟到宿主请求页面之后（`Navigate`、`SetHtml`、`SetVisible(true)` 都会登记请求）的 `Process()` 安全点执行，因此不会在渲染钩子里重入消息循环，未使用网页时也不会启动浏览器进程。
+- 创建是异步的；完成后 `GetState().initialized` 为真，之前提交的 `Navigate`/`SetHtml` 会自动补发，若期间已请求显示则直接可见。
+- 领域卸载时若创建仍在进行，会等待回调到达后自行释放控制器并销毁宿主窗口，避免父窗口句柄被复用。
+- `SetBounds()` 接收与 `UI::GetDisplaySize()` 同坐标系的矩形（ImGui 显示像素，通常按菜单内容区计算），XBase 内部按游戏客户区比例换算并裁剪到游戏窗口内。
+- 网页渲染为窗口期覆盖层，无法被 ImGui 裁剪，宿主应把矩形限制在菜单窗口可见区域内（菜单滚动时用 `UI::GetCurrentWindowRect()` 求交集）。
+- 显示时网页子窗口取得焦点，游戏收不到键盘输入；隐藏时焦点交还游戏窗口。独占全屏下不取焦点，改由抓帧模式呈现。
+- 面板聚焦期间按键只到达网页子窗口，XBase 通过加速键事件与系统状态轮询补齐输入，菜单热键仍然可用。
+- 菜单关闭后面板自动隐藏，宿主无需在关闭流程里手动调用 `SetVisible(false)`。
+- 关闭菜单、切换场景或新游戏时调用 `SetVisible(false)`；`NotifyGameInit()` 会自动隐藏。
+- 窗口化与无边框模式下网页渲染为窗口期覆盖层，由 DWM 合成；独占全屏切换为抓帧贴图，两种状态都由 XBase 自动判定。
+- 浏览器数据目录位于载荷目录下的 `XBase\webview2`，由 XBase 创建。
+- 导航、标题、前进后退状态通过事件更新，`SetStateCallback()` 可在游戏线程收到变化通知。
+
+## 版本能力
+
+| Capability | SA | VC | III |
+|---|:-:|:-:|:-:|
+| WebView | ✅ | ✅ | ✅ |
+
+实现位于 Win32/COM 层，不访问游戏内存与插件地址；真实可用性由 `IsRuntimeAvailable()` 在运行时判定。

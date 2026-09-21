@@ -38,9 +38,9 @@ struct TextureId { std::uint64_t value; };
 ```cpp
 struct ProofState {
     bool bullet;
-    bool fire;
-    bool explosion;
     bool collision;
+    bool explosion;
+    bool fire;
     bool melee;
     bool nonPlayer;
 };
@@ -52,12 +52,66 @@ struct ProofState {
 
 ```cpp
 struct PedSpawnOptions {
+    unsigned int modelId = 7;
     int pedType = 4;
+    int gangType = 0;
+    bool asGang = false;
     float health = 100.0f;
     float armour = 0.0f;
-    unsigned int weaponModel = 0;
+    bool freeze = false;
     bool hostile = false;
+    unsigned int weaponModel = 0;
 };
 ```
 
 生成 Ped 时的选项结构体。`pedType` 默认值为 4，`weaponModel` 为 0 时表示赤手空拳。
+
+## SpawnVehicleOptions
+
+```cpp
+struct SpawnVehicleOptions {
+    bool asDriver = true;
+    bool aircraftInAir = true;
+    bool cleanupPrevious = true;
+};
+```
+
+载具生成选项：是否把玩家放入驾驶位、飞行器是否空中生成、是否清理上一辆由 XBase 生成的载具。
+
+## PickupOptions
+
+```cpp
+struct PickupOptions {
+    unsigned int modelId = 1240;
+    unsigned char type = 3;
+    unsigned int quantity = 1;
+    unsigned int moneyPerDay = 0;
+    bool empty = false;
+};
+```
+
+`type` 对应 `ePickupType`；越界值由后端收敛到 `PICKUP_ONCE`。
+
+## VehicleAppearanceOptions
+
+```cpp
+struct VehicleAppearanceOptions {
+    int primaryColor = 0;
+    int secondaryColor = 0;
+    int paintjob = -1;
+    int modId = 1000;
+};
+```
+
+## PlayerAppearanceOptions
+
+```cpp
+struct PlayerAppearanceOptions {
+    int skinModel = 0;
+    int clothesTexture = 0;
+    int clothesModel = 0;
+    int clothesBodyPart = 0;
+    int statId = 0;
+    float statValue = 0.0f;
+};
+```

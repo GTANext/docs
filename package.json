@@ -2,13 +2,13 @@
   "name": "fumadocs",
   "version": "0.0.6",
   "private": true,
+  "type": "module",
   "scripts": {
-    "clean:next": "node scripts/clean-next.mjs",
-    "build": "node scripts/clean-next.mjs && next build",
-    "dev": "next dev",
-    "start": "next start",
-    "serve:static": "npx --yes serve out -p 3000",
-    "types:check": "fumadocs-mdx && next typegen && tsc --noEmit",
+    "dev": "react-router dev",
+    "build": "pnpm deploy:pack",
+    "start": "node --env-file=server/.env server/server.mjs",
+    "deploy:pack": "react-router build && node scripts/package-deploy.mjs",
+    "types:check": "react-router typegen && tsc --noEmit",
     "postinstall": "fumadocs-mdx"
   },
   "dependencies": {
@@ -16,6 +16,8 @@
     "@llmgateway/ai-sdk-provider": "^3.8.1",
     "@orama/orama": "^3.1.18",
     "@orama/tokenizers": "^3.1.18",
+    "@react-router/node": "^8.4.0",
+    "@react-router/serve": "^8.4.0",
     "ai": "^7.0.34",
     "class-variance-authority": "^0.7.1",
     "cnfast": "^0.0.8",
@@ -25,28 +27,29 @@
     "fumadocs-ui": "npm:@fumadocs/base-ui@16.11.5",
     "hast-util-to-estree": "3.1.2",
     "hast-util-to-jsx-runtime": "^2.3.6",
+    "isbot": "^5",
     "lucide-react": "^1.25.0",
-    "next": "16.2.10",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "react-router": "^8.4.0",
     "remark": "^15.0.1",
     "remark-gfm": "^4.0.1",
     "remark-rehype": "^11.1.2",
+    "takumi-js": "^2.14.0",
     "unist-util-visit": "^5.1.0",
+    "use-sync-external-store": "^1.7.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.3.3",
+    "@react-router/dev": "^8.4.0",
+    "@tailwindcss/vite": "^4.3.3",
     "@types/hast": "^3.0.5",
     "@types/mdx": "^2.0.14",
     "@types/node": "^26.1.1",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
-    "postcss": "^8.5.21",
     "tailwindcss": "^4.3.3",
-    "typescript": "^6.0.3"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": ["esbuild", "sharp"]
+    "typescript": "^6.0.3",
+    "vite": "^8.3.0"
   }
 }

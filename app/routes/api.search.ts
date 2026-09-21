@@ -3,12 +3,10 @@ import { createFromSource } from 'fumadocs-core/search/server';
 import { createTokenizer } from '@orama/tokenizers/mandarin';
 
 /**
- * 静态搜索索引：构建时导出 JSON，客户端下载后本地检索。
+ * 静态搜索索引：构建 / SSR 时导出 JSON，客户端下载后本地检索。
  * @see https://fumadocs.dev/docs/headless/search/orama#static-export
  */
-export const revalidate = false;
-
-export const { staticGET: GET } = createFromSource(source, {
+const server = createFromSource(source, {
   // 中文文档用 mandarin 分词
   components: {
     tokenizer: createTokenizer(),
@@ -18,3 +16,7 @@ export const { staticGET: GET } = createFromSource(source, {
     tolerance: 0,
   },
 });
+
+export function loader() {
+  return server.staticGET();
+}

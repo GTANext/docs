@@ -1,8 +1,5 @@
-'use client';
-
 import type { ComponentProps, ReactNode } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { Link, useLocation } from 'react-router';
 import { Languages, Sidebar } from 'lucide-react';
 import { useHomeLayout } from 'fumadocs-ui/layouts/home';
 import { useNotebookLayout } from 'fumadocs-ui/layouts/notebook';
@@ -30,7 +27,7 @@ export function DocsSectionNav({
   items: readonly { title: ReactNode; url: string; unlisted?: boolean }[];
   className?: string;
 }) {
-  const pathname = usePathname();
+  const pathname = useLocation().pathname;
   const selectedIdx = items.findLastIndex((item) => {
     return pathname === item.url || pathname.startsWith(`${item.url}/`);
   });
@@ -49,7 +46,7 @@ export function DocsSectionNav({
         return (
           <Link
             key={item.url}
-            href={item.url}
+            to={item.url}
             className={cn(
               'inline-flex items-center gap-2 border-b-2 border-transparent pb-1.5 text-sm font-medium text-nowrap text-fd-muted-foreground transition-colors hover:text-fd-accent-foreground',
               active && 'border-fd-primary text-fd-primary',

@@ -19,7 +19,7 @@ void Init();
 void Process();
 ```
 
-每帧维护更新覆盖层内部状态。
+由 `Core` 领域分发；当前不产生额外每帧工作，保留给后续状态维护。
 
 ## Draw
 
@@ -27,7 +27,7 @@ void Process();
 void Draw();
 ```
 
-绘制覆盖层文本信息，在 `drawingEvent` 中调用。
+由宿主在绘制回调中调用，使用游戏字体输出文本，不占用 ImGui 绘制列表。
 
 ## SetVisible
 
@@ -59,4 +59,12 @@ void Toggle();
 void SetPosition(bool topLeft, bool topRight, bool bottomLeft, bool bottomRight);
 ```
 
-设置覆盖层在屏幕上显示的位置。目前仅实现左上角，其余位置参数预留。
+四个角位都会生效：右侧位置按屏幕宽度右对齐，底部位置按行数贴底。四个参数同时为 `false` 时回退到左上角。
+
+## 生命周期
+
+```cpp
+void Shutdown();
+```
+
+`Shutdown()` 隐藏覆盖层并复位位置状态。SA 实现完整；VC/III 通过 `Capability::Overlay` 报告不支持。

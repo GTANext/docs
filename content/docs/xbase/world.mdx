@@ -10,6 +10,7 @@ description: 天气、时间、游戏速度、重力、Pickup。
 ## 天气
 
 ```cpp
+int  GetWeather();
 void SetWeather(int id, bool lock);
 void ReleaseWeather();
 bool IsWeatherLocked();
@@ -28,6 +29,7 @@ void SyncTimeWithSystemClock();
 ```cpp
 void SetFreezeTime(bool enable);   // 冻结时间流逝
 bool IsTimeFrozen();
+void SetLockedTime(bool enable, int hour, int minute); // 锁定到指定时刻
 void SetFasterClock(bool enable);  // 加速时间流逝
 bool IsFasterClock();
 ```
@@ -45,6 +47,7 @@ void SetFreePayNSpray(bool enable);      // 免费喷漆
 bool IsFreePayNSpray();
 void SetNoWaterPhysics(bool enable);     // 无水物理
 bool IsNoWaterPhysics();
+void SetSolidWater(bool enable);         // 水面可站立
 ```
 
 ## 天气特效
@@ -74,16 +77,27 @@ void SetGravity(float gravity);
 
 `SetGameSpeed(0.0f)` 即暂停游戏。
 
+## 游戏日期
+
+```cpp
+int  GetDaysPassed();
+void SetDaysPassed(int days);
+```
+
 ## Pickup
 
 ```cpp
-int SpawnPickup(const Types::PickupOptions& options);
-bool RemoveTrackedPickups();
+int SpawnPickup(const Types::PickupOptions& options); // 返回 pickup 句柄，失败返回 -1
+bool UpdateLastPickup(const Types::PickupOptions& options); // 在最近一次生成位置重建 pickup
+bool RemoveLastPickup();      // 移除最近一次生成的 pickup
+bool RemoveTrackedPickups();  // 移除 XBase 创建的全部 pickup
 ```
 
 ```cpp
 XBase::World::SpawnPickup({ .modelId = 1240, .type = 3 });
 ```
+
+XBase 只记录自己创建的 pickup 句柄；`RemoveTrackedPickups()` 不会清空游戏任务 pickup。`WorldPickups` 在 SA 为 `Supported`，VC/III 由 portable 后端实现，报告 `Partial`。
 
 ## 全局清除
 
@@ -94,4 +108,10 @@ void DestroyAllPeds();      // 击杀所有 Ped（玩家除外）
 
 ## 生命周期
 
-`World::Process()` 由 `Core::Process()` 唯一调用，负责天气、时间和运行时状态维护。宿主不得直接调用。
+```cpp
+void NotifyGameInit();
+void Process();
+void Shutdown();
+```
+
+`World::Process()` 由 `Core::Process()` 唯一调用，负责天气、时间和运行时状态维护；宿主不得直接调用。`NotifyGameInit()` 丢弃上一局的锁定状态与 pickup 会话；`Shutdown()` 释放天气锁定、恢复时钟与拾取物追踪状态。

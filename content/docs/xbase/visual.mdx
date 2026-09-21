@@ -1,20 +1,55 @@
 ---
 title: Visual
-description: 显示/隐藏 HUD、雷达。
+description: HUD、雷达、雷达选项与画面滤镜。
 ---
 
 `include/XBase/Visual.h` · `XBase::Visual`
 
-> Visual 状态由 XBase 管理。XMenu 只同步菜单状态；支持情况必须通过 `FeatureCapability::VisualHudRadar` 或 `FeatureCapability::VisualFilter` 判断。
+> Visual 状态由 XBase 管理。XMenu 只同步菜单状态；支持情况必须通过 `FeatureCapability::VisualHudRadar`、`VisualFilter` 或 `VisualRadarOptions` 判断。
+
+## 显示控制
 
 ```cpp
-void DisplayHud(bool enable);
-void DisplayRadar(bool enable);
-void SetFilter(int id, float strength);
+bool DisplayHud(bool enable);
+bool DisplayRadar(bool enable);
 ```
 
-`Visual::Process()` 由 `Core::Process()` 唯一调用，用于维护持续视觉状态；宿主不得直接调用。
-
 - `DisplayHud` — 显示或隐藏 HUD
-- `DisplayRadar` — 显示或隐藏雷达
-- `SetFilter` — 设置画面滤镜效果
+- `DisplayRadar` — 显示或隐藏雷达，退出时恢复进入前的雷达状态
+
+## 滤镜
+
+```cpp
+bool SetFilter(int id, float strength);
+```
+
+`id` 映射到天气/后处理滤镜条目，`strength` 控制强度。SA 支持夜视、红外等后处理，VC/III 通过天气类型近似实现，能力报告为 `Partial`。
+
+## 雷达选项
+
+```cpp
+struct RadarOptions {
+    bool square = false;
+    bool noRadarRot = false;
+    bool fullscreenMap = false;
+    bool unfogMap = false;
+    bool hideAreaNames = false;
+    bool hideVehicleNames = false;
+    bool nightVision = false;
+    bool infrared = false;
+};
+
+void SetRadarOptions(const RadarOptions& options);
+```
+
+选项按帧持续应用，关闭时恢复原始补丁字节。仅 SA 实现（`VisualRadarOptions`）；VC/III 调用为空操作，页面必须禁用入口。
+
+## 生命周期
+
+```cpp
+void NotifyGameInit();
+void Process();
+void Shutdown();
+```
+
+`Visual::Process()` 由 `Core::Process()` 唯一调用，用于维护持续视觉状态；宿主不得直接调用。`NotifyGameInit()` 重置滤镜与雷达选项状态，`Shutdown()` 恢复 HUD、雷达和全部补丁。

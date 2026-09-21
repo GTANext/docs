@@ -6,6 +6,10 @@ description: D3D9 Hook（kiero）+ ImGui 引导。
 `include/XBase/Hooks.h` · `XBase::Hooks`
 
 ```cpp
+struct DrawCallbackId {
+    std::uint64_t value = 0;
+};
+
 enum class RuntimeState {
     Uninitialized,
     Hooked,
@@ -22,7 +26,8 @@ bool IsReady();
 bool HadInitFailure();
 const char* GetStatusText();
 
-void SetDrawCallback(std::function<void()> callback);
+DrawCallbackId RegisterDrawCallback(std::function<void()> callback);
+bool UnregisterDrawCallback(DrawCallbackId callbackId);
 void SetMenuVisible(bool visible);
 bool IsMenuVisible();
 void ToggleMenu();
@@ -32,7 +37,16 @@ bool IsBackgroundInputActive();
 void SetBackgroundRenderActive(bool active);
 bool IsBackgroundRenderActive();
 void MaintainInputState();
+float GetFrameDeltaSeconds();
+bool IsKeyboardCaptureActive();
 float ConsumeWheelDelta();
+void SetWheelInputSuppressed(bool suppressed);
+bool IsWheelInputSuppressed();
+bool IsGameWindowFullscreen();
+bool IsWindowModeSupported();
+WindowMode GetWindowMode();
+bool SetWindowMode(WindowMode mode);
+bool PrepareStartupWindowMode(WindowMode mode);
 ```
 
 <Callout type="info">
@@ -43,12 +57,33 @@ float ConsumeWheelDelta();
 
 ```cpp
 XBase::Hooks::Init();
-XBase::Hooks::SetDrawCallback([] {
-    XBase::UI::Window("main", "My Window", [] {
-        XBase::UI::Text("Hello from XBase!");
+const XBase::Hooks::DrawCallbackId callbackId =
+    XBase::Hooks::RegisterDrawCallback([] {
+        XBase::UI::Window("main", "My Window", [] {
+            XBase::UI::Text("Hello from XBase!");
+        });
     });
-});
 ```
+
+`RegisterDrawCallback()` 返回不透明 `DrawCallbackId`；卸载或重建 UI 时用 `UnregisterDrawCallback()` 注销，禁止把回调地址当作可见句柄传给第三方。
+
+`GetFrameDeltaSeconds()` 返回上一帧耗时（秒），供相机、拖拽等按帧推进的动画使用；`IsKeyboardCaptureActive()` 表示当前是否处于菜单文本输入等需要屏蔽快捷键的状态。
+
+`SetWheelInputSuppressed(true)` 后滚轮增量仍可通过 `ConsumeWheelDelta()` 读取，但滚轮消息不再转发给游戏窗口，宿主可以独占滚轮驱动自己的动作（例如菜单关闭时的武器轮切）；关闭功能或卸载时必须复位。
+
+菜单可见期间游戏按键与鼠标输入被屏蔽，菜单隐藏后若仍有按键处于按下状态，屏蔽会保持到全部松开，避免游戏把关闭键当成自身菜单操作；恢复时先补跑一次 `CPad::UpdatePads()` 再清零鼠标增量，丢弃菜单期间的累积移动。`Shutdown()` 会无条件恢复输入，不受该延迟影响。
+
+`SetWindowMode()` 支持三种模式：`Fullscreen` 保持独占全屏，`Windowed` 切到带边框的窗口并居中，`Borderless` 让窗口铺满显示器且无边框。后两者都让交换链以窗口模式呈现，画面由 DWM 合成，网页视图等 HWND 覆盖层可以原生速度显示。
+
+实现参考 `III.VC.SA.WindowedMode`：游戏设备在启动时就直接以窗口模式创建，三个模式都跑在同一个窗口期设备上，从不做独占全屏与窗口模式之间的设备切换。
+
+实现要点：
+
+- `PrepareStartupWindowMode()` 必须在游戏创建设备之前调用（ASI 加载期），内部替换 `IDirect3D9::CreateDevice`（SA）或 `IDirect3D8::CreateDevice`（VC/III）的 vtable 表项，把 `Windowed=TRUE`、显示器尺寸后缓冲、`DISCARD`、刷新率 0 与 `INTERVAL_DEFAULT` 写进创建参数；接口通过已加载的 `d3d9.dll` / `d3d8.dll` 导出获取，包装层（d3d8to9、d3d9 代理）也能命中同一份 vtable。
+- `SetWindowMode()` 在运行中只保存设置并调整窗口样式、`RsGlobal` 与游戏自身呈现参数，**需要重启游戏才真正生效**，因为窗口期交换链只能在启动时建立；启动阶段宿主调用一次即可。
+- 同步 `RsGlobal` 的窗口与分辨率状态，切回全屏时按保存值恢复；后处理顶点缓冲（SA）与运动模糊（VC/III）在设备变化后刷新，并调用宽屏修正的 `UpdateVars`。
+- 窗口模式下游离开客户区会丢失镜头控制，XBase 在游戏窗口前台且菜单未抢占输入时把光标裁剪到客户区。
+- 窗口模式下拦截游戏的失焦处理与框外鼠标键盘消息，避免自动暂停、最小化与误操作。运行时用 `IsWindowModeSupported()` 判断可用性。
 
 宿主不取得 D3D 设备，也不直接管理 ImGui；设备、Context、Win32/DX9 backend、WndProc、输入屏蔽和 Reset/Shutdown 生命周期全部属于 XBase。
 

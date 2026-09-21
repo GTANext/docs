@@ -1,5 +1,3 @@
-'use client';
-
 import type { ComponentProps } from 'react';
 import { HomeLayout } from 'fumadocs-ui/layouts/home';
 import { DocsLayout } from 'fumadocs-ui/layouts/notebook';

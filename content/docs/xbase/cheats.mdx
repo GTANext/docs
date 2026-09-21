@@ -1,9 +1,13 @@
 ---
 title: Cheats
-description: 游戏全局作弊开关合集。
+description: 游戏全局作弊开关与随机作弊。
 ---
 
 `include/XBase/Cheats.h` · `XBase::Cheats`
+
+> 作弊开关与随机作弊状态由 XBase 持有；宿主只设置开关和随机参数。VC/III 不提供这些作弊，入口必须通过 `FeatureCapability` 禁用。
+
+## 单项作弊
 
 ```cpp
 void FlyingCars(bool enable);       bool IsFlyingCars();
@@ -11,11 +15,61 @@ void AllCarsHaveNitro(bool enable); bool IsAllCarsHaveNitro();
 void PerfectHandling(bool enable);  bool IsPerfectHandling();
 void GreenLights(bool enable);      bool IsGreenLights();
 void Riot(bool enable);             bool IsRiot();
+void BoatFly(bool enable);          bool IsBoatFly();
+void DriveWater(bool enable);       bool IsDriveWater();
+void TankMode(bool enable);         bool IsTankMode();
+void AimDrive(bool enable);         bool IsAimDrive();
+void NoDerail(bool enable);         bool IsNoDerail();
+void FlipNoBurn(bool enable);       bool IsFlipNoBurn();
+void StayOnBike(bool enable);       bool IsStayOnBike();
+void BikeFly(bool enable);          bool IsBikeFly();
 ```
 
-每个作弊开关使用 SA 内置的 `m_aCheatsActive[]` 标志位数组（基址 `0x969130`）。
 ```cpp
 XBase::Cheats::FlyingCars(true);
 XBase::Cheats::AllCarsHaveNitro(true);
 XBase::Cheats::PerfectHandling(true);  // 满抓地力
 ```
+
+多数开关对应 SA 内置的 `m_aCheatsActive[]` 标志位数组（基址 `0x969130`）。`NoDerail` 与 `FlipNoBurn` 通过代码补丁实现，`Shutdown()` 会恢复原始字节；`StayOnBike` 与 `BikeFly` 在 `Process()` 中逐帧维护，需要玩家处于对应载具状态。
+
+## 随机作弊
+
+```cpp
+struct RandomSettings {
+    bool enabled = false;
+    bool showProgress = false;
+    int intervalSeconds = 5;
+};
+
+void SetRandomSettings(const RandomSettings& settings);
+RandomSettings GetRandomSettings();
+std::size_t GetRandomCheatCount();
+const char* GetRandomCheatName(std::size_t index);
+bool IsRandomCheatEnabled(std::size_t index);
+bool SetRandomCheatEnabled(std::size_t index, bool enabled);
+```
+
+- `intervalSeconds` 收敛到 1~60；计时到达后在启用列表内随机触发一次游戏作弊并显示名称。
+- `showProgress` 开启时在屏幕顶部绘制进度条。
+- `GetRandomCheatCount()` 返回内置作弊条目数；页面用 `GetRandomCheatName()` 填充列表，用 `SetRandomCheatEnabled()` 逐项启停。
+
+## 生命周期
+
+```cpp
+void Init();
+void NotifyGameInit();
+void Process();
+void Shutdown();
+```
+
+`Init()` 订阅绘制事件（幂等）；`Process()` 由 `Core` 领域分发，处理随机作弊计时与逐帧作弊；`NotifyGameInit()` 重置计时；`Shutdown()` 关闭全部开关、恢复补丁并退订绘制事件。
+
+## 版本能力
+
+| FeatureCapability | SA | VC | III |
+|---|:-:|:-:|:-:|
+| VehicleCheats | ✅ | ◐ | ◐ |
+| CheatsRandom | ✅ | ✖ | ✖ |
+
+VC 通过游戏作弊标志实现 `FlyingCars`、`BoatFly`、`DriveWater`、`GreenLights`，III 实现 `FlyingCars` 与 `PerfectHandling`；其余载具作弊与随机作弊仍为 SA 专属，未实现的开关保持空操作，宿主必须按能力禁用入口。

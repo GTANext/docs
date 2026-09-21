@@ -4,6 +4,16 @@
 
 html {
   scrollbar-gutter: stable;
+  /* next/font 迁到 Google Fonts link 后，保持与原先一致的正文族 */
+  font-family:
+    'Inter',
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    'PingFang SC',
+    'Microsoft YaHei',
+    sans-serif;
 }
 
 html > body[data-scroll-locked] {

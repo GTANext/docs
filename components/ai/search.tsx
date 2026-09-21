@@ -1,4 +1,3 @@
-'use client';
 import {
   type ComponentProps,
   createContext,
@@ -374,17 +373,17 @@ export function AISearchPanel() {
         }
         @keyframes ask-ai-close {
           from {
-            width: var(--ai-chat-width);
+            translate: 0 0;
           }
           to {
-            width: 0px;
+            translate: 100% 0;
           }
         }`}
       </style>
       {actualOpen && (
         <div
           className={cn(
-            'fixed inset-0 z-30 backdrop-blur-xs bg-fd-overlay lg:hidden',
+            'fixed inset-0 z-30 backdrop-blur-xs bg-fd-overlay lg:hidden motion-reduce:animate-none',
             open ? 'animate-fd-fade-in' : 'animate-fd-fade-out',
           )}
           onClick={() => setOpen(false)}
@@ -396,12 +395,13 @@ export function AISearchPanel() {
       {actualOpen && (
         <div
           className={cn(
-            'overflow-hidden z-30 bg-fd-card text-fd-card-foreground [--ai-chat-width:400px] 2xl:[--ai-chat-width:460px]',
-            'max-lg:fixed max-lg:inset-x-2 max-lg:inset-y-4 max-lg:border max-lg:rounded-2xl max-lg:shadow-xl',
-            'lg:sticky lg:top-0 lg:h-dvh lg:border-s lg:ms-auto lg:in-[#nd-docs-layout]:[grid-area:toc] lg:in-[#nd-notebook-layout]:row-span-full lg:in-[#nd-notebook-layout]:col-start-5',
+            // 面板浮在内容之上，不挤压正文列宽，窄屏与宽屏行为一致
+            'overflow-hidden z-30 bg-fd-card text-fd-card-foreground shadow-xl [--ai-chat-width:400px] 2xl:[--ai-chat-width:460px]',
+            'max-lg:fixed max-lg:inset-x-2 max-lg:inset-y-4 max-lg:border max-lg:rounded-2xl',
+            'lg:fixed lg:inset-y-0 lg:inset-e-0 lg:border-s',
             open
-              ? 'animate-fd-dialog-in lg:animate-[ask-ai-open_200ms]'
-              : 'animate-fd-dialog-out lg:animate-[ask-ai-close_200ms]',
+              ? 'animate-fd-dialog-in motion-reduce:animate-none lg:animate-[ask-ai-open_200ms]'
+              : 'animate-fd-dialog-out motion-reduce:animate-none lg:animate-[ask-ai-close_200ms]',
           )}
           onAnimationEnd={() => {
             if (!open) flushSync(() => setActualOpen(false));

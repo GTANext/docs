@@ -5,20 +5,25 @@ description: 坐标传送、标记点传送、地图传送。
 
 `include/XBase/Teleport.h` · `XBase::Teleport`
 
-`GetCurrentPosition()` 返回当前玩家位置，失败时返回安全默认值；其余动作接口由 XBase 按对应版本 backend 执行。当前能力由 `FeatureCapability::TeleportBasic` 控制，宿主不应直接调用 `Teleport::Process()`。
+> 传送动作在 XBase 后端内完成对象校验、场景流式加载与水上/水下处理；宿主只提交坐标和模式。支持情况由 `FeatureCapability::TeleportBasic` 控制，宿主不应直接调用 `Teleport::Process()`。
 
 ```cpp
+bool TryGetCurrentPosition(Vec3& position);
 Vec3 GetCurrentPosition();
-void To(float x, float y, float z, int interior = 0);
-void Forward(float distance);
-void MapPosition(float x, float y, bool spawnUnderwater = false);
-void Marker(bool spawnUnderwater = false);
-void Center();
+bool To(float x, float y, float z, int interior = 0);
+bool Forward(float distance);
+bool MapPosition(float x, float y, bool spawnUnderwater = false);
+bool Marker(bool spawnUnderwater = false);
+bool Center();
+void Process();
 ```
 
-`Teleport::Process()` 没有宿主可见的持续策略；如果领域启用，仍由 `Core::Process()` 统一调度，宿主不要直接调用。
-- `To` — 传送到指定坐标
-- `Forward` — 朝面前方向移动指定距离
-- `MapPosition` — 传送到地图坐标（x，y → 自动计算地面 z）
-- `Marker` — 传送到当前标记点（雷达上设置的坐标）
-- `Center` — 传送到世界原点 (0, 0, 3)
+- `TryGetCurrentPosition` — 读取当前位置；玩家不可用时返回 `false`，`position` 保持不变。
+- `GetCurrentPosition` — 便捷读取，失败时返回安全默认值。
+- `To` — 传送到指定坐标；玩家在载具内时会保留载具并重新落位。
+- `Forward` — 朝面前方向移动指定距离。
+- `MapPosition` — 按地图坐标传送（x，y 自动计算地面 z），可选水面落点。
+- `Marker` — 传送到雷达标记点；没有标记时返回 `false`，仅 SA 实现。
+- `Center` — 传送到世界原点。
+
+`Teleport::Process()` 没有宿主可见的持续策略；领域启用后仍由 `Core::Process()` 统一调度，宿主不要直接调用。

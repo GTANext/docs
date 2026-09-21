@@ -11,11 +11,17 @@ Theme 模块通过 XBase 自有值类型管理配色与字体。ImGui 类型和�
 
 ```cpp
 void Init();
+void Shutdown();
 void ApplyPreset(Preset preset);
+void ApplyStyle(const Style& style);
+void ConfigureInteraction(bool keyboardNavigation, bool mouseEnabled);
 ```
 
-- `Init()` — 应用 Dark 预设
-- `Preset` 枚举: `Dark`, `Light`, `ClassicBlue`, `Custom`
+- `Init()` — 应用 Dark 预设；`Shutdown()` 释放字体缓存与 Context 绑定。
+- `Preset` 枚举：`Dark`、`Light`、`ClassicBlue`、`Custom`。
+- `ApplyPreset(Preset::Custom)` 会重新应用最近一次 `ApplyCustom()` 保存的 `ColorSet`。
+- `ApplyStyle()` 接收完整的 `Style` 结构体（文本/背景/按钮/边框/圆角/内边距等），一次应用全部字段；`ChildRounding`、`PopupRounding`、`ScrollbarRounding`、`GrabRounding` 复用 `frameRounding`，不会更新 `Custom` 预设保存的 `ColorSet`。
+- `ConfigureInteraction()` 控制键盘导航与鼠标输入：`keyboardNavigation=false` 时关闭 ImGui 导航，`mouseEnabled=false` 时屏蔽鼠标。
 
 ## 自定义配色
 

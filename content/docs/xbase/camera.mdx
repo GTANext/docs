@@ -1,0 +1,64 @@
+---
+title: Camera
+description: 自由视角与俯视相机。
+---
+
+`include/XBase/Camera.h` · `XBase::Camera`
+
+> 相机模式、输入和恢复快照由 XBase 持有；宿主只切换模式并同步设置，不直接写相机对象。
+
+## 模式与设置
+
+```cpp
+enum class Mode {
+    Disabled,
+    Freecam,
+    TopDown,
+};
+
+struct Settings {
+    float freecamFov = 70.0f;
+    int freecamSpeed = 1;
+    int topDownZoom = 40;
+};
+
+bool SetMode(Mode mode);
+Mode GetMode();
+bool IsActive();
+void SetSettings(const Settings& settings);
+Settings GetSettings();
+```
+
+`SetSettings()` 会收敛范围：`freecamFov` 限制在 10~115，`freecamSpeed` 限制在 1~10，`topDownZoom` 限制在 10~100；自由视角激活时立即应用 FOV。
+
+## 自由视角
+
+- 进入时生成不可见 dummy ped 并挂载相机，保存并关闭 HUD/雷达显示。
+- `WASD` 移动，鼠标控制朝向；`Shift` 加速，`Alt` 减速。
+- 鼠标滚轮调整移动速度（1~10）；按住 `Ctrl` 时改为调整 FOV。
+- `Enter` 把玩家传送到当前视角位置的地面。
+- 退出时删除 dummy ped，恢复 HUD/雷达与相机 FOV。
+
+## 俯视相机
+
+- 相机固定在玩家上方，高度由 `topDownZoom` 决定；玩家进入载具时按速度自动拉远。
+- 使用视线检测避免相机穿入建筑。
+- 退出时恢复进入前的 LOD 与相机状态。
+
+## 生命周期
+
+```cpp
+void NotifyGameInit();
+void Process();
+void Shutdown();
+```
+
+`NotifyGameInit()` 会把模式复位为 `Disabled`；`Process()` 由 `Core` 领域分发；`Shutdown()` 恢复相机与 HUD 状态。`SetMode()` 切换失败时返回 `false` 并保持原模式。
+
+## 版本能力
+
+| FeatureCapability | SA | VC | III |
+|---|:-:|:-:|:-:|
+| CameraFreecam / CameraTopDown | ✅ | ✖ | ✖ |
+
+VC/III 只接受 `SetMode(Mode::Disabled)`，其余模式返回 `false`；页面应通过 `FeatureCapability` 禁用入口。

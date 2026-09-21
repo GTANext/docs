@@ -10,6 +10,7 @@
     "config",
     "i18n",
     "hooks",
+    "hotkey",
     "host-integration",
     "---控制器---",
 
@@ -24,10 +25,13 @@
     "visual",
     "bullet-assist",
     "overlay",
+    "camera",
     "cheats",
+    "vehicle-effects",
     "---UI 层---",
     "theme",
     "ui",
+    "webview",
     "---其他---",
     "version",
     "types"
