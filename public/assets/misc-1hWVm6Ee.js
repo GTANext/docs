@@ -1,0 +1,6 @@
+import{rt as e,t}from"./jsx-runtime-DFJu3dTM.js";var n=e(t()),r={title:`杂项`,description:`无独立 class 的边缘 op 说明`},i="\n\n`gta3` · 扩展 `CLEO` · 需 CLEO\n\n* 有 class 的已分到类型页（含 file find、III 原生 Player/Char/Game）\n* classic / modern 双 id 只文档 modern\n* 完整表：`gta3.json` → `CLEO`\n",a={contents:[{heading:void 0,content:"`gta3` · 扩展 `CLEO` · 需 CLEO"},{heading:void 0,content:`有 class 的已分到类型页（含 file find、III 原生 Player/Char/Game）`},{heading:void 0,content:`classic / modern 双 id 只文档 modern`},{heading:void 0,content:"完整表：`gta3.json` → `CLEO`"}],headings:[]},o=[];function s(e){let t={code:`code`,li:`li`,p:`p`,ul:`ul`,...e.components};return(0,n.jsxs)(n.Fragment,{children:[(0,n.jsxs)(t.p,{children:[(0,n.jsx)(t.code,{children:`gta3`}),` · 扩展 `,(0,n.jsx)(t.code,{children:`CLEO`}),` · 需 CLEO`]}),`
+`,(0,n.jsxs)(t.ul,{children:[`
+`,(0,n.jsx)(t.li,{children:`有 class 的已分到类型页（含 file find、III 原生 Player/Char/Game）`}),`
+`,(0,n.jsx)(t.li,{children:`classic / modern 双 id 只文档 modern`}),`
+`,(0,n.jsxs)(t.li,{children:[`完整表：`,(0,n.jsx)(t.code,{children:`gta3.json`}),` → `,(0,n.jsx)(t.code,{children:`CLEO`})]}),`
+`]})]})}function c(e={}){let{wrapper:t}=e.components||{};return t?(0,n.jsx)(t,{...e,children:(0,n.jsx)(s,{...e})}):s(e)}export{i as _markdown,c as default,r as frontmatter,a as structuredData,o as toc};

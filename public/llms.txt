@@ -1,0 +1,322 @@
+# 文档
+
+- [综述](/docs): GTAMODX 文档入口 — plugin-sdk ASI 与 CLEO 脚本
+- 插件
+  - [综述](/docs/plugins): plugin-sdk ASI 精选文档入口、覆盖边界与可抄组合示例
+
+  - **核心**
+  - [调用 PluginBase / Call](/docs/plugins/plugin-base): Call / CallDyn / Method / VMT 选型与基址
+  - [生命周期 Events](/docs/plugins/events): 挂游戏帧、绘制与实体构造析构回调（SA 为主）
+  - [内存 Patch](/docs/plugins/patch): 读写、NOP、跳转重定向与可逆修改
+  - [特征码 Pattern](/docs/plugins/pattern): 特征码搜索与匹配后读内存
+  - [脚本 Command](/docs/plugins/commands): 在 C++ 中调用 SCM 脚本命令
+
+  - **扩展与工具**
+  - 扩展
+    - [综述](/docs/plugins/extensions): shared/extensions 工具入口
+    - [路径 paths](/docs/plugins/extensions/paths): 游戏目录与 ASI 目录路径
+    - [屏幕坐标 screen](/docs/plugins/extensions/screen): 设计坐标与分辨率换算
+    - [配置 config_file](/docs/plugins/extensions/config): 读写插件 ini
+    - [屏幕字 gamefont](/docs/plugins/extensions/font): 屏幕与世界坐标文字绘制
+    - [按键 KeyCheck](/docs/plugins/extensions/keycheck): 边沿检测与延迟连发
+    - [池遍历 PoolIterator](/docs/plugins/extensions/pool-iterator): 对 CPool 做 range-for
+  - 工具
+    - [综述](/docs/plugins/utils): shared 工具库入口
+    - [杂项工具](/docs/plugins/utils/other): Other.h 控制台、随机、字符串与插值
+    - [图片精灵 Image / SpriteLoader](/docs/plugins/utils/image-sprite): 加载图片与精灵绘制
+    - [音频 BassSampleManager](/docs/plugins/utils/audio): 采样播放（依赖 bass）
+    - [色数学墙钟 color / maths / Timer](/docs/plugins/utils/math-color-timer): 颜色、圆周率与墙钟计时
+    - [文本与报错](/docs/plugins/utils/text-error): TextLoader、StringUtils、Error / Message
+    - [版本与地址](/docs/plugins/utils/version-address): GameVersion、DynAddress、DynamicResource
+    - [着色器 Shader](/docs/plugins/utils/shader): SA 着色器（继承 DynamicResource）
+  - [附加数据 Extender](/docs/plugins/extender): Ped / Vehicle / Object 附加数据
+  - 实体
+    - [综述](/docs/plugins/entities): SA 游戏类 API 入口（ASI 高频）
+    - [ASI 覆盖边界](/docs/plugins/entities/coverage): entities 收录范围与明确不扩清单
+
+    - **基类与玩家**
+    - [可放置 CPlaceable](/docs/plugins/entities/placeable): 位置、朝向与矩阵基类
+    - [实体 CEntity](/docs/plugins/entities/entity): 模型、标志、传送与 RW 对象
+    - [物理 CPhysical](/docs/plugins/entities/physical): 速度、力、附着与免疫
+    - [玩家 FindPlayer*](/docs/plugins/entities/player): common.h 玩家快捷（SA 高频）
+    - [玩家行人 CPlayerPed](/docs/plugins/entities/player-ped): 通缉、小队、冲刺与武器切换
+    - [玩家信息 CPlayerInfo](/docs/plugins/entities/player-info): 钱、最大血甲、免累与玩家状态
+
+    - **池与实体**
+    - [对象池 CPools](/docs/plugins/entities/pools): 句柄互转与池指针
+    - [行人 CPed](/docs/plugins/entities/ped): 血量、武器、状态与骨骼
+    - [载具 CVehicle](/docs/plugins/entities/vehicle): 修车、司机乘客、部件与姿态
+    - [物体 CObject](/docs/plugins/entities/object): 物体血量、伤害、绳索与门
+    - [世界 CWorld](/docs/plugins/entities/world): 贴地、射线、区域清理与爆炸
+    - [火焰 CFireManager](/docs/plugins/entities/fire): 点灭火与脚本火
+    - [爆炸 CExplosion](/docs/plugins/entities/explosion): 爆炸槽表添加与查询
+    - [拾取物 CPickups](/docs/plugins/entities/pickups): 生成删除拾取物与撒钱
+    - [抛射物 CProjectileInfo](/docs/plugins/entities/projectile): 火箭手雷等抛射物槽
+    - [武器 CWeapon](/docs/plugins/entities/weapon): Ped 武器槽实例与开火入口
+
+    - **流式与资源**
+    - [流式 CStreaming](/docs/plugins/entities/streaming): 请求加载模型与场景
+    - [模型信息 CModelInfo](/docs/plugins/entities/model-info): 按 id 查模型信息与车型判断
+    - [贴图字典 CTxdStore](/docs/plugins/entities/txd-store): 贴图字典槽加载与引用
+    - [动画 CAnimManager](/docs/plugins/entities/anim): 动画块混合与关联
+    - [文件 CFileMgr](/docs/plugins/entities/file-mgr): 游戏目录相对路径读写
+
+    - **人口交通路径**
+    - [人口 CPopulation](/docs/plugins/entities/population): 路人密度、生成与组表
+    - [交通 CCarCtrl](/docs/plugins/entities/car-ctrl): 交通密度、脚本造车与路网
+    - [寻路 CPathFind](/docs/plugins/entities/pathfind): ThePaths 搜路与路径节点
+    - [水面 CWaterLevel](/docs/plugins/entities/water): 水面高度、波浪与渲染入口
+    - [室内门 CEntryExitManager](/docs/plugins/entities/entry-exit): 室内门、进出栈与区域码
+
+    - **绘制与 HUD**
+    - [精灵 CSprite2d](/docs/plugins/entities/sprite2d): 2D 贴图矩形与进度条
+    - [字体 CFont](/docs/plugins/entities/font): 游戏内置字绘制与测宽
+    - [标记 CCoronas / C3dMarkers](/docs/plugins/entities/markers): 光晕与 3D 标记
+    - [阴影 CShadows](/docs/plugins/entities/shadows): 地面影、车灯影与永久影
+    - [雷达 CRadar](/docs/plugins/entities/radar): Blip 创建、外观与清除
+    - [HUD 消息 CHud / CMessages](/docs/plugins/entities/hud-messages): 帮助信息、大字与 Brief 消息
+    - [镜头 CCamera](/docs/plugins/entities/camera): 淡入淡出、脚本接管与震动
+    - [绘制 CDraw](/docs/plugins/entities/draw): 全局 FOV、裁剪面与淡色
+
+    - **游戏态**
+    - [计时 CTimer](/docs/plugins/entities/timer): 帧步长、游戏时间与暂停
+    - [时段光 CTimeCycle](/docs/plugins/entities/time-cycle): 时段光照、雾与额外色
+    - [时间天气 CClock / CWeather / CWeaponInfo](/docs/plugins/entities/world-state): 全局时钟、天气与武器表
+    - [统计 CStats](/docs/plugins/entities/stats): 读写统计与进度
+    - [通缉 CWanted](/docs/plugins/entities/wanted): 通缉等级与犯罪登记
+    - [输入 CPad](/docs/plugins/entities/pad): 手柄与输入状态
+    - [菜单 CMenuManager](/docs/plugins/entities/menu): 暂停菜单与偏好开关
+    - [游戏态 CGame](/docs/plugins/entities/game): 区域、关卡与游戏状态
+    - [脚本 CTheScripts](/docs/plugins/entities/scripts): 脚本线程、全局开关与清理
+    - [音频引擎 CAudioEngine](/docs/plugins/entities/audio-engine): 前端音效、电台与主音量
+
+  - **组合**
+  - [组合示例](/docs/plugins/recipes): 可抄示例目录（兼容旧 /plugins/recipes 链接）
+- CLEO
+  - [综述](/docs/cleo): 脚本侧 opcode 调用文档入口
+  - [OP / Lua 语法](/docs/cleo/syntax): OP · Lua · Redux 三种形态与 Lua 约定
+  - [Redux 语法](/docs/cleo/syntax-redux): JS 调用形态与 native 边界
+  - SA
+
+    - **CLEO**
+    - [内存 Memory](/docs/cleo/sa/memory): 内存读写、句柄指针与原生调用
+    - [算术](/docs/cleo/sa/arith): 整数与浮点基本运算 opcode
+    - [自定义脚本](/docs/cleo/sa/script): 启停脚本、CLEO_CALL 与共享变量
+    - [文件 File / Fs](/docs/cleo/sa/file): 文件读写、目录与通配查找
+    - [动态库 DynamicLibrary](/docs/cleo/sa/dll): 加载 DLL 与取导出地址
+    - [游戏 Game / Pad](/docs/cleo/sa/game): 版本、平台、按键与作弊串
+    - [实体 Char / Car / Player / World](/docs/cleo/sa/entity): 实体查询、刷车、瞄准与档位
+    - [数学 Math](/docs/cleo/sa/math): 幂与对数
+    - [杂项](/docs/cleo/sa/misc): 无独立 class 或占位 opcode
+    - CLEO+
+      - [综述](/docs/cleo/sa/plus): CLEO+ 按类型分页入口（约 318 条）
+      - [剪贴板 Clipboard](/docs/cleo/sa/plus/clipboard): 系统剪贴板读写
+      - [矩阵 Matrix / Quat](/docs/cleo/sa/plus/matrix): 矩阵旋转与四元数运算
+      - [内存 Memory](/docs/cleo/sa/plus/memory): 结构体读写、NOP 与自定义脚本地址
+      - [实体 Entity](/docs/cleo/sa/plus/entity): CLEO+ 实体相关入口（按主体拆页）
+      - [角色实体 Entity Char](/docs/cleo/sa/plus/entity-char): 角色骨骼、任务状态、武器与生命周期
+      - [载具实体 Entity Car](/docs/cleo/sa/plus/entity-car): 载具透明度、扩展变量、拖车碰撞与所有权
+      - [物体实体 Entity Object](/docs/cleo/sa/plus/entity-object): 物体透明度、扩展变量与 renderObject
+      - [世界实体 Entity World](/docs/cleo/sa/plus/entity-world): 距离判定、池遍历、实体类型与金钱
+      - [文本 Text](/docs/cleo/sa/plus/text): 字符串工具与扩展绘制
+      - [碰撞点 ColPoint](/docs/cleo/sa/plus/colpoint): 碰撞点查询
+      - [时钟 Clock / Weather](/docs/cleo/sa/plus/clock): 本地时间、游戏时钟与天气
+      - [脚本 Script](/docs/cleo/sa/plus/script): 脚本变量、自定义脚本与生命周期事件
+      - [游戏 Game / Mission](/docs/cleo/sa/plus/game): 分辨率任务状态作弊与世界查询
+      - [数学 Math](/docs/cleo/sa/plus/math): 噪声、缓动、随机与夹值
+      - [鼠标 Mouse](/docs/cleo/sa/plus/mouse): 滚轮与灵敏度
+      - [音频 Audio](/docs/cleo/sa/plus/audio): SFX/电台音量与 AudioStream 内部引用
+      - [武器 Weapon](/docs/cleo/sa/plus/weapon): 开火类型与 WeaponInfo 字段
+      - [贴图 Txd / Draw](/docs/cleo/sa/plus/txd): 扩展贴图绘制与 sprite 取纹理
+      - [标记 CleoBlip](/docs/cleo/sa/plus/blip): 不占原生上限的自定义雷达点
+      - [手柄 Pad](/docs/cleo/sa/plus/pad): 键边沿与 Pad 控制
+      - [渲染对象 RenderObject](/docs/cleo/sa/plus/render): 挂到角色骨骼上的渲染物体
+      - [拾取物 Pickup](/docs/cleo/sa/plus/pickup): 坐标查拾取物、模型类型与指针
+      - [界面 Hud](/docs/cleo/sa/plus/hud): 本地 onscreen 计时器计数器与 HUD 可见性
+      - [镜头 Camera](/docs/cleo/sa/plus/camera): 镜头控制、偏移、淡入与结构地址
+      - [列表 List](/docs/cleo/sa/plus/list): 动态数值/字符串列表
+      - [流式 Streaming](/docs/cleo/sa/plus/streaming): 优先模型、特殊角色、池清理与 specialModel
+      - [特效 Fx](/docs/cleo/sa/plus/fx): FX 系统地址、加粒子与按名查询
+      - [动态库 DynamicLibrary](/docs/cleo/sa/plus/dll): 取已加载 DLL 句柄
+      - [杂项 Misc](/docs/cleo/sa/plus/misc): CLEO+ 分类说明（无独立 opcode 堆）
+    - SA 扩展
+      - [其它扩展](/docs/cleo/sa/ext): 除 CLEO / CLEO+ / default 外的 SA 扩展入口
+      - [音频流 AudioStream](/docs/cleo/sa/ext/audio): 流式音频与 3D 声源（26 条）
+      - [位运算](/docs/cleo/sa/ext/bitwise): 位运算与取余
+      - [剪贴板 Clipboard](/docs/cleo/sa/ext/clipboard): 剪贴板扩展（与 CLEO+ 同号）
+      - [调试 Debug](/docs/cleo/sa/ext/debug): 调试输出、断点与日志
+      - [文件 Fs / File](/docs/cleo/sa/ext/file): 文件目录操作与块读写
+      - [配置 IniFile](/docs/cleo/sa/ext/ini): 读写 ini 段与键
+      - [手柄 Pad](/docs/cleo/sa/ext/input): 键边沿、模拟按键与绑定查询
+      - [数学 Math](/docs/cleo/sa/ext/math): 位标志、随机挑选与浮点四则
+      - [内存 Memory](/docs/cleo/sa/ext/memory): 内存拷贝、偏移读写与脚本结构
+      - [文本 Text](/docs/cleo/sa/ext/text): 串比较、屏上格式化与 FXT
+      - [球体 Sphere](/docs/cleo/sa/ext/sphere): 球体显示颜色
+      - NewOpcodes
+        - [扩展 NewOpcodes](/docs/cleo/sa/ext/newopcodes): NewOpcodes 按页入口（约 128 条）
+        - [矩阵 Matrix / Quat / Vector](/docs/cleo/sa/ext/newopcodes/matrix): 矩阵、四元数、向量与圆相交
+        - [实体 Entity / Component](/docs/cleo/sa/ext/newopcodes/entity): 部件、透明度、碰撞实体、骨骼
+        - [碰撞绘制 Col / Draw / Txd](/docs/cleo/sa/ext/newopcodes/draw): ColPoint、shape 绘制、TXD、字符串
+        - [杂项 Misc](/docs/cleo/sa/ext/newopcodes/misc): 内存拷贝、线程变量、结构体与字符串
+        - [特效 Fx](/docs/cleo/sa/ext/newopcodes/fx): 阴影光 corona 太阳 天气 音量 分辨率
+        - [载具 Vehicle](/docs/cleo/sa/ext/newopcodes/vehicle): 车灯损伤、车类、dummy 点、抛射物
+        - [贴图 Texture / Sprite](/docs/cleo/sa/ext/newopcodes/texture): BMP/PNG/DDS 贴图与 2D 精灵
+        - [打印 PrintText](/docs/cleo/sa/ext/newopcodes/print): 临时屏上文字
+        - [组件 Atomic](/docs/cleo/sa/ext/newopcodes/atomic): 部件父节点、RpAtomic 显隐与材质
+      - imgui
+        - [界面 ImGui](/docs/cleo/sa/ext/imgui): ImGui 扩展全表（87 条）
+      - SAMPFUNCS
+        - [SA-MP SAMPFUNCS](/docs/cleo/sa/ext/sampfuncs): SA-MP SAMPFUNCS 扩展表入口（382 条）
+        - [载具 Car](/docs/cleo/sa/ext/sampfuncs/car): 载具句柄 → SA-MP 车辆 ID
+        - [角色 Char](/docs/cleo/sa/ext/sampfuncs/char): 角色句柄 → SA-MP 玩家 ID
+        - [物体 Object](/docs/cleo/sa/ext/sampfuncs/object): 物体句柄 → SA-MP 物体 ID
+        - [拾取物 Pickup](/docs/cleo/sa/ext/sampfuncs/pickup): 拾取物句柄 → SA-MP 拾取物 ID
+        - [比特流 SampBitstream](/docs/cleo/sa/ext/sampfuncs/sampbitstream): RakNet BitStream 读写与收发
+        - [聊天 SampChat](/docs/cleo/sa/ext/sampfuncs/sampchat): 聊天行追加与显示模式
+        - [聊天输入 SampChatInput](/docs/cleo/sa/ext/sampfuncs/sampchatinput): 聊天输入框文本与可见性
+        - [客户端 SampClient](/docs/cleo/sa/ext/sampfuncs/sampclient): 客户端状态、对话框、池指针与光标
+        - [本地聊天命令 SampLocalChatCmd](/docs/cleo/sa/ext/sampfuncs/samplocalchatcmd): 本地聊天命令钩子
+        - [本地玩家 SampMyPlayer](/docs/cleo/sa/ext/sampfuncs/sampmyplayer): 本地玩家重生与昵称
+        - [玩家 SampPlayer](/docs/cleo/sa/ext/sampfuncs/sampplayer): 远程玩家状态、数据与 NPC
+        - [网络 SampRaknet](/docs/cleo/sa/ext/sampfuncs/sampraknet): RPC/Packet 发送、Hook 与强制同步
+        - [文字绘制 SampTextDraw](/docs/cleo/sa/ext/sampfuncs/samptextdraw): TextDraw 创建、样式与读写
+        - [3D标签 SampTextLabel3D](/docs/cleo/sa/ext/sampfuncs/samptextlabel3d): 模拟 SA-MP 3D 文本
+        - [框架 Sf](/docs/cleo/sa/ext/sampfuncs/sf): 坐标、数学、内存、字符串与输入
+        - [控制台 SfConsole](/docs/cleo/sa/ext/sampfuncs/sfconsole): SAMPFUNCS 控制台日志与命令
+        - [D3D SfD3D](/docs/cleo/sa/ext/sampfuncs/sfd3d): 线框矩形多边形绘制
+        - [字体 SfD3DFont](/docs/cleo/sa/ext/sampfuncs/sfd3dfont): D3D 字体创建与文本测量
+        - [纹理 SfD3DTexture](/docs/cleo/sa/ext/sampfuncs/sfd3dtexture): D3D 纹理加载与绘制
+        - [下载 SfDownload](/docs/cleo/sa/ext/sampfuncs/sfdownload): 异步下载文件
+        - [对话框 SfDxutDialog](/docs/cleo/sa/ext/sampfuncs/sfdxutdialog): DXUT 对话框控件与事件
+        - [全局函数 SfGFunc](/docs/cleo/sa/ext/sampfuncs/sfgfunc): 自定义全局函数注册与调用
+        - [全局变量 SfGVar](/docs/cleo/sa/ext/sampfuncs/sfgvar): 自定义全局变量
+        - [脚本 SfScript](/docs/cleo/sa/ext/sampfuncs/sfscript): 启停脚本与局部变量
+        - [定时器 SfTimer](/docs/cleo/sa/ext/sampfuncs/sftimer): 周期定时器
+        - [杂项 Misc](/docs/cleo/sa/ext/sampfuncs/misc): 底层 D3D 图元与纹理绑定
+    - default
+      - [SCM 原生 default](/docs/cleo/sa/default): SCM 原生 opcode 按 class 分页
+      - [吸引点 Attractor](/docs/cleo/sa/default/attractor): 行人吸引点
+      - [音频 Audio](/docs/cleo/sa/default/audio): 任务语音 / 电台 / 节拍轨
+      - [标记 Blip](/docs/cleo/sa/default/blip): 雷达标记
+      - [船只 Boat](/docs/cleo/sa/default/boat): 船移动 / 巡航 / 锚泊
+      - [镜头 Camera](/docs/cleo/sa/default/camera): 镜头 / 淡入淡出 / 附着
+      - [载具 Car](/docs/cleo/sa/default/car): 车辆创建 / 驾驶 / 状态 / 改装
+      - [载具生成 CarGenerator](/docs/cleo/sa/default/cargenerator): 停车生成器
+      - [角色 Char](/docs/cleo/sa/default/char): 角色创建 / 位置 / 载具 / 状态 / 武器
+      - [检查点 Checkpoint](/docs/cleo/sa/default/checkpoint): 竞速检查点
+      - [时钟 Clock](/docs/cleo/sa/default/clock): 游戏时间 / 流速 / 日期
+      - [对话 Conversation](/docs/cleo/sa/default/conversation): 脚本对话节点
+      - [吊车 Crane](/docs/cleo/sa/default/crane): 起重机进入 / 控制
+      - [过场 Cutscene](/docs/cleo/sa/default/cutscene): 过场加载 / 播放 / 偏移
+      - [调试 Debugger](/docs/cleo/sa/default/debugger): 脚本调试
+      - [决策器 DecisionMaker](/docs/cleo/sa/default/decisionmaker): 决策器删除与存在
+      - [角色决策 DecisionMakerChar](/docs/cleo/sa/default/decisionmakerchar): 角色决策器
+      - [组决策 DecisionMakerGroup](/docs/cleo/sa/default/decisionmakergroup): 组决策器
+      - [特效 Fx](/docs/cleo/sa/default/fx): 爆炸 / 光晕 / 粒子
+      - [游戏 Game](/docs/cleo/sa/default/game): 全局规则 / 通缉 / 双人 / 帮战
+      - [帮派 Gang](/docs/cleo/sa/default/gang): 帮派武器配置
+      - [车库 Garage](/docs/cleo/sa/default/garage): 车库开关 / 类型 / 喷漆
+      - [小组 Group](/docs/cleo/sa/default/group): 角色组
+      - [直升机 Heli](/docs/cleo/sa/default/heli): 直升机飞向 / 绞盘 / 攻击
+      - [界面 Hud](/docs/cleo/sa/default/hud): 计时 / 计数 / 雷达 / 绘制
+      - [数学 Math](/docs/cleo/sa/default/math): 数学 / 随机 / 位运算
+      - [菜单 Menu](/docs/cleo/sa/default/menu): 屏上面板菜单
+      - [杂项 Misc](/docs/cleo/sa/default/misc): 无 class 的 SCM 原生命令（脚本控制 / 变量 / 条件 等）
+      - [任务 Mission](/docs/cleo/sa/default/mission): 任务启动与收尾
+      - [鼠标 Mouse](/docs/cleo/sa/default/mouse): 鼠标位移与反转
+      - [物体 Object](/docs/cleo/sa/default/object): 物体创建 / 物理 / 附着 / 动画
+      - [手柄 Pad](/docs/cleo/sa/default/pad): 手柄 / 按键控制
+      - [粒子 Particle](/docs/cleo/sa/default/particle): 粒子特效
+      - [路径 Path](/docs/cleo/sa/default/path): 路径节点 / 路线
+      - [拾取物 Pickup](/docs/cleo/sa/default/pickup): 拾取物 / 收藏品
+      - [飞机 Plane](/docs/cleo/sa/default/plane): 飞机飞向 / 攻击 / 起落架
+      - [玩家 Player](/docs/cleo/sa/default/player): 玩家金钱 / 通缉 / 操控 / 服装
+      - [遥控 Rc](/docs/cleo/sa/default/rc): 遥控车
+      - [重生点 Restart](/docs/cleo/sa/default/restart): 医院 / 警局重生点
+      - [脚本火 ScriptFire](/docs/cleo/sa/default/scriptfire): 脚本火
+      - [探照灯 Searchlight](/docs/cleo/sa/default/searchlight): 探照灯
+      - [序列 Sequence](/docs/cleo/sa/default/sequence): 任务序列
+      - [商店 Shopping](/docs/cleo/sa/default/shopping): 商店 / 购物
+      - [跳过 Skip](/docs/cleo/sa/default/skip): 行程跳过
+      - [音效 Sound](/docs/cleo/sa/default/sound): 一次性音效
+      - [球体 Sphere](/docs/cleo/sa/default/sphere): 调试球 / 静态球
+      - [统计 Stat](/docs/cleo/sa/default/stat): 进度 / 统计读写
+      - [流式 Streaming](/docs/cleo/sa/default/streaming): 模型 / 动画 / IPL / 场景流式加载
+      - [流式脚本 StreamedScript](/docs/cleo/sa/default/streamedscript): 环境脚本流加载 / 启动
+      - [卡死检测 StuckCarCheck](/docs/cleo/sa/default/stuckcarcheck): 载具卡住检测
+      - [任务 Task](/docs/cleo/sa/default/task): AI 任务 / 移动 / 战斗 / 动画
+      - [文本 Text](/docs/cleo/sa/default/text): 消息 / 帮助框 / 屏幕文字
+      - [拖车 Trailer](/docs/cleo/sa/default/trailer): 挂车挂接
+      - [火车 Train](/docs/cleo/sa/default/train): 任务列车
+      - [贴图 Txd](/docs/cleo/sa/default/txd): 贴图字典 / 精灵槽
+      - [3D标记 User3DMarker](/docs/cleo/sa/default/user3dmarker): 用户 3D 标记
+      - [武器 Weapon](/docs/cleo/sa/default/weapon): 武器类型 → 模型 / 槽位
+      - [天气 Weather](/docs/cleo/sa/default/weather): 天气强制与热浪
+      - [世界 World](/docs/cleo/sa/default/world): 区域清理 / 密度 / 查询 / 世界状态
+      - [区域 Zone](/docs/cleo/sa/default/zone): 区域人口 / 帮派
+  - VC
+    - [Vice City](/docs/cleo/vc): Vice City CLEO 扩展 opcode 按类型分页
+    - [内存 Memory](/docs/cleo/vc/memory): 内存读写、句柄指针与原生调用
+    - [算术](/docs/cleo/vc/arith): 整数与位运算 opcode
+    - [自定义脚本](/docs/cleo/vc/script): 启停脚本、CLEO_CALL 与共享变量
+    - [文件 File / Fs](/docs/cleo/vc/file): 文件读写与目录
+    - [动态库 DynamicLibrary](/docs/cleo/vc/dll): 加载 DLL 与取导出地址
+    - [游戏 Game / Pad](/docs/cleo/vc/game): 版本、键鼠手柄与天气
+    - [实体 Entity](/docs/cleo/vc/entity): Char / Car / World / Weapon / Camera
+    - [文本 Text](/docs/cleo/vc/text): 字体、屏幕字与 GXT
+    - [数学 Math](/docs/cleo/vc/math): 幂与对数
+    - [杂项](/docs/cleo/vc/misc): 无独立 class 的边缘 op 说明
+  - III
+    - [GTA III](/docs/cleo/gta3): GTA III CLEO 扩展 opcode 按类型分页
+    - [内存 Memory](/docs/cleo/gta3/memory): 内存读写、句柄指针与原生调用
+    - [算术](/docs/cleo/gta3/arith): 整数与位运算 opcode
+    - [自定义脚本](/docs/cleo/gta3/script): 启停脚本、CLEO_CALL 与共享变量
+    - [文件 File / Fs](/docs/cleo/gta3/file): 文件读写、目录与查找
+    - [动态库 DynamicLibrary](/docs/cleo/gta3/dll): 加载 DLL 与取导出地址
+    - [游戏 Game / Pad](/docs/cleo/gta3/game): 版本、键鼠手柄与天气
+    - [实体 Entity](/docs/cleo/gta3/entity): Player / Char / Car / World / Weapon / Camera
+    - [文本 Text](/docs/cleo/gta3/text): 屏幕字与 GXT
+    - [数学 Math](/docs/cleo/gta3/math): 幂与对数
+    - [杂项](/docs/cleo/gta3/misc): 无独立 class 的边缘 op 说明
+- XBase
+  - [综述](/docs/xbase): XBase 是 GTA SA / VC / III 的轻量基础库。大道至简。
+
+  - **基础设施**
+  - [Log](/docs/xbase/log): 线程安全的日志系统，同时写入文件和内存缓存。
+  - [Json](/docs/xbase/json): 手写递归下降 JSON 解析器 + 序列化器。
+  - [Config](/docs/xbase/config): 基于 JSON 文件的持久化配置管理器。
+  - [I18n](/docs/xbase/i18n): 多语言字符串翻译系统。
+  - [Hooks](/docs/xbase/hooks): D3D9 Hook（kiero）+ ImGui 引导。
+  - [Hotkey](/docs/xbase/hotkey): 按键绑定、Toggle/Hold/Once 模式与持久化。
+  - [宿主接入与版本后端](/docs/xbase/host-integration): XBase 静态库的版本选择、生命周期和能力边界。
+
+  - **控制器**
+  - [Core](/docs/xbase/core): 初始化、世界就绪检测。
+  - [Player](/docs/xbase/player): 血量、护甲、金钱、通缉、皮肤、技能与运行时状态机。
+  - [Ped](/docs/xbase/ped): Ped 生成、作弊、帮派控制。
+  - [Vehicle](/docs/xbase/vehicle): 修复、生成、引擎、灯光、锁定、防护、特效。
+  - [World](/docs/xbase/world): 天气、时间、游戏速度、重力、Pickup。
+  - [Weapon](/docs/xbase/weapon): 给予武器、清空、丢弃、无限弹药与属性覆盖。
+  - [Teleport](/docs/xbase/teleport): 坐标传送、标记点传送、地图传送。
+  - [Scene](/docs/xbase/scene): 动画、粒子、过场动画。
+  - [Visual](/docs/xbase/visual): HUD、雷达、雷达选项与画面滤镜。
+  - [BulletAssist](/docs/xbase/bullet-assist): 子弹追踪、坐标透视、强制锁定与开火抑制。
+  - [Overlay](/docs/xbase/overlay): 屏幕信息覆盖层，显示 FPS、坐标、血量、护甲、金钱、通缉、时间、室内编号。
+  - [Camera](/docs/xbase/camera): 自由视角与俯视相机。
+  - [Cheats](/docs/xbase/cheats): 游戏全局作弊开关与随机作弊。
+  - [VehicleEffects](/docs/xbase/vehicle-effects): 载具渲染期特效（霓虹等）。
+
+  - **UI 层**
+  - [Theme](/docs/xbase/theme): 主题配色与样式管理。
+  - [UI](/docs/xbase/ui): 窗口管理、Tab 系统、MenuSurface 与基础 UI 组件。
+  - [WebView](/docs/xbase/webview): 通过系统 WebView2 在游戏窗口内渲染网页。
+  - [WebBridge](/docs/xbase/web-bridge): 让网页 JavaScript 直接调用 XBase 公共 API，用前端框架替代 ImGui 写界面。
+
+  - **其他**
+  - [Version](/docs/xbase/version): 游戏版本检测与版本名称。
+  - [Types](/docs/xbase/types): 共享数据结构定义。
+- 技能
+  - [综述](/docs/skill): Cursor / IDE 用 gtamodx skill 路由与边界
+  - [插件](/docs/skill/plugins-dev): 插件开发 Skill · ASI / plugin-sdk 侧硬约束与文档路由
+  - [XBase](/docs/skill/xbase-dev): XBase 开发 Skill · 公共 API、能力矩阵与版本后端边界
+  - [CLEO](/docs/skill/cleo-dev): CLEO 开发 Skill · opcode、Lua 与 Redux 硬约束与文档路由
