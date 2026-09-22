@@ -32,6 +32,7 @@
     "theme",
     "ui",
     "webview",
+    "web-bridge",
     "---其他---",
     "version",
     "types"

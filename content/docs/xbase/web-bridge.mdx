@@ -1,0 +1,129 @@
+---
+title: WebBridge
+description: 让网页 JavaScript 直接调用 XBase 公共 API，用前端框架替代 ImGui 写界面。
+---
+
+`include/XBase/WebBridge.h` · `XBase::WebBridge`
+
+> 网页通过 `window.xbase` 调用 XBase 的玩家、载具、世界、传送、武器接口；能力不足的方法会被拒绝，网页可以据此隐藏入口。
+
+## 适用场景与边界
+
+适合用前端框架写界面，把 ImGui 面板换成 HTML 与组件库，逻辑仍由 XBase 执行。
+
+不属于本模块的内容：
+
+- 不提供渲染，网页仍由 `WebView` 承载
+- 不绕过能力矩阵，VC / III 上不支持的方法一律返回错误
+- 不做参数越界修正之外的业务校验，例如载具模型是否存在于游戏由 XBase 后端判断
+
+## 安装
+
+```cpp
+XBase::WebBridge::Install();   // 注册消息通道并注入客户端脚本
+XBase::WebBridge::Shutdown();  // 卸载时调用
+```
+
+`Install()` 内部只做两件事：给 `WebView::SetMessageHandler` 挂上分发器，以及注入客户端脚本。网页若在安装前已经加载，重新导航一次即可获得 `window.xbase`。
+
+## 客户端接口
+
+注入的脚本提供三个成员：
+
+```js
+window.xbase.call(method, params);        // 返回 Promise，resolve 方法结果
+window.xbase.on(event, callback);         // 订阅原生事件
+window.xbase.capabilities();              // 等价于 call('bridge.capabilities')
+```
+
+调用示例：
+
+```js
+const snapshot = await window.xbase.call('player.snapshot');
+document.querySelector('#health').textContent = snapshot.health.toFixed(0);
+
+await window.xbase.call('vehicle.spawn', { model: 411, asDriver: true });
+await window.xbase.call('world.setTime', { hour: 12, minute: 0 });
+```
+
+失败会 reject，错误文本包含原因：
+
+```js
+try {
+    await window.xbase.call('vehicle.doors', { index: 0 });
+} catch (error) {
+    // VC / III 上 VehicleDoors 不支持，这里会拿到 unsupported on this game
+    console.warn(error.message);
+}
+```
+
+## 协议
+
+请求与响应都是 JSON，响应带回同一个 `id`。
+
+```json
+{ "id": 1, "method": "player.snapshot", "params": {} }
+{ "id": 1, "ok": true, "result": { "health": 100, "money": 500 } }
+{ "id": 2, "ok": false, "error": "unsupported on this game: vehicle.doors" }
+```
+
+原生推事件用 `Emit()`，网页用 `on()` 接收：
+
+```cpp
+XBase::Json::Value payload;
+payload.Set("text", XBase::Json::Value("done"));
+XBase::WebBridge::Emit("notice", payload);
+```
+
+```js
+window.xbase.on('notice', (payload) => console.log(payload.text));
+```
+
+## 方法表
+
+`bridge.capabilities` 返回每个方法在当前游戏上的状态，`supported` 与 `partial` 可以放行，`unsupported` 应隐藏入口。
+
+| 方法 | 能力 | 参数 |
+|---|---|---|
+| `bridge.capabilities` | 始终可用 | 无 |
+| `player.snapshot` | PlayerBasicState | 无 |
+| `player.heal` | PlayerBasicState | 无 |
+| `player.armour` | PlayerBasicState | 无 |
+| `player.money` | PlayerBasicState | `amount` |
+| `player.wanted` | PlayerBasicState | `level` |
+| `player.kill` | PlayerBasicState | 无 |
+| `player.moveRelative` | PlayerMovement | `forward` `right` `up` |
+| `vehicle.snapshot` | VehicleBasic | 无 |
+| `vehicle.spawn` | VehicleSpawn | `model` `asDriver` `aircraftInAir` `cleanupPrevious` |
+| `vehicle.repair` | VehicleBasic | 无 |
+| `vehicle.unflip` | VehicleBasic | 无 |
+| `vehicle.colors` | VehicleColors | `primary` `secondary` |
+| `vehicle.doors` | VehicleDoors | `index` |
+| `world.getTime` | WorldTime | 无 |
+| `world.setTime` | WorldTime | `hour` `minute` |
+| `world.weather` | WorldWeather | `id` `lock` |
+| `world.gameSpeed` | WorldGameSpeed | `value` |
+| `world.gravity` | WorldGravity | `value` |
+| `world.freezeTime` | WorldFreezeTime | `enable` |
+| `teleport.to` | TeleportBasic | `x` `y` `z` `interior` |
+| `teleport.forward` | TeleportBasic | `distance` |
+| `teleport.marker` | TeleportBasic | `underwater` |
+| `weapon.give` | WeaponGive | `type` `ammo` |
+| `weapon.giveAll` | WeaponGive | 无 |
+| `weapon.infiniteAmmo` | WeaponRuntimeEffects | `enable` |
+| `ui.notice` | 始终可用 | `text` |
+
+## 线程与安全
+
+- 消息回调在游戏线程执行，可以直接调用 XBase 的域接口，不需要额外排队
+- 除 `ui.notice` 走 `Host::QueueMessage` 延迟到脚本事件外，其余方法在调用点立即生效
+- 页面地址由宿主决定，方法表是白名单，未列出的方法一律返回 `unknown method`
+- 返回值只包含状态与数值，不下发任何游戏内存地址
+
+## 排查路径
+
+1. `window.xbase` 未定义：确认宿主调用了 `Install()`，并在安装后重新导航
+2. 调用一直挂起：确认网页由本 XBase 的 WebView 承载，且 `chrome.webview` 可用
+3. 返回 `unsupported on this game`：该方法在当前游戏不支持，按 `bridge.capabilities` 隐藏入口
+4. 返回 `unknown method`：方法名拼写或版本不一致
+5. 参数无效：检查参数名与类型，缺省值见方法表

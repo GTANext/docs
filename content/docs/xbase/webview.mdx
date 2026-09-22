@@ -51,7 +51,14 @@ void DrawPanel(const Rect& bounds);
 void ForwardPanelInput(const Rect& bounds, Vec2 mouse, bool mouseDown, float wheelDelta);
 
 void SetStateCallback(StateCallback callback);
+
+using MessageHandler = std::function<void(const std::string& json)>;
+void SetMessageHandler(MessageHandler handler);
+bool PostJson(const std::string& json);
+bool InjectScript(const std::string& script);
 ```
+
+`SetMessageHandler()` 接收网页用 `chrome.webview.postMessage` 发来的原始 JSON，回调在游戏线程执行；`PostJson()` 反向投递，网页用 `chrome.webview` 的 message 事件接收；`InjectScript()` 在页面脚本之前注入代码，控制器尚未创建时会排队。需要现成的调用约定时用 `WebBridge`。
 
 ## 全屏抓帧模式
 
