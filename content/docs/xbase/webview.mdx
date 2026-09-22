@@ -45,6 +45,7 @@ void SetVisible(bool visible);
 bool IsVisible();
 void SetBounds(const Rect& bounds);
 State GetState();
+bool Close();
 
 bool UsesCaptureMode();
 void DrawPanel(const Rect& bounds);
@@ -68,6 +69,12 @@ bool InjectScript(const std::string& script);
 - 抓帧与面板同尺寸，1:1 显示不缩放；静止时用 PNG 保证清晰度，交互时改用 JPEG 把抓帧间隔压到 120ms，空闲间隔 500ms，点击与滚轮后立即重抓。
 - 抓帧模式不抢焦点，游戏与菜单热键保持可用；受限于位图转发，页面内的文本输入与输入法不可用，帧率也低于原生渲染。
 - 想要原生渲染与文字输入时，让游戏进入窗口或无边框模式（`Hooks::SetWindowMode(WindowMode::Borderless)`）；窗口由 DWM 合成后本页自动回落到原生覆盖层，抓帧模式随之关闭。
+
+## 隐藏与关闭
+
+- `SetVisible(false)` 只隐藏面板，浏览器与宿主窗口保持存活，再次显示几乎瞬时完成，对应窗口的最小化
+- `Close()` 释放浏览器与宿主窗口，内存归还系统，之后再次 `SetVisible(true)` 或 `Navigate` 会重新创建，对应窗口的关闭
+- 菜单关闭等临时场景用隐藏，长期不用或需要回收内存时用关闭；`Shutdown()` 是卸载路径，与两者都不同
 
 ## 生命周期与边界
 
